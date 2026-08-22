@@ -8,13 +8,12 @@
   <style>
     :root {
       --bg-color: #0b0f19;
-      --card-bg: rgba(22, 30, 49, 0.75);
+      --card-bg: rgba(30, 41, 59, 0.85);
       --accent-color: #6366f1;
       --accent-hover: #4f46e5;
-      --accent-glow: rgba(99, 102, 241, 0.4);
       --text-main: #f8fafc;
       --text-muted: #94a3b8;
-      --border-color: rgba(255, 255, 255, 0.12);
+      --border-color: rgba(255, 255, 255, 0.1);
     }
 
     * {
@@ -33,7 +32,7 @@
       overflow-x: hidden;
     }
 
-    /* BACKGROUND LOGO BLUR & GLOW */
+    /* BACKGROUND LOGO BLUR */
     body::before {
       content: '';
       position: fixed;
@@ -44,11 +43,12 @@
       background-image: url('logo.jpg');
       background-size: cover;
       background-position: center;
-      filter: blur(50px) brightness(0.2);
-      transform: scale(1.15);
+      filter: blur(40px) brightness(0.25);
+      transform: scale(1.1);
       z-index: -2;
     }
 
+    /* HIASAN KUPU-KUPU & GLOW BACKGROUND */
     body::after {
       content: '';
       position: fixed;
@@ -57,102 +57,62 @@
       width: 100%;
       height: 100%;
       background: 
-        radial-gradient(circle at 15% 15%, rgba(99, 102, 241, 0.25) 0%, transparent 45%),
-        radial-gradient(circle at 85% 85%, rgba(168, 85, 247, 0.25) 0%, transparent 45%),
-        linear-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
-      background-size: 100% 100%, 100% 100%, 30px 30px, 30px 30px;
+        radial-gradient(circle at 10% 20%, rgba(99, 102, 241, 0.2) 0%, transparent 40%),
+        radial-gradient(circle at 90% 80%, rgba(147, 51, 234, 0.2) 0%, transparent 40%);
       z-index: -1;
       pointer-events: none;
     }
 
-    /* RUNNING BANNER PROMO */
-    .promo-banner {
-      background: linear-gradient(90deg, #4f46e5, #9333ea);
-      color: #fff;
-      font-size: 12px;
-      font-weight: 600;
-      padding: 6px 0;
-      overflow: hidden;
-      white-space: nowrap;
-      position: relative;
+    /* ANIMASI KUPU-KUPU MELAYANG */
+    .butterfly-decor {
+      position: fixed;
+      font-size: 24px;
+      color: rgba(165, 180, 252, 0.35);
+      pointer-events: none;
+      z-index: 0;
+      animation: floatButterfly 8s ease-in-out infinite alternate;
     }
 
-    .promo-text {
-      display: inline-block;
-      padding-left: 100%;
-      animation: marquee 20s linear infinite;
+    .bf-1 { top: 15%; left: 8%; animation-delay: 0s; }
+    .bf-2 { top: 60%; right: 8%; animation-delay: 2s; transform: scaleX(-1); }
+    .bf-3 { bottom: 10%; left: 12%; animation-delay: 4s; }
+
+    @keyframes floatButterfly {
+      0% { transform: translateY(0px) rotate(0deg); }
+      50% { transform: translateY(-15px) rotate(8deg); }
+      100% { transform: translateY(-30px) rotate(-5deg); }
     }
 
-    @keyframes marquee {
-      0% { transform: translate(0, 0); }
-      100% { transform: translate(-100%, 0); }
-    }
-
-    /* HEADER STYLE */
     .header {
-      background: rgba(15, 23, 42, 0.6);
-      backdrop-filter: blur(15px);
-      padding: 30px 20px 20px;
+      background: linear-gradient(135deg, rgba(79, 70, 229, 0.9), rgba(147, 51, 234, 0.9));
+      padding: 25px 20px;
       text-align: center;
-      border-bottom: 1px solid var(--border-color);
-      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
-    }
-
-    .header-logo {
-      width: 75px;
-      height: 75px;
-      border-radius: 50%;
-      border: 2px solid var(--accent-color);
-      box-shadow: 0 0 20px var(--accent-glow);
-      margin-bottom: 10px;
-      object-fit: cover;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.5);
+      backdrop-filter: blur(10px);
+      position: relative;
+      z-index: 1;
     }
 
     .header h1 {
       font-size: 26px;
-      font-weight: 800;
+      font-weight: 700;
+      margin-bottom: 5px;
       letter-spacing: 1px;
-      background: linear-gradient(135deg, #fff, #a5b4fc);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
     }
 
-    .status-badge {
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      background: rgba(34, 197, 94, 0.15);
-      border: 1px solid rgba(34, 197, 94, 0.4);
-      color: #4ade80;
-      font-size: 11px;
-      padding: 3px 10px;
-      border-radius: 20px;
-      margin-top: 8px;
+    .header p {
+      font-size: 13px;
+      opacity: 0.9;
     }
 
-    .pulse-dot {
-      width: 6px;
-      height: 6px;
-      background-color: #4ade80;
-      border-radius: 50%;
-      box-shadow: 0 0 8px #4ade80;
-      animation: pulse 1.5s infinite;
-    }
-
-    @keyframes pulse {
-      0%, 100% { opacity: 1; transform: scale(1); }
-      50% { opacity: 0.4; transform: scale(1.2); }
-    }
-
-    /* MAIN CONTAINER */
     .container {
-      max-width: 550px;
-      margin: 25px auto;
-      padding: 0 16px;
+      max-width: 520px;
+      margin: 20px auto;
+      padding: 0 15px;
+      position: relative;
+      z-index: 1;
     }
 
-    /* STEP INDICATOR */
     .step-indicator {
       display: flex;
       justify-content: space-between;
@@ -173,10 +133,10 @@
     }
 
     .step {
-      width: 36px;
-      height: 36px;
+      width: 32px;
+      height: 32px;
       border-radius: 50%;
-      background-color: var(--bg-color);
+      background-color: rgba(30, 41, 59, 0.9);
       border: 2px solid var(--border-color);
       display: flex;
       align-items: center;
@@ -190,36 +150,29 @@
 
     .step.active {
       border-color: var(--accent-color);
-      background: linear-gradient(135deg, var(--accent-color), #9333ea);
+      background-color: var(--accent-color);
       color: white;
-      box-shadow: 0 0 15px var(--accent-glow);
+      box-shadow: 0 0 12px rgba(99, 102, 241, 0.6);
     }
 
-    /* CARD STYLES */
     .card {
-      background: var(--card-bg);
-      backdrop-filter: blur(16px);
-      border-radius: 20px;
-      padding: 22px;
+      background-color: var(--card-bg);
+      backdrop-filter: blur(12px);
+      border-radius: 16px;
+      padding: 20px;
       margin-bottom: 20px;
       border: 1px solid var(--border-color);
-      box-shadow: 0 15px 35px rgba(0, 0, 0, 0.4);
+      box-shadow: 0 10px 25px rgba(0,0,0,0.3);
     }
 
     .card-title {
-      font-size: 15px;
-      font-weight: 700;
-      margin-bottom: 16px;
+      font-size: 16px;
+      font-weight: 600;
+      margin-bottom: 14px;
       display: flex;
       align-items: center;
-      gap: 10px;
-      color: #e2e8f0;
-      text-transform: uppercase;
-      letter-spacing: 0.5px;
-    }
-
-    .card-title i {
-      color: var(--accent-color);
+      gap: 8px;
+      color: var(--text-main);
     }
 
     .grid-2 {
@@ -228,49 +181,30 @@
       gap: 12px;
     }
 
-    /* ITEM CARD WITH BADGES */
     .item-card {
-      position: relative;
-      background: rgba(255, 255, 255, 0.03);
+      background-color: rgba(255, 255, 255, 0.04);
       border: 1px solid var(--border-color);
-      border-radius: 12px;
-      padding: 16px 12px;
+      border-radius: 10px;
+      padding: 14px;
       text-align: center;
       cursor: pointer;
-      transition: all 0.25s ease;
-      overflow: hidden;
+      transition: all 0.2s ease;
     }
 
-    .item-card:hover {
+    .item-card:hover, .item-card.selected {
       border-color: var(--accent-color);
-      background: rgba(99, 102, 241, 0.1);
-      transform: translateY(-3px);
-      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+      background-color: rgba(99, 102, 241, 0.15);
+      transform: translateY(-2px);
     }
 
     .item-card.selected {
-      border-color: var(--accent-color);
-      background: rgba(99, 102, 241, 0.18);
-      box-shadow: 0 0 15px var(--accent-glow);
-    }
-
-    .item-badge {
-      position: absolute;
-      top: 0;
-      right: 0;
-      background: linear-gradient(135deg, #f59e0b, #ef4444);
-      color: white;
-      font-size: 9px;
-      font-weight: bold;
-      padding: 2px 8px;
-      border-bottom-left-radius: 8px;
-      text-transform: uppercase;
+      box-shadow: 0 0 0 2px var(--accent-color);
     }
 
     .item-title {
       font-size: 14px;
-      font-weight: 700;
-      margin-bottom: 6px;
+      font-weight: 600;
+      margin-bottom: 4px;
     }
 
     .item-price {
@@ -279,9 +213,8 @@
       font-weight: 700;
     }
 
-    /* INPUT STYLES */
     .input-group {
-      margin-bottom: 16px;
+      margin-bottom: 14px;
     }
 
     .input-group label {
@@ -293,79 +226,51 @@
 
     .input-group input {
       width: 100%;
-      padding: 12px 14px;
-      border-radius: 10px;
+      padding: 12px;
+      border-radius: 8px;
       border: 1px solid var(--border-color);
-      background: rgba(0, 0, 0, 0.4);
+      background-color: rgba(0, 0, 0, 0.3);
       color: white;
       font-size: 14px;
       outline: none;
-      transition: border-color 0.2s;
     }
 
     .input-group input:focus {
       border-color: var(--accent-color);
-      box-shadow: 0 0 10px var(--accent-glow);
     }
 
-    /* SHIMMER BUTTONS */
     .btn {
-      position: relative;
       width: 100%;
-      padding: 13px;
-      border-radius: 10px;
+      padding: 12px;
+      border-radius: 8px;
       border: none;
-      background: linear-gradient(135deg, var(--accent-color), #4f46e5);
+      background-color: var(--accent-color);
       color: white;
-      font-weight: 700;
+      font-weight: 600;
       font-size: 14px;
       cursor: pointer;
-      transition: all 0.25s;
+      transition: all 0.2s;
       display: flex;
       align-items: center;
       justify-content: center;
       gap: 8px;
-      overflow: hidden;
-    }
-
-    .btn::after {
-      content: '';
-      position: absolute;
-      top: -50%;
-      left: -50%;
-      width: 200%;
-      height: 200%;
-      background: linear-gradient(60deg, transparent, rgba(255,255,255,0.2), transparent);
-      transform: rotate(30deg);
-      transition: all 0.5s;
-    }
-
-    .btn:hover::after {
-      left: 100%;
     }
 
     .btn:hover {
-      box-shadow: 0 6px 20px var(--accent-glow);
-      transform: translateY(-1px);
+      background-color: var(--accent-hover);
+      box-shadow: 0 4px 12px rgba(99, 102, 241, 0.4);
     }
 
     .btn-secondary {
-      background: transparent;
+      background-color: transparent;
       border: 1px solid var(--border-color);
       color: var(--text-muted);
       margin-top: 10px;
     }
 
-    .btn-secondary:hover {
-      background: rgba(255, 255, 255, 0.05);
-      color: white;
-      box-shadow: none;
-    }
-
-    /* PAYMENT LIST */
     .payment-option {
       border: 1px solid var(--border-color);
-      border-radius: 12px;
+      border-radius: 10px;
       padding: 12px 14px;
       margin-bottom: 10px;
       cursor: pointer;
@@ -373,12 +278,12 @@
       align-items: center;
       justify-content: space-between;
       transition: all 0.2s;
-      background: rgba(0, 0, 0, 0.25);
+      background-color: rgba(0, 0, 0, 0.2);
     }
 
-    .payment-option:hover, .payment-option.selected {
+    .payment-option.selected {
       border-color: var(--accent-color);
-      background: rgba(99, 102, 241, 0.12);
+      background-color: rgba(99, 102, 241, 0.15);
     }
 
     .payment-info {
@@ -387,28 +292,42 @@
       gap: 12px;
     }
 
-    .qris-container {
-      text-align: center;
-      background: white;
+    /* KOTAK DISPLAY QRIS TAMPAKAN LANGSUNG */
+    .qris-box {
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid var(--border-color);
+      border-radius: 12px;
       padding: 15px;
-      border-radius: 14px;
-      margin: 15px 0;
+      text-align: center;
+      margin-top: 10px;
     }
 
     .qris-img {
       width: 100%;
-      max-width: 250px;
+      max-width: 240px;
       height: auto;
-      border-radius: 8px;
+      border-radius: 10px;
+      margin: 10px 0;
+      border: 2px solid rgba(255, 255, 255, 0.2);
     }
 
     .btn-download {
-      background: linear-gradient(135deg, #10b981, #059669);
-      margin-top: 10px;
+      background-color: #059669;
+      color: white;
+      padding: 10px 16px;
+      font-size: 13px;
+    }
+
+    .btn-download:hover {
+      background-color: #047857;
     }
 
     .btn-wa {
-      background: linear-gradient(135deg, #22c55e, #16a34a);
+      background-color: #22c55e;
+    }
+
+    .btn-wa:hover {
+      background-color: #16a34a;
     }
 
     .page {
@@ -420,91 +339,76 @@
     }
 
     .summary-box {
-      background: rgba(0, 0, 0, 0.35);
-      border-radius: 12px;
-      padding: 16px;
-      margin-bottom: 16px;
-      border: 1px solid var(--border-color);
+      background-color: rgba(0, 0, 0, 0.3);
+      border-radius: 10px;
+      padding: 14px;
+      margin-bottom: 15px;
       font-size: 13px;
     }
 
     .summary-row {
       display: flex;
       justify-content: space-between;
-      margin-bottom: 10px;
+      margin-bottom: 8px;
     }
 
     .summary-row:last-child {
       margin-bottom: 0;
-      padding-top: 10px;
+      padding-top: 8px;
       border-top: 1px dashed var(--border-color);
       font-weight: bold;
       color: #38bdf8;
-      font-size: 14px;
     }
 
     .copy-btn {
-      background: rgba(255, 255, 255, 0.1);
+      background-color: rgba(255, 255, 255, 0.1);
       border: 1px solid var(--border-color);
       color: white;
-      padding: 5px 12px;
+      padding: 4px 10px;
       border-radius: 6px;
       font-size: 11px;
       cursor: pointer;
     }
 
     .copy-btn:hover {
-      background: var(--accent-color);
+      background-color: var(--accent-color);
     }
   </style>
 </head>
 <body>
 
-  <!-- RUNNING BANNER -->
-  <div class="promo-banner">
-    <div class="promo-text">
-      🔥 PROMO CIAA STORE: Process Fast 1-5 Mins • Layanan Top Up & Jasher Terpercaya • Buka 24 Jam Non-Stop!
-    </div>
-  </div>
+  <!-- ELEMEN HIASAN KUPU-KUPU -->
+  <i class="fa-solid fa-butterfly butterfly-decor bf-1"></i>
+  <i class="fa-solid fa-butterfly butterfly-decor bf-2"></i>
+  <i class="fa-solid fa-butterfly butterfly-decor bf-3"></i>
 
-  <!-- HEADER -->
   <div class="header">
-    <img src="logo.jpg" alt="Logo Ciaa Store" class="header-logo" onerror="this.style.display='none'">
     <h1>Ciaa Store</h1>
-    <div class="status-badge">
-      <span class="pulse-dot"></span> Layanan Online
-    </div>
+    <p>Layanan Top Up & Jasher Terpercaya</p>
   </div>
 
   <div class="container">
-    <!-- TAHAPAN -->
+    <!-- Indikator Tahapan -->
     <div class="step-indicator">
       <div class="step active" id="step1-ind">1</div>
       <div class="step" id="step2-ind">2</div>
       <div class="step" id="step3-ind">3</div>
     </div>
 
-    <!-- TAHAP 1 -->
+    <!-- TAHAP 1: PILIH LAYANAN -->
     <div class="page active" id="page1">
       <div class="card">
-        <div class="card-title"><i class="fa-solid fa-layer-group"></i> Pilih Kategori Layanan</div>
+        <div class="card-title"><i class="fa-solid fa-gamepad"></i> Pilih Kategori Layanan</div>
         <div class="grid-2">
           <div class="item-card" onclick="selectService('Free Fire')">
-            <span class="item-badge">Instant</span>
-            <i class="fa-solid fa-fire-flame-curved" style="font-size:24px; color:#f97316; margin-bottom:8px;"></i>
             <div class="item-title">Free Fire</div>
             <div class="item-price">Top Up Diamond</div>
           </div>
-
           <div class="item-card" onclick="selectService('Jasher')">
-            <span class="item-badge">Popular</span>
-            <i class="fa-solid fa-share-nodes" style="font-size:24px; color:#38bdf8; margin-bottom:8px;"></i>
             <div class="item-title">Jasher</div>
-            <div class="item-price">Jasa Share & Promo</div>
+            <div class="item-price">Jasa Share/Promosi</div>
           </div>
-
           <div class="item-card" onclick="selectService('JPM')">
-            <i class="fa-solid fa-bullhorn" style="font-size:24px; color:#a855f7; margin-bottom:8px;"></i>
             <div class="item-title">JPM</div>
             <div class="item-price">Jasa Post Media</div>
           </div>
@@ -512,30 +416,30 @@
       </div>
     </div>
 
-    <!-- TAHAP 2 -->
+    <!-- TAHAP 2: DETAIL ORDER -->
     <div class="page" id="page2">
       <div class="card">
-        <div class="card-title" id="selected-service-title"><i class="fa-solid fa-pen-to-square"></i> Detail Pesanan</div>
+        <div class="card-title" id="selected-service-title"><i class="fa-solid fa-cart-shopping"></i> Detail Pesanan</div>
         
         <div class="input-group">
           <label>ID User / Format Pengiriman</label>
-          <input type="text" id="user-data" placeholder="Masukkan ID Game atau Detail Format">
+          <input type="text" id="user-data" placeholder="Masukkan ID atau Format Pengiriman">
         </div>
 
-        <div class="card-title" style="margin-top: 18px;"><i class="fa-solid fa-boxes-stacked"></i> Pilih Paket</div>
+        <div class="card-title" style="margin-top: 15px;"><i class="fa-solid fa-box"></i> Pilih Paket</div>
         <div class="grid-2" id="package-list">
-          <!-- Paket otomatis diisi JavaScript -->
+          <!-- Paket diisi otomatis -->
         </div>
 
-        <button class="btn" style="margin-top: 20px;" onclick="goToPage(3)">Lanjut ke Pembayaran <i class="fa-solid fa-chevron-right"></i></button>
-        <button class="btn btn-secondary" onclick="goToPage(1)"><i class="fa-solid fa-chevron-left"></i> Kembali</button>
+        <button class="btn" style="margin-top: 15px;" onclick="goToPage(3)">Lanjut ke Pembayaran <i class="fa-solid fa-arrow-right"></i></button>
+        <button class="btn btn-secondary" onclick="goToPage(1)"><i class="fa-solid fa-arrow-left"></i> Kembali</button>
       </div>
     </div>
 
-    <!-- TAHAP 3 -->
+    <!-- TAHAP 3: PEMBAYARAN -->
     <div class="page" id="page3">
       <div class="card">
-        <div class="card-title"><i class="fa-solid fa-file-invoice-dollar"></i> Ringkasan Pesanan</div>
+        <div class="card-title"><i class="fa-solid fa-receipt"></i> Ringkasan Pesanan</div>
         <div class="summary-box">
           <div class="summary-row"><span>Layanan:</span><span id="sum-service">-</span></div>
           <div class="summary-row"><span>Data ID/Format:</span><span id="sum-data">-</span></div>
@@ -543,12 +447,12 @@
           <div class="summary-row"><span>Total Bayar:</span><span id="sum-price">Rp 0</span></div>
         </div>
 
-        <div class="card-title"><i class="fa-solid fa-credit-card"></i> Metode Pembayaran</div>
+        <div class="card-title"><i class="fa-solid fa-wallet"></i> Pilih Metode Pembayaran</div>
 
         <!-- DANA -->
-        <div class="payment-option" onclick="selectPayment('DANA')">
+        <div class="payment-option" onclick="selectPayment('DANA', this)">
           <div class="payment-info">
-            <i class="fa-solid fa-mobile-screen-button" style="color:#22c55e; font-size: 20px;"></i>
+            <i class="fa-solid fa-mobile-screen-button" style="color:#22c55e;"></i>
             <div>
               <div style="font-weight:bold; font-size:14px;">DANA</div>
               <div style="font-size:11px; color:var(--text-muted);">085752161167 (A/N ADE FAHREZI)</div>
@@ -558,9 +462,9 @@
         </div>
 
         <!-- GOPAY -->
-        <div class="payment-option" onclick="selectPayment('GOPAY')">
+        <div class="payment-option" onclick="selectPayment('GOPAY', this)">
           <div class="payment-info">
-            <i class="fa-solid fa-wallet" style="color:#00a5cf; font-size: 20px;"></i>
+            <i class="fa-solid fa-wallet" style="color:#00a5cf;"></i>
             <div>
               <div style="font-weight:bold; font-size:14px;">GOPAY</div>
               <div style="font-size:11px; color:var(--text-muted);">089505929536 (A/N CICOCO)</div>
@@ -569,29 +473,30 @@
           <button class="copy-btn" onclick="copyText('089505929536', event)">Salin</button>
         </div>
 
-        <!-- QRIS -->
-        <div class="payment-option" onclick="selectPayment('QRIS')">
+        <!-- QRIS BERSAMA GAMBAR & TOMBOL UNDUH -->
+        <div class="payment-option" onclick="selectPayment('QRIS', this)">
           <div class="payment-info">
-            <i class="fa-solid fa-qrcode" style="color:#f59e0b; font-size: 20px;"></i>
+            <i class="fa-solid fa-qrcode" style="color:#f59e0b;"></i>
             <div>
-              <div style="font-weight:bold; font-size:14px;">QRIS All Payment</div>
-              <div style="font-size:11px; color:var(--text-muted);">Scan via E-Wallet / Bank</div>
+              <div style="font-weight:bold; font-size:14px;">QRIS (All Payment)</div>
+              <div style="font-size:11px; color:var(--text-muted);">Scan QRIS via E-Wallet / Bank</div>
             </div>
           </div>
         </div>
 
-        <!-- TAMPILAN QRIS -->
-        <div id="qris-section" style="display:none;" class="qris-container">
-          <p style="color:#333; font-weight:bold; font-size:13px; margin-bottom:8px;">Scan Kode QRIS di Bawah Ini:</p>
+        <!-- KOTAK TAMPILAN QRIS BERSIFAT DYNAMIC -->
+        <div id="qris-display" class="qris-box" style="display:none;">
+          <p style="font-size:13px; font-weight:600; color:#38bdf8;">Scan Kode QRIS di Bawah Ini:</p>
           <img src="qris.jpg" alt="QRIS Ciaa Store" class="qris-img">
-          <br>
-          <a href="qris.jpg" download="QRIS-CiaaStore.jpg" style="text-decoration:none;">
-            <button class="btn btn-download"><i class="fa-solid fa-download"></i> Unduh Foto QRIS</button>
-          </a>
+          <div>
+            <a href="qris.jpg" download="QRIS-CiaaStore.jpg" style="text-decoration:none;">
+              <button class="btn btn-download"><i class="fa-solid fa-download"></i> Unduh Foto QRIS</button>
+            </a>
+          </div>
         </div>
 
-        <button class="btn btn-wa" style="margin-top: 18px;" onclick="sendWhatsApp()"><i class="fa-brands fa-whatsapp"></i> Konfirmasi ke WhatsApp</button>
-        <button class="btn btn-secondary" onclick="goToPage(2)"><i class="fa-solid fa-chevron-left"></i> Kembali</button>
+        <button class="btn btn-wa" style="margin-top: 18px;" onclick="sendWhatsApp()"><i class="fa-brands fa-whatsapp"></i> Konfirmasi Pembayaran ke WA</button>
+        <button class="btn btn-secondary" onclick="goToPage(2)"><i class="fa-solid fa-arrow-left"></i> Kembali</button>
       </div>
     </div>
   </div>
@@ -620,16 +525,14 @@
 
     function selectService(service) {
       selectedService = service;
-      document.getElementById('selected-service-title').innerHTML = '<i class="fa-solid fa-pen-to-square"></i> Detail Pesanan: ' + service;
+      document.getElementById('selected-service-title').innerText = 'Detail Pesanan: ' + service;
       
       const pkgContainer = document.getElementById('package-list');
       pkgContainer.innerHTML = '';
       
-      packages[service].forEach((pkg, index) => {
-        const badge = index === 1 ? '<span class="item-badge">Laris</span>' : '';
+      packages[service].forEach(pkg => {
         pkgContainer.innerHTML += `
           <div class="item-card" onclick="choosePackage('${pkg.name}', '${pkg.price}', this)">
-            ${badge}
             <div class="item-title">${pkg.name}</div>
             <div class="item-price">${pkg.price}</div>
           </div>
@@ -646,13 +549,17 @@
       selectedPrice = price;
     }
 
-    function selectPayment(method) {
+    function selectPayment(method, el) {
       selectedPaymentMethod = method;
       document.querySelectorAll('.payment-option').forEach(c => c.classList.remove('selected'));
-      event.currentTarget.classList.add('selected');
+      el.classList.add('selected');
 
-      const qrisSec = document.getElementById('qris-section');
-      qrisSec.style.display = (method === 'QRIS') ? 'block' : 'none';
+      const qrisBox = document.getElementById('qris-display');
+      if (method === 'QRIS') {
+        qrisBox.style.display = 'block';
+      } else {
+        qrisBox.style.display = 'none';
+      }
     }
 
     function goToPage(page) {
@@ -695,7 +602,7 @@
         `• *Paket:* ${selectedPackage}%0A` +
         `• *Total:* ${selectedPrice}%0A` +
         `• *Metode Bayar:* ${selectedPaymentMethod}%0A%0A` +
-        `Mohon segera diproses ya kak, terima kasih!`;
+        `Saya sudah/akan melakukan pembayaran. Mohon diproses ya!`;
 
       window.open(`https://wa.me/6285752161167?text=${text}`, '_blank');
     }
