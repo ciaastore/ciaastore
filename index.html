@@ -15,9 +15,7 @@
             --card-bg: rgba(255, 255, 255, 0.94);
         }
 
-        * {
-            box-sizing: border-box;
-        }
+        * { box-sizing: border-box; }
 
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
@@ -31,14 +29,10 @@
             overflow-x: hidden;
         }
 
-        /* LATAR BELAKANG TERANG DENGAN LOGO BLUR & GLOWING */
         body::before {
             content: '';
             position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
+            top: 0; left: 0; width: 100%; height: 100%;
             background-image: url('logo.jpg');
             background-size: cover;
             background-position: center;
@@ -47,14 +41,10 @@
             z-index: -2;
         }
 
-        /* OVERLAY CAHAYA MENGKILAP (GLOWING SPARKLES EFFECT) */
         body::after {
             content: '';
             position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
+            top: 0; left: 0; width: 100%; height: 100%;
             background: 
                 radial-gradient(circle at 15% 20%, rgba(255, 255, 255, 0.9) 0%, transparent 25%),
                 radial-gradient(circle at 85% 30%, rgba(255, 182, 193, 0.4) 0%, transparent 35%),
@@ -64,98 +54,43 @@
             pointer-events: none;
         }
 
-        /* ANIMASI KUPU-KUPU BETERBANGAN */
-        .butterfly-decor {
+        /* ANIMASI KUPU-KUPU AESTHETIC */
+        .butterfly-container {
             position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
             pointer-events: none;
             z-index: 0;
-            animation: flyButterfly 12s linear infinite;
-            filter: drop-shadow(0 0 6px rgba(255, 255, 255, 0.9));
+            overflow: hidden;
         }
 
-        .bf-1 {
-            font-size: 26px;
-            color: #ffffff;
-            top: 80%;
-            left: -10%;
-            animation-duration: 14s;
-            animation-delay: 0s;
+        .butterfly {
+            position: absolute;
+            font-size: 1.4rem;
+            opacity: 0.6;
+            filter: drop-shadow(0 0 6px rgba(255, 182, 193, 0.8));
+            animation: floatSlow 18s ease-in-out infinite alternate;
         }
 
-        .bf-2 {
-            font-size: 20px;
-            color: #ffb6c1;
-            top: 60%;
-            left: -10%;
-            animation-duration: 11s;
-            animation-delay: 4s;
+        .butterfly:nth-child(1) { top: 15%; left: -5%; animation-duration: 22s; color: #ffaec9; }
+        .butterfly:nth-child(2) { top: 45%; right: -5%; animation-duration: 26s; animation-delay: 3s; color: #ffffff; }
+        .butterfly:nth-child(3) { top: 75%; left: -5%; animation-duration: 20s; animation-delay: 1s; color: #ffccd5; }
+
+        @keyframes floatSlow {
+            0% { transform: translate(0, 0) rotate(0deg); }
+            25% { transform: translate(30vw, -40px) rotate(15deg); }
+            50% { transform: translate(60vw, 20px) rotate(-10deg); }
+            75% { transform: translate(85vw, -30px) rotate(12deg); }
+            100% { transform: translate(105vw, 10px) rotate(0deg); }
         }
 
-        .bf-3 {
-            font-size: 24px;
-            color: #ffffff;
-            top: 30%;
-            left: -10%;
-            animation-duration: 16s;
-            animation-delay: 2s;
-        }
-
-        .bf-4 {
-            font-size: 18px;
-            color: #ffa4ba;
-            top: 90%;
-            left: -10%;
-            animation-duration: 10s;
-            animation-delay: 7s;
-        }
-
-        @keyframes flyButterfly {
-            0% {
-                transform: translate(0, 0) rotate(15deg) scale(0.8);
-                opacity: 0;
-            }
-            10% {
-                opacity: 0.9;
-            }
-            50% {
-                transform: translate(60vw, -30vh) rotate(-10deg) scale(1.1);
-            }
-            90% {
-                opacity: 0.9;
-            }
-            100% {
-                transform: translate(110vw, -60vh) rotate(20deg) scale(0.8);
-                opacity: 0;
-            }
-        }
-
-        /* ORNAMEN CAHAYA MENGKILAP / SPARKLES */
-        .sparkle {
-            position: fixed;
-            background: white;
-            border-radius: 50%;
-            pointer-events: none;
-            z-index: 0;
-            animation: twinkle 3s ease-in-out infinite alternate;
-            box-shadow: 0 0 8px 2px rgba(255, 255, 255, 0.8);
-        }
-
-        .sp-1 { width: 4px; height: 4px; top: 15%; left: 20%; animation-delay: 0s; }
-        .sp-2 { width: 6px; height: 6px; top: 40%; left: 80%; animation-delay: 1s; }
-        .sp-3 { width: 5px; height: 5px; top: 75%; left: 15%; animation-delay: 2s; }
-        .sp-4 { width: 4px; height: 4px; top: 85%; left: 70%; animation-delay: 1.5s; }
-
-        @keyframes twinkle {
-            0% { transform: scale(0.5); opacity: 0.3; }
-            100% { transform: scale(1.4); opacity: 1; }
-        }
-
+        /* CONTAINER DIPERLEBAR UNTUK TAMPILAN LAPTOP / PC */
         .container {
-            max-width: 600px;
-            margin: 0 auto;
+            max-width: 1000px;
+            width: 92%;
+            margin: 20px auto;
             background: var(--card-bg);
             backdrop-filter: blur(12px);
-            padding: 20px;
+            padding: 30px;
             border-radius: 24px;
             box-shadow: 0 10px 30px rgba(255, 158, 187, 0.25);
             position: relative;
@@ -164,335 +99,167 @@
         }
 
         .header img {
-            width: 100%;
-            height: auto;
-            max-height: 180px;
-            object-fit: cover;
-            border-radius: 16px;
-            margin-bottom: 15px;
-            border: 2px solid var(--pink-main);
-            display: block;
+            width: 100%; height: auto; max-height: 240px; object-fit: cover;
+            border-radius: 18px; margin-bottom: 20px; border: 2px solid var(--pink-main); display: block;
         }
 
-        /* Profile Section */
         .profile-box {
-            text-align: center;
-            margin-bottom: 20px;
-            padding: 15px 10px 12px;
-            background: var(--pink-soft);
-            border-radius: 16px;
-            border: 1px solid rgba(255, 158, 187, 0.4);
+            text-align: center; margin-bottom: 25px; padding: 20px 15px 15px;
+            background: var(--pink-soft); border-radius: 18px; border: 1px solid rgba(255, 158, 187, 0.4);
             box-shadow: 0 4px 12px rgba(255, 182, 193, 0.15);
         }
 
         .profile-avatar {
-            width: 80px;
-            height: 80px;
-            border-radius: 50%;
-            border: 3px solid var(--pink-main);
-            object-fit: cover;
-            margin-top: -40px;
-            background: #fff;
-            box-shadow: 0 4px 12px rgba(218, 92, 128, 0.2);
+            width: 85px; height: 85px; border-radius: 50%; border: 3px solid var(--pink-main);
+            object-fit: cover; margin-top: -45px; background: #fff; box-shadow: 0 4px 12px rgba(218, 92, 128, 0.2);
         }
 
-        .profile-title {
-            font-size: 1.2rem;
-            font-weight: bold;
-            color: var(--pink-dark);
-            margin: 6px 0 2px 0;
-        }
-
-        .profile-desc {
-            font-size: 0.82rem;
-            color: #666;
-            margin-bottom: 8px;
-        }
-
+        .profile-title { font-size: 1.3rem; font-weight: bold; color: var(--pink-dark); margin: 8px 0 3px 0; }
+        .profile-desc { font-size: 0.88rem; color: #666; margin-bottom: 10px; }
         .status-badge {
-            display: inline-block;
-            background: #25d366;
-            color: white;
-            font-size: 0.7rem;
-            padding: 3px 10px;
-            border-radius: 12px;
-            font-weight: bold;
-            box-shadow: 0 2px 6px rgba(37, 211, 102, 0.3);
+            display: inline-block; background: #25d366; color: white;
+            font-size: 0.75rem; padding: 4px 12px; border-radius: 12px; font-weight: bold;
         }
 
-        .page {
-            display: none;
+        .nav-tabs { display: flex; gap: 12px; margin-bottom: 20px; }
+        .tab-btn {
+            flex: 1; padding: 12px; border: 2px solid var(--pink-bright); background: #fff;
+            color: var(--pink-dark); border-radius: 14px; font-weight: bold; cursor: pointer; text-align: center; font-size: 0.95rem; transition: 0.2s;
         }
+        .tab-btn.active { background: var(--pink-main); color: white; border-color: var(--pink-main); }
 
-        .page.active {
-            display: block;
-        }
+        .page { display: none; }
+        .page.active { display: block; }
 
-        .category-title {
-            color: var(--pink-dark);
-            font-size: 0.95rem;
-            margin-bottom: 12px;
-            font-weight: bold;
-            text-align: center;
-        }
+        .category-title { color: var(--pink-dark); font-size: 1.1rem; margin-bottom: 18px; font-weight: bold; text-align: center; }
 
-        .menu-grid {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 12px;
-        }
+        /* GRID DENGAN JARAK RENGGANG & EMPUK */
+        .menu-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 18px; }
 
         .menu-card {
-            border: 2px solid var(--pink-bright);
-            padding: 12px 8px;
-            border-radius: 16px;
-            text-align: center;
-            cursor: pointer;
-            transition: all 0.2s ease;
-            background: #fff;
-            font-weight: bold;
-            font-size: 0.85rem;
-            color: var(--pink-dark);
-            box-shadow: 0 3px 10px rgba(255, 158, 187, 0.15);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 6px;
+            border: 2px solid var(--pink-bright); padding: 16px 12px; border-radius: 18px; text-align: center;
+            cursor: pointer; transition: all 0.25s ease; background: #fff; font-weight: bold; font-size: 0.92rem;
+            color: var(--pink-dark); display: flex; align-items: center; justify-content: center; gap: 8px; min-height: 60px;
+        }
+        .menu-card:hover { border-color: var(--pink-main); background-color: var(--pink-bright); transform: translateY(-3px); }
+
+        .apk-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 18px; margin-top: 15px; }
+        .apk-card {
+            border: 2px solid var(--pink-bright); padding: 16px 12px; border-radius: 18px; text-align: center;
+            cursor: pointer; background: #fff; transition: 0.25s; display: flex; flex-direction: column; align-items: center; justify-content: center;
+        }
+        .apk-card:hover { border-color: var(--pink-main); background-color: var(--pink-bright); transform: translateY(-3px); }
+        .apk-icon { width: 60px; height: 60px; border-radius: 50%; object-fit: cover; border: 2px solid var(--pink-main); margin-bottom: 8px; }
+        .apk-title { font-weight: bold; font-size: 0.9rem; color: var(--pink-dark); }
+
+        /* KUSTOMISASI OTOMATIS TAMPILAN LAPTOP / PC */
+        @media (min-width: 768px) {
+            .menu-grid { grid-template-columns: repeat(3, 1fr); gap: 22px; }
+            .apk-grid { grid-template-columns: repeat(4, 1fr); gap: 22px; }
+            .grid-container { grid-template-columns: repeat(3, 1fr) !important; gap: 15px !important; }
         }
 
-        .menu-card:hover {
-            border-color: var(--pink-main);
-            background-color: var(--pink-bright);
-            transform: translateY(-2px);
-        }
-
-        /* Detail Page */
         .btn-back {
-            background-color: var(--pink-bright);
-            color: var(--pink-dark);
-            border: none;
-            padding: 8px 15px;
-            border-radius: 10px;
-            font-weight: bold;
-            cursor: pointer;
-            margin-bottom: 15px;
+            background-color: var(--pink-bright); color: var(--pink-dark); border: none; padding: 10px 18px;
+            border-radius: 12px; font-weight: bold; cursor: pointer; margin-bottom: 18px;
         }
 
-        .section-title {
-            color: var(--pink-dark);
-            font-size: 0.95rem;
-            margin-top: 15px;
-            border-bottom: 2px solid var(--pink-bright);
-            padding-bottom: 5px;
-            font-weight: bold;
+        .section-title { color: var(--pink-dark); font-size: 1rem; margin-top: 20px; border-bottom: 2px solid var(--pink-bright); padding-bottom: 6px; font-weight: bold; }
+        .form-group { margin-bottom: 18px; }
+        label { display: block; font-weight: bold; margin-bottom: 6px; color: var(--pink-dark); font-size: 0.9rem; }
+
+        input, textarea {
+            width: 100%; padding: 12px 15px; border: 2px solid var(--pink-bright); border-radius: 12px;
+            outline: none; font-size: 0.92rem; background: #fff; font-family: inherit;
         }
 
-        .form-group {
-            margin-bottom: 15px;
+        .info-box {
+            background: #fff0f3; border: 1px dashed var(--pink-dark); color: var(--pink-dark);
+            padding: 12px 15px; border-radius: 12px; font-size: 0.85rem; margin-bottom: 15px; line-height: 1.5;
         }
 
-        label {
-            display: block;
-            font-weight: bold;
-            margin-bottom: 5px;
-            color: var(--pink-dark);
-            font-size: 0.85rem;
-        }
-
-        input {
-            width: 100%;
-            padding: 12px;
-            border: 2px solid var(--pink-bright);
-            border-radius: 10px;
-            box-sizing: border-box;
-            outline: none;
-            font-size: 0.95rem;
-            background: #fff;
-        }
-
-        input:focus {
-            border-color: var(--pink-main);
-        }
-
-        .grid-container {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 10px;
-            margin-top: 10px;
-        }
+        .grid-container { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; margin-top: 12px; }
 
         .item-card {
-            border: 2px solid var(--pink-bright);
-            padding: 12px 8px;
-            border-radius: 12px;
-            text-align: center;
-            cursor: pointer;
-            transition: 0.2s;
-            background: #fff;
+            border: 2px solid var(--pink-bright); padding: 14px 10px; border-radius: 14px;
+            text-align: center; cursor: pointer; transition: 0.2s; background: #fff;
         }
+        .item-card.active { border-color: var(--pink-dark); background-color: var(--pink-bright); }
+        .item-title { font-size: 0.9rem; font-weight: bold; color: #444; }
+        .item-price { font-size: 0.85rem; color: var(--pink-dark); margin-top: 4px; font-weight: 600; }
+        .item-note { font-size: 0.72rem; color: #777; margin-top: 2px; font-style: italic; }
 
-        .item-card:hover {
-            border-color: var(--pink-main);
-            background-color: #fff9fb;
-        }
-
-        .item-card.active {
-            border-color: var(--pink-dark);
-            background-color: var(--pink-bright);
-        }
-
-        .item-title {
-            font-size: 0.85rem;
-            font-weight: bold;
-            color: #444;
-        }
-
-        .item-price {
-            font-size: 0.8rem;
-            color: var(--pink-dark);
-            margin-top: 4px;
-            font-weight: 600;
-        }
-
-        /* METODE PEMBAYARAN */
         .payment-card {
-            border: 2px solid var(--pink-bright);
-            border-radius: 12px;
-            padding: 10px 12px;
-            margin-top: 8px;
-            background: #fff;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            cursor: pointer;
-            transition: 0.2s;
+            border: 2px solid var(--pink-bright); border-radius: 14px; padding: 12px 15px;
+            margin-top: 10px; background: #fff; display: flex; align-items: center; justify-content: space-between; cursor: pointer;
+        }
+        .payment-card.active { border-color: var(--pink-dark); background: var(--pink-bright); }
+        .payment-info { display: flex; align-items: center; gap: 12px; }
+        .copy-btn { background: var(--pink-main); color: white; border: none; padding: 5px 12px; border-radius: 8px; font-size: 0.8rem; font-weight: bold; cursor: pointer; }
+
+        .transfer-note {
+            background: #fff0f3; border: 1.5px dashed #e11d48; color: #9f1239;
+            padding: 12px; border-radius: 12px; font-size: 0.85rem; font-weight: bold; text-align: center; margin-top: 15px;
         }
 
-        .payment-card:hover, .payment-card.active {
-            border-color: var(--pink-dark);
-            background: var(--pink-bright);
-        }
-
-        .payment-info {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-
-        .copy-btn {
-            background: var(--pink-main);
-            color: white;
-            border: none;
-            padding: 4px 10px;
-            border-radius: 6px;
-            font-size: 0.75rem;
-            font-weight: bold;
-            cursor: pointer;
-        }
-
-        /* QRIS BOX & TOMBOL UNDUH */
         .qris-box {
-            text-align: center;
-            background: var(--pink-soft);
-            padding: 15px;
-            border-radius: 15px;
-            margin-top: 10px;
-            border: 1px solid rgba(255, 158, 187, 0.5);
+            text-align: center; background: var(--pink-soft); padding: 18px; border-radius: 16px; margin-top: 12px; border: 1px solid rgba(255, 158, 187, 0.5);
         }
-
-        .qris-box img {
-            max-width: 180px;
-            height: auto;
-            border-radius: 10px;
-            border: 2px solid var(--pink-main);
-            margin: 8px 0;
-        }
-
-        .btn-download {
-            background-color: #059669;
-            color: white;
-            border: none;
-            padding: 8px 14px;
-            border-radius: 8px;
-            font-size: 0.8rem;
-            font-weight: bold;
-            cursor: pointer;
-            margin-top: 5px;
-            display: inline-flex;
-            align-items: center;
-            gap: 6px;
-            text-decoration: none;
-        }
+        .qris-box img { max-width: 200px; height: auto; border-radius: 12px; border: 2px solid var(--pink-main); margin: 8px 0; }
 
         .btn-order {
-            width: 100%;
-            background-color: #25d366;
-            color: white;
-            border: none;
-            padding: 15px;
-            border-radius: 12px;
-            font-weight: bold;
-            font-size: 0.95rem;
-            cursor: pointer;
-            margin-top: 20px;
-            box-shadow: 0 4px 10px rgba(37, 211, 102, 0.3);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 8px;
+            width: 100%; background-color: #25d366; color: white; border: none; padding: 16px;
+            border-radius: 14px; font-weight: bold; font-size: 1rem; cursor: pointer; margin-top: 22px;
+            display: flex; align-items: center; justify-content: center; gap: 10px;
         }
 
+        .queue-card {
+            background: #fff; border: 2px solid var(--pink-bright); border-radius: 16px; padding: 14px; margin-bottom: 12px;
+            display: flex; align-items: center; justify-content: space-between;
+        }
+        .queue-number { background: var(--pink-main); color: white; font-weight: bold; padding: 8px 14px; border-radius: 12px; font-size: 0.95rem; }
+        .queue-details { flex: 1; margin-left: 15px; }
+        .queue-service { font-weight: bold; color: var(--pink-dark); font-size: 0.9rem; }
+        .queue-target { font-size: 0.82rem; color: #666; }
+        .queue-status { font-size: 0.78rem; font-weight: bold; padding: 5px 10px; border-radius: 10px; background: #fef08a; color: #854d0e; }
+
         .cs-floating-btn {
-            position: fixed;
-            bottom: 20px;
-            right: 20px;
-            background-color: #25d366;
-            color: white;
-            padding: 12px 18px;
-            border-radius: 30px;
-            font-weight: bold;
-            font-size: 0.85rem;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            z-index: 999;
-            text-decoration: none;
+            position: fixed; bottom: 20px; right: 20px; background-color: #25d366; color: white;
+            padding: 12px 20px; border-radius: 30px; font-weight: bold; font-size: 0.9rem;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2); cursor: pointer; display: flex; align-items: center; gap: 8px; z-index: 999; text-decoration: none;
         }
     </style>
 </head>
 <body>
 
-<!-- ANIMASI KUPU-KUPU PINK SOFT & PUTIH -->
-<i class="fa-solid fa-butterfly butterfly-decor bf-1"></i>
-<i class="fa-solid fa-butterfly butterfly-decor bf-2"></i>
-<i class="fa-solid fa-butterfly butterfly-decor bf-3"></i>
-<i class="fa-solid fa-butterfly butterfly-decor bf-4"></i>
-
-<!-- SPARKLES / CAHAYA MENGKILAP -->
-<div class="sparkle sp-1"></div>
-<div class="sparkle sp-2"></div>
-<div class="sparkle sp-3"></div>
-<div class="sparkle sp-4"></div>
+<div class="butterfly-container">
+    <div class="butterfly">🦋</div>
+    <div class="butterfly">🦋</div>
+    <div class="butterfly">🦋</div>
+</div>
 
 <div class="container">
     <div class="header">
         <img src="banner.jpg" alt="Ciaa Store Banner" onerror="this.src='logo.jpg'">
     </div>
 
-    <!-- Profile Box -->
     <div class="profile-box">
         <img src="logo.jpg" alt="Logo Ciaa Store" class="profile-avatar">
         <div class="profile-title">Ciaa Store</div>
-        <div class="profile-desc">Layanan Top Up Game & Jasa Social Media Terpercaya</div>
+        <div class="profile-desc">Layanan Top Up Game & Premium Apk Terpercaya</div>
         <span class="status-badge">● System Online</span>
     </div>
 
-    <!-- 1. HALAMAN UTAMA (HOME MENU) -->
+    <div class="nav-tabs" id="mainTabs">
+        <button class="tab-btn active" onclick="switchTab('services')">🛍️ Layanan</button>
+        <button class="tab-btn" onclick="switchTab('queue')">📋 Cek Antrian</button>
+    </div>
+
+    <!-- HALAMAN UTAMA LAYANAN -->
     <div id="homePage" class="page active">
         <div class="category-title">✨ Silakan Pilih Layanan ✨</div>
         <div class="menu-grid">
+            <div class="menu-card" onclick="openApkSubMenu()">👑 Premium Apk</div>
             <div class="menu-card" onclick="openPage('ff')">🎮 Free Fire</div>
             <div class="menu-card" onclick="openPage('ml')">⚔️ Mobile Legends</div>
             <div class="menu-card" onclick="openPage('ml_ftu')">🌟 ML First Top Up</div>
@@ -504,9 +271,61 @@
         </div>
     </div>
 
-    <!-- 2. HALAMAN DETAIL PESANAN -->
-    <div id="detailPage" class="page">
+    <!-- SUB MENU PREMIUM APK -->
+    <div id="apkSubMenuPage" class="page">
         <button class="btn-back" onclick="goHome()">← Kembali ke Menu Utama</button>
+        <div class="category-title">👑 Premium Aplikasi</div>
+        
+        <div class="info-box" style="text-align: center;">
+            <strong>🕒 Open 06.00 - 22.00 WIB</strong><br>
+            Akun biasa dikirimkan oleh mimin 😀. Apabila ada kendala hubungi layanan bantuan yaw ~
+        </div>
+
+        <div class="apk-grid">
+            <div class="apk-card" onclick="openPage('canva')">
+                <img src="canva.jpg" alt="Canva" class="apk-icon" onerror="this.src='logo.jpg'">
+                <div class="apk-title">Canva</div>
+            </div>
+            <div class="apk-card" onclick="openPage('am')">
+                <img src="alightmotion.jpg" alt="Alight Motion" class="apk-icon" onerror="this.src='logo.jpg'">
+                <div class="apk-title">Alight Motion</div>
+            </div>
+            <div class="apk-card" onclick="openPage('yt')">
+                <img src="youtube.jpg" alt="YouTube" class="apk-icon" onerror="this.src='logo.jpg'">
+                <div class="apk-title">YouTube Premium</div>
+            </div>
+            <div class="apk-card" onclick="openPage('iqiyi')">
+                <img src="iqiyi.jpg" alt="iQIYI" class="apk-icon" onerror="this.src='logo.jpg'">
+                <div class="apk-title">iQIYI</div>
+            </div>
+            <div class="apk-card" onclick="openPage('capcut')">
+                <img src="capcut.jpg" alt="CapCut" class="apk-icon" onerror="this.src='logo.jpg'">
+                <div class="apk-title">CapCut Pro</div>
+            </div>
+            <div class="apk-card" onclick="openPage('wetv')">
+                <img src="wetv.jpg" alt="WeTV" class="apk-icon" onerror="this.src='logo.jpg'">
+                <div class="apk-title">WeTV</div>
+            </div>
+            <div class="apk-card" onclick="openPage('gemini')">
+                <img src="gemini.jpg" alt="Gemini AI" class="apk-icon" onerror="this.src='logo.jpg'">
+                <div class="apk-title">Gemini AI</div>
+            </div>
+            <div class="apk-card" onclick="openPage('pixellab')">
+                <img src="pixellab.jpg" alt="Pixellab" class="apk-icon" onerror="this.src='logo.jpg'">
+                <div class="apk-title">Pixellab Mod</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- HALAMAN CEK ANTRIAN -->
+    <div id="queuePage" class="page">
+        <div class="category-title">📊 Daftar Antrian Proses Terkini</div>
+        <div id="queueList"></div>
+    </div>
+
+    <!-- HALAMAN FORMULIR DETAIL ORDER -->
+    <div id="detailPage" class="page">
+        <button class="btn-back" onclick="goBackFromDetail()">← Kembali</button>
         <h2 id="serviceTitle" style="color: var(--pink-dark); margin-top:0; font-size:1.1rem;"></h2>
 
         <div class="form-group">
@@ -514,12 +333,18 @@
             <input type="text" id="userData" placeholder="">
         </div>
 
+        <div class="info-box" id="serviceNotice" style="display:none;"></div>
+
         <div class="section-title">2. Pilih Nominal / Paket</div>
         <div class="grid-container" id="itemsGrid"></div>
 
+        <div class="form-group" id="descGroup" style="display:none; margin-top: 15px;">
+            <label>Deskripsi / Tempat Link</label>
+            <textarea id="userDesc" rows="5"></textarea>
+        </div>
+
         <div class="section-title">3. Pilih Metode Pembayaran</div>
         
-        <!-- DANA -->
         <div class="payment-card" onclick="selectPayment('DANA', this)">
             <div class="payment-info">
                 <i class="fa-solid fa-mobile-screen-button" style="color:#22c55e;"></i>
@@ -531,7 +356,6 @@
             <button class="copy-btn" onclick="copyText('085752161167', event)">Salin</button>
         </div>
 
-        <!-- GOPAY -->
         <div class="payment-card" onclick="selectPayment('GOPAY', this)">
             <div class="payment-info">
                 <i class="fa-solid fa-wallet" style="color:#00a5cf;"></i>
@@ -543,7 +367,6 @@
             <button class="copy-btn" onclick="copyText('089505929536', event)">Salin</button>
         </div>
 
-        <!-- QRIS BERSAMA TAMPILAN DAN TOMBOL UNDUH -->
         <div class="payment-card" onclick="selectPayment('QRIS', this)">
             <div class="payment-info">
                 <i class="fa-solid fa-qrcode" style="color:#f59e0b;"></i>
@@ -554,193 +377,142 @@
             </div>
         </div>
 
-        <!-- KOTAK DISPLAY QRIS -->
         <div id="qrisSection" class="qris-box" style="display:none;">
             <p style="margin-top:0; font-size: 0.85rem; font-weight:bold; color: var(--pink-dark);">Scan QRIS di bawah ini:</p>
             <img src="qris.jpg" alt="QRIS Ciaa Store">
-            <br>
-            <a href="qris.jpg" download="QRIS-CiaaStore.jpg" class="btn-download">
-                <i class="fa-solid fa-download"></i> Unduh Foto QRIS
-            </a>
+        </div>
+
+        <div class="transfer-note">
+            ⚠️ WAJIB MELAMPIRKAN BUKTI TRANSFER saat mengirim pesan konfirmasi ke WhatsApp!
         </div>
 
         <button class="btn-order" onclick="sendOrder()"><i class="fa-brands fa-whatsapp"></i> Konfirmasi & Kirim Bukti Transfer via WhatsApp</button>
     </div>
 </div>
 
-<!-- TOMBOL FLOATING CUSTOMER SERVICE -->
-<a href="https://wa.me/6289505929536?text=Halo%20Admin%20Ciaa%20Store%2C%20saya%20mengalami%20kendala%20%2F%20ingin%20memberikan%20saran" target="_blank" class="cs-floating-btn">
+<a href="https://wa.me/6289509452777?text=Halo%20Admin%20Ciaa%20Store%2C%20saya%20mengalami%20kendala%20%2F%20ingin%20memberikan%20saran" target="_blank" class="cs-floating-btn">
     💬 Bantuan CS
 </a>
 
 <script>
     const products = {
-        ff: {
-            title: "Free Fire Top Up",
-            label: "1. Masukkan ID & Username Free Fire",
-            placeholder: "Contoh: 123456789 (CiaaStore)",
-            items: [
-                { name: "5 Diamond", price: "Rp 1.000" },
-                { name: "10 Diamond", price: "Rp 2.000" },
-                { name: "20 Diamond", price: "Rp 5.000" },
-                { name: "25 Diamond", price: "Rp 6.000" },
-                { name: "30 Diamond", price: "Rp 7.000" },
-                { name: "50 Diamond", price: "Rp 9.000" },
-                { name: "70 Diamond", price: "Rp 11.000" },
-                { name: "75 Diamond", price: "Rp 12.000" },
-                { name: "100 Diamond", price: "Rp 16.000" },
-                { name: "120 Diamond", price: "Rp 18.000" },
-                { name: "140 Diamond", price: "Rp 20.000" },
-                { name: "150 Diamond", price: "Rp 22.000" },
-                { name: "160 Diamond", price: "Rp 24.000" },
-                { name: "210 Diamond", price: "Rp 30.000" },
-                { name: "250 Diamond", price: "Rp 36.000" },
-                { name: "355 Diamond", price: "Rp 49.000" },
-                { name: "500 Diamond", price: "Rp 66.000" },
-                { name: "720 Diamond", price: "Rp 96.000" },
-                { name: "1000 Diamond", price: "Rp 134.000" },
-                { name: "1450 Diamond", price: "Rp 190.000" },
-                { name: "2000 Diamond", price: "Rp 264.000" },
-                { name: "Membership Mingguan (MM)", price: "Rp 30.000" },
-                { name: "Membership Bulanan (MB)", price: "Rp 89.000" }
-            ]
-        },
-        ml: {
-            title: "Mobile Legends Top Up",
-            label: "1. Masukkan User ID & Server",
-            placeholder: "Contoh: 12345678 (1234)",
-            items: [
-                { name: "12 Diamond", price: "Rp 4.000" },
-                { name: "28 Diamond", price: "Rp 8.000" },
-                { name: "50 Diamond", price: "Rp 14.000" },
-                { name: "70 Diamond", price: "Rp 20.000" },
-                { name: "112 Diamond", price: "Rp 32.000" },
-                { name: "140 Diamond", price: "Rp 42.000" },
-                { name: "170 Diamond", price: "Rp 50.000" },
-                { name: "222 Diamond", price: "Rp 60.000" },
-                { name: "257 Diamond", price: "Rp 70.000" },
-                { name: "296 Diamond", price: "Rp 79.000" },
-                { name: "355 Diamond", price: "Rp 96.000" },
-                { name: "408 Diamond", price: "Rp 110.000" },
-                { name: "460 Diamond", price: "Rp 125.000" },
-                { name: "514 Diamond", price: "Rp 137.000" },
-                { name: "568 Diamond", price: "Rp 150.000" },
-                { name: "600 Diamond", price: "Rp 158.000" },
-                { name: "706 Diamond", price: "Rp 185.000" },
-                { name: "875 Diamond", price: "Rp 226.000" },
-                { name: "963 Diamond", price: "Rp 245.000" },
-                { name: "1050 Diamond", price: "Rp 270.000" },
-                { name: "1412 Diamond", price: "Rp 365.000" },
-                { name: "Weekly Diamond Pass (WDP)", price: "Rp 28.000" }
-            ]
-        },
-        ml_ftu: {
-            title: "Mobile Legends First Top Up",
-            label: "1. Masukkan User ID & Server",
-            placeholder: "Contoh: 12345678 (1234)",
-            items: [
-                { name: "50 + Bonus", price: "Rp 16.000" },
-                { name: "150 + Bonus", price: "Rp 45.000" },
-                { name: "250 + Bonus", price: "Rp 76.000" },
-                { name: "500 + Bonus", price: "Rp 152.000" }
-            ]
-        },
-        pubg: {
-            title: "PUBG Mobile Top Up",
-            label: "1. Masukkan User ID PUBG",
-            placeholder: "Contoh: 5123456789",
-            items: [
-                { name: "60 UC", price: "Rp 18.000" },
-                { name: "120 UC", price: "Rp 33.000" },
-                { name: "240 UC", price: "Rp 68.000" },
-                { name: "300 UC", price: "Rp 85.000" },
-                { name: "385 UC", price: "Rp 106.000" },
-                { name: "445 UC", price: "Rp 120.000" },
-                { name: "505 UC", price: "Rp 136.000" },
-                { name: "565 UC", price: "Rp 157.000" },
-                { name: "600 UC", price: "Rp 165.000" },
-                { name: "720 UC", price: "Rp 195.000" },
-                { name: "840 UC", price: "Rp 218.000" },
-                { name: "900 UC", price: "Rp 236.000" },
-                { name: "1500 UC", price: "Rp 386.000" },
-                { name: "1800 UC", price: "Rp 420.000" }
-            ]
-        },
-        hok: {
-            title: "Honor of Kings Top Up",
-            label: "1. Masukkan User ID HOK",
-            placeholder: "Contoh: 9876543210",
-            items: [
-                { name: "16 Tokens", price: "Rp 3.500" },
-                { name: "80 Tokens", price: "Rp 19.000" },
-                { name: "240 Tokens", price: "Rp 53.000" },
-                { name: "400 Tokens", price: "Rp 83.000" },
-                { name: "560 Tokens", price: "Rp 115.000" },
-                { name: "800 Tokens", price: "Rp 162.000" },
-                { name: "1200 Tokens", price: "Rp 253.000" },
-                { name: "2400 Tokens", price: "Rp 503.000" }
-            ]
-        },
-        bs: {
-            title: "Blood Strike Top Up",
-            label: "1. Masukkan User ID Blood Strike",
-            placeholder: "Contoh: BS12345678",
-            items: [
-                { name: "100 Gold", price: "Rp 16.000" },
-                { name: "300 Gold", price: "Rp 45.000" },
-                { name: "500 Gold", price: "Rp 75.000" },
-                { name: "1000 Gold", price: "Rp 136.000" },
-                { name: "2000 Gold", price: "Rp 258.000" },
-                { name: "5000 Gold", price: "Rp 640.000" }
-            ]
-        },
-        jasher: {
-            title: "Jasher (Jasa Share)",
-            label: "1. Masukkan Format Order Jasher",
-            placeholder: "*NAMA MU [MEM/TEKS] EMOJI*",
-            items: [
-                { name: "12 Jam", price: "200p" },
-                { name: "1 Hari", price: "500p" },
-                { name: "3 Hari", price: "1k" },
-                { name: "1 Minggu", price: "3k" },
-                { name: "2 Minggu", price: "4k" },
-                { name: "1 Bulan", price: "6k" },
-                { name: "3 Bulan", price: "7k" }
-            ]
-        },
-        jpm: {
-            title: "JPM (Jasa Push Member)",
-            label: "1. Masukkan Format Order JPM",
-            placeholder: "*NAMA MU [MEM/TEKS] EMOJI*",
-            items: [
-                { name: "10 Member", price: "500p" },
-                { name: "20 Member", price: "1k" },
-                { name: "50 Member", price: "3k" },
-                { name: "70 Member", price: "4k" },
-                { name: "100 Member", price: "5k" },
-                { name: "150 Member", price: "7k" },
-                { name: "250 Member", price: "8k" },
-                { name: "400 Member", price: "12k" },
-                { name: "500 Member", price: "16k" }
-            ]
-        }
+        ff: { type: 'game', title: "Free Fire Top Up", label: "1. Masukkan ID & Username Free Fire", placeholder: "Contoh: 123456789 (CiaaStore)", items: [{ name: "5 Diamond", price: "Rp 1.000" }, { name: "10 Diamond", price: "Rp 2.000" }, { name: "20 Diamond", price: "Rp 5.000" }, { name: "25 Diamond", price: "Rp 6.000" }, { name: "30 Diamond", price: "Rp 7.000" }, { name: "50 Diamond", price: "Rp 9.000" }, { name: "70 Diamond", price: "Rp 11.000" }, { name: "75 Diamond", price: "Rp 12.000" }, { name: "100 Diamond", price: "Rp 16.000" }, { name: "120 Diamond", price: "Rp 18.000" }, { name: "140 Diamond", price: "Rp 20.000" }, { name: "150 Diamond", price: "Rp 22.000" }, { name: "160 Diamond", price: "Rp 24.000" }, { name: "210 Diamond", price: "Rp 30.000" }, { name: "250 Diamond", price: "Rp 36.000" }, { name: "355 Diamond", price: "Rp 49.000" }, { name: "500 Diamond", price: "Rp 66.000" }, { name: "720 Diamond", price: "Rp 96.000" }, { name: "1000 Diamond", price: "Rp 134.000" }, { name: "1450 Diamond", price: "Rp 190.000" }, { name: "2000 Diamond", price: "Rp 264.000" }, { name: "Membership Mingguan (MM)", price: "Rp 30.000" }, { name: "Membership Bulanan (MB)", price: "Rp 89.000" }] },
+        ml: { type: 'game', title: "Mobile Legends Top Up", label: "1. Masukkan User ID & Server", placeholder: "Contoh: 12345678 (1234)", items: [{ name: "12 Diamond", price: "Rp 4.000" }, { name: "28 Diamond", price: "Rp 8.000" }, { name: "50 Diamond", price: "Rp 14.000" }, { name: "70 Diamond", price: "Rp 20.000" }, { name: "112 Diamond", price: "Rp 32.000" }, { name: "140 Diamond", price: "Rp 42.000" }, { name: "170 Diamond", price: "Rp 50.000" }, { name: "222 Diamond", price: "Rp 60.000" }, { name: "257 Diamond", price: "Rp 70.000" }, { name: "296 Diamond", price: "Rp 79.000" }, { name: "355 Diamond", price: "Rp 96.000" }, { name: "408 Diamond", price: "Rp 110.000" }, { name: "460 Diamond", price: "Rp 125.000" }, { name: "514 Diamond", price: "Rp 137.000" }, { name: "568 Diamond", price: "Rp 150.000" }, { name: "600 Diamond", price: "Rp 158.000" }, { name: "706 Diamond", price: "Rp 185.000" }, { name: "875 Diamond", price: "Rp 226.000" }, { name: "963 Diamond", price: "Rp 245.000" }, { name: "1050 Diamond", price: "Rp 270.000" }, { name: "1412 Diamond", price: "Rp 365.000" }, { name: "Weekly Diamond Pass (WDP)", price: "Rp 28.000" }] },
+        ml_ftu: { type: 'game', title: "Mobile Legends First Top Up", label: "1. Masukkan User ID & Server", placeholder: "Contoh: 12345678 (1234)", items: [{ name: "50 + Bonus", price: "Rp 16.000" }, { name: "150 + Bonus", price: "Rp 45.000" }, { name: "250 + Bonus", price: "Rp 76.000" }, { name: "500 + Bonus", price: "Rp 152.000" }] },
+        pubg: { type: 'game', title: "PUBG Mobile Top Up", label: "1. Masukkan User ID PUBG", placeholder: "Contoh: 5123456789", items: [{ name: "60 UC", price: "Rp 18.000" }, { name: "120 UC", price: "Rp 33.000" }, { name: "240 UC", price: "Rp 68.000" }, { name: "300 UC", price: "Rp 85.000" }, { name: "385 UC", price: "Rp 106.000" }, { name: "445 UC", price: "Rp 120.000" }, { name: "505 UC", price: "Rp 136.000" }, { name: "565 UC", price: "Rp 157.000" }, { name: "600 UC", price: "Rp 165.000" }, { name: "720 UC", price: "Rp 195.000" }, { name: "840 UC", price: "Rp 218.000" }, { name: "900 UC", price: "Rp 236.000" }, { name: "1500 UC", price: "Rp 386.000" }, { name: "1800 UC", price: "Rp 420.000" }] },
+        hok: { type: 'game', title: "Honor of Kings Top Up", label: "1. Masukkan User ID HOK", placeholder: "Contoh: 9876543210", items: [{ name: "16 Tokens", price: "Rp 3.500" }, { name: "80 Tokens", price: "Rp 19.000" }, { name: "240 Tokens", price: "Rp 53.000" }, { name: "400 Tokens", price: "Rp 83.000" }, { name: "560 Tokens", price: "Rp 115.000" }, { name: "800 Tokens", price: "Rp 162.000" }, { name: "1200 Tokens", price: "Rp 253.000" }, { name: "2400 Tokens", price: "Rp 503.000" }] },
+        bs: { type: 'game', title: "Blood Strike Top Up", label: "1. Masukkan User ID Blood Strike", placeholder: "Contoh: BS12345678", items: [{ name: "100 Gold", price: "Rp 16.000" }, { name: "300 Gold", price: "Rp 45.000" }, { name: "500 Gold", price: "Rp 75.000" }, { name: "1000 Gold", price: "Rp 136.000" }, { name: "2000 Gold", price: "Rp 258.000" }, { name: "5000 Gold", price: "Rp 640.000" }] },
+        jasher: { type: 'social', title: "Jasher (Jasa Share)", label: "1. Masukkan Nama Store", placeholder: "Contoh: CIAA STORE", items: [{ name: "12 Jam", price: "200p" }, { name: "1 Hari", price: "500p" }, { name: "3 Hari", price: "1k" }, { name: "1 Minggu", price: "3k" }, { name: "2 Minggu", price: "4k" }, { name: "1 Bulan", price: "6k" }, { name: "3 Bulan", price: "7k" }] },
+        jpm: { type: 'jpm', title: "JPM (Jasa Push Member)", label: "1. Masukkan Nama Store", placeholder: "Contoh: CIAA STORE", items: [{ name: "10 Member", price: "500p" }, { name: "20 Member", price: "1k" }, { name: "50 Member", price: "3k" }, { name: "70 Member", price: "4k" }, { name: "100 Member", price: "5k" }, { name: "150 Member", price: "7k" }, { name: "250 Member", price: "8k" }, { name: "400 Member", price: "12k" }, { name: "500 Member", price: "16k" }] },
+
+        canva: { type: 'apk', title: "Canva Premium", label: "1. Email yang ingin di premiumkan", placeholder: "Contoh: emailkamu@gmail.com", notice: "📌 <b>Catatan:</b><br>• Canva Tim (25-28 Hari = 1 Bulan)<br>• Proses Instan<br>• Canva Head bisa undang sampai 10 akun", items: [{ name: "Canva 1 Bulan", price: "Rp 3.000", note: "" }, { name: "Canva Head 1 Bulan", price: "Rp 7.000", note: "Proses 1x24 Jam" }] },
+        am: { type: 'apk', title: "Alight Motion Premium", label: "1. Masukkan Nomor WhatsApp", placeholder: "Contoh: 081234567890", notice: "", items: [{ name: "Alight Motion 1 Tahun", price: "Rp 4.000", note: "" }] },
+        yt: { type: 'apk', title: "YouTube Premium", label: "1. Email yang ingin di premiumkan", placeholder: "Contoh: emailkamu@gmail.com", notice: "📌 <b>Catatan:</b><br>• Family Plan: Pastikan email belum limit undangan family (Max 2 family / 1 Tahun)", items: [{ name: "YouTube 1 Bulan (Family)", price: "Rp 5.000", note: "" }] },
+        iqiyi: { type: 'apk', title: "iQIYI Premium", label: "1. Masukkan Nama & Nomor WhatsApp", placeholder: "Contoh: Ciaa (081234567890)", notice: "", items: [{ name: "iQIYI 1 Bulan (Private)", price: "Rp 37.000", note: "VIP Standar" }] },
+        capcut: { type: 'apk', title: "CapCut Pro", label: "1. Masukkan Nomor WhatsApp", placeholder: "Contoh: 081234567890", notice: "📌 <b>Catatan:</b><br>• Proses Lambat & Akun jangan disebar<br>• Kirim screenshot profil setelah login untuk AKTIFKAN GARANSI (1x24 Jam)", items: [{ name: "CapCut Pro 7 Hari Private", price: "Rp 8.500", note: "Disarankan 1 Device" }, { name: "CapCut Pro 1 Bulan Private", price: "Rp 25.000", note: "Disarankan 1 Device" }] },
+        wetv: { type: 'apk', title: "WeTV VIP", label: "1. Masukkan Nomor WhatsApp", placeholder: "Contoh: 081234567890", notice: "📌 Akun akan dikirimkan lewat WhatsApp.", items: [{ name: "WeTV 1 Bulan Sharing", price: "Rp 11.000", note: "" }, { name: "WeTV 3 Bulan Sharing", price: "Rp 27.000", note: "" }, { name: "WeTV 1 Bulan Private", price: "Rp 28.000", note: "" }] },
+        gemini: { type: 'apk', title: "Gemini AI Pro", label: "1. Masukkan Nomor WhatsApp", placeholder: "Contoh: 081234567890", notice: "📌 1x Pembelian untuk 1 Orang (tidak boleh disebar - akan di out + limit akun)", items: [{ name: "AI Gemini Pro 1 Bulan", price: "Rp 16.000", note: "" }] },
+        pixellab: { type: 'apk', title: "Pixellab Mod", label: "1. Masukkan Nomor WhatsApp", placeholder: "Contoh: 081234567890", notice: "", items: [{ name: "Pixellab Mod", price: "Rp 2.000", note: "" }] }
     };
 
     let currentCategory = null;
     let selectedItem = null;
     let selectedPayment = null;
+    let isApkFlow = false;
+
+    function isApkOpen() {
+        const now = new Date();
+        const utc = now.getTime() + (now.getTimezoneOffset() * 60000);
+        const wibTime = new Date(utc + (3600000 * 7));
+        const hour = wibTime.getHours();
+        return (hour >= 6 && hour < 22);
+    }
+
+    function switchTab(tab) {
+        const tabs = document.querySelectorAll('.tab-btn');
+        tabs.forEach(t => t.classList.remove('active'));
+
+        document.getElementById('detailPage').classList.remove('active');
+        document.getElementById('apkSubMenuPage').classList.remove('active');
+
+        if (tab === 'services') {
+            tabs[0].classList.add('active');
+            document.getElementById('homePage').classList.add('active');
+            document.getElementById('queuePage').classList.remove('active');
+        } else {
+            tabs[1].classList.add('active');
+            document.getElementById('homePage').classList.remove('active');
+            document.getElementById('queuePage').classList.add('active');
+            renderQueue();
+        }
+    }
+
+    function openApkSubMenu() {
+        if (!isApkOpen()) {
+            alert("Upss, maaff yaa layanan aplikasi ini sedang close '-' !");
+            return;
+        }
+        document.getElementById('homePage').classList.remove('active');
+        document.getElementById('apkSubMenuPage').classList.add('active');
+    }
+
+    function goBackFromDetail() {
+        if (isApkFlow) {
+            document.getElementById('detailPage').classList.remove('active');
+            document.getElementById('apkSubMenuPage').classList.add('active');
+        } else {
+            goHome();
+        }
+    }
 
     function openPage(key) {
-        currentCategory = key;
         const data = products[key];
 
+        if (data.type === 'apk' && !isApkOpen()) {
+            alert("Upss, maaff yaa layanan aplikasi ini sedang close '-' !");
+            return;
+        }
+
+        currentCategory = key;
+        isApkFlow = (data.type === 'apk');
+
         document.getElementById('homePage').classList.remove('active');
+        document.getElementById('apkSubMenuPage').classList.remove('active');
+        document.getElementById('queuePage').classList.remove('active');
         document.getElementById('detailPage').classList.add('active');
 
         document.getElementById('serviceTitle').innerText = data.title;
         document.getElementById('inputLabel').innerText = data.label;
         document.getElementById('userData').value = '';
         document.getElementById('userData').placeholder = data.placeholder;
+
+        const descGroup = document.getElementById('descGroup');
+        const serviceNotice = document.getElementById('serviceNotice');
+
+        if (data.notice && data.notice.trim() !== '') {
+            serviceNotice.style.display = 'block';
+            serviceNotice.innerHTML = data.notice;
+        } else if (key === 'jasher' || key === 'jpm') {
+            serviceNotice.style.display = 'block';
+            serviceNotice.innerHTML = `<strong>📌 Ketentuan Link:</strong><br>• Nominal di atas 1k maks 2 link<br>• Nominal di atas 4k maks 4 link`;
+        } else {
+            serviceNotice.style.display = 'none';
+        }
+
+        if (key === 'jpm') {
+            const queueData = JSON.parse(localStorage.getItem('ciaa_queue') || '[]');
+            const jpmActive = queueData.filter(q => q.service.includes('JPM')).length;
+            serviceNotice.style.display = 'block';
+            serviceNotice.innerHTML += `<hr style="border:0; border-top:1px dashed var(--pink-dark); margin:8px 0;">⚡ <b>Status Antrian JPM Saat Ini:</b> Ada <b>${jpmActive}</b> order sedang diproses secara bertahap (1-3 Link sekaligus).`;
+        }
+
+        if (key === 'jasher' || key === 'jpm') {
+            descGroup.style.display = 'block';
+            document.getElementById('userDesc').value = `*GB CIAA STORE [100] 🔥*\nhttps://chat.whatsapp.com/...`;
+        } else {
+            descGroup.style.display = 'none';
+            document.getElementById('userDesc').value = '';
+        }
 
         const grid = document.getElementById('itemsGrid');
         grid.innerHTML = '';
@@ -752,6 +524,7 @@
             card.innerHTML = `
                 <div class="item-title">${item.name}</div>
                 <div class="item-price">${item.price}</div>
+                ${item.note ? `<div class="item-note">(${item.note})</div>` : ''}
             `;
             card.onclick = () => {
                 document.querySelectorAll('.item-card').forEach(c => c.classList.remove('active'));
@@ -763,21 +536,14 @@
     }
 
     function goHome() {
-        document.getElementById('detailPage').classList.remove('active');
-        document.getElementById('homePage').classList.add('active');
+        switchTab('services');
     }
 
     function selectPayment(method, el) {
         selectedPayment = method;
         document.querySelectorAll('.payment-card').forEach(c => c.classList.remove('active'));
         el.classList.add('active');
-
-        const qrisSec = document.getElementById('qrisSection');
-        if (method === 'QRIS') {
-            qrisSec.style.display = 'block';
-        } else {
-            qrisSec.style.display = 'none';
-        }
+        document.getElementById('qrisSection').style.display = method === 'QRIS' ? 'block' : 'none';
     }
 
     function copyText(text, e) {
@@ -786,12 +552,44 @@
         alert('Nomor disalin: ' + text);
     }
 
+    function maskData(str) {
+        if (!str) return '***';
+        if (str.length <= 4) return str[0] + '**' + str[str.length - 1];
+        return str.substring(0, 3) + '****' + str.substring(str.length - 2);
+    }
+
+    function renderQueue() {
+        const queueList = document.getElementById('queueList');
+        const queueData = JSON.parse(localStorage.getItem('ciaa_queue') || '[]');
+
+        if (queueData.length === 0) {
+            queueList.innerHTML = `<p style="text-align:center; color:#888; font-size:0.85rem;">Belum ada antrian saat ini.</p>`;
+            return;
+        }
+
+        let html = '';
+        queueData.slice().reverse().forEach(item => {
+            html += `
+                <div class="queue-card">
+                    <div class="queue-number">#${item.number}</div>
+                    <div class="queue-details">
+                        <div class="queue-service">${item.service} - ${item.item}</div>
+                        <div class="queue-target">Target: ${maskData(item.target)}</div>
+                    </div>
+                    <span class="queue-status">⏳ Diproses</span>
+                </div>
+            `;
+        });
+        queueList.innerHTML = html;
+    }
+
     function sendOrder() {
         const userData = document.getElementById('userData').value;
+        const userDesc = document.getElementById('userDesc').value;
         const data = products[currentCategory];
 
         if (!userData) {
-            alert('Silakan isi data order terlebih dahulu!');
+            alert('Silakan isi Data Pembeli / Email / Akun terlebih dahulu!');
             return;
         }
         if (!selectedItem) {
@@ -803,20 +601,50 @@
             return;
         }
 
-        const adminPhone = "6289505929536";
-        let message = `Halo Ciaa Store, saya ingin order:\n\n` +
-                      `• *Layanan*: ${data.title}\n` +
-                      `• *Paket*: ${selectedItem.name}\n` +
-                      `• *Harga*: ${selectedItem.price}\n` +
-                      `• *Metode Bayar*: ${selectedPayment}\n`;
-
-        if (currentCategory === 'jasher' || currentCategory === 'jpm') {
-            message += `• *Format Order*: ${userData}\n\n`;
-        } else {
-            message += `• *Data Akun*: ${userData}\n\n`;
+        if ((currentCategory === 'jasher' || currentCategory === 'jpm') && !userDesc.trim()) {
+            alert('Silakan isi Deskripsi / Link Target terlebih dahulu!');
+            return;
         }
 
-        message += `Saya sudah transfer, berikut lampiran bukti transfernya ya!`;
+        const now = new Date();
+        const formattedDate = now.toLocaleDateString('id-ID', { day: '2-digit', month: '2-digit', year: 'numeric' });
+        const formattedTime = now.toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit' }) + " WIB";
+
+        let currentQueueNum = parseInt(localStorage.getItem('ciaa_queue_counter') || '100');
+        currentQueueNum += 1;
+        localStorage.setItem('ciaa_queue_counter', currentQueueNum.toString());
+
+        let queueData = JSON.parse(localStorage.getItem('ciaa_queue') || '[]');
+        queueData.push({
+            number: currentQueueNum,
+            service: data.title,
+            item: selectedItem.name,
+            target: userData
+        });
+
+        if (queueData.length > 20) queueData.shift();
+        localStorage.setItem('ciaa_queue', JSON.stringify(queueData));
+
+        const adminPhone = "6289505929536";
+        
+        let message = `Halo Ciaa Store, saya ingin order:\n\n` +
+                      `• Waktu Order: ${formattedDate} (${formattedTime})\n` +
+                      `• No. Antrian: #${currentQueueNum}\n` +
+                      `• Layanan: ${data.title}\n` +
+                      `• Paket: ${selectedItem.name}\n` +
+                      `• Harga: ${selectedItem.price}\n` +
+                      `• Metode Bayar: ${selectedPayment}\n\n`;
+
+        if (currentCategory === 'jasher' || currentCategory === 'jpm') {
+            message += `• Nama Store: ${userData}\n` +
+                       `• Deskripsi / Link Target:\n${userDesc}\n\n`;
+        } else if (data.type === 'apk') {
+            message += `• Data / Email / No: ${userData}\n\n`;
+        } else {
+            message += `• Data Akun: ${userData}\n\n`;
+        }
+
+        message += `(Foto Bukti Transfer Terlampir di bawah ini 👇)`;
 
         const encodedMessage = encodeURIComponent(message);
         window.open(`https://wa.me/${adminPhone}?text=${encodedMessage}`, '_blank');
