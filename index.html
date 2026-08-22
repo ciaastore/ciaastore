@@ -1,611 +1,743 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Ciaa Store - Top Up & Jasher</title>
-  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
-  <style>
-    :root {
-      --bg-color: #0b0f19;
-      --card-bg: rgba(30, 41, 59, 0.85);
-      --accent-color: #6366f1;
-      --accent-hover: #4f46e5;
-      --text-main: #f8fafc;
-      --text-muted: #94a3b8;
-      --border-color: rgba(255, 255, 255, 0.1);
-    }
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ciaa Store - Top Up & Services</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <style>
+        :root {
+            --pink-main: #ff9ebb;
+            --pink-soft: rgba(255, 228, 236, 0.9);
+            --pink-dark: #d85c80;
+            --bg-color: #0f172a;
+            --card-bg: rgba(255, 255, 255, 0.92);
+        }
 
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    }
+        * {
+            box-sizing: border-box;
+        }
 
-    body {
-      background-color: var(--bg-color);
-      color: var(--text-main);
-      min-height: 100vh;
-      padding-bottom: 40px;
-      position: relative;
-      overflow-x: hidden;
-    }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--bg-color);
+            margin: 0;
+            padding: 15px;
+            padding-bottom: 80px;
+            color: #333;
+            min-height: 100vh;
+            position: relative;
+            overflow-x: hidden;
+        }
 
-    /* BACKGROUND LOGO BLUR */
-    body::before {
-      content: '';
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background-image: url('logo.jpg');
-      background-size: cover;
-      background-position: center;
-      filter: blur(40px) brightness(0.25);
-      transform: scale(1.1);
-      z-index: -2;
-    }
+        /* LATAR BELAKANG GAMBAR LOGO (logo.jpg) */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: url('logo.jpg');
+            background-size: cover;
+            background-position: center;
+            filter: blur(25px) brightness(0.4);
+            transform: scale(1.1);
+            z-index: -2;
+        }
 
-    /* HIASAN KUPU-KUPU & GLOW BACKGROUND */
-    body::after {
-      content: '';
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background: 
-        radial-gradient(circle at 10% 20%, rgba(99, 102, 241, 0.2) 0%, transparent 40%),
-        radial-gradient(circle at 90% 80%, rgba(147, 51, 234, 0.2) 0%, transparent 40%);
-      z-index: -1;
-      pointer-events: none;
-    }
+        /* OVERLAY EFEK GLOW */
+        body::after {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: 
+                radial-gradient(circle at 20% 20%, rgba(255, 158, 187, 0.25) 0%, transparent 40%),
+                radial-gradient(circle at 80% 80%, rgba(216, 92, 128, 0.25) 0%, transparent 40%);
+            z-index: -1;
+            pointer-events: none;
+        }
 
-    /* ANIMASI KUPU-KUPU MELAYANG */
-    .butterfly-decor {
-      position: fixed;
-      font-size: 24px;
-      color: rgba(165, 180, 252, 0.35);
-      pointer-events: none;
-      z-index: 0;
-      animation: floatButterfly 8s ease-in-out infinite alternate;
-    }
+        /* HIASAN KUPU-KUPU MELAYANG */
+        .butterfly-decor {
+            position: fixed;
+            font-size: 24px;
+            color: rgba(255, 158, 187, 0.6);
+            pointer-events: none;
+            z-index: 0;
+            animation: floatButterfly 7s ease-in-out infinite alternate;
+            text-shadow: 0 0 10px rgba(255, 158, 187, 0.8);
+        }
 
-    .bf-1 { top: 15%; left: 8%; animation-delay: 0s; }
-    .bf-2 { top: 60%; right: 8%; animation-delay: 2s; transform: scaleX(-1); }
-    .bf-3 { bottom: 10%; left: 12%; animation-delay: 4s; }
+        .bf-1 { top: 10%; left: 5%; animation-delay: 0s; }
+        .bf-2 { top: 55%; right: 6%; animation-delay: 2s; transform: scaleX(-1); }
+        .bf-3 { bottom: 12%; left: 8%; animation-delay: 4s; }
 
-    @keyframes floatButterfly {
-      0% { transform: translateY(0px) rotate(0deg); }
-      50% { transform: translateY(-15px) rotate(8deg); }
-      100% { transform: translateY(-30px) rotate(-5deg); }
-    }
+        @keyframes floatButterfly {
+            0% { transform: translateY(0px) rotate(0deg); }
+            50% { transform: translateY(-15px) rotate(10deg); }
+            100% { transform: translateY(-25px) rotate(-8deg); }
+        }
 
-    .header {
-      background: linear-gradient(135deg, rgba(79, 70, 229, 0.9), rgba(147, 51, 234, 0.9));
-      padding: 25px 20px;
-      text-align: center;
-      box-shadow: 0 4px 20px rgba(0,0,0,0.5);
-      backdrop-filter: blur(10px);
-      position: relative;
-      z-index: 1;
-    }
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            background: var(--card-bg);
+            backdrop-filter: blur(10px);
+            padding: 20px;
+            border-radius: 20px;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.4);
+            position: relative;
+            z-index: 1;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+        }
 
-    .header h1 {
-      font-size: 26px;
-      font-weight: 700;
-      margin-bottom: 5px;
-      letter-spacing: 1px;
-    }
+        .header img {
+            width: 100%;
+            height: auto;
+            max-height: 180px;
+            object-fit: cover;
+            border-radius: 15px;
+            margin-bottom: 15px;
+            border: 2px solid var(--pink-main);
+        }
 
-    .header p {
-      font-size: 13px;
-      opacity: 0.9;
-    }
+        /* Profile Section */
+        .profile-box {
+            text-align: center;
+            margin-bottom: 20px;
+            padding: 15px 10px 10px;
+            background: var(--pink-soft);
+            border-radius: 15px;
+            border: 1px solid rgba(255, 158, 187, 0.4);
+        }
 
-    .container {
-      max-width: 520px;
-      margin: 20px auto;
-      padding: 0 15px;
-      position: relative;
-      z-index: 1;
-    }
+        .profile-avatar {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            border: 3px solid var(--pink-main);
+            object-fit: cover;
+            margin-top: -40px;
+            background: #fff;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+        }
 
-    .step-indicator {
-      display: flex;
-      justify-content: space-between;
-      margin-bottom: 25px;
-      position: relative;
-    }
+        .profile-title {
+            font-size: 1.2rem;
+            font-weight: bold;
+            color: var(--pink-dark);
+            margin: 6px 0 2px 0;
+        }
 
-    .step-indicator::before {
-      content: '';
-      position: absolute;
-      top: 50%;
-      left: 0;
-      right: 0;
-      height: 2px;
-      background-color: var(--border-color);
-      z-index: 1;
-      transform: translateY(-50%);
-    }
+        .profile-desc {
+            font-size: 0.82rem;
+            color: #555;
+            margin-bottom: 8px;
+        }
 
-    .step {
-      width: 32px;
-      height: 32px;
-      border-radius: 50%;
-      background-color: rgba(30, 41, 59, 0.9);
-      border: 2px solid var(--border-color);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 13px;
-      font-weight: bold;
-      z-index: 2;
-      color: var(--text-muted);
-      transition: all 0.3s ease;
-    }
+        .status-badge {
+            display: inline-block;
+            background: #25d366;
+            color: white;
+            font-size: 0.7rem;
+            padding: 3px 10px;
+            border-radius: 12px;
+            font-weight: bold;
+        }
 
-    .step.active {
-      border-color: var(--accent-color);
-      background-color: var(--accent-color);
-      color: white;
-      box-shadow: 0 0 12px rgba(99, 102, 241, 0.6);
-    }
+        .page {
+            display: none;
+        }
 
-    .card {
-      background-color: var(--card-bg);
-      backdrop-filter: blur(12px);
-      border-radius: 16px;
-      padding: 20px;
-      margin-bottom: 20px;
-      border: 1px solid var(--border-color);
-      box-shadow: 0 10px 25px rgba(0,0,0,0.3);
-    }
+        .page.active {
+            display: block;
+        }
 
-    .card-title {
-      font-size: 16px;
-      font-weight: 600;
-      margin-bottom: 14px;
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      color: var(--text-main);
-    }
+        .category-title {
+            color: var(--pink-dark);
+            font-size: 0.95rem;
+            margin-bottom: 12px;
+            font-weight: bold;
+            text-align: center;
+        }
 
-    .grid-2 {
-      display: grid;
-      grid-template-columns: repeat(2, 1fr);
-      gap: 12px;
-    }
+        .menu-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 12px;
+        }
 
-    .item-card {
-      background-color: rgba(255, 255, 255, 0.04);
-      border: 1px solid var(--border-color);
-      border-radius: 10px;
-      padding: 14px;
-      text-align: center;
-      cursor: pointer;
-      transition: all 0.2s ease;
-    }
+        .menu-card {
+            border: 2px solid var(--pink-soft);
+            padding: 15px 10px;
+            border-radius: 15px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            background: #fff;
+            font-weight: bold;
+            color: var(--pink-dark);
+            box-shadow: 0 2px 8px rgba(255, 158, 187, 0.2);
+        }
 
-    .item-card:hover, .item-card.selected {
-      border-color: var(--accent-color);
-      background-color: rgba(99, 102, 241, 0.15);
-      transform: translateY(-2px);
-    }
+        .menu-card:hover {
+            border-color: var(--pink-main);
+            background-color: var(--pink-soft);
+            transform: translateY(-2px);
+        }
 
-    .item-card.selected {
-      box-shadow: 0 0 0 2px var(--accent-color);
-    }
+        /* Detail Page */
+        .btn-back {
+            background-color: var(--pink-soft);
+            color: var(--pink-dark);
+            border: none;
+            padding: 8px 15px;
+            border-radius: 10px;
+            font-weight: bold;
+            cursor: pointer;
+            margin-bottom: 15px;
+        }
 
-    .item-title {
-      font-size: 14px;
-      font-weight: 600;
-      margin-bottom: 4px;
-    }
+        .section-title {
+            color: var(--pink-dark);
+            font-size: 0.95rem;
+            margin-top: 15px;
+            border-bottom: 2px solid var(--pink-soft);
+            padding-bottom: 5px;
+            font-weight: bold;
+        }
 
-    .item-price {
-      font-size: 12px;
-      color: #38bdf8;
-      font-weight: 700;
-    }
+        .form-group {
+            margin-bottom: 15px;
+        }
 
-    .input-group {
-      margin-bottom: 14px;
-    }
+        label {
+            display: block;
+            font-weight: bold;
+            margin-bottom: 5px;
+            color: var(--pink-dark);
+            font-size: 0.85rem;
+        }
 
-    .input-group label {
-      display: block;
-      font-size: 12px;
-      color: var(--text-muted);
-      margin-bottom: 6px;
-    }
+        input {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid var(--pink-soft);
+            border-radius: 10px;
+            box-sizing: border-box;
+            outline: none;
+            font-size: 0.95rem;
+        }
 
-    .input-group input {
-      width: 100%;
-      padding: 12px;
-      border-radius: 8px;
-      border: 1px solid var(--border-color);
-      background-color: rgba(0, 0, 0, 0.3);
-      color: white;
-      font-size: 14px;
-      outline: none;
-    }
+        input:focus {
+            border-color: var(--pink-main);
+        }
 
-    .input-group input:focus {
-      border-color: var(--accent-color);
-    }
+        .grid-container {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 10px;
+            margin-top: 10px;
+        }
 
-    .btn {
-      width: 100%;
-      padding: 12px;
-      border-radius: 8px;
-      border: none;
-      background-color: var(--accent-color);
-      color: white;
-      font-weight: 600;
-      font-size: 14px;
-      cursor: pointer;
-      transition: all 0.2s;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 8px;
-    }
+        .item-card {
+            border: 2px solid var(--pink-soft);
+            padding: 12px 8px;
+            border-radius: 12px;
+            text-align: center;
+            cursor: pointer;
+            transition: 0.2s;
+            background: #fff;
+        }
 
-    .btn:hover {
-      background-color: var(--accent-hover);
-      box-shadow: 0 4px 12px rgba(99, 102, 241, 0.4);
-    }
+        .item-card:hover {
+            border-color: var(--pink-main);
+            background-color: #fff9fb;
+        }
 
-    .btn-secondary {
-      background-color: transparent;
-      border: 1px solid var(--border-color);
-      color: var(--text-muted);
-      margin-top: 10px;
-    }
+        .item-card.active {
+            border-color: var(--pink-dark);
+            background-color: var(--pink-soft);
+        }
 
-    .payment-option {
-      border: 1px solid var(--border-color);
-      border-radius: 10px;
-      padding: 12px 14px;
-      margin-bottom: 10px;
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      transition: all 0.2s;
-      background-color: rgba(0, 0, 0, 0.2);
-    }
+        .item-title {
+            font-size: 0.85rem;
+            font-weight: bold;
+            color: #444;
+        }
 
-    .payment-option.selected {
-      border-color: var(--accent-color);
-      background-color: rgba(99, 102, 241, 0.15);
-    }
+        .item-price {
+            font-size: 0.8rem;
+            color: var(--pink-dark);
+            margin-top: 4px;
+            font-weight: 600;
+        }
 
-    .payment-info {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-    }
+        /* METODE PEMBAYARAN */
+        .payment-card {
+            border: 2px solid var(--pink-soft);
+            border-radius: 12px;
+            padding: 10px 12px;
+            margin-top: 8px;
+            background: #fff;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            cursor: pointer;
+            transition: 0.2s;
+        }
 
-    /* KOTAK DISPLAY QRIS TAMPAKAN LANGSUNG */
-    .qris-box {
-      background: rgba(255, 255, 255, 0.05);
-      border: 1px solid var(--border-color);
-      border-radius: 12px;
-      padding: 15px;
-      text-align: center;
-      margin-top: 10px;
-    }
+        .payment-card:hover, .payment-card.active {
+            border-color: var(--pink-dark);
+            background: var(--pink-soft);
+        }
 
-    .qris-img {
-      width: 100%;
-      max-width: 240px;
-      height: auto;
-      border-radius: 10px;
-      margin: 10px 0;
-      border: 2px solid rgba(255, 255, 255, 0.2);
-    }
+        .payment-info {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
 
-    .btn-download {
-      background-color: #059669;
-      color: white;
-      padding: 10px 16px;
-      font-size: 13px;
-    }
+        .copy-btn {
+            background: var(--pink-main);
+            color: white;
+            border: none;
+            padding: 4px 10px;
+            border-radius: 6px;
+            font-size: 0.75rem;
+            font-weight: bold;
+            cursor: pointer;
+        }
 
-    .btn-download:hover {
-      background-color: #047857;
-    }
+        /* QRIS BOX & TOMBOL UNDUH */
+        .qris-box {
+            text-align: center;
+            background: var(--pink-soft);
+            padding: 15px;
+            border-radius: 15px;
+            margin-top: 10px;
+            border: 1px solid rgba(255, 158, 187, 0.5);
+        }
 
-    .btn-wa {
-      background-color: #22c55e;
-    }
+        .qris-box img {
+            max-width: 180px;
+            height: auto;
+            border-radius: 10px;
+            border: 2px solid var(--pink-main);
+            margin: 8px 0;
+        }
 
-    .btn-wa:hover {
-      background-color: #16a34a;
-    }
+        .btn-download {
+            background-color: #059669;
+            color: white;
+            border: none;
+            padding: 8px 14px;
+            border-radius: 8px;
+            font-size: 0.8rem;
+            font-weight: bold;
+            cursor: pointer;
+            margin-top: 5px;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            text-decoration: none;
+        }
 
-    .page {
-      display: none;
-    }
+        .btn-order {
+            width: 100%;
+            background-color: #25d366;
+            color: white;
+            border: none;
+            padding: 15px;
+            border-radius: 12px;
+            font-weight: bold;
+            font-size: 0.95rem;
+            cursor: pointer;
+            margin-top: 20px;
+            box-shadow: 0 4px 10px rgba(37, 211, 102, 0.3);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
 
-    .page.active {
-      display: block;
-    }
-
-    .summary-box {
-      background-color: rgba(0, 0, 0, 0.3);
-      border-radius: 10px;
-      padding: 14px;
-      margin-bottom: 15px;
-      font-size: 13px;
-    }
-
-    .summary-row {
-      display: flex;
-      justify-content: space-between;
-      margin-bottom: 8px;
-    }
-
-    .summary-row:last-child {
-      margin-bottom: 0;
-      padding-top: 8px;
-      border-top: 1px dashed var(--border-color);
-      font-weight: bold;
-      color: #38bdf8;
-    }
-
-    .copy-btn {
-      background-color: rgba(255, 255, 255, 0.1);
-      border: 1px solid var(--border-color);
-      color: white;
-      padding: 4px 10px;
-      border-radius: 6px;
-      font-size: 11px;
-      cursor: pointer;
-    }
-
-    .copy-btn:hover {
-      background-color: var(--accent-color);
-    }
-  </style>
+        .cs-floating-btn {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background-color: #25d366;
+            color: white;
+            padding: 12px 18px;
+            border-radius: 30px;
+            font-weight: bold;
+            font-size: 0.85rem;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            z-index: 999;
+            text-decoration: none;
+        }
+    </style>
 </head>
 <body>
 
-  <!-- ELEMEN HIASAN KUPU-KUPU -->
-  <i class="fa-solid fa-butterfly butterfly-decor bf-1"></i>
-  <i class="fa-solid fa-butterfly butterfly-decor bf-2"></i>
-  <i class="fa-solid fa-butterfly butterfly-decor bf-3"></i>
+<!-- HIASAN KUPU-KUPU -->
+<i class="fa-solid fa-butterfly butterfly-decor bf-1"></i>
+<i class="fa-solid fa-butterfly butterfly-decor bf-2"></i>
+<i class="fa-solid fa-butterfly butterfly-decor bf-3"></i>
 
-  <div class="header">
-    <h1>Ciaa Store</h1>
-    <p>Layanan Top Up & Jasher Terpercaya</p>
-  </div>
-
-  <div class="container">
-    <!-- Indikator Tahapan -->
-    <div class="step-indicator">
-      <div class="step active" id="step1-ind">1</div>
-      <div class="step" id="step2-ind">2</div>
-      <div class="step" id="step3-ind">3</div>
+<div class="container">
+    <div class="header">
+        <img src="banner.jpg" alt="Ciaa Store Banner" onerror="this.src='logo.jpg'">
     </div>
 
-    <!-- TAHAP 1: PILIH LAYANAN -->
-    <div class="page active" id="page1">
-      <div class="card">
-        <div class="card-title"><i class="fa-solid fa-gamepad"></i> Pilih Kategori Layanan</div>
-        <div class="grid-2">
-          <div class="item-card" onclick="selectService('Free Fire')">
-            <div class="item-title">Free Fire</div>
-            <div class="item-price">Top Up Diamond</div>
-          </div>
-          <div class="item-card" onclick="selectService('Jasher')">
-            <div class="item-title">Jasher</div>
-            <div class="item-price">Jasa Share/Promosi</div>
-          </div>
-          <div class="item-card" onclick="selectService('JPM')">
-            <div class="item-title">JPM</div>
-            <div class="item-price">Jasa Post Media</div>
-          </div>
+    <!-- Profile Box -->
+    <div class="profile-box">
+        <img src="logo.jpg" alt="Logo Ciaa Store" class="profile-avatar">
+        <div class="profile-title">Ciaa Store</div>
+        <div class="profile-desc">Layanan Top Up Game & Jasa Social Media Terpercaya</div>
+        <span class="status-badge">● System Online</span>
+    </div>
+
+    <!-- 1. HALAMAN UTAMA (HOME MENU) -->
+    <div id="homePage" class="page active">
+        <div class="category-title">✨ Silakan Pilih Layanan ✨</div>
+        <div class="menu-grid">
+            <div class="menu-card" onclick="openPage('ff')">🎮 Free Fire</div>
+            <div class="menu-card" onclick="openPage('ml')">⚔️ Mobile Legends</div>
+            <div class="menu-card" onclick="openPage('ml_ftu')">🌟 ML First Top Up</div>
+            <div class="menu-card" onclick="openPage('pubg')">🪂 PUBG Mobile</div>
+            <div class="menu-card" onclick="openPage('hok')">👑 Honor of Kings</div>
+            <div class="menu-card" onclick="openPage('bs')">🔫 Blood Strike</div>
+            <div class="menu-card" onclick="openPage('jasher')">📢 Jasher (Jasa Share)</div>
+            <div class="menu-card" onclick="openPage('jpm')">👥 JPM (Push Member)</div>
         </div>
-      </div>
     </div>
 
-    <!-- TAHAP 2: DETAIL ORDER -->
-    <div class="page" id="page2">
-      <div class="card">
-        <div class="card-title" id="selected-service-title"><i class="fa-solid fa-cart-shopping"></i> Detail Pesanan</div>
+    <!-- 2. HALAMAN DETAIL PESANAN -->
+    <div id="detailPage" class="page">
+        <button class="btn-back" onclick="goHome()">← Kembali ke Menu Utama</button>
+        <h2 id="serviceTitle" style="color: var(--pink-dark); margin-top:0; font-size:1.1rem;"></h2>
+
+        <div class="form-group">
+            <label id="inputLabel">1. Masukkan Data</label>
+            <input type="text" id="userData" placeholder="">
+        </div>
+
+        <div class="section-title">2. Pilih Nominal / Paket</div>
+        <div class="grid-container" id="itemsGrid"></div>
+
+        <div class="section-title">3. Pilih Metode Pembayaran</div>
         
-        <div class="input-group">
-          <label>ID User / Format Pengiriman</label>
-          <input type="text" id="user-data" placeholder="Masukkan ID atau Format Pengiriman">
-        </div>
-
-        <div class="card-title" style="margin-top: 15px;"><i class="fa-solid fa-box"></i> Pilih Paket</div>
-        <div class="grid-2" id="package-list">
-          <!-- Paket diisi otomatis -->
-        </div>
-
-        <button class="btn" style="margin-top: 15px;" onclick="goToPage(3)">Lanjut ke Pembayaran <i class="fa-solid fa-arrow-right"></i></button>
-        <button class="btn btn-secondary" onclick="goToPage(1)"><i class="fa-solid fa-arrow-left"></i> Kembali</button>
-      </div>
-    </div>
-
-    <!-- TAHAP 3: PEMBAYARAN -->
-    <div class="page" id="page3">
-      <div class="card">
-        <div class="card-title"><i class="fa-solid fa-receipt"></i> Ringkasan Pesanan</div>
-        <div class="summary-box">
-          <div class="summary-row"><span>Layanan:</span><span id="sum-service">-</span></div>
-          <div class="summary-row"><span>Data ID/Format:</span><span id="sum-data">-</span></div>
-          <div class="summary-row"><span>Paket:</span><span id="sum-package">-</span></div>
-          <div class="summary-row"><span>Total Bayar:</span><span id="sum-price">Rp 0</span></div>
-        </div>
-
-        <div class="card-title"><i class="fa-solid fa-wallet"></i> Pilih Metode Pembayaran</div>
-
         <!-- DANA -->
-        <div class="payment-option" onclick="selectPayment('DANA', this)">
-          <div class="payment-info">
-            <i class="fa-solid fa-mobile-screen-button" style="color:#22c55e;"></i>
-            <div>
-              <div style="font-weight:bold; font-size:14px;">DANA</div>
-              <div style="font-size:11px; color:var(--text-muted);">085752161167 (A/N ADE FAHREZI)</div>
+        <div class="payment-card" onclick="selectPayment('DANA', this)">
+            <div class="payment-info">
+                <i class="fa-solid fa-mobile-screen-button" style="color:#22c55e;"></i>
+                <div>
+                    <div style="font-weight:bold; font-size:0.85rem;">DANA</div>
+                    <div style="font-size:0.75rem; color:#666;">085752161167 (ADE FAHREZI)</div>
+                </div>
             </div>
-          </div>
-          <button class="copy-btn" onclick="copyText('085752161167', event)">Salin</button>
+            <button class="copy-btn" onclick="copyText('085752161167', event)">Salin</button>
         </div>
 
         <!-- GOPAY -->
-        <div class="payment-option" onclick="selectPayment('GOPAY', this)">
-          <div class="payment-info">
-            <i class="fa-solid fa-wallet" style="color:#00a5cf;"></i>
-            <div>
-              <div style="font-weight:bold; font-size:14px;">GOPAY</div>
-              <div style="font-size:11px; color:var(--text-muted);">089505929536 (A/N CICOCO)</div>
+        <div class="payment-card" onclick="selectPayment('GOPAY', this)">
+            <div class="payment-info">
+                <i class="fa-solid fa-wallet" style="color:#00a5cf;"></i>
+                <div>
+                    <div style="font-weight:bold; font-size:0.85rem;">GOPAY</div>
+                    <div style="font-size:0.75rem; color:#666;">089505929536 (CICOCO)</div>
+                </div>
             </div>
-          </div>
-          <button class="copy-btn" onclick="copyText('089505929536', event)">Salin</button>
+            <button class="copy-btn" onclick="copyText('089505929536', event)">Salin</button>
         </div>
 
-        <!-- QRIS BERSAMA GAMBAR & TOMBOL UNDUH -->
-        <div class="payment-option" onclick="selectPayment('QRIS', this)">
-          <div class="payment-info">
-            <i class="fa-solid fa-qrcode" style="color:#f59e0b;"></i>
-            <div>
-              <div style="font-weight:bold; font-size:14px;">QRIS (All Payment)</div>
-              <div style="font-size:11px; color:var(--text-muted);">Scan QRIS via E-Wallet / Bank</div>
+        <!-- QRIS BERSAMA TAMPILAN DAN TOMBOL UNDUH -->
+        <div class="payment-card" onclick="selectPayment('QRIS', this)">
+            <div class="payment-info">
+                <i class="fa-solid fa-qrcode" style="color:#f59e0b;"></i>
+                <div>
+                    <div style="font-weight:bold; font-size:0.85rem;">QRIS (All Payment)</div>
+                    <div style="font-size:0.75rem; color:#666;">Scan E-Wallet / M-Banking</div>
+                </div>
             </div>
-          </div>
         </div>
 
-        <!-- KOTAK TAMPILAN QRIS BERSIFAT DYNAMIC -->
-        <div id="qris-display" class="qris-box" style="display:none;">
-          <p style="font-size:13px; font-weight:600; color:#38bdf8;">Scan Kode QRIS di Bawah Ini:</p>
-          <img src="qris.jpg" alt="QRIS Ciaa Store" class="qris-img">
-          <div>
-            <a href="qris.jpg" download="QRIS-CiaaStore.jpg" style="text-decoration:none;">
-              <button class="btn btn-download"><i class="fa-solid fa-download"></i> Unduh Foto QRIS</button>
+        <!-- KOTAK DISPLAY QRIS -->
+        <div id="qrisSection" class="qris-box" style="display:none;">
+            <p style="margin-top:0; font-size: 0.85rem; font-weight:bold; color: var(--pink-dark);">Scan QRIS di bawah ini:</p>
+            <img src="qris.jpg" alt="QRIS Ciaa Store">
+            <br>
+            <a href="qris.jpg" download="QRIS-CiaaStore.jpg" class="btn-download">
+                <i class="fa-solid fa-download"></i> Unduh Foto QRIS
             </a>
-          </div>
         </div>
 
-        <button class="btn btn-wa" style="margin-top: 18px;" onclick="sendWhatsApp()"><i class="fa-brands fa-whatsapp"></i> Konfirmasi Pembayaran ke WA</button>
-        <button class="btn btn-secondary" onclick="goToPage(2)"><i class="fa-solid fa-arrow-left"></i> Kembali</button>
-      </div>
+        <button class="btn-order" onclick="sendOrder()"><i class="fa-brands fa-whatsapp"></i> Konfirmasi & Kirim Bukti Transfer via WhatsApp</button>
     </div>
-  </div>
+</div>
 
-  <script>
-    let selectedService = '';
-    let selectedPackage = '';
-    let selectedPrice = '';
-    let selectedPaymentMethod = '';
+<!-- TOMBOL FLOATING CUSTOMER SERVICE -->
+<a href="https://wa.me/6289505929536?text=Halo%20Admin%20Ciaa%20Store%2C%20saya%20mengalami%20kendala%20%2F%20ingin%20memberikan%20saran" target="_blank" class="cs-floating-btn">
+    💬 Bantuan CS
+</a>
 
-    const packages = {
-      'Free Fire': [
-        { name: '100 Diamond', price: 'Rp 15.000' },
-        { name: '355 Diamond', price: 'Rp 50.000' },
-        { name: '720 Diamond', price: 'Rp 100.000' }
-      ],
-      'Jasher': [
-        { name: 'Paket Basic Share', price: 'Rp 10.000' },
-        { name: 'Paket Pro Share', price: 'Rp 25.000' }
-      ],
-      'JPM': [
-        { name: 'Post Single Group', price: 'Rp 5.000' },
-        { name: 'Post All Group (1 Hari)', price: 'Rp 20.000' }
-      ]
+<script>
+    const products = {
+        ff: {
+            title: "Free Fire Top Up",
+            label: "1. Masukkan ID & Username Free Fire",
+            placeholder: "Contoh: 123456789 (CiaaStore)",
+            items: [
+                { name: "5 Diamond", price: "Rp 1.000" },
+                { name: "10 Diamond", price: "Rp 2.000" },
+                { name: "20 Diamond", price: "Rp 5.000" },
+                { name: "25 Diamond", price: "Rp 6.000" },
+                { name: "30 Diamond", price: "Rp 7.000" },
+                { name: "50 Diamond", price: "Rp 9.000" },
+                { name: "70 Diamond", price: "Rp 11.000" },
+                { name: "75 Diamond", price: "Rp 12.000" },
+                { name: "100 Diamond", price: "Rp 16.000" },
+                { name: "120 Diamond", price: "Rp 18.000" },
+                { name: "140 Diamond", price: "Rp 20.000" },
+                { name: "150 Diamond", price: "Rp 22.000" },
+                { name: "160 Diamond", price: "Rp 24.000" },
+                { name: "210 Diamond", price: "Rp 30.000" },
+                { name: "250 Diamond", price: "Rp 36.000" },
+                { name: "355 Diamond", price: "Rp 49.000" },
+                { name: "500 Diamond", price: "Rp 66.000" },
+                { name: "720 Diamond", price: "Rp 96.000" },
+                { name: "1000 Diamond", price: "Rp 134.000" },
+                { name: "1450 Diamond", price: "Rp 190.000" },
+                { name: "2000 Diamond", price: "Rp 264.000" },
+                { name: "Membership Mingguan (MM)", price: "Rp 30.000" },
+                { name: "Membership Bulanan (MB)", price: "Rp 89.000" }
+            ]
+        },
+        ml: {
+            title: "Mobile Legends Top Up",
+            label: "1. Masukkan User ID & Server",
+            placeholder: "Contoh: 12345678 (1234)",
+            items: [
+                { name: "12 Diamond", price: "Rp 4.000" },
+                { name: "28 Diamond", price: "Rp 8.000" },
+                { name: "50 Diamond", price: "Rp 14.000" },
+                { name: "70 Diamond", price: "Rp 20.000" },
+                { name: "112 Diamond", price: "Rp 32.000" },
+                { name: "140 Diamond", price: "Rp 42.000" },
+                { name: "170 Diamond", price: "Rp 50.000" },
+                { name: "222 Diamond", price: "Rp 60.000" },
+                { name: "257 Diamond", price: "Rp 70.000" },
+                { name: "296 Diamond", price: "Rp 79.000" },
+                { name: "355 Diamond", price: "Rp 96.000" },
+                { name: "408 Diamond", price: "Rp 110.000" },
+                { name: "460 Diamond", price: "Rp 125.000" },
+                { name: "514 Diamond", price: "Rp 137.000" },
+                { name: "568 Diamond", price: "Rp 150.000" },
+                { name: "600 Diamond", price: "Rp 158.000" },
+                { name: "706 Diamond", price: "Rp 185.000" },
+                { name: "875 Diamond", price: "Rp 226.000" },
+                { name: "963 Diamond", price: "Rp 245.000" },
+                { name: "1050 Diamond", price: "Rp 270.000" },
+                { name: "1412 Diamond", price: "Rp 365.000" },
+                { name: "Weekly Diamond Pass (WDP)", price: "Rp 28.000" }
+            ]
+        },
+        ml_ftu: {
+            title: "Mobile Legends First Top Up",
+            label: "1. Masukkan User ID & Server",
+            placeholder: "Contoh: 12345678 (1234)",
+            items: [
+                { name: "50 + Bonus", price: "Rp 16.000" },
+                { name: "150 + Bonus", price: "Rp 45.000" },
+                { name: "250 + Bonus", price: "Rp 76.000" },
+                { name: "500 + Bonus", price: "Rp 152.000" }
+            ]
+        },
+        pubg: {
+            title: "PUBG Mobile Top Up",
+            label: "1. Masukkan User ID PUBG",
+            placeholder: "Contoh: 5123456789",
+            items: [
+                { name: "60 UC", price: "Rp 18.000" },
+                { name: "120 UC", price: "Rp 33.000" },
+                { name: "240 UC", price: "Rp 68.000" },
+                { name: "300 UC", price: "Rp 85.000" },
+                { name: "385 UC", price: "Rp 106.000" },
+                { name: "445 UC", price: "Rp 120.000" },
+                { name: "505 UC", price: "Rp 136.000" },
+                { name: "565 UC", price: "Rp 157.000" },
+                { name: "600 UC", price: "Rp 165.000" },
+                { name: "720 UC", price: "Rp 195.000" },
+                { name: "840 UC", price: "Rp 218.000" },
+                { name: "900 UC", price: "Rp 236.000" },
+                { name: "1500 UC", price: "Rp 386.000" },
+                { name: "1800 UC", price: "Rp 420.000" }
+            ]
+        },
+        hok: {
+            title: "Honor of Kings Top Up",
+            label: "1. Masukkan User ID HOK",
+            placeholder: "Contoh: 9876543210",
+            items: [
+                { name: "16 Tokens", price: "Rp 3.500" },
+                { name: "80 Tokens", price: "Rp 19.000" },
+                { name: "240 Tokens", price: "Rp 53.000" },
+                { name: "400 Tokens", price: "Rp 83.000" },
+                { name: "560 Tokens", price: "Rp 115.000" },
+                { name: "800 Tokens", price: "Rp 162.000" },
+                { name: "1200 Tokens", price: "Rp 253.000" },
+                { name: "2400 Tokens", price: "Rp 503.000" }
+            ]
+        },
+        bs: {
+            title: "Blood Strike Top Up",
+            label: "1. Masukkan User ID Blood Strike",
+            placeholder: "Contoh: BS12345678",
+            items: [
+                { name: "100 Gold", price: "Rp 16.000" },
+                { name: "300 Gold", price: "Rp 45.000" },
+                { name: "500 Gold", price: "Rp 75.000" },
+                { name: "1000 Gold", price: "Rp 136.000" },
+                { name: "2000 Gold", price: "Rp 258.000" },
+                { name: "5000 Gold", price: "Rp 640.000" }
+            ]
+        },
+        jasher: {
+            title: "Jasher (Jasa Share)",
+            label: "1. Masukkan Format Order Jasher",
+            placeholder: "*NAMA MU [MEM/TEKS] EMOJI*",
+            items: [
+                { name: "12 Jam", price: "200p" },
+                { name: "1 Hari", price: "500p" },
+                { name: "3 Hari", price: "1k" },
+                { name: "1 Minggu", price: "3k" },
+                { name: "2 Minggu", price: "4k" },
+                { name: "1 Bulan", price: "6k" },
+                { name: "3 Bulan", price: "7k" }
+            ]
+        },
+        jpm: {
+            title: "JPM (Jasa Push Member)",
+            label: "1. Masukkan Format Order JPM",
+            placeholder: "*NAMA MU [MEM/TEKS] EMOJI*",
+            items: [
+                { name: "10 Member", price: "500p" },
+                { name: "20 Member", price: "1k" },
+                { name: "50 Member", price: "3k" },
+                { name: "70 Member", price: "4k" },
+                { name: "100 Member", price: "5k" },
+                { name: "150 Member", price: "7k" },
+                { name: "250 Member", price: "8k" },
+                { name: "400 Member", price: "12k" },
+                { name: "500 Member", price: "16k" }
+            ]
+        }
     };
 
-    function selectService(service) {
-      selectedService = service;
-      document.getElementById('selected-service-title').innerText = 'Detail Pesanan: ' + service;
-      
-      const pkgContainer = document.getElementById('package-list');
-      pkgContainer.innerHTML = '';
-      
-      packages[service].forEach(pkg => {
-        pkgContainer.innerHTML += `
-          <div class="item-card" onclick="choosePackage('${pkg.name}', '${pkg.price}', this)">
-            <div class="item-title">${pkg.name}</div>
-            <div class="item-price">${pkg.price}</div>
-          </div>
-        `;
-      });
+    let currentCategory = null;
+    let selectedItem = null;
+    let selectedPayment = null;
 
-      goToPage(2);
+    function openPage(key) {
+        currentCategory = key;
+        const data = products[key];
+
+        document.getElementById('homePage').classList.remove('active');
+        document.getElementById('detailPage').classList.add('active');
+
+        document.getElementById('serviceTitle').innerText = data.title;
+        document.getElementById('inputLabel').innerText = data.label;
+        document.getElementById('userData').value = '';
+        document.getElementById('userData').placeholder = data.placeholder;
+
+        const grid = document.getElementById('itemsGrid');
+        grid.innerHTML = '';
+        selectedItem = null;
+
+        data.items.forEach(item => {
+            const card = document.createElement('div');
+            card.className = 'item-card';
+            card.innerHTML = `
+                <div class="item-title">${item.name}</div>
+                <div class="item-price">${item.price}</div>
+            `;
+            card.onclick = () => {
+                document.querySelectorAll('.item-card').forEach(c => c.classList.remove('active'));
+                card.classList.add('active');
+                selectedItem = item;
+            };
+            grid.appendChild(card);
+        });
     }
 
-    function choosePackage(pkgName, price, el) {
-      document.querySelectorAll('#package-list .item-card').forEach(c => c.classList.remove('selected'));
-      el.classList.add('selected');
-      selectedPackage = pkgName;
-      selectedPrice = price;
+    function goHome() {
+        document.getElementById('detailPage').classList.remove('active');
+        document.getElementById('homePage').classList.add('active');
     }
 
     function selectPayment(method, el) {
-      selectedPaymentMethod = method;
-      document.querySelectorAll('.payment-option').forEach(c => c.classList.remove('selected'));
-      el.classList.add('selected');
+        selectedPayment = method;
+        document.querySelectorAll('.payment-card').forEach(c => c.classList.remove('active'));
+        el.classList.add('active');
 
-      const qrisBox = document.getElementById('qris-display');
-      if (method === 'QRIS') {
-        qrisBox.style.display = 'block';
-      } else {
-        qrisBox.style.display = 'none';
-      }
-    }
-
-    function goToPage(page) {
-      document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
-      document.getElementById('page' + page).classList.add('active');
-
-      document.querySelectorAll('.step').forEach(s => s.classList.remove('active'));
-      for(let i = 1; i <= page; i++) {
-        document.getElementById('step' + i + '-ind').classList.add('active');
-      }
-
-      if(page === 3) {
-        document.getElementById('sum-service').innerText = selectedService || '-';
-        document.getElementById('sum-data').innerText = document.getElementById('user-data').value || '-';
-        document.getElementById('sum-package').innerText = selectedPackage || '-';
-        document.getElementById('sum-price').innerText = selectedPrice || 'Rp 0';
-      }
+        const qrisSec = document.getElementById('qrisSection');
+        if (method === 'QRIS') {
+            qrisSec.style.display = 'block';
+        } else {
+            qrisSec.style.display = 'none';
+        }
     }
 
     function copyText(text, e) {
-      e.stopPropagation();
-      navigator.clipboard.writeText(text);
-      alert('Nomor disalin: ' + text);
+        e.stopPropagation();
+        navigator.clipboard.writeText(text);
+        alert('Nomor disalin: ' + text);
     }
 
-    function sendWhatsApp() {
-      const userData = document.getElementById('user-data').value;
-      if (!selectedPackage) {
-        alert('Silakan pilih paket terlebih dahulu!');
-        return;
-      }
-      if (!selectedPaymentMethod) {
-        alert('Silakan pilih metode pembayaran!');
-        return;
-      }
+    function sendOrder() {
+        const userData = document.getElementById('userData').value;
+        const data = products[currentCategory];
 
-      const text = `Halo Admin Ciaa Store, saya mau konfirmasi order:%0A%0A` +
-        `• *Layanan:* ${selectedService}%0A` +
-        `• *Data/ID:* ${userData}%0A` +
-        `• *Paket:* ${selectedPackage}%0A` +
-        `• *Total:* ${selectedPrice}%0A` +
-        `• *Metode Bayar:* ${selectedPaymentMethod}%0A%0A` +
-        `Saya sudah/akan melakukan pembayaran. Mohon diproses ya!`;
+        if (!userData) {
+            alert('Silakan isi data order terlebih dahulu!');
+            return;
+        }
+        if (!selectedItem) {
+            alert('Silakan pilih nominal/paket terlebih dahulu!');
+            return;
+        }
+        if (!selectedPayment) {
+            alert('Silakan pilih metode pembayaran terlebih dahulu!');
+            return;
+        }
 
-      window.open(`https://wa.me/6285752161167?text=${text}`, '_blank');
+        const adminPhone = "6289505929536";
+        let message = `Halo Ciaa Store, saya ingin order:\n\n` +
+                      `• *Layanan*: ${data.title}\n` +
+                      `• *Paket*: ${selectedItem.name}\n` +
+                      `• *Harga*: ${selectedItem.price}\n` +
+                      `• *Metode Bayar*: ${selectedPayment}\n`;
+
+        if (currentCategory === 'jasher' || currentCategory === 'jpm') {
+            message += `• *Format Order*: ${userData}\n\n`;
+        } else {
+            message += `• *Data Akun*: ${userData}\n\n`;
+        }
+
+        message += `Saya sudah transfer, berikut lampiran bukti transfernya ya!`;
+
+        const encodedMessage = encodeURIComponent(message);
+        window.open(`https://wa.me/${adminPhone}?text=${encodedMessage}`, '_blank');
     }
-  </script>
+</script>
+
 </body>
 </html>
