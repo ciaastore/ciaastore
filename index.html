@@ -1,0 +1,355 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ciaa Store - Top Up & Services</title>
+    <style>
+        :root {
+            --pink-main: #ff9ebb;
+            --pink-soft: #ffe4ec;
+            --pink-dark: #d85c80;
+            --bg-color: #fff5f8;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--bg-color);
+            margin: 0;
+            padding: 15px;
+            color: #333;
+        }
+
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            background: #fff;
+            padding: 20px;
+            border-radius: 20px;
+            box-shadow: 0 4px 15px rgba(255, 158, 187, 0.3);
+        }
+
+        .header img {
+            width: 100%;
+            border-radius: 15px;
+            margin-bottom: 15px;
+        }
+
+        h2 {
+            color: var(--pink-dark);
+            font-size: 1rem;
+            margin-top: 20px;
+            border-bottom: 2px solid var(--pink-soft);
+            padding-bottom: 5px;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        label {
+            display: block;
+            font-weight: bold;
+            margin-bottom: 5px;
+            color: var(--pink-dark);
+            font-size: 0.9rem;
+        }
+
+        select, input {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid var(--pink-soft);
+            border-radius: 10px;
+            box-sizing: border-box;
+            outline: none;
+            font-size: 0.95rem;
+        }
+
+        select:focus, input:focus {
+            border-color: var(--pink-main);
+        }
+
+        .grid-container {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 10px;
+            margin-top: 10px;
+        }
+
+        .item-card {
+            border: 2px solid var(--pink-soft);
+            padding: 12px 8px;
+            border-radius: 12px;
+            text-align: center;
+            cursor: pointer;
+            transition: 0.2s;
+            background: #fff;
+        }
+
+        .item-card:hover {
+            border-color: var(--pink-main);
+            background-color: #fff9fb;
+        }
+
+        .item-card.active {
+            border-color: var(--pink-dark);
+            background-color: var(--pink-soft);
+        }
+
+        .item-title {
+            font-size: 0.85rem;
+            font-weight: bold;
+            color: #444;
+        }
+
+        .item-price {
+            font-size: 0.8rem;
+            color: var(--pink-dark);
+            margin-top: 4px;
+            font-weight: 600;
+        }
+
+        .qris-box {
+            text-align: center;
+            background: var(--pink-soft);
+            padding: 15px;
+            border-radius: 15px;
+            margin-top: 15px;
+        }
+
+        .qris-box img {
+            max-width: 200px;
+            border-radius: 10px;
+            border: 2px solid var(--pink-main);
+        }
+
+        .btn-order {
+            width: 100%;
+            background-color: #25d366;
+            color: white;
+            border: none;
+            padding: 15px;
+            border-radius: 12px;
+            font-weight: bold;
+            font-size: 0.95rem;
+            cursor: pointer;
+            margin-top: 20px;
+            box-shadow: 0 4px 10px rgba(37, 211, 102, 0.3);
+        }
+
+        .btn-order:hover {
+            background-color: #1eb956;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <div class="header">
+        <img src="banner.jpg" alt="Ciaa Store Banner">
+    </div>
+
+    <div class="form-group">
+        <label for="category">1. Pilih Layanan / Game</label>
+        <select id="category" onchange="loadItems()">
+            <option value="">-- Pilih Layanan --</option>
+            <option value="ff">Free Fire</option>
+            <option value="ml">Mobile Legends</option>
+            <option value="ml_ftu">Mobile Legends (First Top Up)</option>
+            <option value="pubg">PUBG Mobile</option>
+            <option value="hok">Honor of Kings</option>
+            <option value="bs">Blood Strike</option>
+            <option value="jasher">Jasher (Jasa Share)</option>
+            <option value="jpm">JPM (Jasa Push Member)</option>
+        </select>
+    </div>
+
+    <div class="form-group">
+        <label>2. Masukkan Data Akun / Format Order</label>
+        <input type="text" id="userData" placeholder="Contoh: Username + ID (Server)">
+    </div>
+
+    <h2>3. Pilih Nominal / Paket</h2>
+    <div class="grid-container" id="itemsGrid"></div>
+
+    <h2>4. Pembayaran (QRIS All Payment)</h2>
+    <div class="qris-box">
+        <p style="margin-top:0; font-size: 0.85rem; font-weight:bold; color: var(--pink-dark);">Scan QRIS di bawah ini untuk membayar:</p>
+        <img src="qris.jpg" alt="QRIS Ciaa Store">
+        <p style="margin-bottom:0; font-size: 0.75rem; color: #666;">Mendukung DANA, GoPay, OVO, ShopeePay & M-Banking</p>
+    </div>
+
+    <button class="btn-order" onclick="sendOrder()">Konfirmasi & Kirim Bukti Transfer via WhatsApp</button>
+</div>
+
+<script>
+    const products = {
+        ff: [
+            { name: "5 Diamond", price: "Rp 1.000" },
+            { name: "10 Diamond", price: "Rp 2.000" },
+            { name: "20 Diamond", price: "Rp 5.000" },
+            { name: "25 Diamond", price: "Rp 6.000" },
+            { name: "30 Diamond", price: "Rp 7.000" },
+            { name: "50 Diamond", price: "Rp 9.000" },
+            { name: "70 Diamond", price: "Rp 11.000" },
+            { name: "75 Diamond", price: "Rp 12.000" },
+            { name: "100 Diamond", price: "Rp 16.000" },
+            { name: "120 Diamond", price: "Rp 18.000" },
+            { name: "140 Diamond", price: "Rp 20.000" },
+            { name: "150 Diamond", price: "Rp 22.000" },
+            { name: "160 Diamond", price: "Rp 24.000" },
+            { name: "210 Diamond", price: "Rp 30.000" },
+            { name: "250 Diamond", price: "Rp 36.000" },
+            { name: "355 Diamond", price: "Rp 49.000" },
+            { name: "500 Diamond", price: "Rp 66.000" },
+            { name: "720 Diamond", price: "Rp 96.000" },
+            { name: "1000 Diamond", price: "Rp 134.000" },
+            { name: "1450 Diamond", price: "Rp 190.000" },
+            { name: "2000 Diamond", price: "Rp 264.000" },
+            { name: "Membership Mingguan (MM)", price: "Rp 30.000" },
+            { name: "Membership Bulanan (MB)", price: "Rp 89.000" }
+        ],
+        ml: [
+            { name: "12 Diamond", price: "Rp 4.000" },
+            { name: "28 Diamond", price: "Rp 8.000" },
+            { name: "50 Diamond", price: "Rp 14.000" },
+            { name: "70 Diamond", price: "Rp 20.000" },
+            { name: "112 Diamond", price: "Rp 32.000" },
+            { name: "140 Diamond", price: "Rp 42.000" },
+            { name: "170 Diamond", price: "Rp 50.000" },
+            { name: "222 Diamond", price: "Rp 60.000" },
+            { name: "257 Diamond", price: "Rp 70.000" },
+            { name: "296 Diamond", price: "Rp 79.000" },
+            { name: "355 Diamond", price: "Rp 96.000" },
+            { name: "408 Diamond", price: "Rp 110.000" },
+            { name: "460 Diamond", price: "Rp 125.000" },
+            { name: "514 Diamond", price: "Rp 137.000" },
+            { name: "568 Diamond", price: "Rp 150.000" },
+            { name: "600 Diamond", price: "Rp 158.000" },
+            { name: "706 Diamond", price: "Rp 185.000" },
+            { name: "875 Diamond", price: "Rp 226.000" },
+            { name: "963 Diamond", price: "Rp 245.000" },
+            { name: "1050 Diamond", price: "Rp 270.000" },
+            { name: "1412 Diamond", price: "Rp 365.000" },
+            { name: "Weekly Diamond Pass (WDP)", price: "Rp 28.000" }
+        ],
+        ml_ftu: [
+            { name: "50 + Bonus", price: "Rp 16.000" },
+            { name: "150 + Bonus", price: "Rp 45.000" },
+            { name: "250 + Bonus", price: "Rp 76.000" },
+            { name: "500 + Bonus", price: "Rp 152.000" }
+        ],
+        pubg: [
+            { name: "60 UC", price: "Rp 18.000" },
+            { name: "120 UC", price: "Rp 33.000" },
+            { name: "240 UC", price: "Rp 68.000" },
+            { name: "300 UC", price: "Rp 85.000" },
+            { name: "385 UC", price: "Rp 106.000" },
+            { name: "445 UC", price: "Rp 120.000" },
+            { name: "505 UC", price: "Rp 136.000" },
+            { name: "565 UC", price: "Rp 157.000" },
+            { name: "600 UC", price: "Rp 165.000" },
+            { name: "720 UC", price: "Rp 195.000" },
+            { name: "840 UC", price: "Rp 218.000" },
+            { name: "900 UC", price: "Rp 236.000" },
+            { name: "1500 UC", price: "Rp 386.000" },
+            { name: "1800 UC", price: "Rp 420.000" }
+        ],
+        hok: [
+            { name: "16 Tokens", price: "Rp 3.500" },
+            { name: "80 Tokens", price: "Rp 19.000" },
+            { name: "240 Tokens", price: "Rp 53.000" },
+            { name: "400 Tokens", price: "Rp 83.000" },
+            { name: "560 Tokens", price: "Rp 115.000" },
+            { name: "800 Tokens", price: "Rp 162.000" },
+            { name: "1200 Tokens", price: "Rp 253.000" },
+            { name: "2400 Tokens", price: "Rp 503.000" }
+        ],
+        bs: [
+            { name: "100 Gold", price: "Rp 16.000" },
+            { name: "300 Gold", price: "Rp 45.000" },
+            { name: "500 Gold", price: "Rp 75.000" },
+            { name: "1000 Gold", price: "Rp 136.000" },
+            { name: "2000 Gold", price: "Rp 258.000" },
+            { name: "5000 Gold", price: "Rp 640.000" }
+        ],
+        jasher: [
+            { name: "12 Jam", price: "200p" },
+            { name: "1 Hari", price: "500p" },
+            { name: "3 Hari", price: "1k" },
+            { name: "1 Minggu", price: "3k" },
+            { name: "2 Minggu", price: "4k" },
+            { name: "1 Bulan", price: "6k" },
+            { name: "3 Bulan", price: "7k" }
+        ],
+        jpm: [
+            { name: "10 Member", price: "500p" },
+            { name: "20 Member", price: "1k" },
+            { name: "50 Member", price: "3k" },
+            { name: "70 Member", price: "4k" },
+            { name: "100 Member", price: "5k" },
+            { name: "150 Member", price: "7k" },
+            { name: "250 Member", price: "8k" },
+            { name: "400 Member", price: "12k" },
+            { name: "500 Member", price: "16k" }
+        ]
+    };
+
+    let selectedItem = null;
+
+    function loadItems() {
+        const category = document.getElementById('category').value;
+        const grid = document.getElementById('itemsGrid');
+        grid.innerHTML = '';
+        selectedItem = null;
+
+        if (!category || !products[category]) return;
+
+        products[category].forEach(item => {
+            const card = document.createElement('div');
+            card.className = 'item-card';
+            card.innerHTML = `
+                <div class="item-title">${item.name}</div>
+                <div class="item-price">${item.price}</div>
+            `;
+            card.onclick = () => {
+                document.querySelectorAll('.item-card').forEach(c => c.classList.remove('active'));
+                card.classList.add('active');
+                selectedItem = item;
+            };
+            grid.appendChild(card);
+        });
+    }
+
+    function sendOrder() {
+        const category = document.getElementById('category').selectedOptions[0].text;
+        const userData = document.getElementById('userData').value;
+
+        if (!document.getElementById('category').value) {
+            alert('Silakan pilih layanan terlebih dahulu!');
+            return;
+        }
+        if (!userData) {
+            alert('Silakan isi ID / Data Akun terlebih dahulu!');
+            return;
+        }
+        if (!selectedItem) {
+            alert('Silakan pilih nominal/paket yang diinginkan!');
+            return;
+        }
+
+        const adminPhone = "6289505929536";
+        const message = `Halo Ciaa Store, saya sudah melakukan pembayaran untuk pesanan berikut:\n\n` +
+                        `• *Layanan*: ${category}\n` +
+                        `• *Paket*: ${selectedItem.name}\n` +
+                        `• *Total*: ${selectedItem.price}\n` +
+                        `• *Data Akun/Format*: ${userData}\n\n` +
+                        `Berikut saya lampirkan foto bukti transfernya ya!`;
+
+        const encodedMessage = encodeURIComponent(message);
+        window.open(`https://wa.me/${adminPhone}?text=${encodedMessage}`, '_blank');
+    }
+</script>
+
+</body>
+</html>
