@@ -8,10 +8,11 @@
     <style>
         :root {
             --pink-main: #ff9ebb;
-            --pink-soft: rgba(255, 228, 236, 0.9);
+            --pink-soft: rgba(255, 240, 245, 0.92);
+            --pink-bright: #ffe4ec;
             --pink-dark: #d85c80;
-            --bg-color: #0f172a;
-            --card-bg: rgba(255, 255, 255, 0.92);
+            --bg-color: #fff0f5;
+            --card-bg: rgba(255, 255, 255, 0.94);
         }
 
         * {
@@ -24,13 +25,13 @@
             margin: 0;
             padding: 15px;
             padding-bottom: 80px;
-            color: #333;
+            color: #444;
             min-height: 100vh;
             position: relative;
             overflow-x: hidden;
         }
 
-        /* LATAR BELAKANG GAMBAR LOGO (logo.jpg) */
+        /* LATAR BELAKANG TERANG DENGAN LOGO BLUR & GLOWING */
         body::before {
             content: '';
             position: fixed;
@@ -41,12 +42,12 @@
             background-image: url('logo.jpg');
             background-size: cover;
             background-position: center;
-            filter: blur(25px) brightness(0.4);
-            transform: scale(1.1);
+            filter: blur(18px) brightness(1.15) opacity(0.35);
+            transform: scale(1.08);
             z-index: -2;
         }
 
-        /* OVERLAY EFEK GLOW */
+        /* OVERLAY CAHAYA MENGKILAP (GLOWING SPARKLES EFFECT) */
         body::after {
             content: '';
             position: fixed;
@@ -55,44 +56,111 @@
             width: 100%;
             height: 100%;
             background: 
-                radial-gradient(circle at 20% 20%, rgba(255, 158, 187, 0.25) 0%, transparent 40%),
-                radial-gradient(circle at 80% 80%, rgba(216, 92, 128, 0.25) 0%, transparent 40%);
+                radial-gradient(circle at 15% 20%, rgba(255, 255, 255, 0.9) 0%, transparent 25%),
+                radial-gradient(circle at 85% 30%, rgba(255, 182, 193, 0.4) 0%, transparent 35%),
+                radial-gradient(circle at 50% 80%, rgba(255, 255, 255, 0.8) 0%, transparent 30%),
+                linear-gradient(135deg, rgba(255, 240, 245, 0.6) 0%, rgba(255, 228, 236, 0.6) 100%);
             z-index: -1;
             pointer-events: none;
         }
 
-        /* HIASAN KUPU-KUPU MELAYANG */
+        /* ANIMASI KUPU-KUPU BETERBANGAN */
         .butterfly-decor {
             position: fixed;
-            font-size: 24px;
-            color: rgba(255, 158, 187, 0.6);
             pointer-events: none;
             z-index: 0;
-            animation: floatButterfly 7s ease-in-out infinite alternate;
-            text-shadow: 0 0 10px rgba(255, 158, 187, 0.8);
+            animation: flyButterfly 12s linear infinite;
+            filter: drop-shadow(0 0 6px rgba(255, 255, 255, 0.9));
         }
 
-        .bf-1 { top: 10%; left: 5%; animation-delay: 0s; }
-        .bf-2 { top: 55%; right: 6%; animation-delay: 2s; transform: scaleX(-1); }
-        .bf-3 { bottom: 12%; left: 8%; animation-delay: 4s; }
+        .bf-1 {
+            font-size: 26px;
+            color: #ffffff;
+            top: 80%;
+            left: -10%;
+            animation-duration: 14s;
+            animation-delay: 0s;
+        }
 
-        @keyframes floatButterfly {
-            0% { transform: translateY(0px) rotate(0deg); }
-            50% { transform: translateY(-15px) rotate(10deg); }
-            100% { transform: translateY(-25px) rotate(-8deg); }
+        .bf-2 {
+            font-size: 20px;
+            color: #ffb6c1;
+            top: 60%;
+            left: -10%;
+            animation-duration: 11s;
+            animation-delay: 4s;
+        }
+
+        .bf-3 {
+            font-size: 24px;
+            color: #ffffff;
+            top: 30%;
+            left: -10%;
+            animation-duration: 16s;
+            animation-delay: 2s;
+        }
+
+        .bf-4 {
+            font-size: 18px;
+            color: #ffa4ba;
+            top: 90%;
+            left: -10%;
+            animation-duration: 10s;
+            animation-delay: 7s;
+        }
+
+        @keyframes flyButterfly {
+            0% {
+                transform: translate(0, 0) rotate(15deg) scale(0.8);
+                opacity: 0;
+            }
+            10% {
+                opacity: 0.9;
+            }
+            50% {
+                transform: translate(60vw, -30vh) rotate(-10deg) scale(1.1);
+            }
+            90% {
+                opacity: 0.9;
+            }
+            100% {
+                transform: translate(110vw, -60vh) rotate(20deg) scale(0.8);
+                opacity: 0;
+            }
+        }
+
+        /* ORNAMEN CAHAYA MENGKILAP / SPARKLES */
+        .sparkle {
+            position: fixed;
+            background: white;
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: 0;
+            animation: twinkle 3s ease-in-out infinite alternate;
+            box-shadow: 0 0 8px 2px rgba(255, 255, 255, 0.8);
+        }
+
+        .sp-1 { width: 4px; height: 4px; top: 15%; left: 20%; animation-delay: 0s; }
+        .sp-2 { width: 6px; height: 6px; top: 40%; left: 80%; animation-delay: 1s; }
+        .sp-3 { width: 5px; height: 5px; top: 75%; left: 15%; animation-delay: 2s; }
+        .sp-4 { width: 4px; height: 4px; top: 85%; left: 70%; animation-delay: 1.5s; }
+
+        @keyframes twinkle {
+            0% { transform: scale(0.5); opacity: 0.3; }
+            100% { transform: scale(1.4); opacity: 1; }
         }
 
         .container {
             max-width: 600px;
             margin: 0 auto;
             background: var(--card-bg);
-            backdrop-filter: blur(10px);
+            backdrop-filter: blur(12px);
             padding: 20px;
-            border-radius: 20px;
-            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.4);
+            border-radius: 24px;
+            box-shadow: 0 10px 30px rgba(255, 158, 187, 0.25);
             position: relative;
             z-index: 1;
-            border: 1px solid rgba(255, 255, 255, 0.3);
+            border: 2px solid rgba(255, 255, 255, 0.8);
         }
 
         .header img {
@@ -100,19 +168,21 @@
             height: auto;
             max-height: 180px;
             object-fit: cover;
-            border-radius: 15px;
+            border-radius: 16px;
             margin-bottom: 15px;
             border: 2px solid var(--pink-main);
+            display: block;
         }
 
         /* Profile Section */
         .profile-box {
             text-align: center;
             margin-bottom: 20px;
-            padding: 15px 10px 10px;
+            padding: 15px 10px 12px;
             background: var(--pink-soft);
-            border-radius: 15px;
+            border-radius: 16px;
             border: 1px solid rgba(255, 158, 187, 0.4);
+            box-shadow: 0 4px 12px rgba(255, 182, 193, 0.15);
         }
 
         .profile-avatar {
@@ -123,7 +193,7 @@
             object-fit: cover;
             margin-top: -40px;
             background: #fff;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+            box-shadow: 0 4px 12px rgba(218, 92, 128, 0.2);
         }
 
         .profile-title {
@@ -135,7 +205,7 @@
 
         .profile-desc {
             font-size: 0.82rem;
-            color: #555;
+            color: #666;
             margin-bottom: 8px;
         }
 
@@ -147,6 +217,7 @@
             padding: 3px 10px;
             border-radius: 12px;
             font-weight: bold;
+            box-shadow: 0 2px 6px rgba(37, 211, 102, 0.3);
         }
 
         .page {
@@ -172,27 +243,32 @@
         }
 
         .menu-card {
-            border: 2px solid var(--pink-soft);
-            padding: 15px 10px;
-            border-radius: 15px;
+            border: 2px solid var(--pink-bright);
+            padding: 12px 8px;
+            border-radius: 16px;
             text-align: center;
             cursor: pointer;
             transition: all 0.2s ease;
             background: #fff;
             font-weight: bold;
+            font-size: 0.85rem;
             color: var(--pink-dark);
-            box-shadow: 0 2px 8px rgba(255, 158, 187, 0.2);
+            box-shadow: 0 3px 10px rgba(255, 158, 187, 0.15);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
         }
 
         .menu-card:hover {
             border-color: var(--pink-main);
-            background-color: var(--pink-soft);
+            background-color: var(--pink-bright);
             transform: translateY(-2px);
         }
 
         /* Detail Page */
         .btn-back {
-            background-color: var(--pink-soft);
+            background-color: var(--pink-bright);
             color: var(--pink-dark);
             border: none;
             padding: 8px 15px;
@@ -206,7 +282,7 @@
             color: var(--pink-dark);
             font-size: 0.95rem;
             margin-top: 15px;
-            border-bottom: 2px solid var(--pink-soft);
+            border-bottom: 2px solid var(--pink-bright);
             padding-bottom: 5px;
             font-weight: bold;
         }
@@ -226,11 +302,12 @@
         input {
             width: 100%;
             padding: 12px;
-            border: 2px solid var(--pink-soft);
+            border: 2px solid var(--pink-bright);
             border-radius: 10px;
             box-sizing: border-box;
             outline: none;
             font-size: 0.95rem;
+            background: #fff;
         }
 
         input:focus {
@@ -245,7 +322,7 @@
         }
 
         .item-card {
-            border: 2px solid var(--pink-soft);
+            border: 2px solid var(--pink-bright);
             padding: 12px 8px;
             border-radius: 12px;
             text-align: center;
@@ -261,7 +338,7 @@
 
         .item-card.active {
             border-color: var(--pink-dark);
-            background-color: var(--pink-soft);
+            background-color: var(--pink-bright);
         }
 
         .item-title {
@@ -279,7 +356,7 @@
 
         /* METODE PEMBAYARAN */
         .payment-card {
-            border: 2px solid var(--pink-soft);
+            border: 2px solid var(--pink-bright);
             border-radius: 12px;
             padding: 10px 12px;
             margin-top: 8px;
@@ -293,7 +370,7 @@
 
         .payment-card:hover, .payment-card.active {
             border-color: var(--pink-dark);
-            background: var(--pink-soft);
+            background: var(--pink-bright);
         }
 
         .payment-info {
@@ -375,7 +452,7 @@
             border-radius: 30px;
             font-weight: bold;
             font-size: 0.85rem;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
             cursor: pointer;
             display: flex;
             align-items: center;
@@ -387,10 +464,17 @@
 </head>
 <body>
 
-<!-- HIASAN KUPU-KUPU -->
+<!-- ANIMASI KUPU-KUPU PINK SOFT & PUTIH -->
 <i class="fa-solid fa-butterfly butterfly-decor bf-1"></i>
 <i class="fa-solid fa-butterfly butterfly-decor bf-2"></i>
 <i class="fa-solid fa-butterfly butterfly-decor bf-3"></i>
+<i class="fa-solid fa-butterfly butterfly-decor bf-4"></i>
+
+<!-- SPARKLES / CAHAYA MENGKILAP -->
+<div class="sparkle sp-1"></div>
+<div class="sparkle sp-2"></div>
+<div class="sparkle sp-3"></div>
+<div class="sparkle sp-4"></div>
 
 <div class="container">
     <div class="header">
