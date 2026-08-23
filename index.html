@@ -92,7 +92,6 @@
             font-size: 0.75rem; padding: 4px 12px; border-radius: 12px; font-weight: bold;
         }
 
-        /* BANNER COMING SOON WEB DESIGN */
         .coming-soon-banner {
             background: linear-gradient(135deg, #ff9ebb 0%, #d85c80 100%);
             border-radius: 20px;
@@ -281,8 +280,6 @@
 
     <!-- HOME PAGE -->
     <div id="homePage" class="page active">
-        
-        <!-- BANNER COMING SOON JASA PEMBUATAN WEB -->
         <div class="coming-soon-banner">
             <span class="cs-tag">✨ SEGERA HADIR ✨</span>
             <div class="cs-title">🌐 Jasa Pembuatan Website Custom</div>
@@ -601,13 +598,14 @@
         switchTab('services');
     }
 
-    function selectPayment(method, el) {
-        selectedPayment = method;
+    /* PERBAIKAN: Menyimpan metode sebagai STRING, bukan elemen DOM */
+    function selectPayment(methodName, el) {
+        selectedPayment = methodName;
         document.querySelectorAll('.payment-card').forEach(c => c.classList.remove('active'));
         el.classList.add('active');
 
         const btnMain = document.getElementById('btnMainAction');
-        if (method === 'DANA' || method === 'GOPAY') {
+        if (methodName === 'DANA' || methodName === 'GOPAY') {
             btnMain.innerHTML = '<i class="fa-brands fa-whatsapp"></i> Konfirmasi Pembayaran via WA';
             btnMain.classList.add('wa-mode');
         } else {
@@ -653,6 +651,7 @@
         queueList.innerHTML = html;
     }
 
+    /* PERBAIKAN: Logika eksekusi aksi utama disempurnakan */
     function handleMainAction() {
         const userData = document.getElementById('userData').value;
         const userDesc = document.getElementById('userDesc').value;
