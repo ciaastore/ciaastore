@@ -189,7 +189,7 @@
 
         textarea {
             resize: vertical;
-            min-height: 90px;
+            min-height: 100px;
         }
 
         .info-box {
@@ -327,15 +327,24 @@
         <button class="btn-back" onclick="goHome()">← Kembali</button>
         <h2 id="serviceTitle" style="color: var(--pink-dark); margin-top:0; font-size:1.1rem;"></h2>
 
+        <!-- KOLOM 1: NAMA STORE / DATA ATAS -->
         <div class="form-group">
             <label id="inputLabel">1. Masukkan Data</label>
-            <textarea id="userData" placeholder=""></textarea>
+            <input type="text" id="storeNameInput" placeholder="">
         </div>
 
+        <!-- SECTION 2: PAKET / NOMINAL -->
         <div class="section-title">2. Pilih Nominal / Paket</div>
         <div class="grid-container" id="itemsGrid"></div>
 
-        <div class="section-title">3. Pilih Metode Pembayaran</div>
+        <!-- KOLOM KEDUA KHUSUS JASHER & JPM (DESKRIPSI / TEMPAT LINK) -->
+        <div class="form-group" id="linkGroupSection" style="display: none; margin-top: 20px;">
+            <label>3. Deskripsi / Tempat Link</label>
+            <textarea id="userLinkArea" placeholder=""></textarea>
+        </div>
+
+        <!-- SECTION 3: METODE PEMBAYARAN -->
+        <div class="section-title" id="paymentSectionTitle">3. Pilih Metode Pembayaran</div>
         
         <div class="payment-card" onclick="selectPayment('DANA', this)">
             <div class="payment-info">
@@ -411,6 +420,7 @@
         'ff': { 
             title: 'Free Fire', 
             label: 'Masukkan User ID (FF)', 
+            placeholder: 'Contoh: 123456789',
             items: [
                 { name: '5 Diamond', price: 1000 },
                 { name: '10 Diamond', price: 2000 },
@@ -440,6 +450,7 @@
         'ml': { 
             title: 'Mobile Legends', 
             label: 'Masukkan User ID & Zone ID', 
+            placeholder: 'Contoh: 12345678 (1234)',
             items: [
                 { name: '12 Diamond', price: 4000 },
                 { name: '28 Diamond', price: 8000 },
@@ -468,6 +479,7 @@
         'ml_ftu': { 
             title: 'ML First Top Up', 
             label: 'Masukkan User ID & Zone ID', 
+            placeholder: 'Contoh: 12345678 (1234)',
             items: [
                 { name: '50 + Bonus', price: 16000 },
                 { name: '150 + Bonus', price: 45000 },
@@ -478,6 +490,7 @@
         'pubg': { 
             title: 'PUBG Mobile', 
             label: 'Masukkan ID PUBG', 
+            placeholder: 'Contoh: 5123456789',
             items: [
                 { name: '60 UC', price: 18000 },
                 { name: '120 UC', price: 33000 },
@@ -498,6 +511,7 @@
         'hok': { 
             title: 'Honor of Kings', 
             label: 'Masukkan Player ID', 
+            placeholder: 'Contoh: 987654321',
             items: [
                 { name: '16 Tokens', price: 3500 },
                 { name: '80 Tokens', price: 19000 },
@@ -512,6 +526,7 @@
         'bs': { 
             title: 'Blood Strike', 
             label: 'Masukkan User ID', 
+            placeholder: 'Contoh: BS123456',
             items: [
                 { name: '100 Gold', price: 16000 },
                 { name: '300 Gold', price: 45000 },
@@ -523,7 +538,8 @@
         },
         'jasher': { 
             title: 'Jasher (Jasa Share)', 
-            label: 'Masukkan Link Postingan (Bisa Kirim Banyak Link Berurutan Ke Bawah):', 
+            label: 'Nama Store', 
+            placeholder: 'Contoh: Ciaa Store',
             items: [
                 { name: '12 Jam', price: 200 },
                 { name: '1 Hari', price: 500 },
@@ -536,7 +552,8 @@
         },
         'jpm': { 
             title: 'JPM (Push Member)', 
-            label: 'Masukkan Link Group / Channel (Bisa Kirim Banyak Link Berurutan Ke Bawah):', 
+            label: 'Nama Store', 
+            placeholder: 'Contoh: Ciaa Store',
             items: [
                 { name: '10 Member', price: 500 },
                 { name: '20 Member', price: 1000 },
@@ -552,6 +569,7 @@
         'canva': { 
             title: 'Canva Pro', 
             label: 'Masukkan Email Canva', 
+            placeholder: 'Contoh: email@gmail.com',
             items: [
                 { name: 'Canva 1 Bulan', price: 3000 },
                 { name: 'Canva Head 1 Bulan', price: 7000 }
@@ -560,6 +578,7 @@
         'am': { 
             title: 'Alight Motion', 
             label: 'Masukkan Email Alight Motion', 
+            placeholder: 'Contoh: email@gmail.com',
             items: [
                 { name: 'Alight Motion 1 Tahun', price: 4000 }
             ] 
@@ -567,6 +586,7 @@
         'yt': { 
             title: 'YouTube Premium', 
             label: 'Masukkan Email YouTube', 
+            placeholder: 'Contoh: email@gmail.com',
             items: [
                 { name: 'YouTube 1 Bulan (Family)', price: 5000 }
             ] 
@@ -574,6 +594,7 @@
         'iqiyi': { 
             title: 'iQIYI', 
             label: 'Masukkan Email / No HP', 
+            placeholder: 'Contoh: 08123456789',
             items: [
                 { name: 'iQIYI 1 Bulan (Private VIP Standar)', price: 37000 }
             ] 
@@ -581,6 +602,7 @@
         'capcut': { 
             title: 'CapCut Pro', 
             label: 'Masukkan Email CapCut', 
+            placeholder: 'Contoh: email@gmail.com',
             items: [
                 { name: 'CapCut Pro 7 Hari Private', price: 8500 },
                 { name: 'CapCut Pro 1 Bulan Private', price: 25000 }
@@ -589,6 +611,7 @@
         'wetv': { 
             title: 'WeTV', 
             label: 'Masukkan No HP / Email', 
+            placeholder: 'Contoh: 08123456789',
             items: [
                 { name: 'WeTV 1 Bulan Sharing', price: 11000 },
                 { name: 'WeTV 3 Bulan Sharing', price: 27000 },
@@ -598,6 +621,7 @@
         'gemini': { 
             title: 'Gemini AI', 
             label: 'Masukkan Email', 
+            placeholder: 'Contoh: email@gmail.com',
             items: [
                 { name: 'AI Gemini Pro 1 Bulan', price: 16000 }
             ] 
@@ -605,6 +629,7 @@
         'pixellab': { 
             title: 'Pixellab Mod', 
             label: 'Masukkan Email / No WA', 
+            placeholder: 'Contoh: 08123456789',
             items: [
                 { name: 'Pixellab Mod', price: 2000 }
             ] 
@@ -670,17 +695,27 @@
 
     function openPage(serviceKey) {
         selectedServiceKey = serviceKey;
-        const data = servicesData[serviceKey] || { title: 'Layanan', label: 'Masukkan Data', items: [] };
+        const data = servicesData[serviceKey] || { title: 'Layanan', label: 'Masukkan Data', placeholder: '', items: [] };
         
         document.getElementById('serviceTitle').innerText = 'Layanan ' + data.title;
         document.getElementById('inputLabel').innerText = '1. ' + data.label;
         
-        const userDataInput = document.getElementById('userData');
-        userDataInput.value = '';
+        const storeInput = document.getElementById('storeNameInput');
+        storeInput.value = '';
+        storeInput.placeholder = data.placeholder || 'Masukkan Data...';
+
+        const linkSection = document.getElementById('linkGroupSection');
+        const linkArea = document.getElementById('userLinkArea');
+        const paymentTitle = document.getElementById('paymentSectionTitle');
+
         if (serviceKey === 'jasher' || serviceKey === 'jpm') {
-            userDataInput.placeholder = "Tempel link di sini...\nBisa tekan Enter untuk buat baris baru!";
+            linkSection.style.display = 'block';
+            linkArea.value = '*NAMA GB*\nisi link kamu';
+            paymentTitle.innerText = '4. Pilih Metode Pembayaran';
         } else {
-            userDataInput.placeholder = "Masukkan Data...";
+            linkSection.style.display = 'none';
+            linkArea.value = '';
+            paymentTitle.innerText = '3. Pilih Metode Pembayaran';
         }
 
         const grid = document.getElementById('itemsGrid');
@@ -718,11 +753,23 @@
         alert('Nomor berhasil disalin: ' + text);
     }
 
-    function handleMainAction() {
-        const userData = document.getElementById('userData').value.trim();
+    function getFormattedUserData() {
+        const storeVal = document.getElementById('storeNameInput').value.trim();
+        
+        if (selectedServiceKey === 'jasher' || selectedServiceKey === 'jpm') {
+            const linkVal = document.getElementById('userLinkArea').value.trim();
+            if (!storeVal && !linkVal) return '';
+            return `Nama Store: ${storeVal}\n\nDeskripsi / Tempat Link:\n${linkVal}`;
+        }
+        
+        return storeVal;
+    }
 
-        if (!userData) {
-            alert('Harap isi data tujuan / link terlebih dahulu!');
+    function handleMainAction() {
+        const formattedData = getFormattedUserData();
+
+        if (!formattedData) {
+            alert('Harap lengkapi data terlebih dahulu!');
             return;
         }
         if (!selectedItem) {
@@ -735,13 +782,13 @@
         }
 
         if (selectedPaymentMethod === 'QRIS') {
-            openQrisPage(userData);
+            openQrisPage(formattedData);
         } else {
-            confirmAndSendWA(userData);
+            confirmAndSendWA(formattedData);
         }
     }
 
-    function openQrisPage(userData) {
+    function openQrisPage(formattedData) {
         hideAllPages();
         document.getElementById('paymentPage').classList.add('active');
 
@@ -767,7 +814,7 @@
 
         const btnWa = document.getElementById('btnWaConfirm');
         btnWa.onclick = function() {
-            confirmAndSendWA(userData);
+            confirmAndSendWA(formattedData);
         };
     }
 
@@ -776,7 +823,7 @@
         alert('Kode Teks QRIS Valid Berhasil Disalin!');
     }
 
-    function confirmAndSendWA(userData) {
+    function confirmAndSendWA(formattedData) {
         currentQueueNumber++;
         const queueNo = '#' + currentQueueNumber;
         const serviceTitle = servicesData[selectedServiceKey].title;
@@ -785,7 +832,7 @@
             queueNo: queueNo,
             service: serviceTitle,
             item: selectedItem.name,
-            target: userData,
+            target: formattedData,
             status: 'Proses / Menunggu Verifikasi'
         };
 
@@ -799,7 +846,7 @@
                       `📌 *No. Antrian:* ${queueNo}\n` +
                       `🎮 *Layanan:* ${serviceTitle}\n` +
                       `📦 *Paket:* ${selectedItem.name}\n` +
-                      `🎯 *Data / Link Tujuan:*\n${userData}\n\n` +
+                      `🎯 *Data Tujuan:*\n${formattedData}\n\n` +
                       `💰 *Total:* Rp ${selectedItem.price.toLocaleString('id-ID')}\n` +
                       `💳 *Metode Pembayaran:* ${selectedPaymentMethod}\n\n` +
                       `Mohon segera diproses ya Min! Terima kasih.`;
@@ -844,7 +891,7 @@
             <div class="queue-number">${activeQueue.queueNo}</div>
             <div class="queue-details">
                 <div class="queue-service">${activeQueue.service} - ${activeQueue.item}</div>
-                <div class="queue-target">Data/Link:\n${activeQueue.target}</div>
+                <div class="queue-target">${activeQueue.target}</div>
             </div>
             <div class="queue-status">${activeQueue.status}</div>
         `;
