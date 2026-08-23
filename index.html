@@ -257,7 +257,7 @@
 
     <div class="profile-box">
         <img src="logo.jpg" alt="Logo Ciaa Store" class="profile-avatar">
-        <div class="profile-title">Ciaa Store</div>
+        <div class="profile-title">Ciaa Store Real</div>
         <div class="profile-desc">Layanan Top Up Game & Premium Apk Terpercaya</div>
         <span class="status-badge">● System Online</span>
     </div>
@@ -379,7 +379,7 @@
             <div class="summary-row"><span>Layanan:</span><strong id="payServiceTitle">-</strong></div>
             <div class="summary-row"><span>Paket:</span><strong id="payItemName">-</strong></div>
             <div class="summary-row"><span>Total Tagihan:</span><strong id="payItemPrice" style="font-size:1.1rem; color:var(--pink-dark);">-</strong></div>
-            <div class="summary-row"><span>Metode Pembayaran:</span><strong>QRIS Otomatis</strong></div>
+            <div class="summary-row"><span>Merchant:</span><strong>Ciaa Store Real</strong></div>
         </div>
 
         <div class="qris-display-area">
@@ -388,7 +388,7 @@
             
             <div class="qrcode-container" id="qrcode"></div>
 
-            <div style="font-weight:bold; font-size:0.8rem; color:var(--pink-dark); margin-top:10px;">Kode Teks QRIS:</div>
+            <div style="font-weight:bold; font-size:0.8rem; color:var(--pink-dark); margin-top:10px;">Kode Teks QRIS Valid:</div>
             <div class="qris-code-box" id="qrisCodeText">Memuat kode QRIS...</div>
             <button class="copy-btn" style="margin-top:8px; width:100%; padding:8px;" onclick="copyQrisText()">📋 Salin Kode Teks QRIS</button>
         </div>
@@ -400,6 +400,9 @@
 </div>
 
 <script>
+    // QRIS Statis Asli Toko Anda (Ciaa Store Real)
+    const BASE_QRIS_STATIC = "00020101021126570011ID.DANA.WWW011893600915303380466202090338046620303UMI51440014ID.CO.QRIS.WWW0215ID10265642557130303UMI5204549953033605802ID5915Ciaa Store Real6014Kota Pontianak610578114630476C7";
+
     const servicesData = {
         'ff': { title: 'Free Fire', label: 'Masukkan User ID (FF)', items: [{ name: '140 Diamonds', price: 20000 }, { name: '355 Diamonds', price: 50000 }, { name: '720 Diamonds', price: 100000 }] },
         'ml': { title: 'Mobile Legends', label: 'Masukkan User ID & Zone ID', items: [{ name: '86 Diamonds', price: 22000 }, { name: '172 Diamonds', price: 44000 }, { name: '257 Diamonds', price: 65000 }] },
@@ -425,6 +428,49 @@
     let currentQueueNumber = 100;
     let activeQueue = null;
     let currentQrisPayload = '';
+
+    // ALGORITMA PENIHITUNGAN CRC-16 (EMVCo Standar Resmi)
+    function calcCRC16(str) {
+        let crc = 0xFFFF;
+        for (let c = 0; c < str.length; c++) {
+            crc ^= str.charCodeAt(c) << 8;
+            for (let i = 0; i < 8; i++) {
+                if ((crc & 0x8000) !== 0) {
+                    crc = (crc << 1) ^ 0x1021;
+                } else {
+                    crc = crc << 1;
+                }
+            }
+        }
+        crc = crc & 0xFFFF;
+        return crc.toString(16).toUpperCase().padStart(4, '0');
+    }
+
+    // FUNGSI KONVERSI QRIS STATIS MENJADI DINAMIS DENGAN NOMINAL AUTOMATIS
+    function generateDynamicQris(staticQris, amount) {
+        // Cut Checksum awal (6304 + 4 karakter CRC)
+        let qris = staticQris.slice(0, -8);
+
+        // Ubah Tag 010211 (Statis) menjadi 010212 (Dinamis)
+        qris = qris.replace("010211", "010212");
+
+        // Format Tag Nominal (54)
+        const amtStr = amount.toString();
+        const amtTag = "54" + amtStr.length.toString().padStart(2, '0') + amtStr;
+
+        // Cari Posisi Penyisipan Tag Nominal (Sebelum Country Code Tag 58)
+        const splitIndex = qris.indexOf("5802ID");
+        if (splitIndex !== -1) {
+            qris = qris.slice(0, splitIndex) + amtTag + qris.slice(splitIndex);
+        } else {
+            qris = qris + amtTag;
+        }
+
+        // Tambahkan Tag Checksum (6304) dan Hitung CRC16 baru
+        qris = qris + "6304";
+        const newCrc = calcCRC16(qris);
+        return qris + newCrc;
+    }
 
     function hideAllPages() {
         document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
@@ -515,9 +561,8 @@
         document.getElementById('payItemName').innerText = selectedItem.name;
         document.getElementById('payItemPrice').innerText = 'Rp ' + selectedItem.price.toLocaleString('id-ID');
 
-        // Generate QRIS Text String dengan Nominal
-        currentQrisPayload = `00020101021226670016ID.CO.QRIS.WWW01189360091100220268580215ID102222046835203033605802ID5910CIAA STORE6013KOTA PONTIANAK61057811162070703A01530300054${selectedItem.price.toString().length.toString().padStart(2, '0')}${selectedItem.price}5802ID6304`;
-        
+        // Buat QRIS Dinamis Valid berdasarkan data merchant toko Anda
+        currentQrisPayload = generateDynamicQris(BASE_QRIS_STATIC, selectedItem.price);
         document.getElementById('qrisCodeText').innerText = currentQrisPayload;
 
         const qrContainer = document.getElementById('qrcode');
@@ -525,11 +570,11 @@
         
         new QRCode(qrContainer, {
             text: currentQrisPayload,
-            width: 180,
-            height: 180,
+            width: 200,
+            height: 200,
             colorDark : "#000000",
             colorLight : "#ffffff",
-            correctLevel : QRCode.CorrectLevel.H
+            correctLevel : QRCode.CorrectLevel.M
         });
 
         const btnWa = document.getElementById('btnWaConfirm');
@@ -540,7 +585,7 @@
 
     function copyQrisText() {
         navigator.clipboard.writeText(currentQrisPayload);
-        alert('Kode Teks QRIS Berhasil Disalin!');
+        alert('Kode Teks QRIS Valid Berhasil Disalin!');
     }
 
     function confirmAndSendWA(userData) {
@@ -548,7 +593,6 @@
         const queueNo = '#' + currentQueueNumber;
         const serviceTitle = servicesData[selectedServiceKey].title;
 
-        // Antrian baru resmi dicatat DI SINI saat beralih ke WhatsApp
         activeQueue = {
             queueNo: queueNo,
             service: serviceTitle,
