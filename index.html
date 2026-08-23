@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Ciaa Store - Top Up & Services</title>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
-    <!-- Pustaka Generator QR Code -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
     <style>
         :root {
@@ -56,34 +55,6 @@
             pointer-events: none;
         }
 
-        .butterfly-container {
-            position: fixed;
-            top: 0; left: 0; width: 100%; height: 100%;
-            pointer-events: none;
-            z-index: 0;
-            overflow: hidden;
-        }
-
-        .butterfly {
-            position: absolute;
-            font-size: 1.4rem;
-            opacity: 0.6;
-            filter: drop-shadow(0 0 6px rgba(255, 182, 193, 0.8));
-            animation: floatSlow 18s ease-in-out infinite alternate;
-        }
-
-        .butterfly:nth-child(1) { top: 15%; left: -5%; animation-duration: 22s; color: #ffaec9; }
-        .butterfly:nth-child(2) { top: 45%; right: -5%; animation-duration: 26s; animation-delay: 3s; color: #ffffff; }
-        .butterfly:nth-child(3) { top: 75%; left: -5%; animation-duration: 20s; animation-delay: 1s; color: #ffccd5; }
-
-        @keyframes floatSlow {
-            0% { transform: translate(0, 0) rotate(0deg); }
-            25% { transform: translate(30vw, -40px) rotate(15deg); }
-            50% { transform: translate(60vw, 20px) rotate(-10deg); }
-            75% { transform: translate(85vw, -30px) rotate(12deg); }
-            100% { transform: translate(105vw, 10px) rotate(0deg); }
-        }
-
         .container {
             max-width: 1000px;
             width: 92%;
@@ -119,6 +90,52 @@
         .status-badge {
             display: inline-block; background: #25d366; color: white;
             font-size: 0.75rem; padding: 4px 12px; border-radius: 12px; font-weight: bold;
+        }
+
+        /* BANNER COMING SOON WEB DESIGN */
+        .coming-soon-banner {
+            background: linear-gradient(135deg, #ff9ebb 0%, #d85c80 100%);
+            border-radius: 20px;
+            padding: 20px;
+            color: #fff;
+            text-align: center;
+            margin-bottom: 25px;
+            box-shadow: 0 8px 20px rgba(216, 92, 128, 0.25);
+            border: 2px dashed #ffffff;
+            position: relative;
+            overflow: hidden;
+        }
+        .coming-soon-banner::before {
+            content: '🚀';
+            position: absolute;
+            right: -10px;
+            bottom: -10px;
+            font-size: 5rem;
+            opacity: 0.15;
+            transform: rotate(-15deg);
+        }
+        .cs-tag {
+            display: inline-block;
+            background: #fff;
+            color: var(--pink-dark);
+            font-weight: 800;
+            font-size: 0.75rem;
+            padding: 4px 12px;
+            border-radius: 20px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 8px;
+        }
+        .cs-title {
+            font-size: 1.25rem;
+            font-weight: bold;
+            margin-bottom: 6px;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .cs-desc {
+            font-size: 0.85rem;
+            opacity: 0.95;
+            line-height: 1.4;
         }
 
         .nav-tabs { display: flex; gap: 12px; margin-bottom: 20px; }
@@ -195,15 +212,13 @@
         .payment-info { display: flex; align-items: center; gap: 12px; }
         .copy-btn { background: var(--pink-main); color: white; border: none; padding: 5px 12px; border-radius: 8px; font-size: 0.8rem; font-weight: bold; cursor: pointer; }
 
-        .transfer-note {
-            background: #fff0f3; border: 1.5px dashed #e11d48; color: #9f1239;
-            padding: 12px; border-radius: 12px; font-size: 0.85rem; font-weight: bold; text-align: center; margin-top: 15px;
-        }
-
-        .btn-order {
+        .btn-action-main {
             width: 100%; background-color: var(--pink-dark); color: white; border: none; padding: 16px;
             border-radius: 14px; font-weight: bold; font-size: 1rem; cursor: pointer; margin-top: 22px;
-            display: flex; align-items: center; justify-content: center; gap: 10px;
+            display: flex; align-items: center; justify-content: center; gap: 10px; transition: 0.25s;
+        }
+        .btn-action-main.wa-mode {
+            background-color: #25d366;
         }
 
         .btn-wa-confirm {
@@ -228,13 +243,10 @@
             box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2); cursor: pointer; display: flex; align-items: center; gap: 8px; z-index: 999; text-decoration: none;
         }
 
-        /* STYLE HALAMAN PEMBAYARAN BARU */
         .summary-box {
             background: #fff; border: 2px dashed var(--pink-main); border-radius: 16px; padding: 18px; margin-bottom: 20px;
         }
-        .summary-row {
-            display: flex; justify-content: space-between; margin-bottom: 8px; font-size: 0.9rem;
-        }
+        .summary-row { display: flex; justify-content: space-between; margin-bottom: 8px; font-size: 0.9rem; }
         .summary-row strong { color: var(--pink-dark); }
         
         .qris-display-area {
@@ -249,12 +261,6 @@
     </style>
 </head>
 <body>
-
-<div class="butterfly-container">
-    <div class="butterfly">🦋</div>
-    <div class="butterfly">🦋</div>
-    <div class="butterfly">🦋</div>
-</div>
 
 <div class="container">
     <div class="header">
@@ -273,8 +279,16 @@
         <button class="tab-btn" onclick="switchTab('queue')">📋 Cek Antrian</button>
     </div>
 
-    <!-- HALAMAN UTAMA LAYANAN -->
+    <!-- HOME PAGE -->
     <div id="homePage" class="page active">
+        
+        <!-- BANNER COMING SOON JASA PEMBUATAN WEB -->
+        <div class="coming-soon-banner">
+            <span class="cs-tag">✨ SEGERA HADIR ✨</span>
+            <div class="cs-title">🌐 Jasa Pembuatan Website Custom</div>
+            <div class="cs-desc">Buat toko online, portofolio, atau landing page impianmu dengan harga terjangkau & desain modern khas Ciaa Store!</div>
+        </div>
+
         <div class="category-title">✨ Silakan Pilih Layanan ✨</div>
         <div class="menu-grid">
             <div class="menu-card" onclick="openApkSubMenu()">👑 Premium Apk</div>
@@ -289,7 +303,7 @@
         </div>
     </div>
 
-    <!-- SUB MENU PREMIUM APK -->
+    <!-- APK SUB MENU -->
     <div id="apkSubMenuPage" class="page">
         <button class="btn-back" onclick="goHome()">← Kembali ke Menu Utama</button>
         <div class="category-title">👑 Premium Aplikasi</div>
@@ -300,48 +314,24 @@
         </div>
 
         <div class="apk-grid">
-            <div class="apk-card" onclick="openPage('canva')">
-                <img src="canva.jpg" alt="Canva" class="apk-icon" onerror="this.src='logo.jpg'">
-                <div class="apk-title">Canva</div>
-            </div>
-            <div class="apk-card" onclick="openPage('am')">
-                <img src="alightmotion.jpg" alt="Alight Motion" class="apk-icon" onerror="this.src='logo.jpg'">
-                <div class="apk-title">Alight Motion</div>
-            </div>
-            <div class="apk-card" onclick="openPage('yt')">
-                <img src="youtube.jpg" alt="YouTube" class="apk-icon" onerror="this.src='logo.jpg'">
-                <div class="apk-title">YouTube Premium</div>
-            </div>
-            <div class="apk-card" onclick="openPage('iqiyi')">
-                <img src="iqiyi.jpg" alt="iQIYI" class="apk-icon" onerror="this.src='logo.jpg'">
-                <div class="apk-title">iQIYI</div>
-            </div>
-            <div class="apk-card" onclick="openPage('capcut')">
-                <img src="capcut.jpg" alt="CapCut" class="apk-icon" onerror="this.src='logo.jpg'">
-                <div class="apk-title">CapCut Pro</div>
-            </div>
-            <div class="apk-card" onclick="openPage('wetv')">
-                <img src="wetv.jpg" alt="WeTV" class="apk-icon" onerror="this.src='logo.jpg'">
-                <div class="apk-title">WeTV</div>
-            </div>
-            <div class="apk-card" onclick="openPage('gemini')">
-                <img src="gemini.jpg" alt="Gemini AI" class="apk-icon" onerror="this.src='logo.jpg'">
-                <div class="apk-title">Gemini AI</div>
-            </div>
-            <div class="apk-card" onclick="openPage('pixellab')">
-                <img src="pixellab.jpg" alt="Pixellab" class="apk-icon" onerror="this.src='logo.jpg'">
-                <div class="apk-title">Pixellab Mod</div>
-            </div>
+            <div class="apk-card" onclick="openPage('canva')"><img src="canva.jpg" class="apk-icon" onerror="this.src='logo.jpg'"><div class="apk-title">Canva</div></div>
+            <div class="apk-card" onclick="openPage('am')"><img src="alightmotion.jpg" class="apk-icon" onerror="this.src='logo.jpg'"><div class="apk-title">Alight Motion</div></div>
+            <div class="apk-card" onclick="openPage('yt')"><img src="youtube.jpg" class="apk-icon" onerror="this.src='logo.jpg'"><div class="apk-title">YouTube Premium</div></div>
+            <div class="apk-card" onclick="openPage('iqiyi')"><img src="iqiyi.jpg" class="apk-icon" onerror="this.src='logo.jpg'"><div class="apk-title">iQIYI</div></div>
+            <div class="apk-card" onclick="openPage('capcut')"><img src="capcut.jpg" class="apk-icon" onerror="this.src='logo.jpg'"><div class="apk-title">CapCut Pro</div></div>
+            <div class="apk-card" onclick="openPage('wetv')"><img src="wetv.jpg" class="apk-icon" onerror="this.src='logo.jpg'"><div class="apk-title">WeTV</div></div>
+            <div class="apk-card" onclick="openPage('gemini')"><img src="gemini.jpg" class="apk-icon" onerror="this.src='logo.jpg'"><div class="apk-title">Gemini AI</div></div>
+            <div class="apk-card" onclick="openPage('pixellab')"><img src="pixellab.jpg" class="apk-icon" onerror="this.src='logo.jpg'"><div class="apk-title">Pixellab Mod</div></div>
         </div>
     </div>
 
-    <!-- HALAMAN CEK ANTRIAN -->
+    <!-- QUEUE PAGE -->
     <div id="queuePage" class="page">
         <div class="category-title">📊 Daftar Antrian Proses Terkini</div>
         <div id="queueList"></div>
     </div>
 
-    <!-- HALAMAN FORMULIR DETAIL ORDER -->
+    <!-- DETAIL PAGE -->
     <div id="detailPage" class="page">
         <button class="btn-back" onclick="goBackFromDetail()">← Kembali</button>
         <h2 id="serviceTitle" style="color: var(--pink-dark); margin-top:0; font-size:1.1rem;"></h2>
@@ -395,39 +385,34 @@
             </div>
         </div>
 
-        <button class="btn-order" onclick="goToPaymentPage()">💳 Lanjutkan ke Pembayaran</button>
+        <button id="btnMainAction" class="btn-action-main" onclick="handleMainAction()">
+            💳 Lanjutkan ke Pembayaran
+        </button>
     </div>
 
-    <!-- HALAMAN PEMBAYARAN BARU (NEW PAGE) -->
+    <!-- PAYMENT PAGE FOR QRIS -->
     <div id="paymentPage" class="page">
         <button class="btn-back" onclick="goBackToDetail()">← Ubah Pesanan</button>
-        <div class="category-title">💳 Instruksi Pembayaran</div>
+        <div class="category-title">💳 Pembayaran QRIS</div>
 
         <div class="summary-box">
             <div class="summary-row"><span>No. Antrian:</span><strong id="payQueueNo">#-</strong></div>
             <div class="summary-row"><span>Layanan:</span><strong id="payServiceTitle">-</strong></div>
             <div class="summary-row"><span>Paket:</span><strong id="payItemName">-</strong></div>
             <div class="summary-row"><span>Total Tagihan:</span><strong id="payItemPrice" style="font-size:1.1rem; color:var(--pink-dark);">-</strong></div>
-            <div class="summary-row"><span>Metode Pembayaran:</span><strong id="payMethodName">-</strong></div>
+            <div class="summary-row"><span>Metode Pembayaran:</span><strong id="payMethodName">QRIS Dinamis</strong></div>
         </div>
 
-        <!-- TAMPILAN QRIS DINAMIS -->
-        <div id="qrisSection" class="qris-display-area" style="display:none;">
+        <div class="qris-display-area">
             <div style="font-weight:bold; color:var(--pink-dark); font-size:1rem;">Scan QRIS DANA Di Bawah Ini:</div>
-            <div style="font-size:0.8rem; color:#666; margin-top:4px;">Nominal sudah terisi otomatis sesuai total tagihan di atas!</div>
+            <div style="font-size:0.8rem; color:#666; margin-top:4px;">Nominal terisi otomatis sesuai total tagihan!</div>
             
             <div id="qrcodePage" class="qrcode-container"></div>
 
             <button class="btn-download-qris" onclick="downloadQRPage()">📥 Download Gambar QRIS</button>
         </div>
 
-        <!-- TAMPILAN REKENING MANUAL (DANA / GOPAY) -->
-        <div id="manualSection" class="qris-display-area" style="display:none;">
-            <div style="font-weight:bold; color:var(--pink-dark); font-size:1rem; margin-bottom:8px;">Transfer Sesuai Nominal Ke:</div>
-            <div id="manualDetails" style="font-size:0.95rem; line-height:1.6; background:#fff0f3; padding:12px; border-radius:12px;"></div>
-        </div>
-
-        <div class="transfer-note">
+        <div style="background: #fff0f3; border: 1.5px dashed #e11d48; color: #9f1239; padding: 12px; border-radius: 12px; font-size: 0.85rem; font-weight: bold; text-align: center; margin-top: 15px;">
             ⚠️ WAJIB SIMPAN BUKTI TRANSFER!<br>Kirimkan screenshot bukti transfer pada tombol di bawah agar pesanan langsung diproses.
         </div>
 
@@ -452,40 +437,8 @@
         pubg: { type: 'game', title: "PUBG Mobile Top Up", label: "1. Masukkan User ID PUBG", placeholder: "Contoh: 5123456789", items: [{ name: "60 UC", price: "Rp 18.000" }, { name: "120 UC", price: "Rp 33.000" }, { name: "240 UC", price: "Rp 68.000" }, { name: "300 UC", price: "Rp 85.000" }, { name: "385 UC", price: "Rp 106.000" }, { name: "445 UC", price: "Rp 120.000" }, { name: "505 UC", price: "Rp 136.000" }, { name: "565 UC", price: "Rp 157.000" }, { name: "600 UC", price: "Rp 165.000" }, { name: "720 UC", price: "Rp 195.000" }, { name: "840 UC", price: "Rp 218.000" }, { name: "900 UC", price: "Rp 236.000" }, { name: "1500 UC", price: "Rp 386.000" }, { name: "1800 UC", price: "Rp 420.000" }] },
         hok: { type: 'game', title: "Honor of Kings Top Up", label: "1. Masukkan User ID HOK", placeholder: "Contoh: 9876543210", items: [{ name: "16 Tokens", price: "Rp 3.500" }, { name: "80 Tokens", price: "Rp 19.000" }, { name: "240 Tokens", price: "Rp 53.000" }, { name: "400 Tokens", price: "Rp 83.000" }, { name: "560 Tokens", price: "Rp 115.000" }, { name: "800 Tokens", price: "Rp 162.000" }, { name: "1200 Tokens", price: "Rp 253.000" }, { name: "2400 Tokens", price: "Rp 503.000" }] },
         bs: { type: 'game', title: "Blood Strike Top Up", label: "1. Masukkan User ID Blood Strike", placeholder: "Contoh: BS12345678", items: [{ name: "100 Gold", price: "Rp 16.000" }, { name: "300 Gold", price: "Rp 45.000" }, { name: "500 Gold", price: "Rp 75.000" }, { name: "1000 Gold", price: "Rp 136.000" }, { name: "2000 Gold", price: "Rp 258.000" }, { name: "5000 Gold", price: "Rp 640.000" }] },
-        
-        jasher: { 
-            type: 'social', 
-            title: "Jasher (Jasa Share)", 
-            label: "1. Masukkan Nama Store", 
-            placeholder: "Contoh: CIAA STORE", 
-            items: [
-                { name: "12 Jam", price: "Rp 200" }, 
-                { name: "1 Hari", price: "Rp 500" }, 
-                { name: "3 Hari", price: "Rp 1.000" }, 
-                { name: "1 Minggu", price: "Rp 3.000" }, 
-                { name: "2 Minggu", price: "Rp 4.000" }, 
-                { name: "1 Bulan", price: "Rp 6.000" }, 
-                { name: "3 Bulan", price: "Rp 7.000" }
-            ] 
-        },
-        jpm: { 
-            type: 'jpm', 
-            title: "JPM (Jasa Push Member)", 
-            label: "1. Masukkan Nama Store", 
-            placeholder: "Contoh: CIAA STORE", 
-            items: [
-                { name: "10 Member", price: "Rp 500" }, 
-                { name: "20 Member", price: "Rp 1.000" }, 
-                { name: "50 Member", price: "Rp 3.000" }, 
-                { name: "70 Member", price: "Rp 4.000" }, 
-                { name: "100 Member", price: "Rp 5.000" }, 
-                { name: "150 Member", price: "Rp 7.000" }, 
-                { name: "250 Member", price: "Rp 8.000" }, 
-                { name: "400 Member", price: "Rp 12.000" }, 
-                { name: "500 Member", price: "Rp 16.000" }
-            ] 
-        },
-
+        jasher: { type: 'social', title: "Jasher (Jasa Share)", label: "1. Masukkan Nama Store", placeholder: "Contoh: CIAA STORE", items: [{ name: "12 Jam", price: "Rp 200" }, { name: "1 Hari", price: "Rp 500" }, { name: "3 Hari", price: "Rp 1.000" }, { name: "1 Minggu", price: "Rp 3.000" }, { name: "2 Minggu", price: "Rp 4.000" }, { name: "1 Bulan", price: "Rp 6.000" }, { name: "3 Bulan", price: "Rp 7.000" }] },
+        jpm: { type: 'jpm', title: "JPM (Jasa Push Member)", label: "1. Masukkan Nama Store", placeholder: "Contoh: CIAA STORE", items: [{ name: "10 Member", price: "Rp 500" }, { name: "20 Member", price: "Rp 1.000" }, { name: "50 Member", price: "Rp 3.000" }, { name: "70 Member", price: "Rp 4.000" }, { name: "100 Member", price: "Rp 5.000" }, { name: "150 Member", price: "Rp 7.000" }, { name: "250 Member", price: "Rp 8.000" }, { name: "400 Member", price: "Rp 12.000" }, { name: "500 Member", price: "Rp 16.000" }] },
         canva: { type: 'apk', title: "Canva Premium", label: "1. Email yang ingin di premiumkan", placeholder: "Contoh: emailkamu@gmail.com", notice: "📌 <b>Catatan:</b><br>• Canva Tim (25-28 Hari = 1 Bulan)<br>• Proses Instan<br>• Canva Head bisa undang sampai 10 akun", items: [{ name: "Canva 1 Bulan", price: "Rp 3.000", note: "" }, { name: "Canva Head 1 Bulan", price: "Rp 7.000", note: "Proses 1x24 Jam" }] },
         am: { type: 'apk', title: "Alight Motion Premium", label: "1. Masukkan Nomor WhatsApp", placeholder: "Contoh: 081234567890", notice: "", items: [{ name: "Alight Motion 1 Tahun", price: "Rp 4.000", note: "" }] },
         yt: { type: 'apk', title: "YouTube Premium", label: "1. Email yang ingin di premiumkan", placeholder: "Contoh: emailkamu@gmail.com", notice: "📌 <b>Catatan:</b><br>• Family Plan: Pastikan email belum limit undangan family (Max 2 family / 1 Tahun)", items: [{ name: "YouTube 1 Bulan (Family)", price: "Rp 5.000", note: "" }] },
@@ -521,13 +474,10 @@
     function generateDynamicQRIS(qrisStatis, nominal) {
         let qris = qrisStatis.slice(0, -4);
         qris = qris.replace("010211", "010212");
-        
         let strNominal = nominal.toString();
         let tag54 = "54" + String(strNominal.length).padStart(2, '0') + strNominal;
-        
         let pos58 = qris.indexOf("5802ID");
         let qrisDinamis = qris.slice(0, pos58) + tag54 + qris.slice(pos58) + "6304";
-        
         return qrisDinamis + convertCRC16(qrisDinamis);
     }
 
@@ -535,14 +485,12 @@
         const now = new Date();
         const utc = now.getTime() + (now.getTimezoneOffset() * 60000);
         const wibTime = new Date(utc + (3600000 * 7));
-        const hour = wibTime.getHours();
-        return (hour >= 6 && hour < 22);
+        return (wibTime.getHours() >= 6 && wibTime.getHours() < 22);
     }
 
     function switchTab(tab) {
         const tabs = document.querySelectorAll('.tab-btn');
         tabs.forEach(t => t.classList.remove('active'));
-
         document.getElementById('detailPage').classList.remove('active');
         document.getElementById('paymentPage').classList.remove('active');
         document.getElementById('apkSubMenuPage').classList.remove('active');
@@ -550,10 +498,8 @@
         if (tab === 'services') {
             tabs[0].classList.add('active');
             document.getElementById('homePage').classList.add('active');
-            document.getElementById('queuePage').classList.remove('active');
         } else {
             tabs[1].classList.add('active');
-            document.getElementById('homePage').classList.remove('active');
             document.getElementById('queuePage').classList.add('active');
             renderQueue();
         }
@@ -584,7 +530,6 @@
 
     function openPage(key) {
         const data = products[key];
-
         if (data.type === 'apk' && !isApkOpen()) {
             alert("Upss, maaff yaa layanan aplikasi ini sedang close '-' !");
             return;
@@ -617,13 +562,6 @@
             serviceNotice.style.display = 'none';
         }
 
-        if (key === 'jpm') {
-            const queueData = JSON.parse(localStorage.getItem('ciaa_queue') || '[]');
-            const jpmActive = queueData.filter(q => q.service.includes('JPM')).length;
-            serviceNotice.style.display = 'block';
-            serviceNotice.innerHTML += `<hr style="border:0; border-top:1px dashed var(--pink-dark); margin:8px 0;">⚡ <b>Status Antrian JPM Saat Ini:</b> Ada <b>${jpmActive}</b> order sedang diproses secara bertahap (1-3 Link sekaligus).`;
-        }
-
         if (key === 'jasher' || key === 'jpm') {
             descGroup.style.display = 'block';
             document.getElementById('userDesc').value = `*GB CIAA STORE [100] 🔥*\nhttps://chat.whatsapp.com/...`;
@@ -651,6 +589,12 @@
             };
             grid.appendChild(card);
         });
+
+        selectedPayment = null;
+        document.querySelectorAll('.payment-card').forEach(c => c.classList.remove('active'));
+        const btnMain = document.getElementById('btnMainAction');
+        btnMain.innerHTML = '💳 Lanjutkan ke Pembayaran';
+        btnMain.classList.remove('wa-mode');
     }
 
     function goHome() {
@@ -661,6 +605,15 @@
         selectedPayment = method;
         document.querySelectorAll('.payment-card').forEach(c => c.classList.remove('active'));
         el.classList.add('active');
+
+        const btnMain = document.getElementById('btnMainAction');
+        if (method === 'DANA' || method === 'GOPAY') {
+            btnMain.innerHTML = '<i class="fa-brands fa-whatsapp"></i> Konfirmasi Pembayaran via WA';
+            btnMain.classList.add('wa-mode');
+        } else {
+            btnMain.innerHTML = '💳 Lanjutkan ke Pembayaran';
+            btnMain.classList.remove('wa-mode');
+        }
     }
 
     function copyText(text, e) {
@@ -700,91 +653,30 @@
         queueList.innerHTML = html;
     }
 
-    /* PENGALIHAN KE HALAMAN PEMBAYARAN BARU */
-    function goToPaymentPage() {
+    function handleMainAction() {
         const userData = document.getElementById('userData').value;
         const userDesc = document.getElementById('userDesc').value;
         const data = products[currentCategory];
 
-        if (!userData) {
-            alert('Silakan isi Data Pembeli / Email / Akun terlebih dahulu!');
-            return;
-        }
-        if (!selectedItem) {
-            alert('Silakan pilih nominal/paket terlebih dahulu!');
-            return;
-        }
-        if (!selectedPayment) {
-            alert('Silakan pilih metode pembayaran terlebih dahulu!');
-            return;
-        }
+        if (!userData) { alert('Silakan isi Data Pembeli / Email / Akun terlebih dahulu!'); return; }
+        if (!selectedItem) { alert('Silakan pilih nominal/paket terlebih dahulu!'); return; }
+        if (!selectedPayment) { alert('Silakan pilih metode pembayaran terlebih dahulu!'); return; }
         if ((currentCategory === 'jasher' || currentCategory === 'jpm') && !userDesc.trim()) {
-            alert('Silakan isi Deskripsi / Link Target terlebih dahulu!');
-            return;
+            alert('Silakan isi Deskripsi / Link Target terlebih dahulu!'); return;
         }
 
         const now = new Date();
         const formattedDate = now.toLocaleDateString('id-ID', { day: '2-digit', month: '2-digit', year: 'numeric' });
         const formattedTime = now.toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit' }) + " WIB";
 
-        let currentQueueNum = parseInt(localStorage.getItem('ciaa_queue_counter') || '100');
-        currentQueueNum += 1;
+        let currentQueueNum = parseInt(localStorage.getItem('ciaa_queue_counter') || '100') + 1;
         localStorage.setItem('ciaa_queue_counter', currentQueueNum.toString());
 
         let queueData = JSON.parse(localStorage.getItem('ciaa_queue') || '[]');
-        queueData.push({
-            number: currentQueueNum,
-            service: data.title,
-            item: selectedItem.name,
-            target: userData
-        });
-
+        queueData.push({ number: currentQueueNum, service: data.title, item: selectedItem.name, target: userData });
         if (queueData.length > 20) queueData.shift();
         localStorage.setItem('ciaa_queue', JSON.stringify(queueData));
 
-        // Isi Ringkasan Pesanan
-        document.getElementById('payQueueNo').innerText = `#${currentQueueNum}`;
-        document.getElementById('payServiceTitle').innerText = data.title;
-        document.getElementById('payItemName').innerText = selectedItem.name;
-        document.getElementById('payItemPrice').innerText = selectedItem.price;
-        document.getElementById('payMethodName').innerText = selectedPayment;
-
-        // Render QRIS Dinamis atau Info Manual
-        const qrisSection = document.getElementById('qrisSection');
-        const manualSection = document.getElementById('manualSection');
-
-        if (selectedPayment === 'QRIS') {
-            manualSection.style.display = 'none';
-            qrisSection.style.display = 'block';
-
-            let cleanPrice = parseInt(selectedItem.price.replace(/[^0-9]/g, ''));
-            document.getElementById("qrcodePage").innerHTML = "";
-
-            let dynamicString = generateDynamicQRIS(rawQrisDana, cleanPrice);
-
-            new QRCode(document.getElementById("qrcodePage"), {
-                text: dynamicString,
-                width: 200,
-                height: 200
-            });
-        } else {
-            qrisSection.style.display = 'none';
-            manualSection.style.display = 'block';
-
-            if (selectedPayment === 'DANA') {
-                document.getElementById('manualDetails').innerHTML = `
-                    <b>DANA:</b> 085752161167<br>
-                    <b>Atas Nama:</b> ADE FAHREZI
-                `;
-            } else if (selectedPayment === 'GOPAY') {
-                document.getElementById('manualDetails').innerHTML = `
-                    <b>GOPAY:</b> 089505929536<br>
-                    <b>Atas Nama:</b> CICOCO
-                `;
-            }
-        }
-
-        // Siapkan Link Format Pesan WhatsApp
         let message = `Halo Ciaa Store, saya ingin konfirmasi pembayaran:\n\n` +
                       `• Waktu Order: ${formattedDate} (${formattedTime})\n` +
                       `• No. Antrian: #${currentQueueNum}\n` +
@@ -794,32 +686,58 @@
                       `• Metode Bayar: ${selectedPayment}\n\n`;
 
         if (currentCategory === 'jasher' || currentCategory === 'jpm') {
-            message += `• Nama Store: ${userData}\n` +
-                       `• Deskripsi / Link Target:\n${userDesc}\n\n`;
-        } else if (data.type === 'apk') {
-            message += `• Data / Email / No: ${userData}\n\n`;
+            message += `• Nama Store: ${userData}\n• Deskripsi / Link Target:\n${userDesc}\n\n`;
         } else {
-            message += `• Data Akun: ${userData}\n\n`;
+            message += `• Data / Akun: ${userData}\n\n`;
         }
 
-        message += `(Foto Bukti Transfer Terlampir di bawah ini 👇)`;
+        message += `⚠️ *SERTAKAN BUKTI TRANSFER:* Mohon lampirkan foto/screenshot bukti transfer di bawah ini agar pesanan segera diproses. Terima kasih!`;
 
-        const encodedMessage = encodeURIComponent(message);
-        document.getElementById('btnWaAction').href = `https://wa.me/${adminPhone}?text=${encodedMessage}`;
+        if (selectedPayment === 'DANA' || selectedPayment === 'GOPAY') {
+            window.open(`https://wa.me/${adminPhone}?text=${encodeURIComponent(message)}`, '_blank');
+        } 
+        else if (selectedPayment === 'QRIS') {
+            document.getElementById('payQueueNo').innerText = `#${currentQueueNum}`;
+            document.getElementById('payServiceTitle').innerText = data.title;
+            document.getElementById('payItemName').innerText = selectedItem.name;
+            document.getElementById('payItemPrice').innerText = selectedItem.price;
 
-        // Tampilkan Halaman Pembayaran
-        document.getElementById('detailPage').classList.remove('active');
-        document.getElementById('paymentPage').classList.add('active');
-        window.scrollTo({ top: 0, behavior: 'smooth' });
+            let cleanPrice = parseInt(selectedItem.price.replace(/[^0-9]/g, ''));
+            const qrContainer = document.getElementById("qrcodePage");
+            qrContainer.innerHTML = "";
+
+            try {
+                let dynamicString = generateDynamicQRIS(rawQrisDana, cleanPrice);
+                new QRCode(qrContainer, {
+                    text: dynamicString,
+                    width: 210,
+                    height: 210
+                });
+            } catch (e) {
+                new QRCode(qrContainer, {
+                    text: rawQrisDana,
+                    width: 210,
+                    height: 210
+                });
+            }
+
+            document.getElementById('btnWaAction').href = `https://wa.me/${adminPhone}?text=${encodeURIComponent(message)}`;
+
+            document.getElementById('detailPage').classList.remove('active');
+            document.getElementById('paymentPage').classList.add('active');
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
     }
 
     function downloadQRPage() {
         let img = document.querySelector("#qrcodePage img");
-        if (img) {
+        if (img && img.src) {
             let a = document.createElement("a");
             a.href = img.src;
-            a.download = `QRIS-CiaaStore-${selectedItem ? selectedItem.name : 'Dinamis'}.png`;
+            a.download = `QRIS-CiaaStore-${selectedItem ? selectedItem.name : 'Nominal'}.png`;
             a.click();
+        } else {
+            alert('Gagal mengunduh QR code. Silakan ambil tangkapan layar (screenshot).');
         }
     }
 </script>
