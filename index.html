@@ -201,9 +201,15 @@
         }
 
         .btn-order {
-            width: 100%; background-color: #25d366; color: white; border: none; padding: 16px;
+            width: 100%; background-color: var(--pink-dark); color: white; border: none; padding: 16px;
             border-radius: 14px; font-weight: bold; font-size: 1rem; cursor: pointer; margin-top: 22px;
             display: flex; align-items: center; justify-content: center; gap: 10px;
+        }
+
+        .btn-wa-confirm {
+            width: 100%; background-color: #25d366; color: white; border: none; padding: 16px;
+            border-radius: 14px; font-weight: bold; font-size: 1rem; cursor: pointer; margin-top: 15px;
+            display: flex; align-items: center; justify-content: center; gap: 10px; text-decoration: none;
         }
 
         .queue-card {
@@ -222,50 +228,24 @@
             box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2); cursor: pointer; display: flex; align-items: center; gap: 8px; z-index: 999; text-decoration: none;
         }
 
-        /* MODAL POP-UP QRIS DINAMIS */
-        .modal-overlay {
-            display: none;
-            position: fixed;
-            top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0,0,0,0.65);
-            z-index: 9999;
-            align-items: center;
-            justify-content: center;
+        /* STYLE HALAMAN PEMBAYARAN BARU */
+        .summary-box {
+            background: #fff; border: 2px dashed var(--pink-main); border-radius: 16px; padding: 18px; margin-bottom: 20px;
         }
-        .modal-content {
-            background: #ffffff;
-            padding: 25px;
-            border-radius: 20px;
-            max-width: 380px;
-            width: 90%;
-            text-align: center;
-            box-sizing: border-box;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+        .summary-row {
+            display: flex; justify-content: space-between; margin-bottom: 8px; font-size: 0.9rem;
         }
-        .qrcode-container {
-            display: flex;
-            justify-content: center;
-            margin: 15px 0;
+        .summary-row strong { color: var(--pink-dark); }
+        
+        .qris-display-area {
+            text-align: center; background: #fff; border: 2px solid var(--pink-bright); border-radius: 20px; padding: 20px; margin-bottom: 20px;
         }
-        .amount-box {
-            background: #ffe4ec;
-            padding: 10px;
-            border-radius: 12px;
-            margin-bottom: 15px;
+        .qrcode-container { display: flex; justify-content: center; margin: 15px 0; }
+        
+        .btn-download-qris {
+            background-color: var(--pink-main); color: white; border: none; padding: 10px 18px;
+            border-radius: 12px; font-weight: bold; cursor: pointer; font-size: 0.88rem; margin-top: 10px;
         }
-        .btn-action {
-            width: 100%;
-            border: none;
-            padding: 11px;
-            border-radius: 10px;
-            font-weight: bold;
-            cursor: pointer;
-            margin-bottom: 8px;
-            font-size: 0.9rem;
-        }
-        .btn-download { background-color: #ff9ebb; color: #fff; }
-        .btn-wa { background-color: #25D366; color: #fff; text-decoration: none; display: block; line-height: 20px; box-sizing: border-box; }
-        .btn-close { background-color: #eee; color: #333; }
     </style>
 </head>
 <body>
@@ -415,30 +395,45 @@
             </div>
         </div>
 
-        <div class="transfer-note">
-            ⚠️ WAJIB MELAMPIRKAN BUKTI TRANSFER saat mengirim pesan konfirmasi ke WhatsApp!
-        </div>
-
-        <button class="btn-order" onclick="sendOrder()"><i class="fa-brands fa-whatsapp"></i> Konfirmasi & Lanjutkan Pembayaran</button>
+        <button class="btn-order" onclick="goToPaymentPage()">💳 Lanjutkan ke Pembayaran</button>
     </div>
-</div>
 
-<!-- MODAL POP-UP QRIS DINAMIS -->
-<div id="qrisModal" class="modal-overlay">
-    <div class="modal-content">
-        <h3 style="color:var(--pink-dark); margin-top:0; margin-bottom:5px;">Pembayaran QRIS DANA</h3>
-        <p style="font-size:0.8rem; color:#666; margin-top:0;">Scan atau unduh QRIS ini via DANA / e-Wallet / M-Banking:</p>
-        
-        <div id="qrcode" class="qrcode-container"></div>
-        
-        <div class="amount-box">
-            <span style="font-size:0.8rem; color:#666;">Total Nominal (Otomatis Terisi):</span><br>
-            <strong id="modalAmountDisplay" style="font-size:1.2rem; color:var(--pink-dark);">Rp 0</strong>
+    <!-- HALAMAN PEMBAYARAN BARU (NEW PAGE) -->
+    <div id="paymentPage" class="page">
+        <button class="btn-back" onclick="goBackToDetail()">← Ubah Pesanan</button>
+        <div class="category-title">💳 Instruksi Pembayaran</div>
+
+        <div class="summary-box">
+            <div class="summary-row"><span>No. Antrian:</span><strong id="payQueueNo">#-</strong></div>
+            <div class="summary-row"><span>Layanan:</span><strong id="payServiceTitle">-</strong></div>
+            <div class="summary-row"><span>Paket:</span><strong id="payItemName">-</strong></div>
+            <div class="summary-row"><span>Total Tagihan:</span><strong id="payItemPrice" style="font-size:1.1rem; color:var(--pink-dark);">-</strong></div>
+            <div class="summary-row"><span>Metode Pembayaran:</span><strong id="payMethodName">-</strong></div>
         </div>
 
-        <button class="btn-action btn-download" onclick="downloadQR()">📥 Unduh Gambar QRIS</button>
-        <a id="waLink" href="#" target="_blank" class="btn-action btn-wa">💬 Konfirmasi Bukti Transfer via WA</a>
-        <button class="btn-action btn-close" onclick="closeModal()">Tutup / Batal</button>
+        <!-- TAMPILAN QRIS DINAMIS -->
+        <div id="qrisSection" class="qris-display-area" style="display:none;">
+            <div style="font-weight:bold; color:var(--pink-dark); font-size:1rem;">Scan QRIS DANA Di Bawah Ini:</div>
+            <div style="font-size:0.8rem; color:#666; margin-top:4px;">Nominal sudah terisi otomatis sesuai total tagihan di atas!</div>
+            
+            <div id="qrcodePage" class="qrcode-container"></div>
+
+            <button class="btn-download-qris" onclick="downloadQRPage()">📥 Download Gambar QRIS</button>
+        </div>
+
+        <!-- TAMPILAN REKENING MANUAL (DANA / GOPAY) -->
+        <div id="manualSection" class="qris-display-area" style="display:none;">
+            <div style="font-weight:bold; color:var(--pink-dark); font-size:1rem; margin-bottom:8px;">Transfer Sesuai Nominal Ke:</div>
+            <div id="manualDetails" style="font-size:0.95rem; line-height:1.6; background:#fff0f3; padding:12px; border-radius:12px;"></div>
+        </div>
+
+        <div class="transfer-note">
+            ⚠️ WAJIB SIMPAN BUKTI TRANSFER!<br>Kirimkan screenshot bukti transfer pada tombol di bawah agar pesanan langsung diproses.
+        </div>
+
+        <a id="btnWaAction" href="#" target="_blank" class="btn-wa-confirm">
+            <i class="fa-brands fa-whatsapp"></i> Konfirmasi & Kirim Bukti Transfer ke WA
+        </a>
     </div>
 </div>
 
@@ -549,6 +544,7 @@
         tabs.forEach(t => t.classList.remove('active'));
 
         document.getElementById('detailPage').classList.remove('active');
+        document.getElementById('paymentPage').classList.remove('active');
         document.getElementById('apkSubMenuPage').classList.remove('active');
 
         if (tab === 'services') {
@@ -581,6 +577,11 @@
         }
     }
 
+    function goBackToDetail() {
+        document.getElementById('paymentPage').classList.remove('active');
+        document.getElementById('detailPage').classList.add('active');
+    }
+
     function openPage(key) {
         const data = products[key];
 
@@ -595,6 +596,7 @@
         document.getElementById('homePage').classList.remove('active');
         document.getElementById('apkSubMenuPage').classList.remove('active');
         document.getElementById('queuePage').classList.remove('active');
+        document.getElementById('paymentPage').classList.remove('active');
         document.getElementById('detailPage').classList.add('active');
 
         document.getElementById('serviceTitle').innerText = data.title;
@@ -698,7 +700,8 @@
         queueList.innerHTML = html;
     }
 
-    function sendOrder() {
+    /* PENGALIHAN KE HALAMAN PEMBAYARAN BARU */
+    function goToPaymentPage() {
         const userData = document.getElementById('userData').value;
         const userDesc = document.getElementById('userDesc').value;
         const data = products[currentCategory];
@@ -715,7 +718,6 @@
             alert('Silakan pilih metode pembayaran terlebih dahulu!');
             return;
         }
-
         if ((currentCategory === 'jasher' || currentCategory === 'jpm') && !userDesc.trim()) {
             alert('Silakan isi Deskripsi / Link Target terlebih dahulu!');
             return;
@@ -740,7 +742,50 @@
         if (queueData.length > 20) queueData.shift();
         localStorage.setItem('ciaa_queue', JSON.stringify(queueData));
 
-        let message = `Halo Ciaa Store, saya ingin order:\n\n` +
+        // Isi Ringkasan Pesanan
+        document.getElementById('payQueueNo').innerText = `#${currentQueueNum}`;
+        document.getElementById('payServiceTitle').innerText = data.title;
+        document.getElementById('payItemName').innerText = selectedItem.name;
+        document.getElementById('payItemPrice').innerText = selectedItem.price;
+        document.getElementById('payMethodName').innerText = selectedPayment;
+
+        // Render QRIS Dinamis atau Info Manual
+        const qrisSection = document.getElementById('qrisSection');
+        const manualSection = document.getElementById('manualSection');
+
+        if (selectedPayment === 'QRIS') {
+            manualSection.style.display = 'none';
+            qrisSection.style.display = 'block';
+
+            let cleanPrice = parseInt(selectedItem.price.replace(/[^0-9]/g, ''));
+            document.getElementById("qrcodePage").innerHTML = "";
+
+            let dynamicString = generateDynamicQRIS(rawQrisDana, cleanPrice);
+
+            new QRCode(document.getElementById("qrcodePage"), {
+                text: dynamicString,
+                width: 200,
+                height: 200
+            });
+        } else {
+            qrisSection.style.display = 'none';
+            manualSection.style.display = 'block';
+
+            if (selectedPayment === 'DANA') {
+                document.getElementById('manualDetails').innerHTML = `
+                    <b>DANA:</b> 085752161167<br>
+                    <b>Atas Nama:</b> ADE FAHREZI
+                `;
+            } else if (selectedPayment === 'GOPAY') {
+                document.getElementById('manualDetails').innerHTML = `
+                    <b>GOPAY:</b> 089505929536<br>
+                    <b>Atas Nama:</b> CICOCO
+                `;
+            }
+        }
+
+        // Siapkan Link Format Pesan WhatsApp
+        let message = `Halo Ciaa Store, saya ingin konfirmasi pembayaran:\n\n` +
                       `• Waktu Order: ${formattedDate} (${formattedTime})\n` +
                       `• No. Antrian: #${currentQueueNum}\n` +
                       `• Layanan: ${data.title}\n` +
@@ -760,35 +805,16 @@
         message += `(Foto Bukti Transfer Terlampir di bawah ini 👇)`;
 
         const encodedMessage = encodeURIComponent(message);
-        const waUrl = `https://wa.me/${adminPhone}?text=${encodedMessage}`;
+        document.getElementById('btnWaAction').href = `https://wa.me/${adminPhone}?text=${encodedMessage}`;
 
-        if (selectedPayment === 'QRIS') {
-            let cleanPrice = parseInt(selectedItem.price.replace(/[^0-9]/g, ''));
-            
-            document.getElementById("qrcode").innerHTML = "";
-            document.getElementById("modalAmountDisplay").innerText = selectedItem.price;
-
-            let dynamicString = generateDynamicQRIS(rawQrisDana, cleanPrice);
-
-            new QRCode(document.getElementById("qrcode"), {
-                text: dynamicString,
-                width: 180,
-                height: 180
-            });
-
-            document.getElementById("waLink").href = waUrl;
-            document.getElementById("qrisModal").style.display = "flex";
-        } else {
-            window.open(waUrl, '_blank');
-        }
+        // Tampilkan Halaman Pembayaran
+        document.getElementById('detailPage').classList.remove('active');
+        document.getElementById('paymentPage').classList.add('active');
+        window.scrollTo({ top: 0, behavior: 'smooth' });
     }
 
-    function closeModal() {
-        document.getElementById('qrisModal').style.display = 'none';
-    }
-
-    function downloadQR() {
-        let img = document.querySelector("#qrcode img");
+    function downloadQRPage() {
+        let img = document.querySelector("#qrcodePage img");
         if (img) {
             let a = document.createElement("a");
             a.href = img.src;
