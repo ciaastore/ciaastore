@@ -201,7 +201,6 @@
         .item-card.active { border-color: var(--pink-dark); background-color: var(--pink-bright); }
         .item-title { font-size: 0.9rem; font-weight: bold; color: #444; }
         .item-price { font-size: 0.85rem; color: var(--pink-dark); margin-top: 4px; font-weight: 600; }
-        .item-note { font-size: 0.72rem; color: #777; margin-top: 2px; font-style: italic; }
 
         .payment-card {
             border: 2px solid var(--pink-bright); border-radius: 14px; padding: 12px 15px;
@@ -215,9 +214,6 @@
             width: 100%; background-color: var(--pink-dark); color: white; border: none; padding: 16px;
             border-radius: 14px; font-weight: bold; font-size: 1rem; cursor: pointer; margin-top: 22px;
             display: flex; align-items: center; justify-content: center; gap: 10px; transition: 0.25s;
-        }
-        .btn-action-main.wa-mode {
-            background-color: #25d366;
         }
 
         .btn-wa-confirm {
@@ -236,12 +232,6 @@
         .queue-target { font-size: 0.82rem; color: #666; }
         .queue-status { font-size: 0.78rem; font-weight: bold; padding: 5px 10px; border-radius: 10px; background: #fef08a; color: #854d0e; }
 
-        .cs-floating-btn {
-            position: fixed; bottom: 20px; right: 20px; background-color: #25d366; color: white;
-            padding: 12px 20px; border-radius: 30px; font-weight: bold; font-size: 0.9rem;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2); cursor: pointer; display: flex; align-items: center; gap: 8px; z-index: 999; text-decoration: none;
-        }
-
         .summary-box {
             background: #fff; border: 2px dashed var(--pink-main); border-radius: 16px; padding: 18px; margin-bottom: 20px;
         }
@@ -252,10 +242,9 @@
             text-align: center; background: #fff; border: 2px solid var(--pink-bright); border-radius: 20px; padding: 20px; margin-bottom: 20px;
         }
         .qrcode-container { display: flex; justify-content: center; margin: 15px 0; }
-        
-        .btn-download-qris {
-            background-color: var(--pink-main); color: white; border: none; padding: 10px 18px;
-            border-radius: 12px; font-weight: bold; cursor: pointer; font-size: 0.88rem; margin-top: 10px;
+        .qris-code-box {
+            background: #f8fafc; border: 1px solid #cbd5e1; font-family: monospace; font-size: 0.75rem;
+            padding: 10px; word-break: break-all; border-radius: 8px; margin-top: 10px; color: #334155; text-align: left;
         }
     </style>
 </head>
@@ -330,7 +319,7 @@
 
     <!-- DETAIL PAGE -->
     <div id="detailPage" class="page">
-        <button class="btn-back" onclick="goBackFromDetail()">← Kembali</button>
+        <button class="btn-back" onclick="goHome()">← Kembali</button>
         <h2 id="serviceTitle" style="color: var(--pink-dark); margin-top:0; font-size:1.1rem;"></h2>
 
         <div class="form-group">
@@ -338,15 +327,8 @@
             <input type="text" id="userData" placeholder="">
         </div>
 
-        <div class="info-box" id="serviceNotice" style="display:none;"></div>
-
         <div class="section-title">2. Pilih Nominal / Paket</div>
         <div class="grid-container" id="itemsGrid"></div>
-
-        <div class="form-group" id="descGroup" style="display:none; margin-top: 15px;">
-            <label>Deskripsi / Tempat Link</label>
-            <textarea id="userDesc" rows="5"></textarea>
-        </div>
 
         <div class="section-title">3. Pilih Metode Pembayaran</div>
         
@@ -390,12 +372,274 @@
     <!-- PAYMENT PAGE FOR QRIS -->
     <div id="paymentPage" class="page">
         <button class="btn-back" onclick="goBackToDetail()">← Ubah Pesanan</button>
-        <div class="category-title">💳 Pembayaran QRIS</div>
+        <div class="category-title">💳 Pembayaran QRIS Dinamis</div>
 
         <div class="summary-box">
-            <div class="summary-row"><span>No. Antrian:</span><strong id="payQueueNo">Menunggu Konfirmasi</strong></div>
+            <div class="summary-row"><span>Status Antrian:</span><strong id="payQueueNo">Menunggu Konfirmasi WA</strong></div>
             <div class="summary-row"><span>Layanan:</span><strong id="payServiceTitle">-</strong></div>
             <div class="summary-row"><span>Paket:</span><strong id="payItemName">-</strong></div>
             <div class="summary-row"><span>Total Tagihan:</span><strong id="payItemPrice" style="font-size:1.1rem; color:var(--pink-dark);">-</strong></div>
-            <div class="summary-row"><span>Metode Pembayaran:</span><strong id="payMethodName">QRIS Dinamis</strong></div>
-        </di
+            <div class="summary-row"><span>Metode Pembayaran:</span><strong>QRIS Otomatis</strong></div>
+        </div>
+
+        <div class="qris-display-area">
+            <div style="font-weight:bold; font-size:0.9rem; color:var(--pink-dark);">Scan QRIS untuk Membayar</div>
+            <div style="font-size:0.8rem; color:#666; margin-top:4px;">Nominal transaksi sudah terisi secara otomatis</div>
+            
+            <div class="qrcode-container" id="qrcode"></div>
+
+            <div style="font-weight:bold; font-size:0.8rem; color:var(--pink-dark); margin-top:10px;">Kode Teks QRIS:</div>
+            <div class="qris-code-box" id="qrisCodeText">Memuat kode QRIS...</div>
+            <button class="copy-btn" style="margin-top:8px; width:100%; padding:8px;" onclick="copyQrisText()">📋 Salin Kode Teks QRIS</button>
+        </div>
+
+        <button id="btnWaConfirm" class="btn-wa-confirm">
+            <i class="fa-brands fa-whatsapp"></i> Konfirmasi Pembayaran & Masuk Antrian via WA
+        </button>
+    </div>
+</div>
+
+<script>
+    const servicesData = {
+        'ff': { title: 'Free Fire', label: 'Masukkan User ID (FF)', items: [{ name: '140 Diamonds', price: 20000 }, { name: '355 Diamonds', price: 50000 }, { name: '720 Diamonds', price: 100000 }] },
+        'ml': { title: 'Mobile Legends', label: 'Masukkan User ID & Zone ID', items: [{ name: '86 Diamonds', price: 22000 }, { name: '172 Diamonds', price: 44000 }, { name: '257 Diamonds', price: 65000 }] },
+        'ml_ftu': { title: 'ML First Top Up', label: 'Masukkan User ID & Zone ID', items: [{ name: 'First Top Up Diamond', price: 15000 }] },
+        'pubg': { title: 'PUBG Mobile', label: 'Masukkan ID PUBG', items: [{ name: '60 UC', price: 16000 }, { name: '325 UC', price: 75000 }] },
+        'hok': { title: 'Honor of Kings', label: 'Masukkan Player ID', items: [{ name: '80 Tokens', price: 16000 }, { name: '240 Tokens', price: 48000 }] },
+        'bs': { title: 'Blood Strike', label: 'Masukkan User ID', items: [{ name: '100 Gold', price: 15000 }, { name: '500 Gold', price: 70000 }] },
+        'jasher': { title: 'Jasher (Jasa Share)', label: 'Masukkan Link Postingan', items: [{ name: '100 Share', price: 5000 }, { name: '500 Share', price: 20000 }] },
+        'jpm': { title: 'JPM (Push Member)', label: 'Masukkan Link Group/Channel', items: [{ name: '100 Member', price: 10000 }, { name: '500 Member', price: 45000 }] },
+        'canva': { title: 'Canva Pro', label: 'Masukkan Email Canva', items: [{ name: 'Canva Pro 1 Bulan', price: 10000 }, { name: 'Canva Pro 1 Tahun', price: 35000 }] },
+        'am': { title: 'Alight Motion', label: 'Masukkan Email Alight Motion', items: [{ name: 'AM Preset / Premium 1 Thn', price: 15000 }] },
+        'yt': { title: 'YouTube Premium', label: 'Masukkan Email YouTube', items: [{ name: 'YouTube Premium 1 Bulan', price: 12000 }] },
+        'iqiyi': { title: 'iQIYI', label: 'Masukkan Email / No HP', items: [{ name: 'VIP Premium 1 Bulan', price: 20000 }] },
+        'capcut': { title: 'CapCut Pro', label: 'Masukkan Email CapCut', items: [{ name: 'CapCut Pro 1 Bulan', price: 18000 }] },
+        'wetv': { title: 'WeTV', label: 'Masukkan No HP / Email', items: [{ name: 'WeTV VIP 1 Bulan', price: 20000 }] },
+        'gemini': { title: 'Gemini AI', label: 'Masukkan Email', items: [{ name: 'Gemini Advanced 1 Bulan', price: 30000 }] },
+        'pixellab': { title: 'Pixellab Mod', label: 'Masukkan Email / No WA', items: [{ name: 'Pixellab Full Font & Preset', price: 10000 }] }
+    };
+
+    let selectedServiceKey = '';
+    let selectedItem = null;
+    let selectedPaymentMethod = '';
+    let currentQueueNumber = 100;
+    let activeQueue = null;
+    let currentQrisPayload = '';
+
+    function hideAllPages() {
+        document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+    }
+
+    function goHome() {
+        hideAllPages();
+        document.getElementById('homePage').classList.add('active');
+        setActiveTab(0);
+    }
+
+    function openApkSubMenu() {
+        hideAllPages();
+        document.getElementById('apkSubMenuPage').classList.add('active');
+    }
+
+    function openPage(serviceKey) {
+        selectedServiceKey = serviceKey;
+        const data = servicesData[serviceKey] || { title: 'Layanan', label: 'Masukkan Data', items: [] };
+        
+        document.getElementById('serviceTitle').innerText = 'Top Up ' + data.title;
+        document.getElementById('inputLabel').innerText = '1. ' + data.label;
+        
+        const grid = document.getElementById('itemsGrid');
+        grid.innerHTML = '';
+        selectedItem = null;
+
+        data.items.forEach((item) => {
+            const card = document.createElement('div');
+            card.className = 'item-card';
+            card.innerHTML = `
+                <div class="item-title">${item.name}</div>
+                <div class="item-price">Rp ${item.price.toLocaleString('id-ID')}</div>
+            `;
+            card.onclick = () => {
+                document.querySelectorAll('.item-card').forEach(c => c.classList.remove('active'));
+                card.classList.add('active');
+                selectedItem = item;
+            };
+            grid.appendChild(card);
+        });
+
+        hideAllPages();
+        document.getElementById('detailPage').classList.add('active');
+    }
+
+    function selectPayment(method, element) {
+        selectedPaymentMethod = method;
+        document.querySelectorAll('.payment-card').forEach(c => c.classList.remove('active'));
+        element.classList.add('active');
+    }
+
+    function copyText(text, event) {
+        event.stopPropagation();
+        navigator.clipboard.writeText(text);
+        alert('Nomor berhasil disalin: ' + text);
+    }
+
+    function handleMainAction() {
+        const userData = document.getElementById('userData').value.trim();
+
+        if (!userData) {
+            alert('Harap isi data tujuan terlebih dahulu!');
+            return;
+        }
+        if (!selectedItem) {
+            alert('Harap pilih nominal / paket terlebih dahulu!');
+            return;
+        }
+        if (!selectedPaymentMethod) {
+            alert('Harap pilih metode pembayaran!');
+            return;
+        }
+
+        if (selectedPaymentMethod === 'QRIS') {
+            openQrisPage(userData);
+        } else {
+            confirmAndSendWA(userData);
+        }
+    }
+
+    function openQrisPage(userData) {
+        hideAllPages();
+        document.getElementById('paymentPage').classList.add('active');
+
+        const serviceTitle = servicesData[selectedServiceKey].title;
+        document.getElementById('payServiceTitle').innerText = serviceTitle;
+        document.getElementById('payItemName').innerText = selectedItem.name;
+        document.getElementById('payItemPrice').innerText = 'Rp ' + selectedItem.price.toLocaleString('id-ID');
+
+        // Generate QRIS Text String dengan Nominal
+        currentQrisPayload = `00020101021226670016ID.CO.QRIS.WWW01189360091100220268580215ID102222046835203033605802ID5910CIAA STORE6013KOTA PONTIANAK61057811162070703A01530300054${selectedItem.price.toString().length.toString().padStart(2, '0')}${selectedItem.price}5802ID6304`;
+        
+        document.getElementById('qrisCodeText').innerText = currentQrisPayload;
+
+        const qrContainer = document.getElementById('qrcode');
+        qrContainer.innerHTML = '';
+        
+        new QRCode(qrContainer, {
+            text: currentQrisPayload,
+            width: 180,
+            height: 180,
+            colorDark : "#000000",
+            colorLight : "#ffffff",
+            correctLevel : QRCode.CorrectLevel.H
+        });
+
+        const btnWa = document.getElementById('btnWaConfirm');
+        btnWa.onclick = function() {
+            confirmAndSendWA(userData);
+        };
+    }
+
+    function copyQrisText() {
+        navigator.clipboard.writeText(currentQrisPayload);
+        alert('Kode Teks QRIS Berhasil Disalin!');
+    }
+
+    function confirmAndSendWA(userData) {
+        currentQueueNumber++;
+        const queueNo = '#' + currentQueueNumber;
+        const serviceTitle = servicesData[selectedServiceKey].title;
+
+        // Antrian baru resmi dicatat DI SINI saat beralih ke WhatsApp
+        activeQueue = {
+            queueNo: queueNo,
+            service: serviceTitle,
+            item: selectedItem.name,
+            target: userData,
+            status: 'Proses / Menunggu Verifikasi'
+        };
+
+        const payQueueElement = document.getElementById('payQueueNo');
+        if (payQueueElement) {
+            payQueueElement.innerText = queueNo;
+        }
+
+        const waMsg = `Halo Admin, saya sudah melakukan pembayaran:\n\n` +
+                      `📌 *No. Antrian:* ${queueNo}\n` +
+                      `🎮 *Layanan:* ${serviceTitle}\n` +
+                      `📦 *Paket:* ${selectedItem.name}\n` +
+                      `🎯 *Data Tujuan:* ${userData}\n` +
+                      `💰 *Total:* Rp ${selectedItem.price.toLocaleString('id-ID')}\n` +
+                      `💳 *Metode:* ${selectedPaymentMethod}`;
+
+        window.open(`https://wa.me/6285752161167?text=${encodeURIComponent(waMsg)}`, '_blank');
+    }
+
+    function switchTab(tab) {
+        if (tab === 'services') {
+            setActiveTab(0);
+            goHome();
+        } else if (tab === 'queue') {
+            setActiveTab(1);
+            hideAllPages();
+            document.getElementById('queuePage').classList.add('active');
+            renderQueueList();
+        }
+    }
+
+    function setActiveTab(index) {
+        const buttons = document.querySelectorAll('#mainTabs .tab-btn');
+        buttons.forEach(btn => btn.classList.remove('active'));
+        if (buttons[index]) buttons[index].classList.add('active');
+    }
+
+    function renderQueueList() {
+        const queueContainer = document.getElementById('queueList');
+        queueContainer.innerHTML = '';
+
+        if (!activeQueue) {
+            queueContainer.innerHTML = `
+                <div style="text-align: center; color: #888; padding: 30px 10px;">
+                    Belum ada antrian aktif. Silakan lakukan transaksi terlebih dahulu.
+                </div>
+            `;
+            return;
+        }
+
+        const card = document.createElement('div');
+        card.className = 'queue-card';
+        card.innerHTML = `
+            <div class="queue-number">${activeQueue.queueNo}</div>
+            <div class="queue-details">
+                <div class="queue-service">${activeQueue.service} - ${activeQueue.item}</div>
+                <div class="queue-target">Tujuan: ${activeQueue.target}</div>
+            </div>
+            <div class="queue-status">${activeQueue.status}</div>
+        `;
+        
+        queueContainer.appendChild(card);
+
+        const clearBtn = document.createElement('button');
+        clearBtn.className = 'btn-back';
+        clearBtn.style.cssText = 'width: 100%; margin-top: 15px; background: #fee2e2; color: #dc2626; border: 1px solid #fca5a5;';
+        clearBtn.innerHTML = '🗑️ Bersihkan Riwayat Antrian';
+        clearBtn.onclick = clearQueue;
+        queueContainer.appendChild(clearBtn);
+    }
+
+    function clearQueue() {
+        if (confirm('Apakah Anda yakin ingin menghapus catatan antrian ini?')) {
+            activeQueue = null;
+            renderQueueList();
+        }
+    }
+
+    function goBackFromDetail() {
+        goHome();
+    }
+
+    function goBackToDetail() {
+        hideAllPages();
+        document.getElementById('detailPage').classList.add('active');
+    }
+</script>
+</body>
+</html>
