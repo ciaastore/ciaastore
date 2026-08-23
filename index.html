@@ -187,6 +187,11 @@
             outline: none; font-size: 0.92rem; background: #fff; font-family: inherit;
         }
 
+        textarea {
+            resize: vertical;
+            min-height: 90px;
+        }
+
         .info-box {
             background: #fff0f3; border: 1px dashed var(--pink-dark); color: var(--pink-dark);
             padding: 12px 15px; border-radius: 12px; font-size: 0.85rem; margin-bottom: 15px; line-height: 1.5;
@@ -229,7 +234,7 @@
         .queue-number { background: var(--pink-main); color: white; font-weight: bold; padding: 8px 14px; border-radius: 12px; font-size: 0.95rem; }
         .queue-details { flex: 1; margin-left: 15px; }
         .queue-service { font-weight: bold; color: var(--pink-dark); font-size: 0.9rem; }
-        .queue-target { font-size: 0.82rem; color: #666; }
+        .queue-target { font-size: 0.82rem; color: #666; white-space: pre-line; }
         .queue-status { font-size: 0.78rem; font-weight: bold; padding: 5px 10px; border-radius: 10px; background: #fef08a; color: #854d0e; }
 
         .summary-box {
@@ -324,7 +329,7 @@
 
         <div class="form-group">
             <label id="inputLabel">1. Masukkan Data</label>
-            <input type="text" id="userData" placeholder="">
+            <textarea id="userData" placeholder=""></textarea>
         </div>
 
         <div class="section-title">2. Pilih Nominal / Paket</div>
@@ -400,7 +405,6 @@
 </div>
 
 <script>
-    // QRIS Statis Asli Toko Anda (Ciaa Store Real)
     const BASE_QRIS_STATIC = "00020101021126570011ID.DANA.WWW011893600915303380466202090338046620303UMI51440014ID.CO.QRIS.WWW0215ID10265642557130303UMI5204549953033605802ID5915Ciaa Store Real6014Kota Pontianak610578114630476C7";
 
     const servicesData = {
@@ -519,7 +523,7 @@
         },
         'jasher': { 
             title: 'Jasher (Jasa Share)', 
-            label: 'Masukkan Link Postingan', 
+            label: 'Masukkan Link Postingan (Bisa Kirim Banyak Link Berurutan Ke Bawah):', 
             items: [
                 { name: '12 Jam', price: 200 },
                 { name: '1 Hari', price: 500 },
@@ -532,7 +536,7 @@
         },
         'jpm': { 
             title: 'JPM (Push Member)', 
-            label: 'Masukkan Link Group/Channel', 
+            label: 'Masukkan Link Group / Channel (Bisa Kirim Banyak Link Berurutan Ke Bawah):', 
             items: [
                 { name: '10 Member', price: 500 },
                 { name: '20 Member', price: 1000 },
@@ -614,7 +618,6 @@
     let activeQueue = null;
     let currentQrisPayload = '';
 
-    // ALGORITMA PERHITUNGAN CRC-16 (EMVCo Standar Resmi)
     function calcCRC16(str) {
         let crc = 0xFFFF;
         for (let c = 0; c < str.length; c++) {
@@ -631,7 +634,6 @@
         return crc.toString(16).toUpperCase().padStart(4, '0');
     }
 
-    // FUNGSI KONVERSI QRIS STATIS MENJADI DINAMIS DENGAN NOMINAL OTOMATIS
     function generateDynamicQris(staticQris, amount) {
         let qris = staticQris.slice(0, -8);
         qris = qris.replace("010211", "010212");
@@ -670,9 +672,17 @@
         selectedServiceKey = serviceKey;
         const data = servicesData[serviceKey] || { title: 'Layanan', label: 'Masukkan Data', items: [] };
         
-        document.getElementById('serviceTitle').innerText = 'Top Up ' + data.title;
+        document.getElementById('serviceTitle').innerText = 'Layanan ' + data.title;
         document.getElementById('inputLabel').innerText = '1. ' + data.label;
         
+        const userDataInput = document.getElementById('userData');
+        userDataInput.value = '';
+        if (serviceKey === 'jasher' || serviceKey === 'jpm') {
+            userDataInput.placeholder = "Tempel link di sini...\nBisa tekan Enter untuk buat baris baru!";
+        } else {
+            userDataInput.placeholder = "Masukkan Data...";
+        }
+
         const grid = document.getElementById('itemsGrid');
         grid.innerHTML = '';
         selectedItem = null;
@@ -712,7 +722,7 @@
         const userData = document.getElementById('userData').value.trim();
 
         if (!userData) {
-            alert('Harap isi data tujuan terlebih dahulu!');
+            alert('Harap isi data tujuan / link terlebih dahulu!');
             return;
         }
         if (!selectedItem) {
@@ -784,13 +794,15 @@
             payQueueElement.innerText = queueNo;
         }
 
-        const waMsg = `Halo Admin, saya sudah melakukan pembayaran:\n\n` +
+        const waMsg = `🛍️ *FORM PESANAN CIAA STORE REAL*\n` +
+                      `==============================\n\n` +
                       `📌 *No. Antrian:* ${queueNo}\n` +
                       `🎮 *Layanan:* ${serviceTitle}\n` +
                       `📦 *Paket:* ${selectedItem.name}\n` +
-                      `🎯 *Data Tujuan:* ${userData}\n` +
+                      `🎯 *Data / Link Tujuan:*\n${userData}\n\n` +
                       `💰 *Total:* Rp ${selectedItem.price.toLocaleString('id-ID')}\n` +
-                      `💳 *Metode:* ${selectedPaymentMethod}`;
+                      `💳 *Metode Pembayaran:* ${selectedPaymentMethod}\n\n` +
+                      `Mohon segera diproses ya Min! Terima kasih.`;
 
         window.open(`https://wa.me/6285752161167?text=${encodeURIComponent(waMsg)}`, '_blank');
     }
@@ -832,7 +844,7 @@
             <div class="queue-number">${activeQueue.queueNo}</div>
             <div class="queue-details">
                 <div class="queue-service">${activeQueue.service} - ${activeQueue.item}</div>
-                <div class="queue-target">Tujuan: ${activeQueue.target}</div>
+                <div class="queue-target">Data/Link:\n${activeQueue.target}</div>
             </div>
             <div class="queue-status">${activeQueue.status}</div>
         `;
