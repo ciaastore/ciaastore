@@ -137,10 +137,10 @@
             line-height: 1.4;
         }
 
-        .nav-tabs { display: flex; gap: 12px; margin-bottom: 20px; }
+        .nav-tabs { display: flex; gap: 8px; margin-bottom: 20px; }
         .tab-btn {
-            flex: 1; padding: 12px; border: 2px solid var(--pink-bright); background: #fff;
-            color: var(--pink-dark); border-radius: 14px; font-weight: bold; cursor: pointer; text-align: center; font-size: 0.95rem; transition: 0.2s;
+            flex: 1; padding: 12px 6px; border: 2px solid var(--pink-bright); background: #fff;
+            color: var(--pink-dark); border-radius: 14px; font-weight: bold; cursor: pointer; text-align: center; font-size: 0.85rem; transition: 0.2s;
         }
         .tab-btn.active { background: var(--pink-main); color: white; border-color: var(--pink-main); }
 
@@ -171,6 +171,7 @@
             .menu-grid { grid-template-columns: repeat(3, 1fr); gap: 22px; }
             .apk-grid { grid-template-columns: repeat(4, 1fr); gap: 22px; }
             .grid-container { grid-template-columns: repeat(3, 1fr) !important; gap: 15px !important; }
+            .tab-btn { font-size: 0.95rem; padding: 12px; }
         }
 
         .btn-back {
@@ -251,6 +252,62 @@
             background: #f8fafc; border: 1px solid #cbd5e1; font-family: monospace; font-size: 0.75rem;
             padding: 10px; word-break: break-all; border-radius: 8px; margin-top: 10px; color: #334155; text-align: left;
         }
+
+        .contact-card-container {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            margin-top: 10px;
+        }
+        .contact-card {
+            background: linear-gradient(135deg, #fff0f5 0%, #ffe4ec 100%);
+            border: 2px solid var(--pink-main);
+            border-radius: 18px;
+            padding: 16px 20px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            text-decoration: none;
+            color: #444;
+            transition: all 0.25s ease;
+            box-shadow: 0 4px 12px rgba(255, 158, 187, 0.15);
+        }
+        .contact-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(216, 92, 128, 0.25);
+            background: linear-gradient(135deg, #ffe4ec 0%, #ff9ebb 100%);
+        }
+        .contact-info {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        .contact-icon {
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            background: #fff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            color: var(--pink-dark);
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+        }
+        .contact-text-title {
+            font-weight: bold;
+            color: var(--pink-dark);
+            font-size: 0.98rem;
+        }
+        .contact-text-sub {
+            font-size: 0.82rem;
+            color: #666;
+            margin-top: 2px;
+        }
+        .contact-arrow {
+            font-size: 1.2rem;
+            color: var(--pink-dark);
+        }
     </style>
 </head>
 <body>
@@ -269,6 +326,7 @@
 
     <div class="nav-tabs" id="mainTabs">
         <button class="tab-btn active" onclick="switchTab('services')">🛍️ Layanan</button>
+        <button class="tab-btn" onclick="switchTab('contact')">📞 Kontak Resmi</button>
         <button class="tab-btn" onclick="switchTab('queue')">📋 Cek Antrian</button>
     </div>
 
@@ -313,6 +371,49 @@
             <div class="apk-card" onclick="openPage('wetv')"><img src="wetv.jpg" class="apk-icon" onerror="this.src='logo.jpg'"><div class="apk-title">WeTV</div></div>
             <div class="apk-card" onclick="openPage('gemini')"><img src="gemini.jpg" class="apk-icon" onerror="this.src='logo.jpg'"><div class="apk-title">Gemini AI</div></div>
             <div class="apk-card" onclick="openPage('pixellab')"><img src="pixellab.jpg" class="apk-icon" onerror="this.src='logo.jpg'"><div class="apk-title">Pixellab Mod</div></div>
+        </div>
+    </div>
+
+    <!-- KONTAK RESMI PAGE -->
+    <div id="contactPage" class="page">
+        <div class="category-title">📞 Kontak Resmi Ciaa Store</div>
+        <div class="info-box" style="text-align: center; margin-bottom: 20px;">
+            Silakan hubungi kami melalui saluran resmi di bawah ini jika membutuhkan bantuan atau informasi tambahan.
+        </div>
+        
+        <div class="contact-card-container">
+            <a href="https://wa.me/6289505929536" target="_blank" class="contact-card">
+                <div class="contact-info">
+                    <div class="contact-icon" style="color: #25d366;"><i class="fa-brands fa-whatsapp"></i></div>
+                    <div>
+                        <div class="contact-text-title">No Utama Ciaa Store</div>
+                        <div class="contact-text-sub">+62 895-0592-9536</div>
+                    </div>
+                </div>
+                <div class="contact-arrow"><i class="fa-solid fa-chevron-right"></i></div>
+            </a>
+
+            <a href="https://wa.me/6289509452777" target="_blank" class="contact-card">
+                <div class="contact-info">
+                    <div class="contact-icon" style="color: #25d366;"><i class="fa-brands fa-whatsapp"></i></div>
+                    <div>
+                        <div class="contact-text-title">No Customer Service</div>
+                        <div class="contact-text-sub">+62 895-0945-2777</div>
+                    </div>
+                </div>
+                <div class="contact-arrow"><i class="fa-solid fa-chevron-right"></i></div>
+            </a>
+
+            <a href="https://linktr.ee/ciaastore.yo" target="_blank" class="contact-card">
+                <div class="contact-info">
+                    <div class="contact-icon" style="color: #39e09b;"><i class="fa-solid fa-link"></i></div>
+                    <div>
+                        <div class="contact-text-title">Linktree Resmi</div>
+                        <div class="contact-text-sub">linktr.ee/ciaastore.yo</div>
+                    </div>
+                </div>
+                <div class="contact-arrow"><i class="fa-solid fa-chevron-right"></i></div>
+            </a>
         </div>
     </div>
 
@@ -375,10 +476,10 @@
         </button>
     </div>
 
-    <!-- PAYMENT PAGE FOR QRIS -->
+    <!-- PAYMENT PAGE FOR DANA / GOPAY / QRIS -->
     <div id="paymentPage" class="page">
         <button class="btn-back" onclick="goBackToDetail()">← Ubah Pesanan</button>
-        <div class="category-title">💳 Pembayaran QRIS Dinamis</div>
+        <div class="category-title" id="paymentPageTitle">💳 Instruksi Pembayaran</div>
 
         <div class="summary-box">
             <div class="summary-row"><span>Status Antrian:</span><strong id="payQueueNo">Menunggu Konfirmasi WA</strong></div>
@@ -388,7 +489,26 @@
             <div class="summary-row"><span>Merchant:</span><strong>Ciaa Store Real</strong></div>
         </div>
 
-        <div class="qris-display-area">
+        <!-- DANA / GOPAY PAYMENT DISPLAY AREA -->
+        <div id="ewalletDisplayArea" class="qris-display-area" style="display: none;">
+            <div style="font-weight:bold; font-size:1rem; color:var(--pink-dark); margin-bottom:8px;" id="ewalletInstructionText">
+                Silakan transfer sesuai nominal yang kamu pesan ke nomor berikut:
+            </div>
+            
+            <div class="summary-box" style="border-style: solid; background: #fff0f5; text-align: left; margin-bottom: 0;">
+                <div class="summary-row"><span style="color:#666;">Metode Pembayaran:</span><strong id="ewalletMethodName">DANA</strong></div>
+                <div class="summary-row"><span style="color:#666;">Nominal Bayar:</span><strong id="ewalletAmountDisplay" style="color:var(--pink-dark); font-size:1.1rem;">Rp 0</strong></div>
+                <div class="summary-row"><span style="color:#666;">Nomor Tujuan:</span><strong id="ewalletNumberDisplay">085752161167</strong></div>
+                <div class="summary-row"><span style="color:#666;">Atas Nama (A/N):</span><strong id="ewalletNameDisplay">ADE FAHREZI</strong></div>
+            </div>
+
+            <button class="copy-btn" style="margin-top:12px; width:100%; padding:10px; font-size:0.9rem;" onclick="copyEwalletNumber()">
+                📋 Salin Nomor Tujuan
+            </button>
+        </div>
+
+        <!-- QRIS DISPLAY AREA -->
+        <div id="qrisDisplayArea" class="qris-display-area" style="display: none;">
             <div style="font-weight:bold; font-size:0.9rem; color:var(--pink-dark);">Scan QRIS untuk Membayar</div>
             <div style="font-size:0.8rem; color:#666; margin-top:4px;">Nominal transaksi sudah terisi secara otomatis</div>
             
@@ -618,13 +738,12 @@
     let currentQueueNumber = 100;
     let activeQueue = null;
     let currentQrisPayload = '';
+    let currentEwalletNumber = '';
 
-    // FUNGSI SENSOR PRIVASI
     function maskSensitiveText(text) {
         if (!text) return '';
 
         return text.split('\n').map(line => {
-            // Sensor URL / Link
             line = line.replace(/(https?:\/\/[^\s]+)/g, (url) => {
                 try {
                     let parsed = new URL(url);
@@ -634,18 +753,15 @@
                 }
             });
 
-            // Sensor Email
             line = line.replace(/([a-zA-Z0-9._%+-]+)(@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,})/g, (match, name, domain) => {
                 if (name.length <= 2) return name[0] + '***' + domain;
                 return name[0] + '***' + name[name.length - 1] + domain;
             });
 
-            // Sensor Nomor Telepon (Angka 8 digit atau lebih)
             line = line.replace(/\b(\+?\d{3,4})[\d\s-]{3,}(\d{2})\b/g, (match, start, end) => {
                 return start + '*****' + end;
             });
 
-            // Sensor ID Game / Nama Store jika berupa teks pendek berurutan
             if (line.includes('Nama Store:')) {
                 line = line.replace(/(Nama Store:\s*)(.+)/gi, (match, label, val) => {
                     let v = val.trim();
@@ -820,14 +936,10 @@
             return;
         }
 
-        if (selectedPaymentMethod === 'QRIS') {
-            openQrisPage(finalDataTarget);
-        } else {
-            confirmAndSendWA(finalDataTarget);
-        }
+        openPaymentGatewayPage(finalDataTarget);
     }
 
-    function openQrisPage(userData) {
+    function openPaymentGatewayPage(userData) {
         hideAllPages();
         document.getElementById('paymentPage').classList.add('active');
 
@@ -836,25 +948,64 @@
         document.getElementById('payItemName').innerText = selectedItem.name;
         document.getElementById('payItemPrice').innerText = 'Rp ' + selectedItem.price.toLocaleString('id-ID');
 
-        currentQrisPayload = generateDynamicQris(BASE_QRIS_STATIC, selectedItem.price);
-        document.getElementById('qrisCodeText').innerText = currentQrisPayload;
+        const ewalletArea = document.getElementById('ewalletDisplayArea');
+        const qrisArea = document.getElementById('qrisDisplayArea');
 
-        const qrContainer = document.getElementById('qrcode');
-        qrContainer.innerHTML = '';
-        
-        new QRCode(qrContainer, {
-            text: currentQrisPayload,
-            width: 200,
-            height: 200,
-            colorDark : "#000000",
-            colorLight : "#ffffff",
-            correctLevel : QRCode.CorrectLevel.M
-        });
+        if (selectedPaymentMethod === 'DANA' || selectedPaymentMethod === 'GOPAY') {
+            document.getElementById('paymentPageTitle').innerText = '💳 Pembayaran ' + selectedPaymentMethod;
+            ewalletArea.style.display = 'block';
+            qrisArea.style.display = 'none';
+
+            let num = '';
+            let name = '';
+
+            if (selectedPaymentMethod === 'DANA') {
+                num = '085752161167';
+                name = 'ADE FAHREZI';
+            } else if (selectedPaymentMethod === 'GOPAY') {
+                num = '089505929536';
+                name = 'CICOCO';
+            }
+
+            currentEwalletNumber = num;
+            document.getElementById('ewalletInstructionText').innerText = `Silakan transfer sesuai nominal yang kamu pesan ke nomor ${selectedPaymentMethod} berikut:`;
+            document.getElementById('ewalletMethodName').innerText = selectedPaymentMethod;
+            document.getElementById('ewalletAmountDisplay').innerText = 'Rp ' + selectedItem.price.toLocaleString('id-ID');
+            document.getElementById('ewalletNumberDisplay').innerText = num;
+            document.getElementById('ewalletNameDisplay').innerText = name;
+
+        } else if (selectedPaymentMethod === 'QRIS') {
+            document.getElementById('paymentPageTitle').innerText = '💳 Pembayaran QRIS Dinamis';
+            ewalletArea.style.display = 'none';
+            qrisArea.style.display = 'block';
+
+            currentQrisPayload = generateDynamicQris(BASE_QRIS_STATIC, selectedItem.price);
+            document.getElementById('qrisCodeText').innerText = currentQrisPayload;
+
+            const qrContainer = document.getElementById('qrcode');
+            qrContainer.innerHTML = '';
+            
+            new QRCode(qrContainer, {
+                text: currentQrisPayload,
+                width: 200,
+                height: 200,
+                colorDark : "#000000",
+                colorLight : "#ffffff",
+                correctLevel : QRCode.CorrectLevel.M
+            });
+        }
 
         const btnWa = document.getElementById('btnWaConfirm');
         btnWa.onclick = function() {
             confirmAndSendWA(userData);
         };
+    }
+
+    function copyEwalletNumber() {
+        if (currentEwalletNumber) {
+            navigator.clipboard.writeText(currentEwalletNumber);
+            alert('Nomor tujuan berhasil disalin: ' + currentEwalletNumber);
+        }
     }
 
     function copyQrisText() {
@@ -890,15 +1041,20 @@
                       `💳 *Metode Pembayaran:* ${selectedPaymentMethod}\n\n` +
                       `Mohon segera diproses ya Min! Terima kasih.`;
 
-        window.open(`https://wa.me/6285752161167?text=${encodeURIComponent(waMsg)}`, '_blank');
+        // Mengarahkan konfirmasi pembayaran ke WhatsApp Admin 6289505929536
+        window.open(`https://wa.me/6289505929536?text=${encodeURIComponent(waMsg)}`, '_blank');
     }
 
     function switchTab(tab) {
         if (tab === 'services') {
             setActiveTab(0);
             goHome();
-        } else if (tab === 'queue') {
+        } else if (tab === 'contact') {
             setActiveTab(1);
+            hideAllPages();
+            document.getElementById('contactPage').classList.add('active');
+        } else if (tab === 'queue') {
+            setActiveTab(2);
             hideAllPages();
             document.getElementById('queuePage').classList.add('active');
             renderQueueList();
@@ -924,7 +1080,6 @@
             return;
         }
 
-        // Terapkan sensor otomatis untuk antrian yang ditampilkan
         const maskedTarget = maskSensitiveText(activeQueue.target);
 
         const card = document.createElement('div');
