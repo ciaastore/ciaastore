@@ -404,22 +404,207 @@
     const BASE_QRIS_STATIC = "00020101021126570011ID.DANA.WWW011893600915303380466202090338046620303UMI51440014ID.CO.QRIS.WWW0215ID10265642557130303UMI5204549953033605802ID5915Ciaa Store Real6014Kota Pontianak610578114630476C7";
 
     const servicesData = {
-        'ff': { title: 'Free Fire', label: 'Masukkan User ID (FF)', items: [{ name: '140 Diamonds', price: 20000 }, { name: '355 Diamonds', price: 50000 }, { name: '720 Diamonds', price: 100000 }] },
-        'ml': { title: 'Mobile Legends', label: 'Masukkan User ID & Zone ID', items: [{ name: '86 Diamonds', price: 22000 }, { name: '172 Diamonds', price: 44000 }, { name: '257 Diamonds', price: 65000 }] },
-        'ml_ftu': { title: 'ML First Top Up', label: 'Masukkan User ID & Zone ID', items: [{ name: 'First Top Up Diamond', price: 15000 }] },
-        'pubg': { title: 'PUBG Mobile', label: 'Masukkan ID PUBG', items: [{ name: '60 UC', price: 16000 }, { name: '325 UC', price: 75000 }] },
-        'hok': { title: 'Honor of Kings', label: 'Masukkan Player ID', items: [{ name: '80 Tokens', price: 16000 }, { name: '240 Tokens', price: 48000 }] },
-        'bs': { title: 'Blood Strike', label: 'Masukkan User ID', items: [{ name: '100 Gold', price: 15000 }, { name: '500 Gold', price: 70000 }] },
-        'jasher': { title: 'Jasher (Jasa Share)', label: 'Masukkan Link Postingan', items: [{ name: '100 Share', price: 5000 }, { name: '500 Share', price: 20000 }] },
-        'jpm': { title: 'JPM (Push Member)', label: 'Masukkan Link Group/Channel', items: [{ name: '100 Member', price: 10000 }, { name: '500 Member', price: 45000 }] },
-        'canva': { title: 'Canva Pro', label: 'Masukkan Email Canva', items: [{ name: 'Canva Pro 1 Bulan', price: 10000 }, { name: 'Canva Pro 1 Tahun', price: 35000 }] },
-        'am': { title: 'Alight Motion', label: 'Masukkan Email Alight Motion', items: [{ name: 'AM Preset / Premium 1 Thn', price: 15000 }] },
-        'yt': { title: 'YouTube Premium', label: 'Masukkan Email YouTube', items: [{ name: 'YouTube Premium 1 Bulan', price: 12000 }] },
-        'iqiyi': { title: 'iQIYI', label: 'Masukkan Email / No HP', items: [{ name: 'VIP Premium 1 Bulan', price: 20000 }] },
-        'capcut': { title: 'CapCut Pro', label: 'Masukkan Email CapCut', items: [{ name: 'CapCut Pro 1 Bulan', price: 18000 }] },
-        'wetv': { title: 'WeTV', label: 'Masukkan No HP / Email', items: [{ name: 'WeTV VIP 1 Bulan', price: 20000 }] },
-        'gemini': { title: 'Gemini AI', label: 'Masukkan Email', items: [{ name: 'Gemini Advanced 1 Bulan', price: 30000 }] },
-        'pixellab': { title: 'Pixellab Mod', label: 'Masukkan Email / No WA', items: [{ name: 'Pixellab Full Font & Preset', price: 10000 }] }
+        'ff': { 
+            title: 'Free Fire', 
+            label: 'Masukkan User ID (FF)', 
+            items: [
+                { name: '5 Diamond', price: 1000 },
+                { name: '10 Diamond', price: 2000 },
+                { name: '20 Diamond', price: 5000 },
+                { name: '25 Diamond', price: 6000 },
+                { name: '30 Diamond', price: 7000 },
+                { name: '50 Diamond', price: 9000 },
+                { name: '70 Diamond', price: 11000 },
+                { name: '75 Diamond', price: 12000 },
+                { name: '100 Diamond', price: 16000 },
+                { name: '120 Diamond', price: 18000 },
+                { name: '140 Diamond', price: 20000 },
+                { name: '150 Diamond', price: 22000 },
+                { name: '160 Diamond', price: 24000 },
+                { name: '210 Diamond', price: 30000 },
+                { name: '250 Diamond', price: 36000 },
+                { name: '355 Diamond', price: 49000 },
+                { name: '500 Diamond', price: 66000 },
+                { name: '720 Diamond', price: 96000 },
+                { name: '1000 Diamond', price: 134000 },
+                { name: '1450 Diamond', price: 190000 },
+                { name: '2000 Diamond', price: 264000 },
+                { name: 'Membership Mingguan (MM)', price: 30000 },
+                { name: 'Membership Bulanan (MB)', price: 89000 }
+            ] 
+        },
+        'ml': { 
+            title: 'Mobile Legends', 
+            label: 'Masukkan User ID & Zone ID', 
+            items: [
+                { name: '12 Diamond', price: 4000 },
+                { name: '28 Diamond', price: 8000 },
+                { name: '50 Diamond', price: 14000 },
+                { name: '70 Diamond', price: 20000 },
+                { name: '112 Diamond', price: 32000 },
+                { name: '140 Diamond', price: 42000 },
+                { name: '170 Diamond', price: 50000 },
+                { name: '222 Diamond', price: 60000 },
+                { name: '257 Diamond', price: 70000 },
+                { name: '296 Diamond', price: 79000 },
+                { name: '355 Diamond', price: 96000 },
+                { name: '408 Diamond', price: 110000 },
+                { name: '460 Diamond', price: 125000 },
+                { name: '514 Diamond', price: 137000 },
+                { name: '568 Diamond', price: 150000 },
+                { name: '600 Diamond', price: 158000 },
+                { name: '706 Diamond', price: 185000 },
+                { name: '875 Diamond', price: 226000 },
+                { name: '963 Diamond', price: 245000 },
+                { name: '1050 Diamond', price: 270000 },
+                { name: '1412 Diamond', price: 365000 },
+                { name: 'Weekly Diamond Pass (WDP)', price: 28000 }
+            ] 
+        },
+        'ml_ftu': { 
+            title: 'ML First Top Up', 
+            label: 'Masukkan User ID & Zone ID', 
+            items: [
+                { name: '50 + Bonus', price: 16000 },
+                { name: '150 + Bonus', price: 45000 },
+                { name: '250 + Bonus', price: 76000 },
+                { name: '500 + Bonus', price: 152000 }
+            ] 
+        },
+        'pubg': { 
+            title: 'PUBG Mobile', 
+            label: 'Masukkan ID PUBG', 
+            items: [
+                { name: '60 UC', price: 18000 },
+                { name: '120 UC', price: 33000 },
+                { name: '240 UC', price: 68000 },
+                { name: '300 UC', price: 85000 },
+                { name: '385 UC', price: 106000 },
+                { name: '445 UC', price: 120000 },
+                { name: '505 UC', price: 136000 },
+                { name: '565 UC', price: 157000 },
+                { name: '600 UC', price: 165000 },
+                { name: '720 UC', price: 195000 },
+                { name: '840 UC', price: 218000 },
+                { name: '900 UC', price: 236000 },
+                { name: '1500 UC', price: 386000 },
+                { name: '1800 UC', price: 420000 }
+            ] 
+        },
+        'hok': { 
+            title: 'Honor of Kings', 
+            label: 'Masukkan Player ID', 
+            items: [
+                { name: '16 Tokens', price: 3500 },
+                { name: '80 Tokens', price: 19000 },
+                { name: '240 Tokens', price: 53000 },
+                { name: '400 Tokens', price: 83000 },
+                { name: '560 Tokens', price: 115000 },
+                { name: '800 Tokens', price: 162000 },
+                { name: '1200 Tokens', price: 253000 },
+                { name: '2400 Tokens', price: 503000 }
+            ] 
+        },
+        'bs': { 
+            title: 'Blood Strike', 
+            label: 'Masukkan User ID', 
+            items: [
+                { name: '100 Gold', price: 16000 },
+                { name: '300 Gold', price: 45000 },
+                { name: '500 Gold', price: 75000 },
+                { name: '1000 Gold', price: 136000 },
+                { name: '2000 Gold', price: 258000 },
+                { name: '5000 Gold', price: 640000 }
+            ] 
+        },
+        'jasher': { 
+            title: 'Jasher (Jasa Share)', 
+            label: 'Masukkan Link Postingan', 
+            items: [
+                { name: '12 Jam', price: 200 },
+                { name: '1 Hari', price: 500 },
+                { name: '3 Hari', price: 1000 },
+                { name: '1 Minggu', price: 3000 },
+                { name: '2 Minggu', price: 4000 },
+                { name: '1 Bulan', price: 6000 },
+                { name: '3 Bulan', price: 7000 }
+            ] 
+        },
+        'jpm': { 
+            title: 'JPM (Push Member)', 
+            label: 'Masukkan Link Group/Channel', 
+            items: [
+                { name: '10 Member', price: 500 },
+                { name: '20 Member', price: 1000 },
+                { name: '50 Member', price: 3000 },
+                { name: '70 Member', price: 4000 },
+                { name: '100 Member', price: 5000 },
+                { name: '150 Member', price: 7000 },
+                { name: '250 Member', price: 8000 },
+                { name: '400 Member', price: 12000 },
+                { name: '500 Member', price: 16000 }
+            ] 
+        },
+        'canva': { 
+            title: 'Canva Pro', 
+            label: 'Masukkan Email Canva', 
+            items: [
+                { name: 'Canva 1 Bulan', price: 3000 },
+                { name: 'Canva Head 1 Bulan', price: 7000 }
+            ] 
+        },
+        'am': { 
+            title: 'Alight Motion', 
+            label: 'Masukkan Email Alight Motion', 
+            items: [
+                { name: 'Alight Motion 1 Tahun', price: 4000 }
+            ] 
+        },
+        'yt': { 
+            title: 'YouTube Premium', 
+            label: 'Masukkan Email YouTube', 
+            items: [
+                { name: 'YouTube 1 Bulan (Family)', price: 5000 }
+            ] 
+        },
+        'iqiyi': { 
+            title: 'iQIYI', 
+            label: 'Masukkan Email / No HP', 
+            items: [
+                { name: 'iQIYI 1 Bulan (Private VIP Standar)', price: 37000 }
+            ] 
+        },
+        'capcut': { 
+            title: 'CapCut Pro', 
+            label: 'Masukkan Email CapCut', 
+            items: [
+                { name: 'CapCut Pro 7 Hari Private', price: 8500 },
+                { name: 'CapCut Pro 1 Bulan Private', price: 25000 }
+            ] 
+        },
+        'wetv': { 
+            title: 'WeTV', 
+            label: 'Masukkan No HP / Email', 
+            items: [
+                { name: 'WeTV 1 Bulan Sharing', price: 11000 },
+                { name: 'WeTV 3 Bulan Sharing', price: 27000 },
+                { name: 'WeTV 1 Bulan Private', price: 28000 }
+            ] 
+        },
+        'gemini': { 
+            title: 'Gemini AI', 
+            label: 'Masukkan Email', 
+            items: [
+                { name: 'AI Gemini Pro 1 Bulan', price: 16000 }
+            ] 
+        },
+        'pixellab': { 
+            title: 'Pixellab Mod', 
+            label: 'Masukkan Email / No WA', 
+            items: [
+                { name: 'Pixellab Mod', price: 2000 }
+            ] 
+        }
     };
 
     let selectedServiceKey = '';
@@ -429,7 +614,7 @@
     let activeQueue = null;
     let currentQrisPayload = '';
 
-    // ALGORITMA PENIHITUNGAN CRC-16 (EMVCo Standar Resmi)
+    // ALGORITMA PERHITUNGAN CRC-16 (EMVCo Standar Resmi)
     function calcCRC16(str) {
         let crc = 0xFFFF;
         for (let c = 0; c < str.length; c++) {
@@ -446,19 +631,14 @@
         return crc.toString(16).toUpperCase().padStart(4, '0');
     }
 
-    // FUNGSI KONVERSI QRIS STATIS MENJADI DINAMIS DENGAN NOMINAL AUTOMATIS
+    // FUNGSI KONVERSI QRIS STATIS MENJADI DINAMIS DENGAN NOMINAL OTOMATIS
     function generateDynamicQris(staticQris, amount) {
-        // Cut Checksum awal (6304 + 4 karakter CRC)
         let qris = staticQris.slice(0, -8);
-
-        // Ubah Tag 010211 (Statis) menjadi 010212 (Dinamis)
         qris = qris.replace("010211", "010212");
 
-        // Format Tag Nominal (54)
         const amtStr = amount.toString();
         const amtTag = "54" + amtStr.length.toString().padStart(2, '0') + amtStr;
 
-        // Cari Posisi Penyisipan Tag Nominal (Sebelum Country Code Tag 58)
         const splitIndex = qris.indexOf("5802ID");
         if (splitIndex !== -1) {
             qris = qris.slice(0, splitIndex) + amtTag + qris.slice(splitIndex);
@@ -466,7 +646,6 @@
             qris = qris + amtTag;
         }
 
-        // Tambahkan Tag Checksum (6304) dan Hitung CRC16 baru
         qris = qris + "6304";
         const newCrc = calcCRC16(qris);
         return qris + newCrc;
@@ -561,7 +740,6 @@
         document.getElementById('payItemName').innerText = selectedItem.name;
         document.getElementById('payItemPrice').innerText = 'Rp ' + selectedItem.price.toLocaleString('id-ID');
 
-        // Buat QRIS Dinamis Valid berdasarkan data merchant toko Anda
         currentQrisPayload = generateDynamicQris(BASE_QRIS_STATIC, selectedItem.price);
         document.getElementById('qrisCodeText').innerText = currentQrisPayload;
 
