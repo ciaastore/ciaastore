@@ -444,7 +444,7 @@
                 <i class="fa-solid fa-mobile-screen-button" style="color:#22c55e;"></i>
                 <div>
                     <div style="font-weight:bold; font-size:0.85rem;">DANA</div>
-                    <div style="font-size:0.75rem; color:#666;">085752161167 (ADE FAHREZI)</div>
+                    <div style="font-size:0.75rem; color:#666;">081338224767 (AGUS SUTIARNO)</div>
                 </div>
             </div>
             <button class="copy-btn" onclick="copyText('085752161167', event)">Salin</button>
@@ -455,7 +455,7 @@
                 <i class="fa-solid fa-wallet" style="color:#00a5cf;"></i>
                 <div>
                     <div style="font-weight:bold; font-size:0.85rem;">GOPAY</div>
-                    <div style="font-size:0.75rem; color:#666;">089505929536 (CICOCO)</div>
+                    <div style="font-size:0.75rem; color:#666;">089505929536 (-)</div>
                 </div>
             </div>
             <button class="copy-btn" onclick="copyText('089505929536', event)">Salin</button>
@@ -498,8 +498,8 @@
             <div class="summary-box" style="border-style: solid; background: #fff0f5; text-align: left; margin-bottom: 0;">
                 <div class="summary-row"><span style="color:#666;">Metode Pembayaran:</span><strong id="ewalletMethodName">DANA</strong></div>
                 <div class="summary-row"><span style="color:#666;">Nominal Bayar:</span><strong id="ewalletAmountDisplay" style="color:var(--pink-dark); font-size:1.1rem;">Rp 0</strong></div>
-                <div class="summary-row"><span style="color:#666;">Nomor Tujuan:</span><strong id="ewalletNumberDisplay">085752161167</strong></div>
-                <div class="summary-row"><span style="color:#666;">Atas Nama (A/N):</span><strong id="ewalletNameDisplay">ADE FAHREZI</strong></div>
+                <div class="summary-row"><span style="color:#666;">Nomor Tujuan:</span><strong id="ewalletNumberDisplay">081338224767</strong></div>
+                <div class="summary-row"><span style="color:#666;">Atas Nama (A/N):</span><strong id="ewalletNameDisplay">AGUS SUTIARNO</strong></div>
             </div>
 
             <button class="copy-btn" style="margin-top:12px; width:100%; padding:10px; font-size:0.9rem;" onclick="copyEwalletNumber()">
@@ -561,7 +561,7 @@
         },
         'ml': { 
             title: 'Mobile Legends', 
-            label: 'Masukkan User ID & Zone ID', 
+            label: 'Masukkan User ID & Server', 
             items: [
                 { name: '12 Diamond', price: 4000 },
                 { name: '28 Diamond', price: 8000 },
@@ -589,7 +589,7 @@
         },
         'ml_ftu': { 
             title: 'ML First Top Up', 
-            label: 'Masukkan User ID & Zone ID', 
+            label: 'Masukkan User ID & Server', 
             items: [
                 { name: '50 + Bonus', price: 16000 },
                 { name: '150 + Bonus', price: 45000 },
@@ -657,7 +657,7 @@
             ] 
         },
         'jpm': { 
-            title: 'JPM (Push Member)', 
+            title: JPM (Jasa Push Member)', 
             label: 'Nama Store', 
             items: [
                 { name: '10 Member', price: 500 },
@@ -961,11 +961,11 @@
             let name = '';
 
             if (selectedPaymentMethod === 'DANA') {
-                num = '085752161167';
-                name = 'ADE FAHREZI';
+                num = '081338224767';
+                name = 'AGUS SUTIARNO';
             } else if (selectedPaymentMethod === 'GOPAY') {
                 num = '089505929536';
-                name = 'CICOCO';
+                name = '-';
             }
 
             currentEwalletNumber = num;
