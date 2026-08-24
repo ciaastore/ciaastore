@@ -526,7 +526,8 @@
 </div>
 
 <script>
-    const BASE_QRIS_STATIC = "00020101021126570011ID.DANA.WWW011893600915303380466202090338046620303UMI51440014ID.CO.QRIS.WWW0215ID10265642557130303UMI5204549953033605802ID5915Ciaa Store Real6014Kota Pontianak610578114630476C7";
+    // Kode EMVCo QRIS Statis Baru
+    const BASE_QRIS_STATIC = "00020101021126570011ID.DANA.WWW011893600915376556859902097655685990303UMI51440014ID.CO.QRIS.WWW0215ID10253787183610303UMI5204481453033605802ID5914Ciaa Store All6014Kota Pontianak61057811363048AD2";
 
     const servicesData = {
         'ff': { 
@@ -1041,7 +1042,6 @@
                       `💳 *Metode Pembayaran:* ${selectedPaymentMethod}\n\n` +
                       `Mohon segera diproses ya Min! Terima kasih.`;
 
-        // Mengarahkan konfirmasi pembayaran ke WhatsApp Admin 6289505929536
         window.open(`https://wa.me/6289505929536?text=${encodeURIComponent(waMsg)}`, '_blank');
     }
 
