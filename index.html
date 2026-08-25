@@ -519,21 +519,18 @@
         <div class="grid-container" id="itemsGrid"></div>
 
         <div class="section-title">3. Pilih Metode Pembayaran</div>
-        <!-- Pilihan QRIS dengan A/N AGUS SUTIARNO -->
-        <div class="payment-card" onclick="selectPayment('QRIS', 'Scan QR Code Otomatis', 'AGUS SUTIARNO', this)">
+        <!-- Pilihan QRIS dengan format EMVCo terbaru -->
+        <div class="payment-card" onclick="selectPayment('QRIS', '00020101021126570011ID.DANA.WWW011893600915376556859902097655685990303UMI51440014ID.CO.QRIS.WWW0215ID10253787183610303UMI5204481453033605802ID5914Ciaa Store All6014Kota Pontianak61057811363048AD2', 'Ciaa Store', this)">
             <div class="payment-title">QRIS (All Payment)</div>
             <div class="payment-sub">Scan QR untuk semua e-wallet & bank (Bebas Admin)</div>
-            <div class="payment-sub">A/N: <strong>AGUS SUTIARNO</strong></div>
         </div>
-        <div class="payment-card" onclick="selectPayment('DANA', '081338224767', 'AGUS SUTIARNO', this)">
+        <div class="payment-card" onclick="selectPayment('DANA', '081338224767', 'Ciaa Store', this)">
             <div class="payment-title">DANA</div>
             <div class="payment-sub">Nomor: <strong>081338224767</strong></div>
-            <div class="payment-sub">A/N: <strong>AGUS SUTIARNO</strong></div>
         </div>
-        <div class="payment-card" onclick="selectPayment('GOPAY', '089505929536', 'AGUS SUTIARNO', this)">
+        <div class="payment-card" onclick="selectPayment('GOPAY', '089505929536', 'Ciaa Store', this)">
             <div class="payment-title">GOPAY</div>
             <div class="payment-sub">Nomor: <strong>089505929536</strong></div>
-            <div class="payment-sub">A/N: <strong>AGUS SUTIARNO</strong></div>
         </div>
 
         <button id="btnMainAction" class="btn-action-main" onclick="handleMainAction()">
@@ -547,15 +544,15 @@
         <div class="category-title">💳 Silahkan Lakukan Pembayaran</div>
         
         <div class="invoice-box">
+            <div class="invoice-row"><span>No Antrian</span><span id="invQueueNo" style="font-weight:bold; color:var(--pink-dark);">-</span></div>
             <div class="invoice-row"><span>Metode</span><span id="invPaymentMethod">-</span></div>
             <div class="invoice-row"><span>Paket</span><span id="invPackage">-</span></div>
             <div class="invoice-row"><span>Harga</span><span id="invPrice">-</span></div>
-            <div class="invoice-row"><span>Nomor Tujuan</span><span id="invNumber">-</span></div>
-            <div class="invoice-row"><span>A/N</span><span id="invHolder">-</span></div>
+            <div class="invoice-row"><span>Nomor / Data Tujuan</span><span id="invNumber">-</span></div>
         </div>
 
         <button id="btnCopyNumber" class="btn-copy-num" onclick="copyPaymentNumber()">
-            <i class="fa-regular fa-copy"></i> Salin Nomor Tujuan
+            <i class="fa-regular fa-copy"></i> Salin Nomor / Kode Tujuan
         </button>
 
         <button id="btnWaConfirm" class="btn-action-main" style="background:#25d366;">
@@ -822,29 +819,33 @@
             return;
         }
 
+        // Generate nomor antrian CS-TAHUN-NO
+        const queueNumberString = generateNextQueueNumber();
+
+        document.getElementById('invQueueNo').innerText = queueNumberString;
         document.getElementById('invPaymentMethod').innerText = selectedPaymentMethod;
         document.getElementById('invPackage').innerText = selectedItem.name;
         document.getElementById('invPrice').innerText = 'Rp ' + selectedItem.price.toLocaleString('id-ID');
         document.getElementById('invNumber').innerText = selectedPaymentNumber;
-        document.getElementById('invHolder').innerText = selectedPaymentHolder;
 
         // Simpan pesanan ke antrian lokal
         saveOrderToQueue({
-            id: 'CIA-' + Math.floor(1000 + Math.random() * 9000),
+            queueNo: queueNumberString,
             service: servicesData[currentService].title,
             package: selectedItem.name,
             price: 'Rp ' + selectedItem.price.toLocaleString('id-ID'),
             target: (storeName ? 'Store: ' + storeName + '\n' : '') + userData,
             payment: selectedPaymentMethod,
-            status: 'Pending',
+            status: 'Sedang menunggu',
             time: new Date().toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit' })
         });
 
         document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
         document.getElementById('paymentPage').classList.add('active');
 
-        // Tombol WhatsApp Konfirmasi
+        // Format pesan WhatsApp dengan nomor antrian
         const waText = `Halo Ciaa Store, saya ingin konfirmasi pembayaran.\n\n` +
+            `Nomor Antrian: ${queueNumberString}\n` +
             `Layanan: ${servicesData[currentService].title}\n` +
             `Paket: ${selectedItem.name}\n` +
             `Harga: Rp ${selectedItem.price.toLocaleString('id-ID')}\n` +
@@ -863,7 +864,7 @@
 
     function copyPaymentNumber() {
         navigator.clipboard.writeText(selectedPaymentNumber).then(() => {
-            alert('Nomor tujuan berhasil disalin!');
+            alert('Nomor / Kode tujuan berhasil disalin!');
         });
     }
 
@@ -871,6 +872,14 @@
     function getQueueData() {
         let data = localStorage.getItem('ciaa_queues');
         return data ? JSON.parse(data) : [];
+    }
+
+    function generateNextQueueNumber() {
+        let queues = getQueueData();
+        const currentYear = new Date().getFullYear();
+        let nextSeq = queues.length + 1;
+        let formattedSeq = String(nextSeq).padStart(2, '0');
+        return `CS-${currentYear}-${formattedSeq}`;
     }
 
     function saveOrderToQueue(order) {
@@ -891,15 +900,15 @@
         container.innerHTML = '';
         queues.forEach((q) => {
             let badgeClass = 'badge-pending';
-            if (q.status === 'Proses') badgeClass = 'badge-process';
+            if (q.status === 'Diproses') badgeClass = 'badge-process';
             if (q.status === 'Selesai') badgeClass = 'badge-success';
-            if (q.status === 'Batal') badgeClass = 'badge-cancel';
+            if (q.status === 'Dibatalkan') badgeClass = 'badge-cancel';
 
             const card = document.createElement('div');
             card.className = 'queue-card';
             card.innerHTML = `
                 <div class="queue-header">
-                    <span class="queue-number">${q.id} - ${q.service}</span>
+                    <span class="queue-number">${q.queueNo} - ${q.service}</span>
                     <span class="queue-badge ${badgeClass}">${q.status}</span>
                 </div>
                 <div class="queue-body">
@@ -914,7 +923,10 @@
 
     function openAdminPanel() {
         let pass = prompt('Masukkan Password Admin:');
-        if (pass === 'ciaa123' || pass === 'admin') {
+        if (pass === '0903cs') {
+            // Sembunyikan overlay maintenance saat admin berhasil login
+            document.getElementById('maintenanceOverlay').classList.remove('active');
+            
             document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
             document.getElementById('adminPage').classList.add('active');
             renderAdminQueueList();
@@ -935,15 +947,15 @@
         container.innerHTML = '';
         queues.forEach((q, index) => {
             let badgeClass = 'badge-pending';
-            if (q.status === 'Proses') badgeClass = 'badge-process';
+            if (q.status === 'Diproses') badgeClass = 'badge-process';
             if (q.status === 'Selesai') badgeClass = 'badge-success';
-            if (q.status === 'Batal') badgeClass = 'badge-cancel';
+            if (q.status === 'Dibatalkan') badgeClass = 'badge-cancel';
 
             const card = document.createElement('div');
             card.className = 'queue-card';
             card.innerHTML = `
                 <div class="queue-header">
-                    <span class="queue-number">${q.id} - ${q.service}</span>
+                    <span class="queue-number">${q.queueNo} - ${q.service}</span>
                     <span class="queue-badge ${badgeClass}">${q.status}</span>
                 </div>
                 <div class="queue-body">
@@ -951,9 +963,9 @@
                     <div><strong>Pembayaran:</strong> ${q.payment}</div>
                     <div class="queue-target-box"><strong>Data Tujuan:</strong>\n${q.target}</div>
                     <div class="admin-action-btns">
-                        <button class="btn-status btn-status-process" onclick="updateStatus(${index}, 'Proses')">Proses</button>
-                        <button class="btn-status btn-status-success" onclick="updateStatus(${index}, 'Selesai')">Selesai</button>
-                        <button class="btn-status btn-status-cancel" onclick="updateStatus(${index}, 'Batal')">Batal</button>
+                        <button class="btn-status btn-status-process" onclick="updateStatus(${index}, 'Diproses')">Diproses</button>
+                        <button class="btn-status btn-status-success" onclick="updateStatus(${index}, 'Sedang menunggu')">Sedang Menunggu</button>
+                        <button class="btn-status btn-status-cancel" onclick="updateStatus(${index}, 'Dibatalkan')">Dibatalkan</button>
                     </div>
                 </div>
             `;
