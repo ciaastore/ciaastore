@@ -68,7 +68,7 @@
             position: absolute;
             width: 32px;
             height: 32px;
-            opacity: 0.8;
+            opacity: 0.85;
             filter: drop-shadow(0 0 6px rgba(255, 255, 255, 0.9)) drop-shadow(0 0 10px rgba(255, 158, 187, 0.8));
             animation: fly-random 18s infinite linear;
         }
@@ -80,11 +80,12 @@
             animation: wing-flap 0.35s infinite ease-in-out alternate;
         }
 
-        .butterfly:nth-child(2) { top: 20%; left: -10%; animation-duration: 24s; animation-delay: 2s; }
+        .butterfly:nth-child(1) { top: 15%; left: -5%; animation-duration: 20s; animation-delay: 0s; }
+        .butterfly:nth-child(1) svg { fill: #ffffff; }
+        .butterfly:nth-child(2) { top: 45%; left: -10%; animation-duration: 24s; animation-delay: 2s; }
         .butterfly:nth-child(2) svg { fill: #ffe4ec; animation-duration: 0.4s; }
-        .butterfly:nth-child(3) { top: 60%; left: -10%; animation-duration: 20s; animation-delay: 5s; }
+        .butterfly:nth-child(3) { top: 75%; left: -5%; animation-duration: 22s; animation-delay: 5s; }
         .butterfly:nth-child(3) svg { fill: #fff0f3; animation-duration: 0.3s; }
-        .butterfly:nth-child(4) { top: 80%; left: -10%; animation-duration: 28s; animation-delay: 1s; }
 
         @keyframes wing-flap {
             0% { transform: scaleX(1) rotate(0deg); }
@@ -520,9 +521,9 @@
     <!-- NAVIGATION TABS -->
     <div class="nav-tabs" id="mainTabs">
         <button class="tab-btn active" onclick="switchTab('services')">🛍️ Layanan</button>
-        <button class="tab-btn" onclick="switchTab('contact')">📞 Kontak</button>
+        <button class="tab-btn" onclick="switchTab('contact')">📞 Kontak Resmi</button>
         <button class="tab-btn" onclick="switchTab('queue')">📋 Cek Antrian</button>
-        <button class="tab-btn" onclick="switchTab('tutorial')">📖 Tutorial</button>
+        <button class="tab-btn" onclick="switchTab('tutorial')">📖 Tutorial Order</button>
     </div>
 
     <!-- HOME PAGE -->
@@ -663,344 +664,93 @@
 
     <!-- ADMIN PANEL PAGE -->
     <div id="adminPage" class="page">
-        <button class="btn-back" onclick="goHome()">← Keluar dari Panel Admin</button>
-        <div class="category-title">👑 Panel Kelola Admin</div>
+        <button class="btn-back" onclick="goHome()">← Kembali ke Menu Utama</button>
+        <div class="category-title">🛠️ Panel Admin Ciaa Store</div>
         
-        <div style="background:#fff; border:2px solid var(--pink-main); border-radius:16px; padding:20px; margin-bottom:20px; text-align:center;">
-            <strong style="color:var(--pink-dark); font-size:1.1rem; display:block; margin-bottom:8px;">⚙️ Pengaturan Status Server Website</strong>
-            <p style="font-size:0.85rem; color:#666; margin:0 0 15px 0;">Tekan tombol di bawah ini untuk mengontrol apakah website sedang maintenance atau normal bagi pembeli.</p>
-            
-            <button id="btnToggleMaintenance" onclick="toggleMaintenanceServer()" style="padding:12px 24px; border-radius:12px; border:none; font-weight:bold; cursor:pointer; background:#ef4444; color:white; font-size:0.95rem; transition:0.2s;">
-                🚨 Matikan Server (Aktifkan Maintenance)
-            </button>
-        </div>
-
-        <div style="background:#fff; border:2px solid var(--pink-bright); border-radius:16px; padding:15px; margin-bottom:20px; display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:10px;">
-            <div>
-                <strong style="color:var(--pink-dark); font-size:0.95rem; display:block;">🗑️ Reset Seluruh Antrian</strong>
-                <span style="font-size:0.8rem; color:#666;">Menghapus semua daftar antrian dan mereset nomor urut dari awal.</span>
+        <div id="adminLoginBox" style="max-width: 400px; margin: 30px auto; background: #fff; padding: 25px; border-radius: 18px; border: 2px solid var(--pink-main);">
+            <div class="form-group">
+                <label>Password Admin</label>
+                <input type="password" id="adminPasswordInput" placeholder="Masukkan password admin...">
             </div>
-            <button onclick="resetAllQueues()" style="background:#dc2626; color:white; border:none; padding:8px 14px; border-radius:10px; font-weight:bold; font-size:0.82rem; cursor:pointer;">Reset Antrian</button>
+            <button class="btn-action-main" onclick="verifyAdminLogin()">Login Admin</button>
         </div>
 
-        <div class="category-title" style="text-align:left; font-size:0.98rem;">📋 Kelola Pesanan & Konfirmasi Status Antrian:</div>
-        <div id="adminQueueList"></div>
+        <div id="adminDashboardBox" style="display: none;">
+            <div class="info-box" style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px;">
+                <div>
+                    <strong>Status Maintenance Website:</strong> <span id="maintenanceStatusText" style="color: #dc2626; font-weight: bold;">OFF</span>
+                </div>
+                <div style="display: flex; gap: 8px;">
+                    <button class="btn-status btn-status-success" onclick="toggleMaintenance(true)">Turn ON</button>
+                    <button class="btn-status btn-status-cancel" onclick="toggleMaintenance(false)">Turn OFF</button>
+                </div>
+            </div>
+
+            <div style="display: flex; gap: 10px; margin-bottom: 20px;">
+                <button class="btn-action-main" style="margin-top:0;" onclick="resetAllQueues()">🔄 Reset Semua Antrian</button>
+                <button class="btn-action-main" style="margin-top:0; background: #6b7280;" onclick="adminLogout()">🔒 Logout</button>
+            </div>
+
+            <div class="category-title" style="text-align: left; border-bottom: 2px solid var(--pink-bright); padding-bottom: 8px; margin-top: 25px;">Kelola Pesanan & Antrian Masuk</div>
+            <div id="adminQueueManagementList"></div>
+        </div>
     </div>
 
-    <!-- DETAIL SERVICE PAGE -->
-    <div id="detailPage" class="page">
-        <button class="btn-back" onclick="goHome()">← Kembali</button>
-        <h2 id="serviceTitle" style="color: var(--pink-dark); margin-top:0; font-size:1.1rem;"></h2>
-
-        <div id="serviceNoticeBox" class="info-box" style="display: none;"></div>
-
-        <div class="form-group">
-            <label id="inputLabel">1. Masukkan Data</label>
-            <input type="text" id="storeNameInput" placeholder="Masukkan Nama Store..." style="margin-bottom: 10px; display: none;">
-            <textarea id="userData" placeholder=""></textarea>
-        </div>
-
-        <div class="section-title">2. Pilih Nominal / Paket</div>
-        <div class="grid-container" id="itemsGrid"></div>
-
-        <div class="section-title">3. Pilih Metode Pembayaran</div>
-        <div class="payment-card" onclick="selectPayment('QRIS', '00020101021126570011ID.DANA.WWW011893600915376556859902097655685990303UMI51440014ID.CO.QRIS.WWW0215ID10253787183610303UMI5204481453033605802ID5914Ciaa Store All6014Kota Pontianak61057811363048AD2', 'Ciaa Store', this)">
-            <div class="payment-title">QRIS (All Payment)</div>
-            <div class="payment-sub">Scan QR otomatis sesuai nominal (Bebas Admin)</div>
-        </div>
-        <div class="payment-card" onclick="selectPayment('DANA', '081338224767', 'Ciaa Store', this)">
-            <div class="payment-title">DANA</div>
-            <div class="payment-sub">Nomor: <strong>081338224767</strong> (A/N Ciaa Store)</div>
-        </div>
-        <div class="payment-card" onclick="selectPayment('GOPAY', '089505929536', 'Ciaa Store', this)">
-            <div class="payment-title">GOPAY</div>
-            <div class="payment-sub">Nomor: <strong>089505929536</strong> (A/N Ciaa Store)</div>
-        </div>
-
-        <button id="btnMainAction" class="btn-action-main" onclick="handleMainAction()">
-            💳 Lanjutkan Pembayaran
-        </button>
-    </div>
-
-    <!-- PAYMENT INVOICE PAGE -->
-    <div id="paymentPage" class="page">
-        <button class="btn-back" onclick="goBackToDetail()">← Ubah Pesanan</button>
-        <div class="category-title">💳 Silahkan Lakukan Pembayaran</div>
-        
-        <div class="invoice-box">
-            <div class="invoice-row"><span>No Antrian</span><span id="invQueueNo" style="font-weight:bold; color:var(--pink-dark);">-</span></div>
-            <div class="invoice-row"><span>Metode</span><span id="invPaymentMethod">-</span></div>
-            <div class="invoice-row"><span>Paket</span><span id="invPackage">-</span></div>
-            <div class="invoice-row"><span>Harga</span><span id="invPrice">-</span></div>
-            <div class="invoice-row"><span>Nomor / Tujuan</span><span id="invNumber">-</span></div>
-        </div>
-
-        <div id="qrisContainer" style="display: none;" class="qris-display-box">
-            <div style="font-weight: bold; color: var(--pink-dark); margin-bottom: 10px; font-size: 0.9rem;">Scan QRIS Sesuai Nominal Tagihan</div>
-            <div id="qrcode"></div>
-            <div style="font-size: 0.82rem; color: #666;">Nominal otomatis terintegrasi pada QR</div>
-        </div>
-
-        <button id="btnCopyNumber" class="btn-copy-num" onclick="copyPaymentNumber()">
-            <i class="fa-regular fa-copy"></i> Salin Nomor / Kode Tujuan
-        </button>
-
-        <button id="btnWaConfirm" class="btn-action-main" style="background:#25d366;">
-            <i class="fa-brands fa-whatsapp"></i> Konfirmasi Pembayaran Via WhatsApp
-        </button>
-    </div>
 </div>
 
 <script>
-    const servicesData = {
-        'jasher': {
-            title: 'Jasher (Jasa Share)',
-            type: 'service',
-            notice: '<strong>Catatan Penting Jasher:</strong><ul><li>Jasher adalah jasa share, bukan push member</li><li>Tidak ada pengembalian dana</li><li>Jasher teks/link bisa, ketentuan link: <br>«Rp1.000 maksimal 2 link GB/SL»<br>«Rp4.000 maksimal 4 link GB/SL»</li><li>Setiap pembelian mendapatkan bonus waktu</li></ul>',
-            items: [
-                { name: '12 Jam', price: 200 },
-                { name: '1 Hari', price: 500 },
-                { name: '3 Hari', price: 1000 },
-                { name: '1 Minggu', price: 3000 },
-                { name: '2 Minggu', price: 4000 },
-                { name: '1 Bulan', price: 6000 },
-                { name: '3 Bulan', price: 7000 }
-            ]
-        },
-        'jpm': {
-            title: 'JPM (Jasa Push Member)',
-            type: 'service',
-            notice: '<strong>Catatan Penting JPM:</strong><ul><li>JPM (Jasa Push Member) tidak memiliki batas waktu, harap sabar</li><li>Tidak ada pengembalian dana</li><li>Aktifkan persetujuan admin untuk melihat jumlah member</li><li>SS Done hanya jika target tercapai, dilarang ACC sebelum selesai</li></ul>',
-            items: [
-                { name: '10 Member', price: 500 },
-                { name: '20 Member', price: 1000 },
-                { name: '50 Member', price: 3000 },
-                { name: '70 Member', price: 4000 },
-                { name: '100 Member', price: 5000 },
-                { name: '150 Member', price: 7000 },
-                { name: '250 Member', price: 8000 },
-                { name: '400 Member', price: 12000 },
-                { name: '500 Member', price: 16000 }
-            ]
-        },
-        'ff': {
-            title: 'Free Fire',
-            type: 'topup',
-            items: [
-                { name: '5 Diamond', price: 1000 },
-                { name: '10 Diamond', price: 2000 },
-                { name: '20 Diamond', price: 5000 },
-                { name: '25 Diamond', price: 6000 },
-                { name: '30 Diamond', price: 7000 },
-                { name: '50 Diamond', price: 9000 },
-                { name: '70 Diamond', price: 11000 },
-                { name: '75 Diamond', price: 12000 },
-                { name: '100 Diamond', price: 16000 },
-                { name: '120 Diamond', price: 18000 },
-                { name: '140 Diamond', price: 20000 },
-                { name: '150 Diamond', price: 22000 },
-                { name: '160 Diamond', price: 24000 },
-                { name: '210 Diamond', price: 30000 },
-                { name: '250 Diamond', price: 36000 },
-                { name: '355 Diamond', price: 49000 },
-                { name: '500 Diamond', price: 66000 },
-                { name: '720 Diamond', price: 96000 },
-                { name: '1000 Diamond', price: 134000 },
-                { name: '1450 Diamond', price: 190000 },
-                { name: '2000 Diamond', price: 264000 }
-            ]
-        },
-        'ml': {
-            title: 'Mobile Legends',
-            type: 'topup',
-            items: [
-                { name: '86 Diamond', price: 22000 },
-                { name: '172 Diamond', price: 44000 },
-                { name: '257 Diamond', price: 66000 },
-                { name: '344 Diamond', price: 88000 },
-                { name: '429 Diamond', price: 110000 },
-                { name: '514 Diamond', price: 132000 },
-                { name: '600 Diamond', price: 154000 },
-                { name: '706 Diamond', price: 176000 }
-            ]
-        },
-        'ml_ftu': {
-            title: 'ML First Top Up',
-            type: 'topup',
-            items: [
-                { name: 'Paket FTU 1', price: 15000 },
-                { name: 'Paket FTU 2', price: 25000 }
-            ]
-        },
-        'pubg': {
-            title: 'PUBG Mobile',
-            type: 'topup',
-            items: [
-                { name: '60 UC', price: 14000 },
-                { name: '325 UC', price: 75000 },
-                { name: '660 UC', price: 150000 }
-            ]
-        },
-        'hok': {
-            title: 'Honor of Kings',
-            type: 'topup',
-            items: [
-                { name: '80 Tokens', price: 15000 },
-                { name: '240 Tokens', price: 45000 },
-                { name: '400 Tokens', price: 75000 }
-            ]
-        },
-        'bs': {
-            title: 'Blood Strike',
-            type: 'topup',
-            items: [
-                { name: '100 Gold', price: 15000 },
-                { name: '300 Gold', price: 45000 },
-                { name: '500 Gold', price: 75000 }
-            ]
-        },
-        'canva': {
-            title: 'Canva Premium',
-            type: 'service',
-            items: [
-                { name: '1 Bulan Personal', price: 5000 },
-                { name: '1 Tahun Personal', price: 20000 }
-            ]
-        },
-        'am': {
-            title: 'Alight Motion',
-            type: 'service',
-            items: [
-                { name: '1 Tahun Resmi', price: 15000 }
-            ]
-        },
-        'yt': {
-            title: 'YouTube Premium',
-            type: 'service',
-            items: [
-                { name: '1 Bulan Individual', price: 5000 },
-                { name: '4 Bulan Individual', price: 15000 }
-            ]
-        },
-        'iqiyi': {
-            title: 'iQIYI Premium',
-            type: 'service',
-            items: [
-                { name: '1 Bulan VIP', price: 10000 },
-                { name: '3 Bulan VIP', price: 25000 }
-            ]
-        },
-        'capcut': {
-            title: 'CapCut Pro',
-            type: 'service',
-            items: [
-                { name: '1 Bulan Shared', price: 10000 },
-                { name: '1 Tahun Shared', price: 60000 }
-            ]
-        },
-        'wetv': {
-            title: 'WeTV VIP',
-            type: 'service',
-            items: [
-                { name: '1 Bulan VIP', price: 12000 },
-                { name: '1 Tahun VIP', price: 75000 }
-            ]
-        },
-        'gemini': {
-            title: 'Gemini AI Pro',
-            type: 'service',
-            items: [
-                { name: '1 Bulan Akun', price: 20000 }
-            ]
-        },
-        'pixellab': {
-            title: 'Pixellab Mod',
-            type: 'service',
-            items: [
-                { name: 'Aplikasi Full Unlocked', price: 5000 }
-            ]
+    // System Data & Storage Handlers
+    function getQueueData() {
+        try {
+            return JSON.parse(localStorage.getItem('ciaa_queue_list')) || [];
+        } catch(e) {
+            return [];
         }
-    };
+    }
 
-    let currentService = null;
-    let selectedItem = null;
-    let selectedPaymentMethod = null;
-    let selectedPaymentNumber = null;
-    let selectedPaymentHolder = null;
-    let serverMaintenance = false;
+    function saveQueueData(data) {
+        localStorage.setItem('ciaa_queue_list', JSON.stringify(data));
+    }
 
+    function getMaintenanceStatus() {
+        return localStorage.getItem('ciaa_maintenance') === 'true';
+    }
+
+    function setMaintenanceStatus(status) {
+        localStorage.setItem('ciaa_maintenance', status);
+    }
+
+    // Check Maintenance on Load
+    window.addEventListener('DOMContentLoaded', () => {
+        if (getMaintenanceStatus()) {
+            document.getElementById('maintenanceOverlay').classList.add('active');
+        }
+    });
+
+    // Navigation Switcher
     function switchTab(tabName) {
         document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
         document.querySelectorAll('.page').forEach(page => page.classList.remove('active'));
 
         if (tabName === 'services') {
-            document.querySelector('.tab-btn:nth-child(1)').classList.add('active');
             document.getElementById('homePage').classList.add('active');
+            document.querySelectorAll('.tab-btn')[0].classList.add('active');
         } else if (tabName === 'contact') {
-            document.querySelector('.tab-btn:nth-child(2)').classList.add('active');
             document.getElementById('contactPage').classList.add('active');
+            document.querySelectorAll('.tab-btn')[1].classList.add('active');
         } else if (tabName === 'queue') {
-            document.querySelector('.tab-btn:nth-child(3)').classList.add('active');
             document.getElementById('queuePage').classList.add('active');
+            document.querySelectorAll('.tab-btn')[2].classList.add('active');
             renderQueueList();
         } else if (tabName === 'tutorial') {
-            document.querySelector('.tab-btn:nth-child(4)').classList.add('active');
             document.getElementById('tutorialPage').classList.add('active');
+            document.querySelectorAll('.tab-btn')[3].classList.add('active');
         }
     }
 
-    function openPage(serviceKey) {
-        currentService = serviceKey;
-        const data = servicesData[serviceKey];
-        if (!data) return;
-
-        document.getElementById('serviceTitle').innerText = data.title;
-        document.getElementById('userData').value = '';
-        document.getElementById('storeNameInput').value = '';
-        
-        const noticeBox = document.getElementById('serviceNoticeBox');
-        if (data.notice) {
-            noticeBox.innerHTML = data.notice;
-            noticeBox.style.display = 'block';
-        } else {
-            noticeBox.style.display = 'none';
-        }
-
-        if (serviceKey === 'jasher' || serviceKey === 'jpm') {
-            document.getElementById('storeNameInput').style.display = 'block';
-            document.getElementById('storeNameInput').placeholder = 'Masukkan Nama Store...';
-            document.getElementById('inputLabel').innerText = '1. Masukkan Nama Store & Data/Link';
-            document.getElementById('userData').placeholder = 'Tempel link mu / teks mu di sini ><';
-        } else {
-            document.getElementById('storeNameInput').style.display = 'none';
-            document.getElementById('inputLabel').innerText = '1. Masukkan Data Akun (ID / Server / User)';
-            document.getElementById('userData').placeholder = 'Contoh: 12345678 (1234)';
-        }
-
-        const itemsGrid = document.getElementById('itemsGrid');
-        itemsGrid.innerHTML = '';
-        selectedItem = null;
-
-        data.items.forEach((item) => {
-            const card = document.createElement('div');
-            card.className = 'item-card';
-            card.innerHTML = `
-                <div class="item-title">${item.name}</div>
-                <div class="item-price">Rp ${item.price.toLocaleString('id-ID')}</div>
-            `;
-            card.onclick = () => {
-                document.querySelectorAll('.item-card').forEach(c => c.classList.remove('active'));
-                card.classList.add('active');
-                selectedItem = item;
-            };
-            itemsGrid.appendChild(card);
-        });
-
-        document.querySelectorAll('.payment-card').forEach(p => p.classList.remove('active'));
-        selectedPaymentMethod = null;
-
-        document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
-        document.getElementById('detailPage').classList.add('active');
+    function openPage(pageId) {
+        // Simple routing placeholder for specific service click
+        switchTab('services');
     }
 
     function openApkSubMenu() {
@@ -1009,321 +759,181 @@
     }
 
     function goHome() {
-        document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
-        document.getElementById('homePage').classList.add('active');
+        switchTab('services');
     }
 
-    function selectPayment(method, number, holder, element) {
-        document.querySelectorAll('.payment-card').forEach(p => p.classList.remove('active'));
-        element.classList.add('active');
-        selectedPaymentMethod = method;
-        selectedPaymentNumber = number;
-        selectedPaymentHolder = holder;
-    }
-
-    // Fungsi konversi EMVCo dinamis dengan menyisipkan nominal
-    function generateDynamicQris(baseQris, amount) {
-        let qris = baseQris.slice(0, -4);
-        let amountStr = amount.toString();
-        let amountField = '54' + String(amountStr.length).padStart(2, '0') + amountStr;
-        
-        // Ganti indikator statis (01) menjadi dinamis (02) jika ada, lalu sisipkan field nominal
-        qris = qris.replace('5802ID', amountField + '5802ID');
-        
-        // Hitung CRC16 sederhana untuk payload QRIS
-        function crc16(str) {
-            let crc = 0xFFFF;
-            for (let c = 0; c < str.length; c++) {
-                crc ^= str.charCodeAt(c) << 8;
-                for (let i = 0; i < 8; i++) {
-                    if (crc & 0x8000) {
-                        crc = (crc << 1) ^ 0x1021;
-                    } else {
-                        crc = crc << 1;
-                    }
-                }
-            }
-            let hex = (crc & 0xFFFF).toString(16).toUpperCase();
-            return "0".repeat(4 - hex.length) + hex;
-        }
-        
-        let finalQris = qris + '6304' + crc16(qris + '6304');
-        return finalQris;
-    }
-
-    function handleMainAction() {
-        const userData = document.getElementById('userData').value.trim();
-        const storeName = document.getElementById('storeNameInput').value.trim();
-
-        if (!userData && document.getElementById('storeNameInput').style.display === 'none') {
-            alert('Mohon masukkan data akun Anda terlebih dahulu!');
-            return;
-        }
-        if (currentService && (currentService === 'jasher' || currentService === 'jpm') && (!storeName || !userData)) {
-            alert('Mohon isi Nama Store dan Link/Teks pesanan dengan lengkap!');
-            return;
-        }
-        if (!selectedItem) {
-            alert('Mohon pilih paket atau nominal layanan terlebih dahulu!');
-            return;
-        }
-        if (!selectedPaymentMethod) {
-            alert('Mohon pilih metode pembayaran terlebih dahulu!');
-            return;
-        }
-
-        const queueNumberString = generateNextQueueNumber();
-
-        document.getElementById('invQueueNo').innerText = queueNumberString;
-        document.getElementById('invPaymentMethod').innerText = selectedPaymentMethod;
-        document.getElementById('invPackage').innerText = selectedItem.name;
-        document.getElementById('invPrice').innerText = 'Rp ' + selectedItem.price.toLocaleString('id-ID');
-        
-        const qrisBox = document.getElementById('qrisContainer');
-        const copyBtn = document.getElementById('btnCopyNumber');
-
-        if (selectedPaymentMethod === 'QRIS') {
-            document.getElementById('invNumber').innerText = 'Scan QR Code di Bawah';
-            qrisBox.style.display = 'block';
-            copyBtn.style.display = 'none';
-
-            // Generate QR Code Dinamis
-            document.getElementById('qrcode').innerHTML = '';
-            let dynamicPayload = generateDynamicQris(selectedPaymentNumber, selectedItem.price);
-            new QRCode(document.getElementById('qrcode'), {
-                text: dynamicPayload,
-                width: 190,
-                height: 190,
-                colorDark: '#000000',
-                colorLight: '#ffffff',
-                correctLevel: QRCode.CorrectLevel.H
-            });
-        } else {
-            document.getElementById('invNumber').innerText = selectedPaymentNumber + ' (A/N ' + selectedPaymentHolder + ')';
-            qrisBox.style.display = 'none';
-            copyBtn.style.display = 'flex';
-        }
-
-        let fullTargetData = (storeName ? 'Nama Store: ' + storeName + '\n' : '') + userData;
-
-        saveOrderToQueue({
-            queueNo: queueNumberString,
-            service: servicesData[currentService].title,
-            package: selectedItem.name,
-            price: 'Rp ' + selectedItem.price.toLocaleString('id-ID'),
-            target: fullTargetData,
-            payment: selectedPaymentMethod,
-            status: 'Sedang menunggu',
-            type: servicesData[currentService].type,
-            time: new Date().toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit' })
-        });
-
-        document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
-        document.getElementById('paymentPage').classList.add('active');
-
-        // Format pesan WhatsApp sesuai kategori (Layanan vs Top Up)
-        let waText = '';
-        if (servicesData[currentService].type === 'service') {
-            waText = `🧾 Format Pemesanan Ciaa Store\n` +
-                `·——·——·——·——·——·——·——·——·\n\n` +
-                `🪪 Nama Store: ${storeName || '-'}\n\n` +
-                `⏳ No. Antrian: ${queueNumberString}\n` +
-                `🏷️ Layanan: ${servicesData[currentService].title}\n` +
-                `📦 Paket: ${selectedItem.name}\n` +
-                `💰 Harga: Rp ${selectedItem.price.toLocaleString('id-ID')}\n` +
-                `💳 Metode Pembayaran: ${selectedPaymentMethod}\n\n` +
-                `📝 Deskripsi / Link:\n${userData}\n\n` +
-                `Saya juga melampirkan bukti transfer, silahkan cek min apakah masuk? Mohon segera diproses ya min! Terimakasih. 😊`;
-        } else {
-            waText = `🧾 Format Top Up Ciaa Store\n` +
-                `·——·——·——·——·——·——·——·——·\n\n` +
-                `🪪 Data Akun:\n${userData}\n\n` +
-                `⏳ No. Antrian: ${queueNumberString}\n` +
-                `🏷️ Layanan: ${servicesData[currentService].title}\n` +
-                `📦 Paket: ${selectedItem.name}\n` +
-                `💰 Harga: Rp ${selectedItem.price.toLocaleString('id-ID')}\n` +
-                `💳 Metode Pembayaran: ${selectedPaymentMethod}\n\n` +
-                `Saya juga melampirkan bukti transfer, silahkan cek min apakah masuk? Mohon segera diproses ya min! Terimakasih. 😊`;
-        }
-        
-        document.getElementById('btnWaConfirm').onclick = () => {
-            window.open(`https://wa.me/6289505929536?text=${encodeURIComponent(waText)}`, '_blank');
-        };
-    }
-
-    function goBackToDetail() {
-        document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
-        document.getElementById('detailPage').classList.add('active');
-    }
-
-    function copyPaymentNumber() {
-        navigator.clipboard.writeText(selectedPaymentNumber).then(() => {
-            alert('Nomor tujuan berhasil disalin!');
-        });
-    }
-
-    // --- FUNGSI SENSOR DATA PELANGGAN ---
-    function maskSensitiveData(text) {
-        if (!text) return '';
-        // Sensor nomor HP / angka panjang
-        let masked = text.replace(/\b(\d{2})\d+(\d{4})\b/g, '$1****$2');
-        // Sensor link URL
-        masked = masked.replace(/(https?:\/\/[^\s]+)/g, function(url) {
-            if (url.length > 15) {
-                return url.substring(0, 8) + '****' + url.substring(url.length - 4);
-            }
-            return '****';
-        });
-        return masked;
-    }
-
-    // --- MANAJEMEN ANTRIAN & PANEL ADMIN ---
-    function getQueueData() {
-        let data = localStorage.getItem('ciaa_queues');
-        return data ? JSON.parse(data) : [];
-    }
-
-    function generateNextQueueNumber() {
-        let queues = getQueueData();
-        const currentYear = new Date().getFullYear();
-        let nextSeq = queues.length + 1;
-        let formattedSeq = String(nextSeq).padStart(2, '0');
-        return `CS-${currentYear}-${formattedSeq}`;
-    }
-
-    function saveOrderToQueue(order) {
-        let queues = getQueueData();
-        queues.unshift(order);
-        localStorage.setItem('ciaa_queues', JSON.stringify(queues));
-    }
-
-    function renderQueueList() {
-        const container = document.getElementById('queueList');
-        const queues = getQueueData();
-
-        if (queues.length === 0) {
-            container.innerHTML = '<div style="text-align:center; color:#888; padding:20px;">Belum ada antrian pesanan saat ini.</div>';
-            return;
-        }
-
-        container.innerHTML = '';
-        queues.forEach((q) => {
-            let badgeClass = 'badge-pending';
-            if (q.status === 'Diproses') badgeClass = 'badge-process';
-            if (q.status === 'Selesai') badgeClass = 'badge-success';
-            if (q.status === 'Dibatalkan') badgeClass = 'badge-cancel';
-
-            const card = document.createElement('div');
-            card.className = 'queue-card';
-            card.innerHTML = `
-                <div class="queue-header">
-                    <span class="queue-number">${q.queueNo} - ${q.service}</span>
-                    <span class="queue-badge ${badgeClass}">${q.status}</span>
-                </div>
-                <div class="queue-body">
-                    <div><strong>Paket:</strong> ${q.package} (${q.price})</div>
-                    <div><strong>Waktu:</strong> ${q.time}</div>
-                    <div class="queue-target-box"><strong>Data Tujuan:</strong>\n${maskSensitiveData(q.target)}</div>
-                </div>
-            `;
-            container.appendChild(card);
-        });
-    }
-
+    // Admin Panel Controls
     function openAdminPanel() {
-        let pass = prompt('Masukkan Password Admin:');
-        if (pass === '0903cs') {
-            document.getElementById('maintenanceOverlay').classList.remove('active');
-            
-            document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
-            document.getElementById('adminPage').classList.add('active');
+        document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+        document.getElementById('adminPage').classList.add('active');
+        
+        // Check if admin already logged in session
+        if (sessionStorage.getItem('ciaa_admin_logged') === 'true') {
+            document.getElementById('adminLoginBox').style.display = 'none';
+            document.getElementById('adminDashboardBox').style.display = 'block';
             renderAdminQueueList();
-        } else if (pass !== null) {
-            alert('Password salah!');
+            updateMaintenanceUI();
+        } else {
+            document.getElementById('adminLoginBox').style.display = 'block';
+            document.getElementById('adminDashboardBox').style.display = 'none';
         }
     }
 
-    function renderAdminQueueList() {
-        const container = document.getElementById('adminQueueList');
+    function verifyAdminLogin() {
+        const pass = document.getElementById('adminPasswordInput').value;
+        if (pass === '0903cs') {
+            sessionStorage.setItem('ciaa_admin_logged', 'true');
+            document.getElementById('adminLoginBox').style.display = 'none';
+            document.getElementById('adminDashboardBox').style.display = 'block';
+            document.getElementById('adminPasswordInput').value = '';
+            renderAdminQueueList();
+            updateMaintenanceUI();
+        } else {
+            alert('Password admin salah!');
+        }
+    }
+
+    function adminLogout() {
+        sessionStorage.removeItem('ciaa_admin_logged');
+        document.getElementById('adminDashboardBox').style.display = 'none';
+        document.getElementById('adminLoginBox').style.display = 'block';
+    }
+
+    function toggleMaintenance(status) {
+        setMaintenanceStatus(status);
+        updateMaintenanceUI();
+        if (status) {
+            document.getElementById('maintenanceOverlay').classList.add('active');
+        } else {
+            document.getElementById('maintenanceOverlay').classList.remove('active');
+        }
+    }
+
+    function updateMaintenanceUI() {
+        const status = getMaintenanceStatus();
+        const textElem = document.getElementById('maintenanceStatusText');
+        if (status) {
+            textElem.innerText = 'ON (Aktif)';
+            textElem.style.color = '#15803d';
+        } else {
+            textElem.innerText = 'OFF (Nonaktif)';
+            textElem.style.color = '#dc2626';
+        }
+    }
+
+    // Queue Rendering & Management
+    function renderQueueList() {
+        const listContainer = document.getElementById('queueList');
         const queues = getQueueData();
 
         if (queues.length === 0) {
-            container.innerHTML = '<div style="text-align:center; color:#888; padding:20px;">Belum ada pesanan masuk.</div>';
+            listContainer.innerHTML = '<div class="info-box" style="text-align: center;">Belum ada antrian pesanan saat ini.</div>';
             return;
         }
 
-        container.innerHTML = '';
-        queues.forEach((q, index) => {
+        let html = '';
+        queues.forEach(q => {
             let badgeClass = 'badge-pending';
-            if (q.status === 'Diproses') badgeClass = 'badge-process';
-            if (q.status === 'Selesai') badgeClass = 'badge-success';
-            if (q.status === 'Dibatalkan') badgeClass = 'badge-cancel';
+            let badgeText = 'Sedang menunggu';
+            if (q.status === 'Diproses') {
+                badgeClass = 'badge-process';
+                badgeText = 'Diproses';
+            } else if (q.status === 'Selesai') {
+                badgeClass = 'badge-success';
+                badgeText = 'Selesai';
+            } else if (q.status === 'Dibatalkan') {
+                badgeClass = 'badge-cancel';
+                badgeText = 'Dibatalkan';
+            }
 
-            const card = document.createElement('div');
-            card.className = 'queue-card';
-            card.innerHTML = `
-                <div class="queue-header">
-                    <span class="queue-number">${q.queueNo} - ${q.service}</span>
-                    <span class="queue-badge ${badgeClass}">${q.status}</span>
-                </div>
-                <div class="queue-body">
-                    <div><strong>Paket:</strong> ${q.package} (${q.price})</div>
-                    <div><strong>Pembayaran:</strong> ${q.payment}</div>
-                    <div class="queue-target-box"><strong>Data Tujuan:</strong>\n${q.target}</div>
-                    <div class="admin-action-btns">
-                        <button class="btn-status btn-status-process" onclick="updateStatus(${index}, 'Diproses')">Diproses</button>
-                        <button class="btn-status btn-status-success" onclick="updateStatus(${index}, 'Sedang menunggu')">Menunggu</button>
-                        <button class="btn-status btn-status-cancel" onclick="updateStatus(${index}, 'Dibatalkan')">Batal</button>
-                        <button class="btn-status btn-status-delete" onclick="deleteSingleQueue(${index})">Hapus</button>
+            // Privacy masking helper
+            const maskedData = maskSensitiveData(q.target);
+
+            html += `
+                <div class="queue-card">
+                    <div class="queue-header">
+                        <span class="queue-number">${q.queueNo}</span>
+                        <span class="queue-badge ${badgeClass}">${badgeText}</span>
+                    </div>
+                    <div class="queue-body">
+                        <strong>Store:</strong> ${q.storeName}<br>
+                        <strong>Layanan:</strong> ${q.serviceName} (${q.packageName})<br>
+                        <div class="queue-target-box"><strong>Data / Link / Akun:</strong><br>${maskedData}</div>
                     </div>
                 </div>
             `;
-            container.appendChild(card);
         });
+        listContainer.innerHTML = html;
     }
 
-    function updateStatus(index, newStatus) {
+    function renderAdminQueueList() {
+        const listContainer = document.getElementById('adminQueueManagementList');
+        const queues = getQueueData();
+
+        if (queues.length === 0) {
+            listContainer.innerHTML = '<div class="info-box" style="text-align: center;">Belum ada pesanan dalam antrian.</div>';
+            return;
+        }
+
+        let html = '';
+        queues.forEach((q, index) => {
+            html += `
+                <div class="queue-card">
+                    <div class="queue-header">
+                        <span class="queue-number">${q.queueNo}</span>
+                        <span class="queue-badge">${q.status || 'Sedang menunggu'}</span>
+                    </div>
+                    <div class="queue-body">
+                        <strong>Store:</strong> ${q.storeName}<br>
+                        <strong>Layanan:</strong> ${q.serviceName} (${q.packageName})<br>
+                        <strong>Harga:</strong> ${q.price} | <strong>Pembayaran:</strong> ${q.payment}<br>
+                        <div class="queue-target-box"><strong>Detail:</strong><br>${q.target}</div>
+                    </div>
+                    <div class="admin-action-btns">
+                        <button class="btn-status btn-status-process" onclick="updateQueueStatus(${index}, 'Diproses')">Diproses</button>
+                        <button class="btn-status btn-status-success" onclick="updateQueueStatus(${index}, 'Sedang menunggu')">Menunggu</button>
+                        <button class="btn-status btn-status-cancel" onclick="updateQueueStatus(${index}, 'Dibatalkan')">Batalkan</button>
+                        <button class="btn-status btn-status-delete" onclick="deleteQueueItem(${index})">Hapus</button>
+                    </div>
+                </div>
+            `;
+        });
+        listContainer.innerHTML = html;
+    }
+
+    function updateQueueStatus(index, newStatus) {
         let queues = getQueueData();
         if (queues[index]) {
             queues[index].status = newStatus;
-            localStorage.setItem('ciaa_queues', JSON.stringify(queues));
+            saveQueueData(queues);
             renderAdminQueueList();
         }
     }
 
-    function deleteSingleQueue(index) {
-        if (confirm('Apakah Anda yakin ingin menghapus nomor antrian ini?')) {
-            let queues = getQueueData();
+    function deleteQueueItem(index) {
+        let queues = getQueueData();
+        if (queues[index]) {
             queues.splice(index, 1);
-            localStorage.setItem('ciaa_queues', JSON.stringify(queues));
+            saveQueueData(queues);
             renderAdminQueueList();
         }
     }
 
     function resetAllQueues() {
-        if (confirm('PERINGATAN: Tindakan ini akan menghapus seluruh data antrian dan mereset nomor urut dari awal. Lanjutkan?')) {
-            localStorage.removeItem('ciaa_queues');
+        if (confirm('Apakah Anda yakin ingin menghapus dan mereset semua nomor antrian dari awal?')) {
+            localStorage.removeItem('ciaa_queue_list');
+            localStorage.removeItem('ciaa_last_queue_num');
             renderAdminQueueList();
-            alert('Semua antrian berhasil direset!');
+            alert('Nomor antrian berhasil direset!');
         }
     }
 
-    function toggleMaintenanceServer() {
-        serverMaintenance = !serverMaintenance;
-        const overlay = document.getElementById('maintenanceOverlay');
-        const btn = document.getElementById('btnToggleMaintenance');
-
-        if (serverMaintenance) {
-            overlay.classList.add('active');
-            btn.style.background = '#22c55e';
-            btn.innerText = '🟢 Nyalakan Kembali Server (Matikan Maintenance)';
-        } else {
-            overlay.classList.remove('active');
-            btn.style.background = '#ef4444';
-            btn.innerText = '🚨 Matikan Server (Aktifkan Maintenance)';
-        }
+    // Privacy Masking Utility
+    function maskSensitiveData(text) {
+        if (!text) return '-';
+        // Mask phone numbers or tokens/accounts roughly
+        return text.replace(/(\d{2})\d+(\d{4})/g, '$1****$2');
     }
 </script>
-
 </body>
 </html>
