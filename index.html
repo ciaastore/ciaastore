@@ -3,937 +3,483 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Ciaa Store - Top Up & Services</title>
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+    <title>Ciaa Store</title>
     <style>
         :root {
-            --pink-main: #ff9ebb;
-            --pink-soft: rgba(255, 240, 245, 0.92);
-            --pink-bright: #ffe4ec;
-            --pink-dark: #d85c80;
-            --bg-color: #fff0f5;
-            --card-bg: rgba(255, 255, 255, 0.94);
+            --primary: #4f46e5;
+            --primary-dark: #4338ca;
+            --bg-dark: #0f172a;
+            --card-bg: #1e293b;
+            --text-main: #f8fafc;
+            --text-muted: #94a3b8;
+            --accent: #10b981;
+            --danger: #ef4444;
         }
 
-        * { box-sizing: border-box; }
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
 
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background-color: var(--bg-color);
-            margin: 0;
-            padding: 15px;
-            padding-bottom: 80px;
-            color: #444;
+            background-color: var(--bg-dark);
+            color: var(--text-main);
             min-height: 100vh;
-            position: relative;
-            overflow-x: hidden;
+            padding-bottom: 50px;
         }
 
-        body::before {
-            content: '';
+        /* Maintenance Overlay */
+        #maintenance-overlay {
             position: fixed;
-            top: 0; left: 0; width: 100%; height: 100%;
-            background-image: url('logo.jpg');
-            background-size: cover;
-            background-position: center;
-            filter: blur(18px) brightness(1.15) opacity(0.35);
-            transform: scale(1.08);
-            z-index: -3;
-        }
-
-        body::after {
-            content: '';
-            position: fixed;
-            top: 0; left: 0; width: 100%; height: 100%;
-            background: 
-                radial-gradient(circle at 15% 20%, rgba(255, 255, 255, 0.9) 0%, transparent 25%),
-                radial-gradient(circle at 85% 30%, rgba(255, 182, 193, 0.4) 0%, transparent 35%),
-                radial-gradient(circle at 50% 80%, rgba(255, 255, 255, 0.8) 0%, transparent 30%),
-                linear-gradient(135deg, rgba(255, 240, 245, 0.6) 0%, rgba(255, 228, 236, 0.6) 100%);
-            z-index: -2;
-            pointer-events: none;
-        }
-
-        /* --- ANIMASI KUPU-KUPU REALISTIS --- */
-        .butterfly-container {
-            position: fixed;
-            top: 0; left: 0; width: 100%; height: 100%;
-            z-index: -1;
-            pointer-events: none;
-            overflow: hidden;
-        }
-
-        .butterfly {
-            position: absolute;
-            width: 32px;
-            height: 32px;
-            opacity: 0.85;
-            filter: drop-shadow(0 0 6px rgba(255, 255, 255, 0.9)) drop-shadow(0 0 10px rgba(255, 158, 187, 0.8));
-            animation: fly-random 18s infinite linear;
-        }
-
-        .butterfly svg {
+            top: 0;
+            left: 0;
             width: 100%;
             height: 100%;
-            fill: #ffffff;
-            animation: wing-flap 0.35s infinite ease-in-out alternate;
-        }
-
-        .butterfly:nth-child(1) { top: 15%; left: -5%; animation-duration: 20s; animation-delay: 0s; }
-        .butterfly:nth-child(1) svg { fill: #ffffff; }
-        .butterfly:nth-child(2) { top: 45%; left: -10%; animation-duration: 24s; animation-delay: 2s; }
-        .butterfly:nth-child(2) svg { fill: #ffe4ec; animation-duration: 0.4s; }
-        .butterfly:nth-child(3) { top: 75%; left: -5%; animation-duration: 22s; animation-delay: 5s; }
-        .butterfly:nth-child(3) svg { fill: #fff0f3; animation-duration: 0.3s; }
-
-        @keyframes wing-flap {
-            0% { transform: scaleX(1) rotate(0deg); }
-            100% { transform: scaleX(0.2) rotate(10deg); }
-        }
-
-        @keyframes fly-random {
-            0% {
-                transform: translate(0px, 0px) rotate(0deg);
-            }
-            25% {
-                transform: translate(35vw, -15vh) rotate(15deg);
-            }
-            50% {
-                transform: translate(70vw, 10vh) rotate(-10deg);
-            }
-            75% {
-                transform: translate(30vw, 25vh) rotate(20deg);
-            }
-            100% {
-                transform: translate(105vw, -20vh) rotate(5deg);
-            }
-        }
-
-        .container {
-            max-width: 1000px;
-            width: 92%;
-            margin: 20px auto;
-            background: var(--card-bg);
-            backdrop-filter: blur(12px);
-            padding: 30px;
-            border-radius: 24px;
-            box-shadow: 0 10px 30px rgba(255, 158, 187, 0.25);
-            position: relative;
-            z-index: 1;
-            border: 2px solid rgba(255, 255, 255, 0.8);
-        }
-
-        .admin-login-trigger {
-            position: fixed; top: 20px; right: 20px;
-            width: 46px; height: 46px; border-radius: 50%;
-            background: #fff; border: 2px solid var(--pink-main);
-            box-shadow: 0 4px 15px rgba(218, 92, 128, 0.3);
-            cursor: pointer; z-index: 100000; padding: 2px;
-            transition: all 0.3s ease; display: flex; align-items: center; justify-content: center;
-        }
-        .admin-login-trigger img { width: 100%; height: 100%; border-radius: 50%; object-fit: cover; }
-        .admin-login-trigger:hover { transform: scale(1.1) rotate(10deg); }
-
-        .header img {
-            width: 100%; height: auto; max-height: 240px; object-fit: cover;
-            border-radius: 18px; margin-bottom: 20px; border: 2px solid var(--pink-main); display: block;
-        }
-
-        .profile-box {
-            text-align: center; margin-bottom: 25px; padding: 20px 15px 15px;
-            background: var(--pink-soft); border-radius: 18px; border: 1px solid rgba(255, 158, 187, 0.4);
-            box-shadow: 0 4px 12px rgba(255, 182, 193, 0.15);
-        }
-
-        .profile-avatar {
-            width: 85px; height: 85px; border-radius: 50%; border: 3px solid var(--pink-main);
-            object-fit: cover; margin-top: -45px; background: #fff; box-shadow: 0 4px 12px rgba(218, 92, 128, 0.2);
-        }
-
-        .profile-title { font-size: 1.3rem; font-weight: bold; color: var(--pink-dark); margin: 8px 0 3px 0; }
-        .profile-desc { font-size: 0.88rem; color: #666; margin-bottom: 10px; }
-        .status-badge {
-            display: inline-block; background: #25d366; color: white;
-            font-size: 0.75rem; padding: 4px 12px; border-radius: 12px; font-weight: bold;
-        }
-
-        .coming-soon-banner {
-            background: linear-gradient(135deg, #ff9ebb 0%, #d85c80 100%);
-            border-radius: 20px;
-            padding: 20px;
-            color: #fff;
-            text-align: center;
-            margin-bottom: 25px;
-            box-shadow: 0 8px 20px rgba(216, 92, 128, 0.25);
-            border: 2px dashed #ffffff;
-            position: relative;
-            overflow: hidden;
-        }
-        .coming-soon-banner::before {
-            content: '🚀';
-            position: absolute;
-            right: -10px;
-            bottom: -10px;
-            font-size: 5rem;
-            opacity: 0.15;
-            transform: rotate(-15deg);
-        }
-        .cs-tag {
-            display: inline-block;
-            background: #fff;
-            color: var(--pink-dark);
-            font-weight: 800;
-            font-size: 0.75rem;
-            padding: 4px 12px;
-            border-radius: 20px;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            margin-bottom: 8px;
-        }
-        .cs-title {
-            font-size: 1.25rem;
-            font-weight: bold;
-            margin-bottom: 6px;
-            text-shadow: 0 2px 4px rgba(0,0,0,0.1);
-        }
-        .cs-desc {
-            font-size: 0.85rem;
-            opacity: 0.95;
-            line-height: 1.4;
-        }
-
-        .nav-tabs { display: flex; gap: 6px; margin-bottom: 20px; flex-wrap: wrap; }
-        .tab-btn {
-            flex: 1; min-width: 110px; padding: 12px 6px; border: 2px solid var(--pink-bright); background: #fff;
-            color: var(--pink-dark); border-radius: 14px; font-weight: bold; cursor: pointer; text-align: center; font-size: 0.82rem; transition: 0.2s;
-        }
-        .tab-btn.active { background: var(--pink-main); color: white; border-color: var(--pink-main); }
-
-        .page { display: none; }
-        .page.active { display: block; }
-
-        .category-title { color: var(--pink-dark); font-size: 1.1rem; margin-bottom: 18px; font-weight: bold; text-align: center; }
-
-        .menu-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 18px; }
-
-        .menu-card {
-            border: 2px solid var(--pink-bright); padding: 16px 12px; border-radius: 18px; text-align: center;
-            cursor: pointer; transition: all 0.25s ease; background: #fff; font-weight: bold; font-size: 0.92rem;
-            color: var(--pink-dark); display: flex; align-items: center; justify-content: center; gap: 8px; min-height: 60px;
-        }
-        .menu-card:hover { border-color: var(--pink-main); background-color: var(--pink-bright); transform: translateY(-3px); }
-
-        .apk-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 18px; margin-top: 15px; }
-        .apk-card {
-            border: 2px solid var(--pink-bright); padding: 16px 12px; border-radius: 18px; text-align: center;
-            cursor: pointer; background: #fff; transition: 0.25s; display: flex; flex-direction: column; align-items: center; justify-content: center;
-        }
-        .apk-card:hover { border-color: var(--pink-main); background-color: var(--pink-bright); transform: translateY(-3px); }
-        .apk-icon { width: 60px; height: 60px; border-radius: 50%; object-fit: cover; border: 2px solid var(--pink-main); margin-bottom: 8px; }
-        .apk-title { font-weight: bold; font-size: 0.9rem; color: var(--pink-dark); }
-
-        @media (min-width: 768px) {
-            .menu-grid { grid-template-columns: repeat(3, 1fr); gap: 22px; }
-            .apk-grid { grid-template-columns: repeat(4, 1fr); gap: 22px; }
-            .grid-container { grid-template-columns: repeat(3, 1fr) !important; gap: 15px !important; }
-            .tab-btn { font-size: 0.9rem; padding: 12px; }
-        }
-
-        .btn-back {
-            background-color: var(--pink-bright); color: var(--pink-dark); border: none; padding: 10px 18px;
-            border-radius: 12px; font-weight: bold; cursor: pointer; margin-bottom: 18px;
-        }
-
-        .section-title { color: var(--pink-dark); font-size: 1rem; margin-top: 20px; border-bottom: 2px solid var(--pink-bright); padding-bottom: 6px; font-weight: bold; }
-        .form-group { margin-bottom: 18px; }
-        label { display: block; font-weight: bold; margin-bottom: 6px; color: var(--pink-dark); font-size: 0.9rem; }
-
-        input, textarea {
-            width: 100%; padding: 12px 15px; border: 2px solid var(--pink-bright); border-radius: 12px;
-            outline: none; font-size: 0.92rem; background: #fff; font-family: inherit;
-        }
-
-        textarea {
-            resize: vertical;
-            min-height: 90px;
-        }
-
-        .info-box {
-            background: #fff0f3; border: 1px dashed var(--pink-dark); color: var(--pink-dark);
-            padding: 14px 16px; border-radius: 12px; font-size: 0.86rem; margin-bottom: 16px; line-height: 1.6;
-        }
-        .info-box ul { margin: 6px 0 0 18px; padding: 0; }
-        .info-box li { margin-bottom: 4px; }
-
-        .grid-container { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; margin-top: 12px; }
-
-        .item-card {
-            border: 2px solid var(--pink-bright); padding: 14px 10px; border-radius: 14px;
-            text-align: center; cursor: pointer; transition: 0.2s; background: #fff;
-        }
-        .item-card.active { border-color: var(--pink-dark); background-color: var(--pink-bright); }
-        .item-title { font-size: 0.9rem; font-weight: bold; color: #444; }
-        .item-price { font-size: 0.85rem; color: var(--pink-dark); margin-top: 4px; font-weight: 600; }
-
-        .payment-card {
-            border: 2px solid var(--pink-bright); border-radius: 14px; padding: 12px 15px;
-            margin-top: 10px; background: #fff; cursor: pointer; transition: 0.2s;
-        }
-        .payment-card.active { border-color: var(--pink-dark); background: var(--pink-bright); }
-        .payment-title { font-weight: bold; color: var(--pink-dark); font-size: 0.95rem; }
-        .payment-sub { font-size: 0.83rem; color: #555; margin-top: 2px; }
-
-        .btn-action-main {
-            width: 100%; background-color: var(--pink-dark); color: white; border: none; padding: 16px;
-            border-radius: 14px; font-weight: bold; font-size: 1rem; cursor: pointer; margin-top: 22px;
-            display: flex; align-items: center; justify-content: center; gap: 10px; transition: 0.25s; text-decoration: none;
-        }
-
-        .btn-copy-num {
-            width: 100%; background-color: #fff; color: var(--pink-dark); border: 2px solid var(--pink-main); padding: 12px;
-            border-radius: 14px; font-weight: bold; font-size: 0.92rem; cursor: pointer; margin-top: 15px;
-            display: flex; align-items: center; justify-content: center; gap: 8px; transition: 0.25s;
-        }
-
-        .invoice-box {
-            background: #fff; border: 2px dashed var(--pink-main); border-radius: 16px;
-            padding: 18px; margin: 15px 0 10px 0; text-align: left;
-        }
-        .invoice-row { display: flex; justify-content: space-between; margin-bottom: 10px; font-size: 0.88rem; border-bottom: 1px dashed #ffe4ec; padding-bottom: 8px; }
-        .invoice-row:last-child { border-bottom: none; margin-bottom: 0; padding-bottom: 0; }
-
-        /* QRIS Dynamic View */
-        .qris-display-box {
-            background: #fff; border: 2px solid var(--pink-main); border-radius: 16px; padding: 20px; text-align: center; margin: 15px 0;
-        }
-        #qrcode { display: inline-block; padding: 10px; background: #fff; border-radius: 10px; margin-bottom: 10px; }
-        #qrcode img { display: block; margin: 0 auto; }
-
-        .maintenance-overlay {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(255, 240, 245, 0.97); backdrop-filter: blur(15px);
-            z-index: 9999; display: none; align-items: center; justify-content: center;
-            flex-direction: column; text-align: center; padding: 25px;
-        }
-        .maintenance-overlay.active { display: flex; }
-        .maintenance-icon { font-size: 3.8rem; color: var(--pink-dark); margin-bottom: 15px; animation: bounce 2s infinite; }
-        .maintenance-title { font-size: 1.5rem; font-weight: bold; color: var(--pink-dark); margin-bottom: 10px; }
-        .maintenance-desc { font-size: 0.95rem; color: #666; max-width: 400px; line-height: 1.5; }
-
-        @keyframes bounce { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-10px); } }
-
-        .contact-card-container { display: flex; flex-direction: column; gap: 15px; margin-top: 10px; }
-        .contact-card {
-            background: linear-gradient(135deg, #fff0f5 0%, #ffe4ec 100%);
-            border: 2px solid var(--pink-main); border-radius: 18px; padding: 16px 20px;
-            display: flex; align-items: center; justify-content: space-between; text-decoration: none; color: #444; transition: all 0.25s ease;
-            box-shadow: 0 4px 12px rgba(255, 158, 187, 0.15);
-        }
-        .contact-card:hover { transform: translateY(-3px); box-shadow: 0 8px 20px rgba(216, 92, 128, 0.25); background: linear-gradient(135deg, #ffe4ec 0%, #ff9ebb 100%); }
-        .contact-info { display: flex; align-items: center; gap: 15px; }
-        .contact-icon { width: 48px; height: 48px; border-radius: 50%; background: #fff; display: flex; align-items: center; justify-content: center; font-size: 1.5rem; color: var(--pink-dark); box-shadow: 0 2px 8px rgba(0,0,0,0.08); }
-        .contact-text-title { font-weight: bold; color: var(--pink-dark); font-size: 0.98rem; }
-        .contact-text-sub { font-size: 0.82rem; color: #666; margin-top: 2px; }
-        .contact-arrow { font-size: 1.2rem; color: var(--pink-dark); }
-
-        /* --- TUTORIAL ORDER POSTER --- */
-        .tutorial-poster {
-            background: linear-gradient(135deg, #ffffff 0%, #fff0f5 100%);
-            border: 2px solid var(--pink-main);
-            border-radius: 20px;
-            padding: 22px;
-            box-shadow: 0 6px 20px rgba(255, 158, 187, 0.2);
-            margin-bottom: 15px;
-        }
-        .tutorial-header {
-            text-align: center;
-            color: var(--pink-dark);
-            font-size: 1.15rem;
-            font-weight: 800;
-            margin-bottom: 15px;
-            border-bottom: 2px dashed var(--pink-bright);
-            padding-bottom: 10px;
-        }
-        .tutorial-steps {
+            background: rgba(15, 23, 42, 0.98);
+            z-index: 999;
             display: flex;
             flex-direction: column;
-            gap: 12px;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 20px;
         }
-        .tutorial-step-item {
-            display: flex;
-            align-items: flex-start;
-            gap: 12px;
-            background: #fff;
-            padding: 12px 14px;
-            border-radius: 12px;
-            border: 1px solid var(--pink-bright);
-            box-shadow: 0 2px 6px rgba(0,0,0,0.02);
-        }
-        .step-num {
-            background: var(--pink-main);
-            color: white;
-            width: 26px;
-            height: 26px;
+
+        .admin-trigger-logo {
+            width: 80px;
+            height: 80px;
+            background: linear-gradient(135deg, var(--primary), var(--accent));
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
+            font-size: 2rem;
             font-weight: bold;
-            font-size: 0.85rem;
-            flex-shrink: 0;
-        }
-        .step-text {
-            font-size: 0.88rem;
-            color: #555;
-            line-height: 1.4;
-            margin-top: 3px;
+            color: white;
+            cursor: pointer;
+            box-shadow: 0 0 20px rgba(79, 70, 229, 0.4);
+            margin-bottom: 20px;
+            transition: transform 0.2s;
         }
 
-        /* --- STYLES ANTRIAN & PANEL ADMIN --- */
-        .queue-card {
-            background: #ffffff;
-            border: 2px solid var(--pink-bright);
-            border-radius: 16px;
-            padding: 16px;
-            margin-bottom: 14px;
-            box-shadow: 0 4px 10px rgba(255, 158, 187, 0.1);
+        .admin-trigger-logo:hover {
+            transform: scale(1.05);
+        }
+
+        /* Main Container */
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        header h1 {
+            color: #38bdf8;
+            font-size: 2rem;
+            margin-bottom: 10px;
+        }
+
+        .services-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 20px;
+        }
+
+        .service-card {
+            background: var(--card-bg);
+            border-radius: 12px;
+            padding: 20px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+        }
+
+        .service-title {
+            font-size: 1.2rem;
+            color: #38bdf8;
+            border-bottom: 2px solid #334155;
+            padding-bottom: 10px;
+            margin-bottom: 15px;
+        }
+
+        .item-list {
+            list-style: none;
+        }
+
+        .item-row {
             display: flex;
-            flex-direction: column;
-            gap: 10px;
-            word-wrap: break-word;
-            overflow-wrap: break-word;
-            word-break: break-word;
+            justify-content: space-between;
+            padding: 8px 0;
+            border-bottom: 1px solid #334155;
+            font-size: 0.95rem;
         }
 
-        .queue-header {
+        .item-price {
+            color: var(--accent);
+            font-weight: bold;
+        }
+
+        /* Modal Base */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.7);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .modal-content {
+            background: var(--card-bg);
+            padding: 25px;
+            border-radius: 12px;
+            width: 90%;
+            max-width: 400px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.5);
+        }
+
+        .modal-content input {
+            width: 100%;
+            padding: 10px;
+            margin: 15px 0;
+            border-radius: 6px;
+            border: 1px solid #334155;
+            background: var(--bg-dark);
+            color: white;
+        }
+
+        .btn {
+            background: var(--primary);
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 6px;
+            cursor: pointer;
+            width: 100%;
+            font-weight: bold;
+        }
+
+        .btn:hover { background: var(--primary-dark); }
+        .btn-danger { background: var(--danger); margin-top: 10px; }
+
+        /* Admin Panel Overlay */
+        #admin-panel {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: var(--bg-dark);
+            z-index: 1001;
+            padding: 20px;
+            overflow-y: auto;
+        }
+
+        .admin-header {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            flex-wrap: wrap;
-            gap: 8px;
-            border-bottom: 1px dashed var(--pink-bright);
-            padding-bottom: 8px;
+            margin-bottom: 20px;
+            border-bottom: 1px solid #334155;
+            padding-bottom: 15px;
         }
 
-        .queue-number {
-            font-weight: 800;
-            color: var(--pink-dark);
-            font-size: 0.95rem;
-            background: var(--pink-soft);
-            padding: 4px 10px;
-            border-radius: 8px;
-        }
-
-        .queue-badge {
-            font-size: 0.78rem;
-            font-weight: bold;
-            padding: 4px 10px;
-            border-radius: 10px;
-            display: inline-block;
-        }
-        .badge-pending { background: #fef3c7; color: #d97706; }
-        .badge-process { background: #e0f2fe; color: #0284c7; }
-        .badge-success { background: #dcfce7; color: #15803d; }
-        .badge-cancel { background: #fee2e2; color: #dc2626; }
-
-        .queue-body {
-            font-size: 0.88rem;
-            line-height: 1.5;
-            color: #444;
-        }
-
-        .queue-target-box {
-            background: #fafafa;
-            border: 1px solid #eee;
-            border-radius: 10px;
-            padding: 8px 12px;
-            font-size: 0.82rem;
-            color: #555;
-            white-space: pre-line;
-            margin-top: 5px;
-        }
-
-        .admin-action-btns {
+        .toggle-maintenance {
             display: flex;
-            gap: 6px;
-            flex-wrap: wrap;
-            margin-top: 8px;
-        }
-        .btn-status {
-            padding: 6px 10px;
-            border: none;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 20px;
+            background: var(--card-bg);
+            padding: 15px;
             border-radius: 8px;
-            font-size: 0.75rem;
-            font-weight: bold;
-            cursor: pointer;
-            transition: 0.2s;
-            flex: 1;
-            min-width: 80px;
-            text-align: center;
         }
-        .btn-status-process { background: #3b82f6; color: white; }
-        .btn-status-success { background: #22c55e; color: white; }
-        .btn-status-cancel { background: #ef4444; color: white; }
-        .btn-status-delete { background: #6b7280; color: white; }
-        .btn-status:hover { opacity: 0.9; transform: translateY(-1px); }
     </style>
 </head>
 <body>
 
-<!-- ANIMASI KUPU-KUPU -->
-<div class="butterfly-container">
-    <div class="butterfly" style="top: 15%; left: -5%;">
-        <svg viewBox="0 0 512 512"><path d="M256 256c-20.7-36.8-58.4-64-102.4-64C86.7 192 32 246.7 32 314.3c0 52.3 35.1 96.7 83.2 109.7 13.5 3.6 27.9-4.3 31.5-17.8 3.6-13.5-4.3-27.9-17.8-31.5-27.1-7.3-46.9-32.1-46.9-60.4 0-38.6 31.4-70 70-70 29.5 0 55.4 18.6 65.4 46.1 4.7 13 18.9 19.9 31.9 15.2 13-4.7 19.9-18.9 15.2-31.9C231.8 288.6 242.9 271.7 256 256zm0 0c20.7-36.8 58.4-64 102.4-64 66.9 0 121.6 54.7 121.6 122.3 0 52.3-35.1 96.7-83.2 109.7-13.5 3.6-27.9-4.3-31.5-17.8-3.6-13.5 4.3-27.9 17.8-31.5 27.1-7.3 46.9-32.1 46.9-60.4 0-38.6-31.4-70-70-70-29.5 0-55.4 18.6-65.4 46.1-4.7 13-18.9 19.9-31.9 15.2-13-4.7-19.9-18.9-15.2-31.9 4.3-11.9-6.8-28.8-19.9-43.6z"/></svg>
-    </div>
-    <div class="butterfly" style="top: 45%; left: -10%;">
-        <svg viewBox="0 0 512 512"><path d="M256 256c-20.7-36.8-58.4-64-102.4-64C86.7 192 32 246.7 32 314.3c0 52.3 35.1 96.7 83.2 109.7 13.5 3.6 27.9-4.3 31.5-17.8 3.6-13.5-4.3-27.9-17.8-31.5-27.1-7.3-46.9-32.1-46.9-60.4 0-38.6 31.4-70 70-70 29.5 0 55.4 18.6 65.4 46.1 4.7 13 18.9 19.9 31.9 15.2 13-4.7 19.9-18.9 15.2-31.9C231.8 288.6 242.9 271.7 256 256zm0 0c20.7-36.8 58.4-64 102.4-64 66.9 0 121.6 54.7 121.6 122.3 0 52.3-35.1 96.7-83.2 109.7-13.5 3.6-27.9-4.3-31.5-17.8-3.6-13.5 4.3-27.9 17.8-31.5 27.1-7.3 46.9-32.1 46.9-60.4 0-38.6-31.4-70-70-70-29.5 0-55.4 18.6-65.4 46.1-4.7 13-18.9 19.9-31.9 15.2-13-4.7-19.9-18.9-15.2-31.9 4.3-11.9-6.8-28.8-19.9-43.6z"/></svg>
-    </div>
-    <div class="butterfly" style="top: 75%; left: -5%;">
-        <svg viewBox="0 0 512 512"><path d="M256 256c-20.7-36.8-58.4-64-102.4-64C86.7 192 32 246.7 32 314.3c0 52.3 35.1 96.7 83.2 109.7 13.5 3.6 27.9-4.3 31.5-17.8 3.6-13.5-4.3-27.9-17.8-31.5-27.1-7.3-46.9-32.1-46.9-60.4 0-38.6 31.4-70 70-70 29.5 0 55.4 18.6 65.4 46.1 4.7 13 18.9 19.9 31.9 15.2 13-4.7 19.9-18.9 15.2-31.9C231.8 288.6 242.9 271.7 256 256zm0 0c20.7-36.8 58.4-64 102.4-64 66.9 0 121.6 54.7 121.6 122.3 0 52.3-35.1 96.7-83.2 109.7-13.5 3.6-27.9-4.3-31.5-17.8-3.6-13.5 4.3-27.9 17.8-31.5 27.1-7.3 46.9-32.1 46.9-60.4 0-38.6-31.4-70-70-70-29.5 0-55.4 18.6-65.4 46.1-4.7 13-18.9 19.9-31.9 15.2-13-4.7-19.9-18.9-15.2-31.9 4.3-11.9-6.8-28.8-19.9-43.6z"/></svg>
-    </div>
-</div>
-
-<div id="maintenanceOverlay" class="maintenance-overlay">
-    <i class="fa-solid fa-screwdriver-wrench maintenance-icon"></i>
-    <div class="maintenance-title">SYSTEM UNDER MAINTENANCE</div>
-    <div class="maintenance-desc">
-        Halo Dear! Website Ciaa Store sedang dalam perbaikan dan pemeliharaan sistem sementara waktu. Silakan datang kembali nanti ya~ ✨
-    </div>
-</div>
-
-<button class="admin-login-trigger" onclick="openAdminPanel()" title="Login Admin Website">
-    <img src="logo.jpg" alt="Admin Login" onerror="this.src='https://via.placeholder.com/50'">
-</button>
-
-<div class="container">
-    <div class="header">
-        <img src="banner.jpg" alt="Ciaa Store Banner" onerror="this.src='logo.jpg'">
-    </div>
-
-    <div class="profile-box">
-        <img src="logo.jpg" alt="Logo Ciaa Store" class="profile-avatar">
-        <div class="profile-title">Ciaa Store Real</div>
-        <div class="profile-desc">Layanan Top Up Game & Premium Apk Terpercaya</div>
-        <span class="status-badge">● System Online</span>
-    </div>
-
-    <!-- NAVIGATION TABS -->
-    <div class="nav-tabs" id="mainTabs">
-        <button class="tab-btn active" onclick="switchTab('services')">🛍️ Layanan</button>
-        <button class="tab-btn" onclick="switchTab('contact')">📞 Kontak Resmi</button>
-        <button class="tab-btn" onclick="switchTab('queue')">📋 Cek Antrian</button>
-        <button class="tab-btn" onclick="switchTab('tutorial')">📖 Tutorial Order</button>
-    </div>
-
-    <!-- HOME PAGE -->
-    <div id="homePage" class="page active">
-        <div class="coming-soon-banner">
-            <span class="cs-tag">✨ SEGERA HADIR ✨</span>
-            <div class="cs-title">🌐 Jasa Pembuatan Website Custom</div>
-            <div class="cs-desc">Buat toko online, portofolio, atau landing page impianmu dengan harga terjangkau & desain modern khas Ciaa Store!</div>
+    <!-- Maintenance Overlay -->
+    <div id="maintenance-overlay">
+        <!-- Logo yang dapat ditekan untuk login Admin -->
+        <div class="admin-trigger-logo" id="admin-logo-btn" title="Klik untuk Login Admin">
+            CS
         </div>
+        <h2>Situs Sedang Dalam Pemeliharaan</h2>
+        <p style="color: var(--text-muted); margin-top: 8px;">Kami akan segera kembali. Silakan hubungi admin untuk bantuan.</p>
+    </div>
 
-        <div class="category-title">✨ Silakan Pilih Layanan ✨</div>
-        <div class="menu-grid">
-            <div class="menu-card" onclick="openApkSubMenu()">👑 Premium Apk</div>
-            <div class="menu-card" onclick="openPage('ff')">🎮 Free Fire</div>
-            <div class="menu-card" onclick="openPage('ml')">⚔️ Mobile Legends</div>
-            <div class="menu-card" onclick="openPage('ml_ftu')">🌟 ML First Top Up</div>
-            <div class="menu-card" onclick="openPage('pubg')">🪂 PUBG Mobile</div>
-            <div class="menu-card" onclick="openPage('hok')">👑 Honor of Kings</div>
-            <div class="menu-card" onclick="openPage('bs')">🔫 Blood Strike</div>
-            <div class="menu-card" onclick="openPage('jasher')">📢 Jasher (Jasa Share)</div>
-            <div class="menu-card" onclick="openPage('jpm')">👥 JPM (Push Member)</div>
+    <!-- Main Store Display -->
+    <div class="container">
+        <header>
+            <h1>Ciaa Store</h1>
+            <p style="color: var(--text-muted);">Layanan Top-Up Game & Premium Account Terpercaya</p>
+        </header>
+
+        <div class="services-grid" id="services-container"></div>
+    </div>
+
+    <!-- Admin Login Modal -->
+    <div class="modal" id="login-modal">
+        <div class="modal-content">
+            <h3>Login Admin</h3>
+            <p style="color: var(--text-muted); font-size: 0.85rem; margin-top: 5px;">Masukkan password administrator untuk akses panel.</p>
+            <input type="password" id="admin-password" placeholder="Password Admin">
+            <button class="btn" onclick="verifyAdminPassword()">Masuk</button>
+            <button class="btn btn-danger" onclick="closeLoginModal()">Batal</button>
         </div>
     </div>
 
-    <!-- APK SUB MENU -->
-    <div id="apkSubMenuPage" class="page">
-        <button class="btn-back" onclick="goHome()">← Kembali ke Menu Utama</button>
-        <div class="category-title">👑 Premium Aplikasi</div>
-        
-        <div class="info-box" style="text-align: center;">
-            <strong>🕒 Open 06.00 - 22.00 WIB</strong><br>
-            Akun biasa dikirimkan oleh mimin 😀. Apabila ada kendala hubungi layanan bantuan yaw ~
-        </div>
+    <!-- Admin Panel -->
+    <div id="admin-panel">
+        <div class="container">
+            <div class="admin-header">
+                <h2>Panel Kontrol Admin</h2>
+                <button class="btn btn-danger" style="width: auto;" onclick="logoutAdmin()">Keluar Admin</button>
+            </div>
 
-        <div class="apk-grid">
-            <div class="apk-card" onclick="openPage('canva')"><img src="canva.jpg" class="apk-icon" onerror="this.src='logo.jpg'"><div class="apk-title">Canva Premium</div></div>
-            <div class="apk-card" onclick="openPage('am')"><img src="alightmotion.jpg" class="apk-icon" onerror="this.src='logo.jpg'"><div class="apk-title">Alight Motion</div></div>
-            <div class="apk-card" onclick="openPage('yt')"><img src="youtube.jpg" class="apk-icon" onerror="this.src='logo.jpg'"><div class="apk-title">YouTube Premium</div></div>
-            <div class="apk-card" onclick="openPage('iqiyi')"><img src="iqiyi.jpg" class="apk-icon" onerror="this.src='logo.jpg'"><div class="apk-title">iQIYI Premium</div></div>
-            <div class="apk-card" onclick="openPage('capcut')"><img src="capcut.jpg" class="apk-icon" onerror="this.src='logo.jpg'"><div class="apk-title">CapCut Pro</div></div>
-            <div class="apk-card" onclick="openPage('wetv')"><img src="wetv.jpg" class="apk-icon" onerror="this.src='logo.jpg'"><div class="apk-title">WeTV VIP</div></div>
-            <div class="apk-card" onclick="openPage('gemini')"><img src="gemini.jpg" class="apk-icon" onerror="this.src='logo.jpg'"><div class="apk-title">Gemini AI Pro</div></div>
-            <div class="apk-card" onclick="openPage('pixellab')"><img src="pixellab.jpg" class="apk-icon" onerror="this.src='logo.jpg'"><div class="apk-title">Pixellab Mod</div></div>
-        </div>
-    </div>
+            <div class="toggle-maintenance">
+                <input type="checkbox" id="maintenance-switch" style="width: 20px; height: 20px;" onchange="toggleMaintenanceMode(this.checked)">
+                <label for="maintenance-switch" style="font-weight: bold;">Aktifkan Mode Maintenance Website</label>
+            </div>
 
-    <!-- KONTAK RESMI PAGE -->
-    <div id="contactPage" class="page">
-        <div class="category-title">📞 Kontak Resmi Ciaa Store</div>
-        <div class="info-box" style="text-align: center; margin-bottom: 20px;">
-            Silakan hubungi kami melalui saluran resmi di bawah ini jika membutuhkan bantuan atau informasi tambahan.
-        </div>
-        
-        <div class="contact-card-container">
-            <a href="https://wa.me/6289505929536" target="_blank" class="contact-card">
-                <div class="contact-info">
-                    <div class="contact-icon" style="color: #25d366;"><i class="fa-brands fa-whatsapp"></i></div>
-                    <div>
-                        <div class="contact-text-title">No Utama Ciaa Store</div>
-                        <div class="contact-text-sub">+62 895-0592-9536</div>
-                    </div>
-                </div>
-                <div class="contact-arrow"><i class="fa-solid fa-chevron-right"></i></div>
-            </a>
-
-            <a href="https://wa.me/6289509452777" target="_blank" class="contact-card">
-                <div class="contact-info">
-                    <div class="contact-icon" style="color: #25d366;"><i class="fa-brands fa-whatsapp"></i></div>
-                    <div>
-                        <div class="contact-text-title">No Customer Service</div>
-                        <div class="contact-text-sub">+62 895-0945-2777</div>
-                    </div>
-                </div>
-                <div class="contact-arrow"><i class="fa-solid fa-chevron-right"></i></div>
-            </a>
-
-            <a href="https://linktr.ee/ciaastore.yo" target="_blank" class="contact-card">
-                <div class="contact-info">
-                    <div class="contact-icon" style="color: #d85c80;"><i class="fa-solid fa-link"></i></div>
-                    <div>
-                        <div class="contact-text-title">Linktree Ciaa Store</div>
-                        <div class="contact-text-sub">Semua Akses & Informasi</div>
-                    </div>
-                </div>
-                <div class="contact-arrow"><i class="fa-solid fa-chevron-right"></i></div>
-            </a>
-        </div>
-    </div>
-
-    <!-- CEK ANTRIAN PAGE -->
-    <div id="queuePage" class="page">
-        <div class="category-title">📊 Daftar Antrian Proses Terkini</div>
-        <div id="queueList"></div>
-    </div>
-
-    <!-- TUTORIAL ORDER PAGE -->
-    <div id="tutorialPage" class="page">
-        <div class="category-title">📖 Panduan & Tutorial Order</div>
-        
-        <div class="tutorial-poster">
-            <div class="tutorial-header">📌 Cara Order di Ciaa Store</div>
-            <div class="tutorial-steps">
-                <div class="tutorial-step-item">
-                    <div class="step-num">1</div>
-                    <div class="step-text">Pilih layanan yang Anda inginkan pada menu utama website.</div>
-                </div>
-                <div class="tutorial-step-item">
-                    <div class="step-num">2</div>
-                    <div class="step-text">Pilih paket atau nominal yang sesuai dengan kebutuhan Anda.</div>
-                </div>
-                <div class="tutorial-step-item">
-                    <div class="step-num">3</div>
-                    <div class="step-text">Isi data akun atau link/teks tujuan dengan benar pada kolom yang tersedia.</div>
-                </div>
-                <div class="tutorial-step-item">
-                    <div class="step-num">4</div>
-                    <div class="step-text">Pilih metode pembayaran yang diinginkan (QRIS, DANA, atau GoPay).</div>
-                </div>
-                <div class="tutorial-step-item">
-                    <div class="step-num">5</div>
-                    <div class="step-text">Lakukan pembayaran sesuai nominal tertera pada instruksi.</div>
-                </div>
-                <div class="tutorial-step-item">
-                    <div class="step-num">6</div>
-                    <div class="step-text">Klik tombol konfirmasi pembayaran untuk melanjutkan ke WhatsApp.</div>
-                </div>
-                <div class="tutorial-step-item">
-                    <div class="step-num">7</div>
-                    <div class="step-text">Kirim format pesanan beserta bukti transfer ke WhatsApp admin.</div>
-                </div>
-                <div class="tutorial-step-item">
-                    <div class="step-num">8</div>
-                    <div class="step-text">Tunggu proses dari admin hingga pesanan selesai dikerjakan! ✨</div>
-                </div>
+            <div style="background: var(--card-bg); padding: 20px; border-radius: 8px;">
+                <h3>Manajemen Website</h3>
+                <p style="color: var(--text-muted); margin-top: 5px;">Status akses website saat ini dapat diatur melalui switch di atas.</p>
             </div>
         </div>
     </div>
 
-    <!-- ADMIN PANEL PAGE -->
-    <div id="adminPage" class="page">
-        <button class="btn-back" onclick="goHome()">← Kembali ke Menu Utama</button>
-        <div class="category-title">🛠️ Panel Admin Ciaa Store</div>
-        
-        <div id="adminLoginBox" style="max-width: 400px; margin: 30px auto; background: #fff; padding: 25px; border-radius: 18px; border: 2px solid var(--pink-main);">
-            <div class="form-group">
-                <label>Password Admin</label>
-                <input type="password" id="adminPasswordInput" placeholder="Masukkan password admin...">
-            </div>
-            <button class="btn-action-main" onclick="verifyAdminLogin()">Login Admin</button>
-        </div>
-
-        <div id="adminDashboardBox" style="display: none;">
-            <div class="info-box" style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px;">
-                <div>
-                    <strong>Status Maintenance Website:</strong> <span id="maintenanceStatusText" style="color: #dc2626; font-weight: bold;">OFF</span>
-                </div>
-                <div style="display: flex; gap: 8px;">
-                    <button class="btn-status btn-status-success" onclick="toggleMaintenance(true)">Turn ON</button>
-                    <button class="btn-status btn-status-cancel" onclick="toggleMaintenance(false)">Turn OFF</button>
-                </div>
-            </div>
-
-            <div style="display: flex; gap: 10px; margin-bottom: 20px;">
-                <button class="btn-action-main" style="margin-top:0;" onclick="resetAllQueues()">🔄 Reset Semua Antrian</button>
-                <button class="btn-action-main" style="margin-top:0; background: #6b7280;" onclick="adminLogout()">🔒 Logout</button>
-            </div>
-
-            <div class="category-title" style="text-align: left; border-bottom: 2px solid var(--pink-bright); padding-bottom: 8px; margin-top: 25px;">Kelola Pesanan & Antrian Masuk</div>
-            <div id="adminQueueManagementList"></div>
-        </div>
-    </div>
-
-</div>
-
-<script>
-    // System Data & Storage Handlers
-    function getQueueData() {
-        try {
-            return JSON.parse(localStorage.getItem('ciaa_queue_list')) || [];
-        } catch(e) {
-            return [];
-        }
-    }
-
-    function saveQueueData(data) {
-        localStorage.setItem('ciaa_queue_list', JSON.stringify(data));
-    }
-
-    function getMaintenanceStatus() {
-        return localStorage.getItem('ciaa_maintenance') === 'true';
-    }
-
-    function setMaintenanceStatus(status) {
-        localStorage.setItem('ciaa_maintenance', status);
-    }
-
-    // Check Maintenance on Load
-    window.addEventListener('DOMContentLoaded', () => {
-        if (getMaintenanceStatus()) {
-            document.getElementById('maintenanceOverlay').classList.add('active');
-        }
-    });
-
-    // Navigation Switcher
-    function switchTab(tabName) {
-        document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
-        document.querySelectorAll('.page').forEach(page => page.classList.remove('active'));
-
-        if (tabName === 'services') {
-            document.getElementById('homePage').classList.add('active');
-            document.querySelectorAll('.tab-btn')[0].classList.add('active');
-        } else if (tabName === 'contact') {
-            document.getElementById('contactPage').classList.add('active');
-            document.querySelectorAll('.tab-btn')[1].classList.add('active');
-        } else if (tabName === 'queue') {
-            document.getElementById('queuePage').classList.add('active');
-            document.querySelectorAll('.tab-btn')[2].classList.add('active');
-            renderQueueList();
-        } else if (tabName === 'tutorial') {
-            document.getElementById('tutorialPage').classList.add('active');
-            document.querySelectorAll('.tab-btn')[3].classList.add('active');
-        }
-    }
-
-    function openPage(pageId) {
-        // Simple routing placeholder for specific service click
-        switchTab('services');
-    }
-
-    function openApkSubMenu() {
-        document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
-        document.getElementById('apkSubMenuPage').classList.add('active');
-    }
-
-    function goHome() {
-        switchTab('services');
-    }
-
-    // Admin Panel Controls
-    function openAdminPanel() {
-        document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
-        document.getElementById('adminPage').classList.add('active');
-        
-        // Check if admin already logged in session
-        if (sessionStorage.getItem('ciaa_admin_logged') === 'true') {
-            document.getElementById('adminLoginBox').style.display = 'none';
-            document.getElementById('adminDashboardBox').style.display = 'block';
-            renderAdminQueueList();
-            updateMaintenanceUI();
-        } else {
-            document.getElementById('adminLoginBox').style.display = 'block';
-            document.getElementById('adminDashboardBox').style.display = 'none';
-        }
-    }
-
-    function verifyAdminLogin() {
-        const pass = document.getElementById('adminPasswordInput').value;
-        if (pass === '0903cs') {
-            sessionStorage.setItem('ciaa_admin_logged', 'true');
-            document.getElementById('adminLoginBox').style.display = 'none';
-            document.getElementById('adminDashboardBox').style.display = 'block';
-            document.getElementById('adminPasswordInput').value = '';
-            renderAdminQueueList();
-            updateMaintenanceUI();
-        } else {
-            alert('Password admin salah!');
-        }
-    }
-
-    function adminLogout() {
-        sessionStorage.removeItem('ciaa_admin_logged');
-        document.getElementById('adminDashboardBox').style.display = 'none';
-        document.getElementById('adminLoginBox').style.display = 'block';
-    }
-
-    function toggleMaintenance(status) {
-        setMaintenanceStatus(status);
-        updateMaintenanceUI();
-        if (status) {
-            document.getElementById('maintenanceOverlay').classList.add('active');
-        } else {
-            document.getElementById('maintenanceOverlay').classList.remove('active');
-        }
-    }
-
-    function updateMaintenanceUI() {
-        const status = getMaintenanceStatus();
-        const textElem = document.getElementById('maintenanceStatusText');
-        if (status) {
-            textElem.innerText = 'ON (Aktif)';
-            textElem.style.color = '#15803d';
-        } else {
-            textElem.innerText = 'OFF (Nonaktif)';
-            textElem.style.color = '#dc2626';
-        }
-    }
-
-    // Queue Rendering & Management
-    function renderQueueList() {
-        const listContainer = document.getElementById('queueList');
-        const queues = getQueueData();
-
-        if (queues.length === 0) {
-            listContainer.innerHTML = '<div class="info-box" style="text-align: center;">Belum ada antrian pesanan saat ini.</div>';
-            return;
-        }
-
-        let html = '';
-        queues.forEach(q => {
-            let badgeClass = 'badge-pending';
-            let badgeText = 'Sedang menunggu';
-            if (q.status === 'Diproses') {
-                badgeClass = 'badge-process';
-                badgeText = 'Diproses';
-            } else if (q.status === 'Selesai') {
-                badgeClass = 'badge-success';
-                badgeText = 'Selesai';
-            } else if (q.status === 'Dibatalkan') {
-                badgeClass = 'badge-cancel';
-                badgeText = 'Dibatalkan';
+    <script>
+        // Data Layanan Utama (Lengkap)
+        const servicesData = {
+            'jasher': {
+                title: 'Jasher (Jasa Share)',
+                items: [
+                    { name: '12 Jam', price: 200 },
+                    { name: '1 Hari', price: 500 },
+                    { name: '3 Hari', price: 1000 },
+                    { name: '1 Minggu', price: 3000 },
+                    { name: '2 Minggu', price: 4000 },
+                    { name: '1 Bulan', price: 6000 },
+                    { name: '3 Bulan', price: 7000 }
+                ]
+            },
+            'jpm': {
+                title: 'JPM (Jasa Push Member)',
+                items: [
+                    { name: '10 Member', price: 500 },
+                    { name: '20 Member', price: 1000 },
+                    { name: '50 Member', price: 3000 },
+                    { name: '70 Member', price: 4000 },
+                    { name: '100 Member', price: 5000 },
+                    { name: '150 Member', price: 7000 },
+                    { name: '250 Member', price: 8000 },
+                    { name: '400 Member', price: 12000 },
+                    { name: '500 Member', price: 16000 }
+                ]
+            },
+            'ff': {
+                title: 'Free Fire',
+                items: [
+                    { name: '5 Diamond', price: 1000 },
+                    { name: '10 Diamond', price: 2000 },
+                    { name: '20 Diamond', price: 5000 },
+                    { name: '25 Diamond', price: 6000 },
+                    { name: '30 Diamond', price: 7000 },
+                    { name: '50 Diamond', price: 9000 },
+                    { name: '70 Diamond', price: 11000 },
+                    { name: '75 Diamond', price: 12000 },
+                    { name: '100 Diamond', price: 16000 },
+                    { name: '120 Diamond', price: 18000 },
+                    { name: '140 Diamond', price: 20000 },
+                    { name: '150 Diamond', price: 22000 },
+                    { name: '160 Diamond', price: 24000 },
+                    { name: '210 Diamond', price: 30000 },
+                    { name: '250 Diamond', price: 36000 },
+                    { name: '355 Diamond', price: 49000 },
+                    { name: '500 Diamond', price: 66000 },
+                    { name: '720 Diamond', price: 96000 },
+                    { name: '1000 Diamond', price: 134000 },
+                    { name: '1450 Diamond', price: 190000 },
+                    { name: '2000 Diamond', price: 264000 }
+                ]
+            },
+            'ml': {
+                title: 'Mobile Legends',
+                items: [
+                    { name: '86 Diamond', price: 22000 },
+                    { name: '172 Diamond', price: 44000 },
+                    { name: '257 Diamond', price: 66000 },
+                    { name: '344 Diamond', price: 88000 },
+                    { name: '429 Diamond', price: 110000 },
+                    { name: '514 Diamond', price: 132000 },
+                    { name: '600 Diamond', price: 154000 },
+                    { name: '706 Diamond', price: 176000 }
+                ]
+            },
+            'ml_ftu': {
+                title: 'ML First Top Up',
+                items: [
+                    { name: 'Paket FTU 1', price: 15000 },
+                    { name: 'Paket FTU 2', price: 25000 }
+                ]
+            },
+            'pubg': {
+                title: 'PUBG Mobile',
+                items: [
+                    { name: '60 UC', price: 14000 },
+                    { name: '325 UC', price: 75000 },
+                    { name: '660 UC', price: 150000 }
+                ]
+            },
+            'hok': {
+                title: 'Honor of Kings',
+                items: [
+                    { name: '80 Tokens', price: 15000 },
+                    { name: '240 Tokens', price: 45000 },
+                    { name: '400 Tokens', price: 75000 }
+                ]
+            },
+            'bs': {
+                title: 'Blood Strike',
+                items: [
+                    { name: '100 Gold', price: 15000 },
+                    { name: '300 Gold', price: 45000 },
+                    { name: '500 Gold', price: 75000 }
+                ]
+            },
+            'canva': {
+                title: 'Canva Premium',
+                items: [
+                    { name: '1 Bulan Personal', price: 5000 },
+                    { name: '1 Tahun Personal', price: 20000 }
+                ]
+            },
+            'am': {
+                title: 'Alight Motion',
+                items: [
+                    { name: '1 Tahun Resmi', price: 15000 }
+                ]
+            },
+            'yt': {
+                title: 'YouTube Premium',
+                items: [
+                    { name: '1 Bulan Individual', price: 5000 },
+                    { name: '4 Bulan Individual', price: 15000 }
+                ]
+            },
+            'iqiyi': {
+                title: 'iQIYI Premium',
+                items: [
+                    { name: '1 Bulan VIP', price: 10000 },
+                    { name: '3 Bulan VIP', price: 25000 }
+                ]
+            },
+            'capcut': {
+                title: 'CapCut Pro',
+                items: [
+                    { name: '1 Bulan Shared', price: 10000 },
+                    { name: '1 Tahun Shared', price: 60000 }
+                ]
+            },
+            'wetv': {
+                title: 'WeTV VIP',
+                items: [
+                    { name: '1 Bulan VIP', price: 12000 },
+                    { name: '1 Tahun VIP', price: 75000 }
+                ]
+            },
+            'gemini': {
+                title: 'Gemini AI Pro',
+                items: [
+                    { name: '1 Bulan Akun', price: 20000 }
+                ]
+            },
+            'pixellab': {
+                title: 'Pixellab Mod',
+                items: [
+                    { name: 'Aplikasi Full Unlocked', price: 5000 }
+                ]
             }
+        };
 
-            // Privacy masking helper
-            const maskedData = maskSensitiveData(q.target);
+        // Standard Rupiah Formatter
+        const formatRupiah = (val) => new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR', minimumFractionDigits: 0 }).format(val);
 
-            html += `
-                <div class="queue-card">
-                    <div class="queue-header">
-                        <span class="queue-number">${q.queueNo}</span>
-                        <span class="queue-badge ${badgeClass}">${badgeText}</span>
-                    </div>
-                    <div class="queue-body">
-                        <strong>Store:</strong> ${q.storeName}<br>
-                        <strong>Layanan:</strong> ${q.serviceName} (${q.packageName})<br>
-                        <div class="queue-target-box"><strong>Data / Link / Akun:</strong><br>${maskedData}</div>
-                    </div>
-                </div>
-            `;
+        // Render Layanan ke Halaman Utama
+        function renderServices() {
+            const container = document.getElementById('services-container');
+            container.innerHTML = '';
+
+            for (const key in servicesData) {
+                const category = servicesData[key];
+                const card = document.createElement('div');
+                card.className = 'service-card';
+                
+                let itemsHTML = category.items.map(item => `
+                    <li class="item-row">
+                        <span>${item.name}</span>
+                        <span class="item-price">${formatRupiah(item.price)}</span>
+                    </li>
+                `).join('');
+
+                card.innerHTML = `
+                    <h2 class="service-title">${category.title}</h2>
+                    <ul class="item-list">${itemsHTML}</ul>
+                `;
+                container.appendChild(card);
+            }
+        }
+
+        // Logic Maintenance & Admin Panel
+        const logoBtn = document.getElementById('admin-logo-btn');
+        const loginModal = document.getElementById('login-modal');
+        const adminPanel = document.getElementById('admin-panel');
+        const maintenanceOverlay = document.getElementById('maintenance-overlay');
+        const maintenanceSwitch = document.getElementById('maintenance-switch');
+        
+        let isMaintenance = true; // Default aktifkan maintenance
+
+        logoBtn.addEventListener('click', () => {
+            loginModal.style.display = 'flex';
         });
-        listContainer.innerHTML = html;
-    }
 
-    function renderAdminQueueList() {
-        const listContainer = document.getElementById('adminQueueManagementList');
-        const queues = getQueueData();
-
-        if (queues.length === 0) {
-            listContainer.innerHTML = '<div class="info-box" style="text-align: center;">Belum ada pesanan dalam antrian.</div>';
-            return;
+        function closeLoginModal() {
+            loginModal.style.display = 'none';
+            document.getElementById('admin-password').value = '';
         }
 
-        let html = '';
-        queues.forEach((q, index) => {
-            html += `
-                <div class="queue-card">
-                    <div class="queue-header">
-                        <span class="queue-number">${q.queueNo}</span>
-                        <span class="queue-badge">${q.status || 'Sedang menunggu'}</span>
-                    </div>
-                    <div class="queue-body">
-                        <strong>Store:</strong> ${q.storeName}<br>
-                        <strong>Layanan:</strong> ${q.serviceName} (${q.packageName})<br>
-                        <strong>Harga:</strong> ${q.price} | <strong>Pembayaran:</strong> ${q.payment}<br>
-                        <div class="queue-target-box"><strong>Detail:</strong><br>${q.target}</div>
-                    </div>
-                    <div class="admin-action-btns">
-                        <button class="btn-status btn-status-process" onclick="updateQueueStatus(${index}, 'Diproses')">Diproses</button>
-                        <button class="btn-status btn-status-success" onclick="updateQueueStatus(${index}, 'Sedang menunggu')">Menunggu</button>
-                        <button class="btn-status btn-status-cancel" onclick="updateQueueStatus(${index}, 'Dibatalkan')">Batalkan</button>
-                        <button class="btn-status btn-status-delete" onclick="deleteQueueItem(${index})">Hapus</button>
-                    </div>
-                </div>
-            `;
-        });
-        listContainer.innerHTML = html;
-    }
-
-    function updateQueueStatus(index, newStatus) {
-        let queues = getQueueData();
-        if (queues[index]) {
-            queues[index].status = newStatus;
-            saveQueueData(queues);
-            renderAdminQueueList();
+        function verifyAdminPassword() {
+            const input = document.getElementById('admin-password').value;
+            if (input === '0903cs') {
+                closeLoginModal();
+                adminPanel.style.display = 'block';
+                maintenanceSwitch.checked = isMaintenance;
+            } else {
+                alert('Password Admin Salah!');
+            }
         }
-    }
 
-    function deleteQueueItem(index) {
-        let queues = getQueueData();
-        if (queues[index]) {
-            queues.splice(index, 1);
-            saveQueueData(queues);
-            renderAdminQueueList();
+        function toggleMaintenanceMode(status) {
+            isMaintenance = status;
+            maintenanceOverlay.style.display = isMaintenance ? 'flex' : 'none';
         }
-    }
 
-    function resetAllQueues() {
-        if (confirm('Apakah Anda yakin ingin menghapus dan mereset semua nomor antrian dari awal?')) {
-            localStorage.removeItem('ciaa_queue_list');
-            localStorage.removeItem('ciaa_last_queue_num');
-            renderAdminQueueList();
-            alert('Nomor antrian berhasil direset!');
+        function logoutAdmin() {
+            adminPanel.style.display = 'none';
         }
-    }
 
-    // Privacy Masking Utility
-    function maskSensitiveData(text) {
-        if (!text) return '-';
-        // Mask phone numbers or tokens/accounts roughly
-        return text.replace(/(\d{2})\d+(\d{4})/g, '$1****$2');
-    }
-</script>
+        // Inisialisasi Tampilan saat pertama kali dimuat
+        renderServices();
+    </script>
 </body>
 </html>
