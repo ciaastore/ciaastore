@@ -54,6 +54,38 @@
             pointer-events: none;
         }
 
+        .butterfly-container {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            pointer-events: none;
+            z-index: 0;
+            overflow: hidden;
+        }
+
+        .butterfly {
+            position: absolute;
+            width: 35px; height: 35px;
+            filter: drop-shadow(0 0 8px rgba(255, 158, 187, 0.9)) drop-shadow(0 0 12px rgba(255, 255, 255, 0.9));
+            animation: flyAround 18s infinite ease-in-out;
+        }
+
+        .butterfly .wing { transform-origin: center center; animation: flapWing 0.6s infinite alternate ease-in-out; }
+        .butterfly .wing-left { transform-origin: right center; }
+        .butterfly .wing-right { transform-origin: left center; }
+
+        @keyframes flapWing { 0% { transform: scaleX(1); } 100% { transform: scaleX(0.2); } }
+        @keyframes flyAround {
+            0% { transform: translate(0, 0) rotate(0deg); }
+            25% { transform: translate(120px, -150px) rotate(15deg); }
+            50% { transform: translate(-80px, -300px) rotate(-10deg); }
+            75% { transform: translate(200px, -450px) rotate(20deg); }
+            100% { transform: translate(0, -650px) rotate(0deg); }
+        }
+
+        .bf-1 { left: 10%; bottom: -50px; animation-duration: 16s; }
+        .bf-2 { left: 75%; bottom: -50px; animation-duration: 20s; animation-delay: 3s; width: 28px; height: 28px; }
+        .bf-3 { left: 45%; bottom: -50px; animation-duration: 22s; animation-delay: 7s; width: 40px; height: 40px; }
+
         .container {
             max-width: 1000px; width: 92%; margin: 20px auto;
             background: var(--card-bg); backdrop-filter: blur(12px);
@@ -68,7 +100,7 @@
             width: 46px; height: 46px; border-radius: 50%;
             background: #fff; border: 2px solid var(--pink-main);
             box-shadow: 0 4px 15px rgba(218, 92, 128, 0.3);
-            cursor: pointer; z-index: 100000; padding: 2px;
+            cursor: pointer; z-index: 10001; padding: 2px;
             transition: all 0.3s ease; display: flex; align-items: center; justify-content: center;
         }
         .admin-login-trigger img { width: 100%; height: 100%; border-radius: 50%; object-fit: cover; }
@@ -95,7 +127,10 @@
         .nav-tabs {
             display: flex; gap: 10px; margin-bottom: 20px;
             overflow-x: auto; white-space: nowrap; padding-bottom: 8px;
+            -webkit-overflow-scrolling: touch; scrollbar-width: thin;
         }
+        .nav-tabs::-webkit-scrollbar { height: 4px; }
+        .nav-tabs::-webkit-scrollbar-thumb { background: var(--pink-main); border-radius: 10px; }
 
         .tab-btn {
             flex: 0 0 auto; padding: 10px 18px; border: 2px solid var(--pink-bright);
@@ -108,6 +143,7 @@
         .page.active { display: block; }
 
         .category-title { color: var(--pink-dark); font-size: 1.1rem; margin-bottom: 18px; font-weight: bold; text-align: center; }
+
         .menu-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 18px; }
         .menu-card {
             border: 2px solid var(--pink-bright); padding: 16px 12px; border-radius: 18px; text-align: center;
@@ -129,6 +165,13 @@
             width: 100%; padding: 12px 15px; border: 2px solid var(--pink-bright); border-radius: 12px;
             outline: none; font-size: 0.92rem; background: #fff; font-family: inherit;
         }
+        textarea { resize: vertical; min-height: 90px; }
+
+        .service-note-box {
+            background: #fff5f7; border: 2px solid var(--pink-main); border-radius: 14px;
+            padding: 14px; margin-top: 10px; margin-bottom: 15px; color: #d85c80; font-size: 0.83rem; line-height: 1.6;
+        }
+        .service-note-box strong { color: #b91c1c; font-size: 0.88rem; }
 
         .grid-container { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; margin-top: 12px; }
         .item-card {
@@ -158,6 +201,37 @@
             border-radius: 14px; font-weight: bold; font-size: 0.92rem; cursor: pointer; margin-top: 15px;
             display: flex; align-items: center; justify-content: center; gap: 8px; transition: 0.25s;
         }
+        .btn-copy-num:hover { background-color: var(--pink-bright); }
+
+        .contact-card {
+            background: #fff; border: 2px solid var(--pink-bright); border-radius: 16px;
+            padding: 14px; margin-bottom: 12px; display: flex; align-items: center; justify-content: space-between;
+            text-decoration: none; color: inherit; transition: all 0.25s ease;
+        }
+        .contact-card:hover { border-color: var(--pink-main); background: var(--pink-bright); transform: translateY(-2px); }
+        .contact-icon { width: 42px; height: 42px; border-radius: 50%; background: var(--pink-bright); color: var(--pink-dark); display: flex; align-items: center; justify-content: center; font-size: 1.2rem; }
+        .contact-info { flex: 1; margin-left: 14px; }
+        .contact-name { font-weight: bold; color: var(--pink-dark); font-size: 0.92rem; }
+        .contact-val { font-size: 0.83rem; color: #666; margin-top: 2px; }
+
+        .poster-container {
+            background: linear-gradient(135deg, #ffffff 0%, #fff0f5 100%);
+            border: 2px solid var(--pink-main); border-radius: 18px; padding: 18px 14px;
+            box-shadow: 0 6px 20px rgba(255, 158, 187, 0.25); text-align: center;
+        }
+        .poster-header { font-size: 1.15rem; font-weight: 800; color: var(--pink-dark); margin-bottom: 6px; }
+        .poster-sub { font-size: 0.8rem; color: #666; margin-bottom: 18px; }
+        .step-list { display: flex; flex-direction: column; gap: 12px; text-align: left; }
+        .step-item {
+            background: #fff; border: 1.5px solid var(--pink-bright); border-radius: 14px;
+            padding: 12px 14px; display: flex; align-items: center; gap: 12px;
+        }
+        .step-badge {
+            background: var(--pink-dark); color: #fff; width: 30px; height: 30px; border-radius: 50%;
+            display: flex; align-items: center; justify-content: center; font-weight: bold; font-size: 0.9rem; flex-shrink: 0;
+        }
+        .step-content-title { font-weight: bold; color: var(--pink-dark); font-size: 0.88rem; margin-bottom: 2px; }
+        .step-content-desc { font-size: 0.78rem; color: #555; line-height: 1.35; }
 
         .invoice-box {
             background: #fff; border: 2px dashed var(--pink-main); border-radius: 16px;
@@ -165,6 +239,8 @@
         }
         .invoice-row { display: flex; justify-content: space-between; margin-bottom: 10px; font-size: 0.88rem; border-bottom: 1px dashed #ffe4ec; padding-bottom: 8px; }
         .invoice-row:last-child { border-bottom: none; margin-bottom: 0; padding-bottom: 0; }
+        .invoice-label { color: #666; }
+        .invoice-value { font-weight: bold; color: var(--pink-dark); text-align: right; }
 
         .maintenance-overlay {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
@@ -179,11 +255,29 @@
 
         @keyframes bounce { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-10px); } }
 
+        .search-box { position: relative; margin-bottom: 18px; }
+        .search-box input { padding-left: 42px; border-color: var(--pink-main); }
+        .search-box i { position: absolute; left: 15px; top: 50%; transform: translateY(-50%); color: var(--pink-dark); }
+
         .queue-card {
             background: #fff; border: 2px solid var(--pink-bright); border-radius: 16px; padding: 14px; margin-bottom: 12px;
             display: flex; align-items: center; justify-content: space-between;
         }
         .queue-number { background: var(--pink-main); color: white; font-weight: bold; padding: 8px 12px; border-radius: 12px; font-size: 0.82rem; white-space: nowrap; }
+        .queue-details { flex: 1; margin-left: 12px; }
+        .queue-service { font-weight: bold; color: var(--pink-dark); font-size: 0.9rem; }
+        .queue-target { font-size: 0.82rem; color: #666; white-space: pre-line; word-break: break-all; }
+        
+        .status-badge-queue { font-size: 0.78rem; font-weight: bold; padding: 6px 10px; border-radius: 10px; text-align: center; min-width: 110px; }
+        .st-proses { background: #fef08a; color: #854d0e; }
+        .st-diproses { background: #bae6fd; color: #0369a1; }
+        .st-selesai { background: #bbf7d0; color: #15803d; }
+        .st-batal { background: #fecaca; color: #b91c1c; }
+
+        @media (min-width: 768px) {
+            .menu-grid { grid-template-columns: repeat(3, 1fr); gap: 22px; }
+            .grid-container { grid-template-columns: repeat(3, 1fr) !important; gap: 15px !important; }
+        }
     </style>
 </head>
 <body>
@@ -194,6 +288,24 @@
     <div class="maintenance-desc">
         Halo Dear! Website Ciaa Store sedang dalam perbaikan dan pemeliharaan sistem sementara waktu. Silakan datang kembali nanti ya~ ✨
     </div>
+</div>
+
+<div class="butterfly-container">
+    <svg class="butterfly bf-1" viewBox="0 0 50 50">
+        <path class="wing wing-left" fill="#ff9ebb" d="M25,25 Q10,5 5,20 Q0,35 25,25 Z"/>
+        <path class="wing wing-right" fill="#ff9ebb" d="M25,25 Q40,5 45,20 Q50,35 25,25 Z"/>
+        <circle cx="25" cy="25" r="2" fill="#fff"/>
+    </svg>
+    <svg class="butterfly bf-2" viewBox="0 0 50 50">
+        <path class="wing wing-left" fill="#ffe4ec" d="M25,25 Q10,5 5,20 Q0,35 25,25 Z"/>
+        <path class="wing wing-right" fill="#ffe4ec" d="M25,25 Q40,5 45,20 Q50,35 25,25 Z"/>
+        <circle cx="25" cy="25" r="2" fill="#fff"/>
+    </svg>
+    <svg class="butterfly bf-3" viewBox="0 0 50 50">
+        <path class="wing wing-left" fill="#ff9ebb" d="M25,25 Q10,5 5,20 Q0,35 25,25 Z"/>
+        <path class="wing wing-right" fill="#ff9ebb" d="M25,25 Q40,5 45,20 Q50,35 25,25 Z"/>
+        <circle cx="25" cy="25" r="2" fill="#fff"/>
+    </svg>
 </div>
 
 <button class="admin-login-trigger" onclick="openAdminPanel()" title="Login Admin Website">
@@ -214,6 +326,7 @@
 
     <div class="nav-tabs" id="mainTabs">
         <button class="tab-btn active" onclick="switchTab('services')">🛍️ Layanan</button>
+        <button class="tab-btn" onclick="switchTab('tutorial')">📜 Tutorial Order</button>
         <button class="tab-btn" onclick="switchTab('contact')">📞 Kontak Resmi</button>
         <button class="tab-btn" onclick="switchTab('queue')">📋 Cek Antrian</button>
     </div>
@@ -221,372 +334,39 @@
     <div id="homePage" class="page active">
         <div class="category-title">✨ Silakan Pilih Layanan ✨</div>
         <div class="menu-grid">
-            <div class="menu-card" onclick="openPage('jasher')">📢 Jasher (Jasa Share)</div>
-            <div class="menu-card" onclick="openPage('jpm')">👥 JPM (Push Member)</div>
+            <div class="menu-card" onclick="openApkSubMenu()">👑 Premium Apk</div>
             <div class="menu-card" onclick="openPage('ff')">🎮 Free Fire</div>
             <div class="menu-card" onclick="openPage('ml')">⚔️ Mobile Legends</div>
+            <div class="menu-card" onclick="openPage('ml_ftu')">🌟 ML First Top Up</div>
+            <div class="menu-card" onclick="openPage('pubg')">🪂 PUBG Mobile</div>
+            <div class="menu-card" onclick="openPage('hok')">👑 Honor of Kings</div>
+            <div class="menu-card" onclick="openPage('bs')">🔫 Blood Strike</div>
+            <div class="menu-card" onclick="openPage('jasher')">📢 Jasher (Jasa Share)</div>
+            <div class="menu-card" onclick="openPage('jpm')">👥 JPM (Push Member)</div>
         </div>
     </div>
 
-    <div id="contactPage" class="page">
-        <div class="category-title">📞 Kontak Resmi Ciaa Store</div>
-        <p style="text-align:center;">WhatsApp Admin: 089505929536</p>
+    <div id="apkSubMenuPage" class="page">
+        <button class="btn-back" onclick="goHome()">← Kembali ke Menu Utama</button>
+        <div class="category-title">👑 Premium Aplikasi</div>
+        <div class="menu-grid">
+            <div class="menu-card" onclick="openPage('canva')">Canva Pro</div>
+            <div class="menu-card" onclick="openPage('am')">Alight Motion</div>
+            <div class="menu-card" onclick="openPage('yt')">YouTube Premium</div>
+            <div class="menu-card" onclick="openPage('iqiyi')">iQIYI VIP</div>
+            <div class="menu-card" onclick="openPage('capcut')">CapCut Pro</div>
+            <div class="menu-card" onclick="openPage('wetv')">WeTV VIP</div>
+            <div class="menu-card" onclick="openPage('gemini')">Gemini AI</div>
+            <div class="menu-card" onclick="openPage('pixellab')">Pixellab Mod</div>
+        </div>
     </div>
 
-    <div id="queuePage" class="page">
-        <div class="category-title">📊 Daftar Antrian Proses Terkini</div>
-        <div id="queueList"></div>
-    </div>
+    <div id="tutorialPage" class="page">
+        <div class="poster-container">
+            <div class="poster-header">💖 CARA EASY ORDER DI CIAA STORE 💖</div>
+            <div class="poster-sub">Ikuti 4 langkah super simpel di bawah ini ya dear~ ✨</div>
 
-    <div id="adminPage" class="page">
-        <button class="btn-back" onclick="goHome()">← Keluar dari Panel Admin</button>
-        <div class="category-title">👑 Panel Kelola Admin</div>
-        
-        <div style="background:#fff; border:2px solid var(--pink-main); border-radius:16px; padding:20px; margin-bottom:20px; text-align:center;">
-            <strong style="color:var(--pink-dark); font-size:1.1rem; display:block; margin-bottom:8px;">⚙️ Pengaturan Status Server Website</strong>
-            <p style="font-size:0.85rem; color:#666; margin:0 0 15px 0;">Tekan tombol di bawah ini untuk mengontrol apakah website sedang maintenance atau normal bagi pembeli.</p>
-            
-            <button id="btnToggleMaintenance" onclick="toggleMaintenanceServer()" style="padding:12px 24px; border-radius:12px; border:none; font-weight:bold; cursor:pointer; background:#ef4444; color:white; font-size:0.95rem; transition:0.2s;">
-                🚨 Matikan Server (Aktifkan Maintenance)
-            </button>
-        </div>
-
-        <div class="category-title" style="text-align:left; font-size:0.98rem;">📋 Kelola Antrian Masuk:</div>
-        <div id="adminQueueList"></div>
-    </div>
-
-    <div id="detailPage" class="page">
-        <button class="btn-back" onclick="goHome()">← Kembali</button>
-        <h2 id="serviceTitle" style="color: var(--pink-dark); margin-top:0; font-size:1.1rem;"></h2>
-
-        <div class="form-group">
-            <label id="inputLabel">1. Masukkan Data</label>
-            <input type="text" id="storeNameInput" placeholder="Masukkan Nama Store..." style="margin-bottom: 10px; display: none;">
-            <textarea id="userData" placeholder=""></textarea>
-        </div>
-
-        <div class="section-title">2. Pilih Nominal / Paket</div>
-        <div class="grid-container" id="itemsGrid"></div>
-
-        <div class="section-title">3. Pilih Metode Pembayaran</div>
-        <div class="payment-card" onclick="selectPayment('DANA', '081338224767', 'AGUS SUTIARNO', this)">
-            <div class="payment-title">DANA</div>
-            <div class="payment-sub">Nomor: <strong>081338224767</strong></div>
-        </div>
-        <div class="payment-card" onclick="selectPayment('GOPAY', '089505929536', 'TIDAK ADA', this)">
-            <div class="payment-title">GOPAY</div>
-            <div class="payment-sub">Nomor: <strong>089505929536</strong></div>
-        </div>
-
-        <button id="btnMainAction" class="btn-action-main" onclick="handleMainAction()">
-            💳 Lanjutkan Pembayaran
-        </button>
-    </div>
-
-    <div id="paymentPage" class="page">
-        <button class="btn-back" onclick="goBackToDetail()">← Ubah Pesanan</button>
-        <div class="category-title">💳 Silahkan Lakukan Pembayaran</div>
-        
-        <div class="invoice-box">
-            <div class="invoice-row"><span>Metode</span><span id="invPaymentMethod">-</span></div>
-            <div class="invoice-row"><span>Paket</span><span id="invPackage">-</span></div>
-            <div class="invoice-row"><span>Harga</span><span id="invPrice">-</span></div>
-            <div class="invoice-row"><span>Nomor Tujuan</span><span id="invNumber">-</span></div>
-            <div class="invoice-row"><span>A/N</span><span id="invHolder">-</span></div>
-        </div>
-
-        <button id="btnCopyNumber" class="btn-copy-num" onclick="copyPaymentNumber()">
-            <i class="fa-regular fa-copy"></i> Salin Nomor Tujuan
-        </button>
-
-        <button id="btnWaConfirm" class="btn-action-main" style="background:#25d366;">
-            <i class="fa-brands fa-whatsapp"></i> Konfirmasi Pembayaran Via WhatsApp
-        </button>
-    </div>
-</div>
-
-<script>
-    const servicesData = {
-        'jasher': {
-            title: 'Jasher (Jasa Share)',
-            items: [
-                { name: '1 Hari', price: 500 },
-                { name: '3 Hari', price: 1500 },
-                { name: '5 Hari', price: 2500 },
-                { name: '1 Minggu', price: 3000 },
-                { name: '2 Minggu', price: 6000 },
-                { name: '1 Bulan', price: 10000 },
-                { name: '2 Bulan', price: 20000 },
-                { name: '3 Bulan', price: 30000 },
-                { name: '4 Bulan', price: 40000 },
-                { name: '5 Bulan', price: 50000 },
-                { name: '6 Bulan', price: 60000 },
-                { name: '7 Bulan', price: 70000 },
-                { name: '8 Bulan', price: 80000 },
-                { name: '9 Bulan', price: 90000 },
-                { name: '10 Bulan', price: 100000 },
-                { name: '11 Bulan', price: 110000 },
-                { name: '1 Tahun', price: 120000 },
-                { name: 'Permanen', price: 150000 }
-            ]
-        },
-        'jpm': {
-            title: 'JPM (Jasa Push Member)',
-            items: [
-                { name: '50 Member', price: 3000 },
-                { name: '100 Member', price: 5000 },
-                { name: '150 Member', price: 8000 },
-                { name: '200 Member', price: 10000 },
-                { name: '250 Member', price: 13000 },
-                { name: '300 Member', price: 15000 },
-                { name: '350 Member', price: 18000 },
-                { name: '400 Member', price: 20000 },
-                { name: '450 Member', price: 23000 },
-                { name: '500 Member', price: 25000 },
-                { name: '600 Member', price: 30000 },
-                { name: '700 Member', price: 35000 },
-                { name: '800 Member', price: 40000 },
-                { name: '900 Member', price: 45000 },
-                { name: '1000 Member', price: 50000 }
-            ]
-        },
-        'ff': {
-            title: 'Free Fire',
-            items: [
-                { name: '5 Diamond', price: 1000 },
-                { name: '12 Diamond', price: 2000 },
-                { name: '50 Diamond', price: 8000 },
-                { name: '70 Diamond', price: 10000 },
-                { name: '140 Diamond', price: 20000 },
-                { name: '355 Diamond', price: 50000 },
-                { name: '720 Diamond', price: 100000 },
-                { name: 'Member Mingguan', price: 30000 },
-                { name: 'Member Bulanan', price: 120000 }
-            ]
-        },
-        'ml': {
-            title: 'Mobile Legends',
-            items: [
-                { name: '5 Diamond', price: 1500 },
-                { name: '14 Diamond', price: 4000 },
-                { name: '42 Diamond', price: 12000 },
-                { name: '86 Diamond', price: 23000 },
-                { name: '172 Diamond', price: 45000 },
-                { name: '257 Diamond', price: 68000 },
-                { name: '344 Diamond', price: 90000 },
-                { name: 'Weekly Diamond Pass', price: 30000 }
-            ]
-        }
-    };
-
-    let selectedServiceKey = '';
-    let selectedItem = null;
-    let selectedPayment = { method: '', number: '', holder: '' };
-    let currentQueueNumber = parseInt(localStorage.getItem('lastQueueNumber')) || 0;
-    let queueListArray = JSON.parse(localStorage.getItem('allQueuesList')) || [];
-
-    let isMaintenance = localStorage.getItem('isMaintenance') === 'true';
-    let isAdminLoggedIn = false;
-
-    checkMaintenanceState();
-
-    function checkMaintenanceState() {
-        const overlay = document.getElementById('maintenanceOverlay');
-        const btnToggle = document.getElementById('btnToggleMaintenance');
-
-        if (btnToggle) {
-            if (isMaintenance) {
-                btnToggle.innerText = "✅ Buka Server (Matikan Maintenance)";
-                btnToggle.style.background = "#22c55e";
-            } else {
-                btnToggle.innerText = "🚨 Matikan Server (Aktifkan Maintenance)";
-                btnToggle.style.background = "#ef4444";
-            }
-        }
-
-        if (isMaintenance && !isAdminLoggedIn) {
-            if (overlay) overlay.classList.add('active');
-        } else {
-            if (overlay) overlay.classList.remove('active');
-        }
-    }
-
-    function openAdminPanel() {
-        const pwd = prompt("Masukkan Sandi Admin Website:");
-        if (pwd === "0903cs") {
-            isAdminLoggedIn = true;
-            document.getElementById('maintenanceOverlay').classList.remove('active');
-            
-            hideAllPages();
-            document.getElementById('adminPage').classList.add('active');
-            renderAdminQueueList();
-            checkMaintenanceState();
-        } else if (pwd !== null) {
-            alert("Sandi Admin Salah!");
-        }
-    }
-
-    function toggleMaintenanceServer() {
-        isMaintenance = !isMaintenance;
-        localStorage.setItem('isMaintenance', isMaintenance.toString());
-        checkMaintenanceState();
-        
-        if (isMaintenance) {
-            alert("Mode Maintenance BERHASIL DIAKTIFKAN!\n\nWebsite sekarang terkunci untuk pengunjung biasa, tetapi Anda tetap dapat mengelolanya dari panel admin ini.");
-        } else {
-            alert("Mode Maintenance BERHASIL DIMATIKAN!\n\nWebsite kembali normal dan dapat diakses oleh semua pembeli.");
-        }
-    }
-
-    function hideAllPages() {
-        document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
-    }
-
-    function goHome() {
-        hideAllPages();
-        document.getElementById('homePage').classList.add('active');
-        setActiveTab(0);
-        checkMaintenanceState();
-    }
-
-    function openPage(serviceKey) {
-        selectedServiceKey = serviceKey;
-        const data = servicesData[serviceKey] || { title: 'Layanan', items: [] };
-        document.getElementById('serviceTitle').innerText = 'Layanan ' + data.title;
-        
-        const storeNameInput = document.getElementById('storeNameInput');
-        const userDataInput = document.getElementById('userData');
-        userDataInput.value = '';
-        storeNameInput.value = '';
-
-        if (serviceKey === 'jasher' || serviceKey === 'jpm') {
-            document.getElementById('inputLabel').innerText = '1. Nama Store & Link';
-            storeNameInput.style.display = 'block';
-            userDataInput.placeholder = "(Tempel link mu / teks mu di sini)";
-        } else {
-            document.getElementById('inputLabel').innerText = '1. Masukkan Data';
-            storeNameInput.style.display = 'none';
-            userDataInput.placeholder = "Masukkan User ID / Email...";
-        }
-
-        const grid = document.getElementById('itemsGrid');
-        grid.innerHTML = '';
-        selectedItem = null;
-
-        data.items.forEach((item) => {
-            const card = document.createElement('div');
-            card.className = 'item-card';
-            card.innerHTML = `<div class="item-title">${item.name}</div><div class="item-price">Rp ${item.price.toLocaleString('id-ID')}</div>`;
-            card.onclick = () => {
-                document.querySelectorAll('.item-card').forEach(c => c.classList.remove('active'));
-                card.classList.add('active');
-                selectedItem = item;
-            };
-            grid.appendChild(card);
-        });
-
-        hideAllPages();
-        document.getElementById('detailPage').classList.add('active');
-    }
-
-    function selectPayment(method, number, holder, element) {
-        selectedPayment = { method, number, holder };
-        document.querySelectorAll('.payment-card').forEach(c => c.classList.remove('active'));
-        element.classList.add('active');
-    }
-
-    function handleMainAction() {
-        let finalDataTarget = document.getElementById('userData').value.trim();
-        if (!finalDataTarget) { alert('Harap isi data tujuan terlebih dahulu!'); return; }
-        if (!selectedItem) { alert('Harap pilih nominal terlebih dahulu!'); return; }
-        if (!selectedPayment.method) { alert('Harap pilih metode pembayaran!'); return; }
-
-        document.getElementById('invPaymentMethod').innerText = selectedPayment.method;
-        document.getElementById('invPackage').innerText = `${servicesData[selectedServiceKey].title} (${selectedItem.name})`;
-        document.getElementById('invPrice').innerText = `Rp ${selectedItem.price.toLocaleString('id-ID')}`;
-        document.getElementById('invNumber').innerText = selectedPayment.number;
-        document.getElementById('invHolder').innerText = selectedPayment.holder;
-
-        const btnCopy = document.getElementById('btnCopyNumber');
-        btnCopy.innerHTML = `<i class="fa-regular fa-copy"></i> Salin Nomor ${selectedPayment.method} (${selectedPayment.number})`;
-
-        hideAllPages();
-        document.getElementById('paymentPage').classList.add('active');
-        
-        document.getElementById('btnWaConfirm').onclick = function() {
-            confirmAndSendWA(finalDataTarget);
-        };
-    }
-
-    function copyPaymentNumber() {
-        if (!selectedPayment.number) return;
-        navigator.clipboard.writeText(selectedPayment.number).then(() => {
-            alert(`Nomor ${selectedPayment.method} (${selectedPayment.number}) berhasil disalin!`);
-        });
-    }
-
-    function confirmAndSendWA(userData) {
-        currentQueueNumber++;
-        localStorage.setItem('lastQueueNumber', currentQueueNumber);
-        const queueNo = `CS-2026-#${String(currentQueueNumber).padStart(2, '0')}`;
-        const serviceTitle = servicesData[selectedServiceKey].title;
-
-        const newQueueItem = {
-            id: Date.now(),
-            queueNo: queueNo,
-            service: serviceTitle,
-            item: selectedItem.name,
-            target: userData,
-            status: 'Proses / Menunggu Verifikasi'
-        };
-
-        queueListArray.unshift(newQueueItem);
-        localStorage.setItem('allQueuesList', JSON.stringify(queueListArray));
-
-        const waMsg = `🛍️ *FORM PESANAN CIAA STORE REAL*\n📌 *No. Antrian:* ${queueNo}\n🎮 *Layanan:* ${serviceTitle}\n📦 *Paket:* ${selectedItem.name}\n💰 *Total:* Rp ${selectedItem.price.toLocaleString('id-ID')}\n💳 *Metode:* ${selectedPayment.method}`;
-        window.open(`https://wa.me/6289505929536?text=${encodeURIComponent(waMsg)}`, '_blank');
-    }
-
-    function switchTab(tab) {
-        if (tab === 'services') goHome();
-        else if (tab === 'contact') { hideAllPages(); document.getElementById('contactPage').classList.add('active'); }
-        else if (tab === 'queue') { hideAllPages(); document.getElementById('queuePage').classList.add('active'); renderQueueList(queueListArray); }
-    }
-
-    function setActiveTab(index) {
-        const buttons = document.querySelectorAll('#mainTabs .tab-btn');
-        buttons.forEach(btn => btn.classList.remove('active'));
-        if (buttons[index]) buttons[index].classList.add('active');
-    }
-
-    function renderQueueList(items) {
-        const queueContainer = document.getElementById('queueList');
-        queueContainer.innerHTML = items.length ? '' : '<div style="text-align: center; color: #888; padding: 30px;">Belum ada antrian.</div>';
-
-        items.forEach(item => {
-            const card = document.createElement('div');
-            card.className = 'queue-card';
-            card.innerHTML = `<div class="queue-number">${item.queueNo}</div><div><strong>${item.service}</strong></div><div>${item.status}</div>`;
-            queueContainer.appendChild(card);
-        });
-    }
-
-    function renderAdminQueueList() {
-        const adminContainer = document.getElementById('adminQueueList');
-        adminContainer.innerHTML = queueListArray.length ? '' : '<p style="text-align:center; color:#777;">Belum ada antrian masuk.</p>';
-
-        queueListArray.forEach(item => {
-            const card = document.createElement('div');
-            card.className = 'queue-card';
-            card.innerHTML = `<div><strong>${item.queueNo}</strong> (${item.service}) - ${item.status}</div>`;
-            adminContainer.appendChild(card);
-        });
-    }
-
-    function goBackToDetail() {
-        hideAllPages();
-        document.getElementById('detailPage').classList.add('active');
-    }
-</script>
-</body>
-</html>
+            <div class="step-list">
+                <div class="step-item">
+                    <div class="step-badge">1</div>
+                    <di
