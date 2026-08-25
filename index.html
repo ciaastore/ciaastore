@@ -272,6 +272,93 @@
         .contact-text-title { font-weight: bold; color: var(--pink-dark); font-size: 0.98rem; }
         .contact-text-sub { font-size: 0.82rem; color: #666; margin-top: 2px; }
         .contact-arrow { font-size: 1.2rem; color: var(--pink-dark); }
+
+        /* --- STYLES KHUSUS ANTRIAN & PANEL ADMIN (PERBAIKAN TAMPILAN TERAPAT/MELEBIHI KOTAK) --- */
+        .queue-card {
+            background: #ffffff;
+            border: 2px solid var(--pink-bright);
+            border-radius: 16px;
+            padding: 16px;
+            margin-bottom: 14px;
+            box-shadow: 0 4px 10px rgba(255, 158, 187, 0.1);
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            word-wrap: break-word;
+            overflow-wrap: break-word;
+            word-break: break-word;
+        }
+
+        .queue-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 8px;
+            border-bottom: 1px dashed var(--pink-bright);
+            padding-bottom: 8px;
+        }
+
+        .queue-number {
+            font-weight: 800;
+            color: var(--pink-dark);
+            font-size: 0.95rem;
+            background: var(--pink-soft);
+            padding: 4px 10px;
+            border-radius: 8px;
+        }
+
+        .queue-badge {
+            font-size: 0.78rem;
+            font-weight: bold;
+            padding: 4px 10px;
+            border-radius: 10px;
+            display: inline-block;
+        }
+        .badge-pending { background: #fef3c7; color: #d97706; }
+        .badge-process { background: #e0f2fe; color: #0284c7; }
+        .badge-success { background: #dcfce7; color: #15803d; }
+        .badge-cancel { background: #fee2e2; color: #dc2626; }
+
+        .queue-body {
+            font-size: 0.88rem;
+            line-height: 1.5;
+            color: #444;
+        }
+
+        .queue-target-box {
+            background: #fafafa;
+            border: 1px solid #eee;
+            border-radius: 10px;
+            padding: 8px 12px;
+            font-size: 0.82rem;
+            color: #555;
+            white-space: pre-line;
+            margin-top: 5px;
+        }
+
+        .admin-action-btns {
+            display: flex;
+            gap: 6px;
+            flex-wrap: wrap;
+            margin-top: 8px;
+        }
+        .btn-status {
+            padding: 6px 12px;
+            border: none;
+            border-radius: 8px;
+            font-size: 0.78rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: 0.2s;
+            flex: 1;
+            min-width: 90px;
+            text-align: center;
+        }
+        .btn-status-process { background: #3b82f6; color: white; }
+        .btn-status-success { background: #22c55e; color: white; }
+        .btn-status-cancel { background: #ef4444; color: white; }
+        .btn-status:hover { opacity: 0.9; transform: translateY(-1px); }
     </style>
 </head>
 <body>
@@ -413,7 +500,7 @@
             </button>
         </div>
 
-        <div class="category-title" style="text-align:left; font-size:0.98rem;">📋 Kelola Antrian Masuk:</div>
+        <div class="category-title" style="text-align:left; font-size:0.98rem;">📋 Kelola Pesanan & Konfirmasi Status Antrian:</div>
         <div id="adminQueueList"></div>
     </div>
 
@@ -838,7 +925,7 @@
             service: serviceTitle,
             item: selectedItem.name,
             target: userData,
-            status: 'Proses / Menunggu Verifikasi'
+            status: 'Menunggu Verifikasi'
         };
 
         queueListArray.unshift(newQueueItem);
@@ -860,6 +947,7 @@
         if (buttons[index]) buttons[index].classList.add('active');
     }
 
+    /* RENDER UNTUK PEMBELI (HALAMAN CEK ANTRIAN) */
     function renderQueueList(items) {
         const queueContainer = document.getElementById('queueList');
         queueContainer.innerHTML = items.length ? '' : '<div style="text-align: center; color: #888; padding: 30px;">Belum ada antrian.</div>';
@@ -867,21 +955,64 @@
         items.forEach(item => {
             const card = document.createElement('div');
             card.className = 'queue-card';
-            card.innerHTML = `<div class="queue-number">${item.queueNo}</div><div><strong>${item.service}</strong><div style="font-size:0.8rem; color:#666;">${item.item}</div></div><div>${item.status}</div>`;
+            
+            let statusBadgeClass = 'badge-pending';
+            if (item.status === 'Sedang Diproses') statusBadgeClass = 'badge-process';
+            else if (item.status === 'Selesai') statusBadgeClass = 'badge-success';
+            else if (item.status === 'Dibatalkan') statusBadgeClass = 'badge-cancel';
+
+            card.innerHTML = `
+                <div class="queue-header">
+                    <span class="queue-number">${item.queueNo}</span>
+                    <span class="queue-badge ${statusBadgeClass}">${item.status}</span>
+                </div>
+                <div class="queue-body">
+                    <strong>${item.service}</strong> - <span>${item.item}</span>
+                    <div class="queue-target-box">${item.target}</div>
+                </div>
+            `;
             queueContainer.appendChild(card);
         });
     }
 
+    /* RENDER UNTUK ADMIN (PANEL MANAJEMEN ANTRIAN & TOMBOL KONFIRMASI) */
     function renderAdminQueueList() {
         const adminContainer = document.getElementById('adminQueueList');
         adminContainer.innerHTML = queueListArray.length ? '' : '<p style="text-align:center; color:#777;">Belum ada antrian masuk.</p>';
 
-        queueListArray.forEach(item => {
+        queueListArray.forEach((item, index) => {
             const card = document.createElement('div');
             card.className = 'queue-card';
-            card.innerHTML = `<div><strong>${item.queueNo}</strong> (${item.service} - ${item.item}) - <em>${item.status}</em></div>`;
+            
+            let statusBadgeClass = 'badge-pending';
+            if (item.status === 'Sedang Diproses') statusBadgeClass = 'badge-process';
+            else if (item.status === 'Selesai') statusBadgeClass = 'badge-success';
+            else if (item.status === 'Dibatalkan') statusBadgeClass = 'badge-cancel';
+
+            card.innerHTML = `
+                <div class="queue-header">
+                    <span class="queue-number">${item.queueNo}</span>
+                    <span class="queue-badge ${statusBadgeClass}">${item.status}</span>
+                </div>
+                <div class="queue-body">
+                    <strong>${item.service}</strong> (${item.item})
+                    <div class="queue-target-box">${item.target}</div>
+                </div>
+                <div class="admin-action-btns">
+                    <button class="btn-status btn-status-process" onclick="updateOrderStatus(${index}, 'Sedang Diproses')">⚙️ Diproses</button>
+                    <button class="btn-status btn-status-success" onclick="updateOrderStatus(${index}, 'Selesai')">✅ Selesai</button>
+                    <button class="btn-status btn-status-cancel" onclick="updateOrderStatus(${index}, 'Dibatalkan')">❌ Cancel</button>
+                </div>
+            `;
             adminContainer.appendChild(card);
         });
+    }
+
+    /* FUNGSI UPDATE STATUS PESANAN DARI ADMIN */
+    function updateOrderStatus(index, newStatus) {
+        queueListArray[index].status = newStatus;
+        localStorage.setItem('allQueuesList', JSON.stringify(queueListArray));
+        renderAdminQueueList();
     }
 
     function goBackToDetail() {
