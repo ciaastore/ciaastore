@@ -54,7 +54,6 @@
             pointer-events: none;
         }
 
-        /* ANIMASI KUPU-KUPU BERSINAR & MENGEPAK */
         .butterfly-container {
             position: fixed;
             top: 0; left: 0; width: 100%; height: 100%;
@@ -96,7 +95,6 @@
             border: 2px solid rgba(255, 255, 255, 0.8);
         }
 
-        /* TOMBOL ADMIN BULAT */
         .admin-login-trigger {
             position: fixed; top: 20px; right: 20px;
             width: 46px; height: 46px; border-radius: 50%;
@@ -126,7 +124,6 @@
         .profile-desc { font-size: 0.88rem; color: #666; margin-bottom: 10px; }
         .status-badge { display: inline-block; background: #25d366; color: white; font-size: 0.75rem; padding: 4px 12px; border-radius: 12px; font-weight: bold; }
 
-        /* TAB NAVIGASI MANDIRI HORIZONTAL */
         .nav-tabs {
             display: flex; gap: 10px; margin-bottom: 20px;
             overflow-x: auto; white-space: nowrap; padding-bottom: 8px;
@@ -195,11 +192,17 @@
 
         .btn-action-main {
             width: 100%; background-color: var(--pink-dark); color: white; border: none; padding: 16px;
-            border-radius: 14px; font-weight: bold; font-size: 1rem; cursor: pointer; margin-top: 22px;
+            border-radius: 14px; font-weight: bold; font-size: 1rem; cursor: pointer; margin-top: 12px;
             display: flex; align-items: center; justify-content: center; gap: 10px; transition: 0.25s; text-decoration: none;
         }
 
-        /* KONTAK CARD BUTTONS */
+        .btn-copy-num {
+            width: 100%; background-color: #fff; color: var(--pink-dark); border: 2px solid var(--pink-main); padding: 12px;
+            border-radius: 14px; font-weight: bold; font-size: 0.92rem; cursor: pointer; margin-top: 15px;
+            display: flex; align-items: center; justify-content: center; gap: 8px; transition: 0.25s;
+        }
+        .btn-copy-num:hover { background-color: var(--pink-bright); }
+
         .contact-card {
             background: #fff; border: 2px solid var(--pink-bright); border-radius: 16px;
             padding: 14px; margin-bottom: 12px; display: flex; align-items: center; justify-content: space-between;
@@ -211,7 +214,6 @@
         .contact-name { font-weight: bold; color: var(--pink-dark); font-size: 0.92rem; }
         .contact-val { font-size: 0.83rem; color: #666; margin-top: 2px; }
 
-        /* POSTER TUTORIAL ORDER */
         .poster-container {
             background: linear-gradient(135deg, #ffffff 0%, #fff0f5 100%);
             border: 2px solid var(--pink-main); border-radius: 18px; padding: 18px 14px;
@@ -231,17 +233,15 @@
         .step-content-title { font-weight: bold; color: var(--pink-dark); font-size: 0.88rem; margin-bottom: 2px; }
         .step-content-desc { font-size: 0.78rem; color: #555; line-height: 1.35; }
 
-        /* INVOICE DETAIL BOX */
         .invoice-box {
             background: #fff; border: 2px dashed var(--pink-main); border-radius: 16px;
-            padding: 18px; margin: 15px 0; text-align: left;
+            padding: 18px; margin: 15px 0 10px 0; text-align: left;
         }
         .invoice-row { display: flex; justify-content: space-between; margin-bottom: 10px; font-size: 0.88rem; border-bottom: 1px dashed #ffe4ec; padding-bottom: 8px; }
         .invoice-row:last-child { border-bottom: none; margin-bottom: 0; padding-bottom: 0; }
         .invoice-label { color: #666; }
         .invoice-value { font-weight: bold; color: var(--pink-dark); text-align: right; }
 
-        /* MAINTENANCE POPUP OVERLAY */
         .maintenance-overlay {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             background: rgba(255, 240, 245, 0.97); backdrop-filter: blur(15px);
@@ -255,7 +255,6 @@
 
         @keyframes bounce { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-10px); } }
 
-        /* QUEUE CARDS */
         .search-box { position: relative; margin-bottom: 18px; }
         .search-box input { padding-left: 42px; border-color: var(--pink-main); }
         .search-box i { position: absolute; left: 15px; top: 50%; transform: translateY(-50%); color: var(--pink-dark); }
@@ -283,7 +282,6 @@
 </head>
 <body>
 
-<!-- OVERLAY MAINTENANCE WEBSITE -->
 <div id="maintenanceOverlay" class="maintenance-overlay">
     <i class="fa-solid fa-screwdriver-wrench maintenance-icon"></i>
     <div class="maintenance-title">SYSTEM UNDER MAINTENANCE</div>
@@ -292,7 +290,6 @@
     </div>
 </div>
 
-<!-- KUPU-KUPU BACKGROUND -->
 <div class="butterfly-container">
     <svg class="butterfly bf-1" viewBox="0 0 50 50">
         <path class="wing wing-left" fill="#ff9ebb" d="M25,25 Q10,5 5,20 Q0,35 25,25 Z"/>
@@ -311,7 +308,6 @@
     </svg>
 </div>
 
-<!-- TOMBOL BULAT ADMIN FLOATING -->
 <button class="admin-login-trigger" onclick="openAdminPanel()" title="Login Admin Website">
     <img src="logo.jpg" alt="Admin Login" onerror="this.src='https://via.placeholder.com/50'">
 </button>
@@ -328,7 +324,6 @@
         <span class="status-badge">● System Online</span>
     </div>
 
-    <!-- TAB NAVIGASI HORIZONTAL -->
     <div class="nav-tabs" id="mainTabs">
         <button class="tab-btn active" onclick="switchTab('services')">🛍️ Layanan</button>
         <button class="tab-btn" onclick="switchTab('tutorial')">📜 Tutorial Order</button>
@@ -336,7 +331,6 @@
         <button class="tab-btn" onclick="switchTab('queue')">📋 Cek Antrian</button>
     </div>
 
-    <!-- HOME PAGE -->
     <div id="homePage" class="page active">
         <div class="category-title">✨ Silakan Pilih Layanan ✨</div>
         <div class="menu-grid">
@@ -352,7 +346,6 @@
         </div>
     </div>
 
-    <!-- APK SUB MENU -->
     <div id="apkSubMenuPage" class="page">
         <button class="btn-back" onclick="goHome()">← Kembali ke Menu Utama</button>
         <div class="category-title">👑 Premium Aplikasi</div>
@@ -368,7 +361,6 @@
         </div>
     </div>
 
-    <!-- TUTORIAL ORDER PAGE -->
     <div id="tutorialPage" class="page">
         <div class="poster-container">
             <div class="poster-header">💖 CARA EASY ORDER DI CIAA STORE 💖</div>
@@ -407,7 +399,6 @@
         </div>
     </div>
 
-    <!-- TAB KONTAK RESMI (TOMBOL DIRECT LINK) -->
     <div id="contactPage" class="page">
         <div class="category-title">📞 Kontak Resmi Ciaa Store</div>
         
@@ -448,7 +439,6 @@
         </a>
     </div>
 
-    <!-- QUEUE PAGE -->
     <div id="queuePage" class="page">
         <div class="category-title">📊 Daftar Antrian Proses Terkini</div>
         <div class="search-box">
@@ -458,12 +448,10 @@
         <div id="queueList"></div>
     </div>
 
-    <!-- ADMIN PAGE -->
     <div id="adminPage" class="page">
         <button class="btn-back" onclick="goHome()">← Keluar dari Mode Admin</button>
         <div class="category-title">👑 Panel Kelola Admin</div>
         
-        <!-- PENGATURAN MAINTENANCE SERVER VIA ADMIN -->
         <div style="background:#fff; border:2px solid var(--pink-main); border-radius:16px; padding:15px; margin-bottom:20px; text-align:center;">
             <strong style="color:var(--pink-dark);">⚙️ Pengaturan Status Server Website</strong>
             <p style="font-size:0.85rem; color:#666; margin:6px 0 12px 0;">Aktifkan mode maintenance agar pembeli tidak dapat mengorder sementara waktu.</p>
@@ -476,7 +464,6 @@
         <div id="adminQueueList"></div>
     </div>
 
-    <!-- DETAIL PAGE -->
     <div id="detailPage" class="page">
         <button class="btn-back" onclick="goHome()">← Kembali</button>
         <h2 id="serviceTitle" style="color: var(--pink-dark); margin-top:0; font-size:1.1rem;"></h2>
@@ -516,7 +503,7 @@
         </button>
     </div>
 
-    <!-- PAYMENT PAGE (RINCIAN INVOICE) -->
+    <!-- PAYMENT PAGE (RINCIAN INVOICE & TOMBOL SALIN REKENING TERPISAH) -->
     <div id="paymentPage" class="page">
         <button class="btn-back" onclick="goBackToDetail()">← Ubah Pesanan</button>
         <div class="category-title">💳 Silahkan Lakukan Pembayaran</div>
@@ -544,7 +531,12 @@
             </div>
         </div>
 
-        <p style="font-size:0.85rem; color:#666; text-align:center; line-height:1.5; margin-bottom:20px;">
+        <!-- TOMBOL SALIN NOMOR TUJUAN TERPISAH KELUAR OTOMATIS BERDASARKAN METODE -->
+        <button id="btnCopyNumber" class="btn-copy-num" onclick="copyPaymentNumber()">
+            <i class="fa-regular fa-copy"></i> Salin Nomor Tujuan
+        </button>
+
+        <p style="font-size:0.85rem; color:#666; text-align:center; line-height:1.5; margin:15px 0;">
             Setelah melakukan pembayaran silahkan pencet <strong>"Konfirmasi Pembayaran Via WhatsApp & Sertakan Bukti Transfer"</strong>, anda akan di arahkan ke WhatsApp Admin untuk konfirmasi pembayaran anda.
         </p>
 
@@ -594,7 +586,6 @@
     let queueListArray = JSON.parse(localStorage.getItem('allQueuesList')) || [];
     let isMaintenance = localStorage.getItem('isMaintenance') === 'true';
 
-    // INISIALISASI STATUS MAINTENANCE
     checkMaintenanceState();
 
     function checkMaintenanceState() {
@@ -756,12 +747,24 @@
             return;
         }
 
-        // TAMPILKAN RINCIAN DI HALAMAN INVOICE PEMBAYARAN
+        // SET RINCIAN INVOICE Halaman Pembayaran
         document.getElementById('invPaymentMethod').innerText = selectedPayment.method;
         document.getElementById('invPackage').innerText = `${servicesData[selectedServiceKey].title} (${selectedItem.name})`;
         document.getElementById('invPrice').innerText = `Rp ${selectedItem.price.toLocaleString('id-ID')}`;
         document.getElementById('invNumber').innerText = selectedPayment.number;
         document.getElementById('invHolder').innerText = selectedPayment.holder;
+
+        // ATUR TOMBOL SALIN REKENING
+        const btnCopy = document.getElementById('btnCopyNumber');
+        if (selectedPayment.method === 'DANA') {
+            btnCopy.style.display = 'flex';
+            btnCopy.innerHTML = `<i class="fa-regular fa-copy"></i> Salin Nomor DANA (${selectedPayment.number})`;
+        } else if (selectedPayment.method === 'GOPAY') {
+            btnCopy.style.display = 'flex';
+            btnCopy.innerHTML = `<i class="fa-regular fa-copy"></i> Salin Nomor GOPAY (${selectedPayment.number})`;
+        } else {
+            btnCopy.style.display = 'none'; // Sembunyikan jika QRIS Dinamis
+        }
 
         hideAllPages();
         document.getElementById('paymentPage').classList.add('active');
@@ -769,6 +772,17 @@
         document.getElementById('btnWaConfirm').onclick = function() {
             confirmAndSendWA(finalDataTarget);
         };
+    }
+
+    // FUNGSIONALITAS SALIN NOMOR TUJUAN TERPISAH
+    function copyPaymentNumber() {
+        if (!selectedPayment.number || selectedPayment.number === 'Scan QRIS Dinamis') return;
+        
+        navigator.clipboard.writeText(selectedPayment.number).then(() => {
+            alert(`Nomor ${selectedPayment.method} (${selectedPayment.number}) berhasil disalin!`);
+        }).catch(err => {
+            alert('Gagal menyalin nomor, silakan salin secara manual.');
+        });
     }
 
     function confirmAndSendWA(userData) {
@@ -874,7 +888,6 @@
         renderQueueList(filtered);
     }
 
-    /* LOGIN ADMIN (PASSWORD: 0903cs) */
     function openAdminPanel() {
         const pwd = prompt("Masukkan Sandi Admin Website:");
         if (pwd === "0903cs") {
