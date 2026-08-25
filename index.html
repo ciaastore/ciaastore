@@ -519,10 +519,11 @@
         <div class="grid-container" id="itemsGrid"></div>
 
         <div class="section-title">3. Pilih Metode Pembayaran</div>
-        <!-- KEMBALIKAN PILIHAN QRIS -->
+        <!-- Pilihan QRIS dengan A/N AGUS SUTIARNO -->
         <div class="payment-card" onclick="selectPayment('QRIS', 'Scan QR Code Otomatis', 'AGUS SUTIARNO', this)">
             <div class="payment-title">QRIS (All Payment)</div>
             <div class="payment-sub">Scan QR untuk semua e-wallet & bank (Bebas Admin)</div>
+            <div class="payment-sub">A/N: <strong>AGUS SUTIARNO</strong></div>
         </div>
         <div class="payment-card" onclick="selectPayment('DANA', '081338224767', 'AGUS SUTIARNO', this)">
             <div class="payment-title">DANA</div>
@@ -614,22 +615,377 @@
                 { name: '720 Diamond', price: 96000 },
                 { name: '1000 Diamond', price: 134000 },
                 { name: '1450 Diamond', price: 190000 },
-                { name: '2000 Diamond', price: 264000 },
-                { name: 'Membership Mingguan (Untuk mengubah nama menjadi **AGUS SUTIARNO** di bagian atas, mohon tempelkan (*paste*) draf teks atau format dokumen yang sedang Anda kerjakan ke sini. Saya akan bantu menyesuaikannya tanpa mengubah bagian lainnya.
+                { name: '2000 Diamond', price: 264000 }
+            ]
+        },
+        'ml': {
+            title: 'Mobile Legends',
+            items: [
+                { name: '86 Diamond', price: 22000 },
+                { name: '172 Diamond', price: 44000 },
+                { name: '257 Diamond', price: 66000 },
+                { name: '344 Diamond', price: 88000 },
+                { name: '429 Diamond', price: 110000 },
+                { name: '514 Diamond', price: 132000 },
+                { name: '600 Diamond', price: 154000 },
+                { name: '706 Diamond', price: 176000 }
+            ]
+        },
+        'ml_ftu': {
+            title: 'ML First Top Up',
+            items: [
+                { name: 'Paket FTU 1', price: 15000 },
+                { name: 'Paket FTU 2', price: 25000 }
+            ]
+        },
+        'pubg': {
+            title: 'PUBG Mobile',
+            items: [
+                { name: '60 UC', price: 14000 },
+                { name: '325 UC', price: 75000 },
+                { name: '660 UC', price: 150000 }
+            ]
+        },
+        'hok': {
+            title: 'Honor of Kings',
+            items: [
+                { name: '80 Tokens', price: 15000 },
+                { name: '240 Tokens', price: 45000 },
+                { name: '400 Tokens', price: 75000 }
+            ]
+        },
+        'bs': {
+            title: 'Blood Strike',
+            items: [
+                { name: '100 Gold', price: 15000 },
+                { name: '300 Gold', price: 45000 },
+                { name: '500 Gold', price: 75000 }
+            ]
+        },
+        'canva': {
+            title: 'Canva Premium',
+            items: [
+                { name: '1 Bulan Personal', price: 5000 },
+                { name: '1 Tahun Personal', price: 20000 }
+            ]
+        },
+        'am': {
+            title: 'Alight Motion',
+            items: [
+                { name: '1 Tahun Resmi', price: 15000 }
+            ]
+        },
+        'yt': {
+            title: 'YouTube Premium',
+            items: [
+                { name: '1 Bulan Individual', price: 5000 },
+                { name: '4 Bulan Individual', price: 15000 }
+            ]
+        },
+        'iqiyi': {
+            title: 'iQIYI Premium',
+            items: [
+                { name: '1 Bulan VIP', price: 10000 },
+                { name: '3 Bulan VIP', price: 25000 }
+            ]
+        },
+        'capcut': {
+            title: 'CapCut Pro',
+            items: [
+                { name: '1 Bulan Shared', price: 10000 },
+                { name: '1 Tahun Shared', price: 60000 }
+            ]
+        },
+        'wetv': {
+            title: 'WeTV VIP',
+            items: [
+                { name: '1 Bulan VIP', price: 12000 },
+                { name: '1 Tahun VIP', price: 75000 }
+            ]
+        },
+        'gemini': {
+            title: 'Gemini AI Pro',
+            items: [
+                { name: '1 Bulan Akun', price: 20000 }
+            ]
+        },
+        'pixellab': {
+            title: 'Pixellab Mod',
+            items: [
+                { name: 'Aplikasi Full Unlocked', price: 5000 }
+            ]
+        }
+    };
 
-Mengenai fitur atau tombol QRIS yang tiba-tiba hilang dari aplikasi dompet digital atau *m-banking* Anda, ada beberapa faktor teknis dan administratif yang biasanya menjadi penyebabnya.
+    let currentService = null;
+    let selectedItem = null;
+    let selectedPaymentMethod = null;
+    let selectedPaymentNumber = null;
+    let selectedPaymentHolder = null;
+    let serverMaintenance = false;
 
-### Penyebab Umum QRIS Hilang
-*   **Aplikasi Belum Diperbarui:** Versi aplikasi yang sudah usang (*outdated*) sering kali mengalami *bug* atau gagal memuat tampilan antarmuka secara penuh, termasuk menyembunyikan beberapa menu pembayaran.
-*   **Status Akun Belum Premium:** Banyak dompet digital mewajibkan penggunanya untuk melakukan peningkatan akun (misalnya DANA Premium atau GoPay Plus) dengan verifikasi KTP agar bisa menggunakan fitur QRIS. Jika sistem meminta verifikasi ulang, fitur ini bisa ditangguhkan sementara.
-*   **Pemeliharaan Sistem (*Maintenance*):** Server penyedia layanan (bank atau dompet digital) mungkin sedang mengalami perbaikan atau gangguan jaringan, sehingga menu transaksi disembunyikan untuk mencegah kegagalan pembayaran.
-*   **Penumpukan *Cache* Aplikasi:** Data *cache* yang terlalu penuh atau rusak (*corrupt*) di sistem ponsel Android Anda bisa membuat aplikasi tidak berjalan optimal.
-*   **Pembatasan Keamanan:** Jika sistem mendeteksi aktivitas *login* yang tidak biasa atau transaksi yang mencurigakan, fitur pembayaran dapat dibekukan sementara oleh sistem untuk melindungi saldo Anda.
+    function switchTab(tabName) {
+        document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+        document.querySelectorAll('.page').forEach(page => page.classList.remove('active'));
 
-### Langkah Solusi yang Bisa Dicoba
-1.  **Cek Pembaruan:** Buka Google Play Store dan pastikan aplikasi yang Anda gunakan sudah diperbarui ke versi paling baru.
-2.  **Bersihkan *Cache*:** Masuk ke Pengaturan ponsel > Aplikasi > cari aplikasi dompet digital tersebut > Penyimpanan > pilih **Hapus Cache** (*Clear Cache*).
-3.  **Cek Status Verifikasi:** Buka menu profil di dalam aplikasi dan pastikan tidak ada permintaan untuk memverifikasi ulang identitas Anda.
-4.  **Tutup dan *Login* Ulang:** Lakukan *logout* (keluar) dari akun Anda, tutup aplikasi sepenuhnya, lalu coba *login* kembali.
+        if (tabName === 'services') {
+            document.querySelector('.tab-btn:nth-child(1)').classList.add('active');
+            document.getElementById('homePage').classList.add('active');
+        } else if (tabName === 'contact') {
+            document.querySelector('.tab-btn:nth-child(2)').classList.add('active');
+            document.getElementById('contactPage').classList.add('active');
+        } else if (tabName === 'queue') {
+            document.querySelector('.tab-btn:nth-child(3)').classList.add('active');
+            document.getElementById('queuePage').classList.add('active');
+            renderQueueList();
+        }
+    }
 
-Aplikasi spesifik apa (misalnya DANA, m-banking, atau aplikasi lain) yang sedang Anda gunakan saat ini saat QRIS tersebut hilang?
+    function openPage(serviceKey) {
+        currentService = serviceKey;
+        const data = servicesData[serviceKey];
+        if (!data) return;
+
+        document.getElementById('serviceTitle').innerText = data.title;
+        document.getElementById('userData').value = '';
+        document.getElementById('storeNameInput').value = '';
+        
+        if (serviceKey === 'jasher' || serviceKey === 'jpm') {
+            document.getElementById('storeNameInput').style.display = 'block';
+            document.getElementById('storeNameInput').placeholder = 'Masukkan Nama / Link Store...';
+            document.getElementById('inputLabel').innerText = '1. Masukkan Data & Link/Store';
+            document.getElementById('userData').placeholder = 'Tuliskan deskripsi atau target link...';
+        } else {
+            document.getElementById('storeNameInput').style.display = 'none';
+            document.getElementById('inputLabel').innerText = '1. Masukkan Data Akun (ID / Server / User)';
+            document.getElementById('userData').placeholder = 'Contoh: 12345678 (1234)';
+        }
+
+        const itemsGrid = document.getElementById('itemsGrid');
+        itemsGrid.innerHTML = '';
+        selectedItem = null;
+
+        data.items.forEach((item, index) => {
+            const card = document.createElement('div');
+            card.className = 'item-card';
+            card.innerHTML = `
+                <div class="item-title">${item.name}</div>
+                <div class="item-price">Rp ${item.price.toLocaleString('id-ID')}</div>
+            `;
+            card.onclick = () => {
+                document.querySelectorAll('.item-card').forEach(c => c.classList.remove('active'));
+                card.classList.add('active');
+                selectedItem = item;
+            };
+            itemsGrid.appendChild(card);
+        });
+
+        document.querySelectorAll('.payment-card').forEach(p => p.classList.remove('active'));
+        selectedPaymentMethod = null;
+
+        document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+        document.getElementById('detailPage').classList.add('active');
+    }
+
+    function openApkSubMenu() {
+        document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+        document.getElementById('apkSubMenuPage').classList.add('active');
+    }
+
+    function goHome() {
+        document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+        document.getElementById('homePage').classList.add('active');
+    }
+
+    function selectPayment(method, number, holder, element) {
+        document.querySelectorAll('.payment-card').forEach(p => p.classList.remove('active'));
+        element.classList.add('active');
+        selectedPaymentMethod = method;
+        selectedPaymentNumber = number;
+        selectedPaymentHolder = holder;
+    }
+
+    function handleMainAction() {
+        const userData = document.getElementById('userData').value.trim();
+        const storeName = document.getElementById('storeNameInput').value.trim();
+
+        if (!userData && document.getElementById('storeNameInput').style.display === 'none') {
+            alert('Mohon masukkan data akun Anda terlebih dahulu!');
+            return;
+        }
+        if (!selectedItem) {
+            alert('Mohon pilih paket atau nominal layanan terlebih dahulu!');
+            return;
+        }
+        if (!selectedPaymentMethod) {
+            alert('Mohon pilih metode pembayaran terlebih dahulu!');
+            return;
+        }
+
+        document.getElementById('invPaymentMethod').innerText = selectedPaymentMethod;
+        document.getElementById('invPackage').innerText = selectedItem.name;
+        document.getElementById('invPrice').innerText = 'Rp ' + selectedItem.price.toLocaleString('id-ID');
+        document.getElementById('invNumber').innerText = selectedPaymentNumber;
+        document.getElementById('invHolder').innerText = selectedPaymentHolder;
+
+        // Simpan pesanan ke antrian lokal
+        saveOrderToQueue({
+            id: 'CIA-' + Math.floor(1000 + Math.random() * 9000),
+            service: servicesData[currentService].title,
+            package: selectedItem.name,
+            price: 'Rp ' + selectedItem.price.toLocaleString('id-ID'),
+            target: (storeName ? 'Store: ' + storeName + '\n' : '') + userData,
+            payment: selectedPaymentMethod,
+            status: 'Pending',
+            time: new Date().toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit' })
+        });
+
+        document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+        document.getElementById('paymentPage').classList.add('active');
+
+        // Tombol WhatsApp Konfirmasi
+        const waText = `Halo Ciaa Store, saya ingin konfirmasi pembayaran.\n\n` +
+            `Layanan: ${servicesData[currentService].title}\n` +
+            `Paket: ${selectedItem.name}\n` +
+            `Harga: Rp ${selectedItem.price.toLocaleString('id-ID')}\n` +
+            `Metode: ${selectedPaymentMethod}\n` +
+            `Data: ${userData}`;
+        
+        document.getElementById('btnWaConfirm').onclick = () => {
+            window.open(`https://wa.me/6289505929536?text=${encodeURIComponent(waText)}`, '_blank');
+        };
+    }
+
+    function goBackToDetail() {
+        document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+        document.getElementById('detailPage').classList.add('active');
+    }
+
+    function copyPaymentNumber() {
+        navigator.clipboard.writeText(selectedPaymentNumber).then(() => {
+            alert('Nomor tujuan berhasil disalin!');
+        });
+    }
+
+    // --- MANAJEMEN ANTRIAN & PANEL ADMIN ---
+    function getQueueData() {
+        let data = localStorage.getItem('ciaa_queues');
+        return data ? JSON.parse(data) : [];
+    }
+
+    function saveOrderToQueue(order) {
+        let queues = getQueueData();
+        queues.unshift(order);
+        localStorage.setItem('ciaa_queues', JSON.stringify(queues));
+    }
+
+    function renderQueueList() {
+        const container = document.getElementById('queueList');
+        const queues = getQueueData();
+
+        if (queues.length === 0) {
+            container.innerHTML = '<div style="text-align:center; color:#888; padding:20px;">Belum ada antrian pesanan saat ini.</div>';
+            return;
+        }
+
+        container.innerHTML = '';
+        queues.forEach((q) => {
+            let badgeClass = 'badge-pending';
+            if (q.status === 'Proses') badgeClass = 'badge-process';
+            if (q.status === 'Selesai') badgeClass = 'badge-success';
+            if (q.status === 'Batal') badgeClass = 'badge-cancel';
+
+            const card = document.createElement('div');
+            card.className = 'queue-card';
+            card.innerHTML = `
+                <div class="queue-header">
+                    <span class="queue-number">${q.id} - ${q.service}</span>
+                    <span class="queue-badge ${badgeClass}">${q.status}</span>
+                </div>
+                <div class="queue-body">
+                    <div><strong>Paket:</strong> ${q.package} (${q.price})</div>
+                    <div><strong>Waktu:</strong> ${q.time}</div>
+                    <div class="queue-target-box"><strong>Data Tujuan:</strong>\n${q.target}</div>
+                </div>
+            `;
+            container.appendChild(card);
+        });
+    }
+
+    function openAdminPanel() {
+        let pass = prompt('Masukkan Password Admin:');
+        if (pass === 'ciaa123' || pass === 'admin') {
+            document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+            document.getElementById('adminPage').classList.add('active');
+            renderAdminQueueList();
+        } else if (pass !== null) {
+            alert('Password salah!');
+        }
+    }
+
+    function renderAdminQueueList() {
+        const container = document.getElementById('adminQueueList');
+        const queues = getQueueData();
+
+        if (queues.length === 0) {
+            container.innerHTML = '<div style="text-align:center; color:#888; padding:20px;">Belum ada pesanan masuk.</div>';
+            return;
+        }
+
+        container.innerHTML = '';
+        queues.forEach((q, index) => {
+            let badgeClass = 'badge-pending';
+            if (q.status === 'Proses') badgeClass = 'badge-process';
+            if (q.status === 'Selesai') badgeClass = 'badge-success';
+            if (q.status === 'Batal') badgeClass = 'badge-cancel';
+
+            const card = document.createElement('div');
+            card.className = 'queue-card';
+            card.innerHTML = `
+                <div class="queue-header">
+                    <span class="queue-number">${q.id} - ${q.service}</span>
+                    <span class="queue-badge ${badgeClass}">${q.status}</span>
+                </div>
+                <div class="queue-body">
+                    <div><strong>Paket:</strong> ${q.package} (${q.price})</div>
+                    <div><strong>Pembayaran:</strong> ${q.payment}</div>
+                    <div class="queue-target-box"><strong>Data Tujuan:</strong>\n${q.target}</div>
+                    <div class="admin-action-btns">
+                        <button class="btn-status btn-status-process" onclick="updateStatus(${index}, 'Proses')">Proses</button>
+                        <button class="btn-status btn-status-success" onclick="updateStatus(${index}, 'Selesai')">Selesai</button>
+                        <button class="btn-status btn-status-cancel" onclick="updateStatus(${index}, 'Batal')">Batal</button>
+                    </div>
+                </div>
+            `;
+            container.appendChild(card);
+        });
+    }
+
+    function updateStatus(index, newStatus) {
+        let queues = getQueueData();
+        if (queues[index]) {
+            queues[index].status = newStatus;
+            localStorage.setItem('ciaa_queues', JSON.stringify(queues));
+            renderAdminQueueList();
+        }
+    }
+
+    function toggleMaintenanceServer() {
+        serverMaintenance = !serverMaintenance;
+        const overlay = document.getElementById('maintenanceOverlay');
+        const btn = document.getElementById('btnToggleMaintenance');
+
+        if (serverMaintenance) {
+            overlay.classList.add('active');
+            btn.style.background = '#22c55e';
+            btn.innerText = '🟢 Nyalakan Kembali Server (Matikan Maintenance)';
+        } else {
+            overlay.classList.remove('active');
+            btn.style.background = '#ef4444';
+            btn.innerText = '🚨 Matikan Server (Aktifkan Maintenance)';
+        }
+    }
+</script>
+
+</body>
+</html>
