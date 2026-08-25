@@ -259,16 +259,6 @@
 
         @keyframes bounce { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-10px); } }
 
-        .search-box { position: relative; margin-bottom: 18px; }
-        .search-box input { padding-left: 42px; border-color: var(--pink-main); }
-        .search-box i { position: absolute; left: 15px; top: 50%; transform: translateY(-50%); color: var(--pink-dark); font-size: 1rem; }
-
-        .queue-card {
-            background: #fff; border: 2px solid var(--pink-bright); border-radius: 16px; padding: 14px; margin-bottom: 12px;
-            display: flex; align-items: center; justify-content: space-between;
-        }
-        .queue-number { background: var(--pink-main); color: white; font-weight: bold; padding: 8px 12px; border-radius: 12px; font-size: 0.82rem; white-space: nowrap; }
-
         .contact-card-container { display: flex; flex-direction: column; gap: 15px; margin-top: 10px; }
         .contact-card {
             background: linear-gradient(135deg, #fff0f5 0%, #ffe4ec 100%);
@@ -442,13 +432,15 @@
         <div class="grid-container" id="itemsGrid"></div>
 
         <div class="section-title">3. Pilih Metode Pembayaran</div>
-        <div class="payment-card" onclick="selectPayment('DANA', '081338224767', 'AGUS SUTIARNO', this)">
+        <div class="payment-card" onclick="selectPayment('DANA', '081338224767', 'AGIS SUTIARNO', this)">
             <div class="payment-title">DANA</div>
             <div class="payment-sub">Nomor: <strong>081338224767</strong></div>
+            <div class="payment-sub">A/N: <strong>AGIS SUTIARNO</strong></div>
         </div>
         <div class="payment-card" onclick="selectPayment('GOPAY', '089505929536', 'TIDAK ADA', this)">
             <div class="payment-title">GOPAY</div>
             <div class="payment-sub">Nomor: <strong>089505929536</strong></div>
+            <div class="payment-sub">A/N: <strong>TIDAK ADA</strong></div>
         </div>
 
         <button id="btnMainAction" class="btn-action-main" onclick="handleMainAction()">
