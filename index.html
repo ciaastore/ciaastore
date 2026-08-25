@@ -3,406 +3,54 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Ciaa Store - Layanan & Top Up Game</title>
-    <!-- Tailwind CSS CDN untuk styling modern dan responsif -->
+    <title>Ciaa Store</title>
+    <!-- Tailwind CSS -->
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
-    <style>
-        /* Animasi Kupu-Kupu Realistis & Elegan */
-        @keyframes flyAround {
-            0% { transform: translate(0px, 0px) rotate(0deg) scale(0.8); opacity: 0.8; }
-            25% { transform: translate(150px, -100px) rotate(15deg) scale(1); opacity: 1; }
-            50% { transform: translate(300px, 50px) rotate(-10deg) scale(0.9); opacity: 0.7; }
-            75% { transform: translate(100px, 150px) rotate(20deg) scale(1.1); opacity: 0.9; }
-            100% { transform: translate(0px, 0px) rotate(0deg) scale(0.8); opacity: 0.8; }
-        }
-        @keyframes wingFlap {
-            0%, 100% { transform: scaleX(1); }
-            50% { transform: scaleX(0.3); }
-        }
-        .butterfly {
-            position: fixed;
-            pointer-events: none;
-            z-index: 10;
-            filter: drop-shadow(0 0 6px rgba(255, 182, 193, 0.8));
-            animation: flyAround 18s infinite ease-in-out;
-        }
-        .butterfly-wings {
-            width: 32px;
-            height: 24px;
-            background: linear-gradient(135deg, #ffffff, #ffb6c1);
-            clip-path: polygon(50% 50%, 100% 0%, 80% 80%, 100% 100%, 50% 80%, 0% 100%, 20% 80%, 0% 0%);
-            animation: wingFlap 0.25s infinite ease-in-out;
-        }
-    </style>
 </head>
-<body class="bg-slate-950 text-slate-100 min-h-screen relative overflow-x-hidden font-sans">
+<body class="bg-slate-950 text-slate-100 min-h-screen flex flex-col justify-between font-sans">
 
-    <!-- Efek Animasi Kupu-Kupu (Jumlah sedikit agar ringan & elegan) -->
-    <div class="butterfly" style="top: 15%; left: 10%; animation-duration: 20s;"><div class="butterfly-wings"></div></div>
-    <div class="butterfly" style="top: 60%; left: 80%; animation-duration: 24s; animation-delay: 3s;"><div class="butterfly-wings"></div></div>
-    <div class="butterfly" style="top: 35%; left: 70%; animation-duration: 22s; animation-delay: 6s;"><div class="butterfly-wings"></div></div>
-
-    <!-- HEADER & NAVIGASI -->
-    <header class="sticky top-0 z-50 bg-slate-900/80 backdrop-blur-md border-b border-slate-800">
-        <div class="max-w-6xl mx-auto px-4 py-4 flex flex-wrap justify-between items-center">
-            <h1 class="text-2xl font-bold bg-gradient-to-r from-pink-400 to-purple-400 bg-clip-text text-transparent">Ciaa Store</h1>
-            <nav class="flex gap-4 sm:gap-6 text-sm font-medium">
-                <a href="#layanan" class="hover:text-pink-400 transition">Layanan</a>
-                <a href="#kontak" class="hover:text-pink-400 transition">Kontak Resmi</a>
-                <a href="#antrian" class="hover:text-pink-400 transition">Cek Antrian</a>
-                <a href="#tutorial" class="hover:text-pink-400 transition">Tutorial Order</a>
-                <button onclick="openAdminLogin()" class="text-xs bg-slate-800 hover:bg-slate-700 px-3 py-1.5 rounded-lg border border-slate-700 transition">Admin Panel</button>
+    <!-- HEADER -->
+    <header class="bg-slate-900 border-b border-slate-800 p-4">
+        <div class="max-w-4xl mx-auto flex justify-between items-center">
+            <h1 class="text-xl font-bold">Ciaa Store</h1>
+            <nav class="flex gap-4 text-sm">
+                <a href="#" class="hover:text-pink-400">Layanan</a>
+                <a href="#" class="hover:text-pink-400">Kontak</a>
             </nav>
         </div>
     </header>
 
     <!-- KONTEN UTAMA -->
-    <main class="max-w-4xl mx-auto px-4 py-8 space-y-12">
-
-        <!-- SECTION: LAYANAN & PESANAN -->
-        <section id="layanan" class="bg-slate-900/60 p-6 rounded-2xl border border-slate-800 shadow-xl backdrop-blur-sm">
-            <h2 class="text-xl font-semibold mb-4 text-pink-300">Formulir Pemesanan Layanan & Top Up</h2>
+    <main class="max-w-xl mx-auto p-6 w-full space-y-6">
+        <div class="bg-slate-900 border border-slate-800 p-6 rounded-2xl shadow-lg">
+            <h2 class="text-lg font-semibold mb-4 text-pink-400">Form Pemesanan Ciaa Store</h2>
+            <p class="text-sm text-slate-400 mb-4">Silakan pilih layanan dan lengkapi data pesanan Anda di bawah ini.</p>
             
-            <!-- Info Nomor Antrian Perangkat -->
-            <div class="bg-slate-800/80 p-3 rounded-lg mb-6 flex justify-between items-center border border-slate-700">
-                <span class="text-sm text-slate-300">Nomor Antrian Anda:</span>
-                <span id="display-queue" class="font-mono font-bold text-pink-400 text-lg">CS-2026-01</span>
-            </div>
-
-            <form id="order-form" onsubmit="generateWhatsAppMessage(event)" class="space-y-4">
+            <form class="space-y-4">
                 <div>
-                    <label class="block text-sm font-medium mb-1">Pilih Kategori / Layanan</label>
-                    <select id="service-type" onchange="updateServiceNotes()" class="w-full bg-slate-800 border border-slate-700 rounded-lg p-3 text-slate-100 focus:outline-none focus:border-pink-500">
-                        <option value="Jasher">Jasher (Jasa Share)</option>
-                        <option value="JPM">JPM (Jasa Push Member)</option>
-                        <option value="Free Fire">Top Up Free Fire</option>
-                        <option value="Mobile Legends">Top Up Mobile Legends</option>
-                        <option value="PUBG Mobile">Top Up PUBG Mobile</option>
+                    <label class="block text-sm mb-1">Nama Store / Akun</label>
+                    <input type="text" placeholder="Masukkan nama store atau data akun" class="w-full bg-slate-800 border border-slate-700 rounded-lg p-3 text-sm focus:outline-none focus:border-pink-500">
+                </div>
+                <div>
+                    <label class="block text-sm mb-1">Pilih Layanan</label>
+                    <select class="w-full bg-slate-800 border border-slate-700 rounded-lg p-3 text-sm focus:outline-none focus:border-pink-500">
+                        <option>Jasher</option>
+                        <option>JPM</option>
+                        <option>Free Fire</option>
+                        <option>Mobile Legends</option>
                     </select>
                 </div>
-
-                <div>
-                    <label class="block text-sm font-medium mb-1">Nama Store / Data Akun</label>
-                    <input type="text" id="store-name" required placeholder="Masukkan Nama Store atau Data Akun Anda" class="w-full bg-slate-800 border border-slate-700 rounded-lg p-3 text-slate-100 focus:outline-none focus:border-pink-500">
-                </div>
-
-                <!-- Catatan Khusus Dinamis -->
-                <div id="service-notes" class="text-xs bg-slate-950/60 p-3 rounded-lg border border-slate-800 text-slate-400 space-y-1">
-                    <p class="font-semibold text-pink-400">Catatan Jasher:</p>
-                    <p>• Jasher adalah jasa share, bukan push member.</p>
-                    <p>• Tidak ada pengembalian dana.</p>
-                    <p>• Ketentuan link: «Rp1.000 maksimal 2 link GB/SL» | «Rp4.000 maksimal 4 link GB/SL».</p>
-                    <p>• Setiap pembelian mendapatkan bonus waktu.</p>
-                </div>
-
-                <div>
-                    <label class="block text-sm font-medium mb-1">Pilih Paket</label>
-                    <select id="package-item" class="w-full bg-slate-800 border border-slate-700 rounded-lg p-3 text-slate-100 focus:outline-none focus:border-pink-500">
-                        <option value="Paket Hemat (Rp1.000)">Paket Hemat - Rp1.000</option>
-                        <option value="Paket Regular (Rp4.000)">Paket Regular - Rp4.000</option>
-                    </select>
-                </div>
-
-                <div>
-                    <label class="block text-sm font-medium mb-1">Metode Pembayaran</label>
-                    <select id="payment-method" onchange="updatePaymentInfo()" class="w-full bg-slate-800 border border-slate-700 rounded-lg p-3 text-slate-100 focus:outline-none focus:border-pink-500">
-                        <option value="QRIS">QRIS (Otomatis)</option>
-                        <option value="DANA">DANA (A/N AGUS SUTIARNO)</option>
-                        <option value="GoPay">GoPay (A/N Tidak Ada)</option>
-                    </select>
-                </div>
-
-                <!-- Info Pembayaran Dinamis -->
-                <div id="payment-detail-box" class="bg-slate-950/60 p-4 rounded-lg border border-slate-800 text-sm space-y-2">
-                    <p class="font-medium text-pink-300">Instruksi Pembayaran QRIS:</p>
-                    <p class="text-xs text-slate-400">Gunakan kode EMVCo di bawah. Nominal terisi otomatis sesuai paket, langsung scan tanpa input manual.</p>
-                    <div class="bg-white p-4 rounded flex justify-center items-center">
-                        <div class="text-slate-900 font-mono text-center text-xs">[ Mockup QRIS EMVCo Auto-Nominal ]</div>
-                    </div>
-                </div>
-
-                <div>
-                    <label id="desc-label" class="block text-sm font-medium mb-1">Deskripsi / Tempat Link</label>
-                    <textarea id="description-link" rows="3" required placeholder="Tempel link mu / teks mu di sini &gt;&lt;" class="w-full bg-slate-800 border border-slate-700 rounded-lg p-3 text-slate-100 focus:outline-none focus:border-pink-500"></textarea>
-                </div>
-
-                <button type="submit" class="w-full bg-gradient-to-r from-pink-500 to-purple-600 hover:from-pink-600 hover:to-purple-700 text-white font-semibold py-3 rounded-xl shadow-lg transition">
-                    Pesan & Kirim ke WhatsApp
+                <button type="submit" class="w-full bg-pink-500 hover:bg-pink-600 text-white font-semibold py-3 rounded-lg text-sm transition">
+                    Pesan Sekarang
                 </button>
             </form>
-        </section>
-
-        <!-- SECTION: TUTORIAL ORDER -->
-        <section id="tutorial" class="bg-slate-900/60 p-6 rounded-2xl border border-slate-800 shadow-xl backdrop-blur-sm">
-            <h2 class="text-xl font-semibold mb-6 text-pink-300 text-center">📌 Cara Order di Ciaa Store</h2>
-            <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4 text-sm">
-                <div class="bg-slate-800/60 p-4 rounded-xl border border-slate-700/60 flex flex-col items-center text-center">
-                    <span class="w-8 h-8 rounded-full bg-pink-500/20 text-pink-400 font-bold flex items-center justify-center mb-2">1</span>
-                    <p class="font-medium">Pilih layanan</p>
-                </div>
-                <div class="bg-slate-800/60 p-4 rounded-xl border border-slate-700/60 flex flex-col items-center text-center">
-                    <span class="w-8 h-8 rounded-full bg-pink-500/20 text-pink-400 font-bold flex items-center justify-center mb-2">2</span>
-                    <p class="font-medium">Pilih paket</p>
-                </div>
-                <div class="bg-slate-800/60 p-4 rounded-xl border border-slate-700/60 flex flex-col items-center text-center">
-                    <span class="w-8 h-8 rounded-full bg-pink-500/20 text-pink-400 font-bold flex items-center justify-center mb-2">3</span>
-                    <p class="font-medium">Isi data dengan benar</p>
-                </div>
-                <div class="bg-slate-800/60 p-4 rounded-xl border border-slate-700/60 flex flex-col items-center text-center">
-                    <span class="w-8 h-8 rounded-full bg-pink-500/20 text-pink-400 font-bold flex items-center justify-center mb-2">4</span>
-                    <p class="font-medium">Pilih metode pembayaran</p>
-                </div>
-                <div class="bg-slate-800/60 p-4 rounded-xl border border-slate-700/60 flex flex-col items-center text-center">
-                    <span class="w-8 h-8 rounded-full bg-pink-500/20 text-pink-400 font-bold flex items-center justify-center mb-2">5</span>
-                    <p class="font-medium">Lakukan pembayaran</p>
-                </div>
-                <div class="bg-slate-800/60 p-4 rounded-xl border border-slate-700/60 flex flex-col items-center text-center">
-                    <span class="w-8 h-8 rounded-full bg-pink-500/20 text-pink-400 font-bold flex items-center justify-center mb-2">6</span>
-                    <p class="font-medium">Klik konfirmasi pembayaran</p>
-                </div>
-                <div class="bg-slate-800/60 p-4 rounded-xl border border-slate-700/60 flex flex-col items-center text-center">
-                    <span class="w-8 h-8 rounded-full bg-pink-500/20 text-pink-400 font-bold flex items-center justify-center mb-2">7</span>
-                    <p class="font-medium">Kirim bukti transfer</p>
-                </div>
-                <div class="bg-slate-800/60 p-4 rounded-xl border border-slate-700/60 flex flex-col items-center text-center">
-                    <span class="w-8 h-8 rounded-full bg-pink-500/20 text-pink-400 font-bold flex items-center justify-center mb-2">8</span>
-                    <p class="font-medium">Tunggu proses admin</p>
-                </div>
-            </div>
-        </section>
-
-        <!-- SECTION: CEK ANTRIAN & KONTAK -->
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-            <section id="antrian" class="bg-slate-900/60 p-6 rounded-2xl border border-slate-800 shadow-xl">
-                <h3 class="text-lg font-semibold mb-3 text-pink-300">Cek Antrian & Privasi Data</h3>
-                <p class="text-sm text-slate-400 mb-4">Nomor HP, link grup, dan data akun disensor otomatis (contoh: <code class="text-pink-400">08****1234</code>) untuk menjaga privasi.</p>
-                <div id="queue-list" class="space-y-2 text-sm">
-                    <div class="bg-slate-800 p-3 rounded flex justify-between items-center">
-                        <span>CS-2026-01 (Jasher)</span>
-                        <span class="px-2 py-1 bg-amber-500/20 text-amber-300 rounded text-xs">Sedang menunggu</span>
-                    </div>
-                </div>
-            </section>
-            
-            <section id="kontak" class="bg-slate-900/60 p-6 rounded-2xl border border-slate-800 shadow-xl">
-                <h3 class="text-lg font-semibold mb-3 text-pink-300">Kontak Resmi</h3>
-                <p class="text-sm text-slate-400 mb-4">Hubungi admin resmi Ciaa Store melalui saluran komunikasi berikut:</p>
-                <div class="space-y-2 text-sm">
-                    <a href="https://wa.me/" class="block bg-slate-800 hover:bg-slate-700 p-3 rounded border border-slate-700 transition">📱 WhatsApp Official: 08********</a>
-                    <a href="#" class="block bg-slate-800 hover:bg-slate-700 p-3 rounded border border-slate-700 transition">💬 Telegram / Channel Resmi</a>
-                </div>
-            </section>
         </div>
-
     </main>
 
-    <!-- MODAL LOGIN ADMIN -->
-    <div id="admin-modal" class="fixed inset-0 bg-black/80 backdrop-blur-sm hidden z-50 flex items-center justify-center p-4">
-        <div class="bg-slate-900 border border-slate-800 p-6 rounded-2xl w-full max-w-sm space-y-4">
-            <h3 class="text-lg font-bold text-pink-400">Login Admin Ciaa Store</h3>
-            <div>
-                <label class="block text-sm mb-1 text-slate-300">Password</label>
-                <input type="password" id="admin-pass" placeholder="Masukkan password" class="w-full bg-slate-800 border border-slate-700 rounded-lg p-3 text-slate-100 focus:outline-none focus:border-pink-500">
-            </div>
-            <div class="flex gap-2">
-                <button onclick="verifyAdmin()" class="flex-1 bg-pink-500 hover:bg-pink-600 text-white font-semibold py-2.5 rounded-lg transition">Login</button>
-                <button onclick="closeAdminLogin()" class="bg-slate-800 hover:bg-slate-700 px-4 py-2.5 rounded-lg text-slate-300 transition">Batal</button>
-            </div>
-        </div>
-    </div>
+    <!-- FOOTER -->
+    <footer class="bg-slate-900 border-t border-slate-800 p-4 text-center text-xs text-slate-500">
+        &copy; 2026 Ciaa Store. All rights reserved.
+    </footer>
 
-    <!-- MODAL DASHBOARD ADMIN -->
-    <div id="admin-dashboard" class="fixed inset-0 bg-slate-950 hidden z-50 overflow-y-auto p-4 sm:p-8">
-        <div class="max-w-4xl mx-auto space-y-6">
-            <div class="flex justify-between items-center border-b border-slate-800 pb-4">
-                <h2 class="text-2xl font-bold text-pink-400">Panel Dashboard Admin</h2>
-                <button onclick="closeAdminDashboard()" class="bg-slate-800 hover:bg-slate-700 px-4 py-2 rounded-lg text-sm">Tutup Panel</button>
-            </div>
-
-            <!-- Kontrol Maintenance Mode ON/OFF -->
-            <div class="bg-slate-900 border border-slate-800 p-4 rounded-xl flex justify-between items-center">
-                <div>
-                    <h4 class="font-semibold text-slate-200">Maintenance Mode</h4>
-                    <p class="text-xs text-slate-400">Aktifkan atau matikan mode pemeliharaan website.</p>
-                </div>
-                <button id="maintenance-toggle" onclick="toggleMaintenance()" class="px-4 py-2 rounded-lg bg-emerald-600 text-white font-medium text-sm">Status: OFF</button>
-            </div>
-
-            <!-- Pengelolaan Pesanan & Antrian -->
-            <div class="bg-slate-900 border border-slate-800 p-6 rounded-xl space-y-4">
-                <div class="flex justify-between items-center">
-                    <h3 class="text-lg font-semibold text-slate-200">Kelola Pesanan & Antrian</h3>
-                    <div class="flex gap-2">
-                        <button onclick="resetQueue()" class="bg-amber-600 hover:bg-amber-700 text-white px-3 py-1.5 rounded-lg text-xs font-medium">Reset Nomor Antrian</button>
-                        <button onclick="clearQueue()" class="bg-rose-600 hover:bg-rose-700 text-white px-3 py-1.5 rounded-lg text-xs font-medium">Hapus Antrian</button>
-                    </div>
-                </div>
-                <div class="overflow-x-auto">
-                    <table class="w-full text-left text-sm text-slate-300">
-                        <thead class="border-b border-slate-800 text-slate-400">
-                            <tr>
-                                <th class="p-3">No. Antrian</th>
-                                <th class="p-3">Store / Akun</th>
-                                <th class="p-3">Layanan</th>
-                                <th class="p-3">Status</th>
-                                <th class="p-3">Aksi Ubah Status</th>
-                            </tr>
-                        </thead>
-                        <tbody id="admin-order-table">
-                            <tr class="border-b border-slate-800/60">
-                                <td class="p-3 font-mono">CS-2026-01</td>
-                                <td class="p-3">Ciaa Store (08****1234)</td>
-                                <td class="p-3">Jasher</td>
-                                <td class="p-3"><span class="px-2 py-1 bg-amber-500/20 text-amber-300 rounded text-xs">Sedang menunggu</span></td>
-                                <td class="p-3">
-                                    <select onchange="changeStatus(this)" class="bg-slate-800 border border-slate-700 rounded p-1 text-xs text-slate-200">
-                                        <option value="Sedang menunggu">Sedang menunggu</option>
-                                        <option value="Diproses">Diproses</option>
-                                        <option value="Dibatalkan">Dibatalkan</option>
-                                    </select>
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- SCRIPT LOGIKA APLIKASI -->
-    <script>
-        // Inisialisasi Nomor Antrian unik per perangkat/browser
-        let currentQueueNum = localStorage.getItem('ciaa_queue_num');
-        if (!currentQueueNum) {
-            currentQueueNum = '01';
-            localStorage.setItem('ciaa_queue_num', currentQueueNum);
-        }
-        const currentYear = new Date().getFullYear();
-        const formattedQueue = `CS-${currentYear}-${currentQueueNum}`;
-        document.getElementById('display-queue').innerText = formattedQueue;
-
-        // Catatan Layanan Dinamis
-        function updateServiceNotes() {
-            const service = document.getElementById('service-type').value;
-            const notesBox = document.getElementById('service-notes');
-            const descLabel = document.getElementById('desc-label');
-
-            if (service === 'Jasher') {
-                notesBox.innerHTML = `
-                    <p class="font-semibold text-pink-400">Catatan Jasher:</p>
-                    <p>• Jasher adalah jasa share, bukan push member.</p>
-                    <p>• Tidak ada pengembalian dana.</p>
-                    <p>• Ketentuan link: «Rp1.000 maksimal 2 link GB/SL» | «Rp4.000 maksimal 4 link GB/SL».</p>
-                    <p>• Setiap pembelian mendapatkan bonus waktu.</p>
-                `;
-            } else if (service === 'JPM') {
-                notesBox.innerHTML = `
-                    <p class="font-semibold text-pink-400">Catatan JPM:</p>
-                    <p>• JPM (Jasa Push Member) tidak memiliki batas waktu, harap sabar.</p>
-                    <p>• Tidak ada pengembalian dana.</p>
-                    <p>• Aktifkan persetujuan admin untuk melihat jumlah member.</p>
-                    <p>• SS Done hanya jika target tercapai, dilarang ACC sebelum selesai.</p>
-                `;
-            } else {
-                notesBox.innerHTML = `
-                    <p class="font-semibold text-pink-400">Catatan Top Up Game:</p>
-                    <p>• Pastikan data akun (ID & Server) diisi dengan benar.</p>
-                    <p>• Proses cepat otomatis / konfirmasi via WhatsApp.</p>
-                `;
-            }
-        }
-
-        // Info Pembayaran Dinamis (QRIS, DANA, GoPay)
-        function updatePaymentInfo() {
-            const method = document.getElementById('payment-method').value;
-            const box = document.getElementById('payment-detail-box');
-
-            if (method === 'QRIS') {
-                box.innerHTML = `
-                    <p class="font-medium text-pink-300">Instruksi Pembayaran QRIS:</p>
-                    <p class="text-xs text-slate-400">Gunakan kode EMVCo. Nominal terisi otomatis sesuai paket, langsung scan tanpa input manual.</p>
-                    <div class="bg-white p-4 rounded flex justify-center items-center mt-2">
-                        <div class="text-slate-900 font-mono text-center text-xs">[ Mockup QRIS EMVCo Auto-Nominal ]</div>
-                    </div>
-                `;
-            } else if (method === 'DANA') {
-                box.innerHTML = `
-                    <p class="font-medium text-pink-300">Instruksi Pembayaran DANA:</p>
-                    <p class="text-xs text-slate-400">Transfer ke nomor DANA tujuan dengan Atas Nama: <strong class="text-pink-400">AGUS SUTIARNO</strong>.</p>
-                `;
-            } else if (method === 'GoPay') {
-                box.innerHTML = `
-                    <p class="font-medium text-pink-300">Instruksi Pembayaran GoPay:</p>
-                    <p class="text-xs text-slate-400">Transfer ke GoPay tujuan dengan Atas Nama: <strong class="text-pink-400">Tidak Ada</strong>.</p>
-                `;
-            }
-        }
-
-        // Generate Pesan WhatsApp sesuai Format
-        function generateWhatsAppMessage(e) {
-            e.preventDefault();
-            const service = document.getElementById('service-type').value;
-            const storeName = document.getElementById('store-name').value;
-            const pkg = document.getElementById('package-item').value;
-            const payment = document.getElementById('payment-method').value;
-            const desc = document.getElementById('description-link').value;
-
-            // Sensor data privasi otomatis
-            const maskedStore = storeName.length > 5 ? storeName.substring(0, 3) + '****' + storeName.substring(storeName.length - 2) : 'Ciaa****Store';
-
-            let message = '';
-            if (['Jasher', 'JPM'].includes(service)) {
-                message = `🧾 Format Pemesanan Ciaa Store\n·——·——·——·——·——·——·——·——·\n\n🪪 Nama Store: ${maskedStore}\n\n⏳ No. Antrian: ${formattedQueue}\n🏷️ Layanan: ${service}\n📦 Paket: ${pkg}\n💰 Harga: [Sesuai Paket]\n💳 Metode Pembayaran: ${payment}\n\n📝 Deskripsi / Link:\n${desc}\n\nSaya juga melampirkan bukti transfer, silahkan cek min apakah masuk? Mohon segera diproses ya min! Terimakasih. 😊`;
-            } else {
-                message = `🧾 Format Top Up Ciaa Store\n·——·——·——·——·——·——·——·——·\n\n🪪 Data Akun: ${maskedStore}\n\n⏳ No. Antrian: ${formattedQueue}\n🏷️ Layanan: ${service}\n📦 Paket: ${pkg}\n💰 Harga: [Sesuai Paket]\n💳 Metode Pembayaran: ${payment}\n\nSaya juga melampirkan bukti transfer, silahkan cek min apakah masuk? Mohon segera diproses ya min! Terimakasih. 😊`;
-            }
-
-            const encodedURL = `https://wa.me/?text=${encodeURIComponent(message)}`;
-            window.open(encodedURL, '_blank');
-        }
-
-        // Kontrol Login & Dashboard Admin
-        function openAdminLogin() { document.getElementById('admin-modal').classList.remove('hidden'); }
-        function closeAdminLogin() { document.getElementById('admin-modal').classList.add('hidden'); }
-        function closeAdminDashboard() { document.getElementById('admin-dashboard').classList.add('hidden'); }
-
-        function verifyAdmin() {
-            const pass = document.getElementById('admin-pass').value;
-            if (pass === '0903cs') {
-                closeAdminLogin();
-                document.getElementById('admin-dashboard').classList.remove('hidden');
-                document.getElementById('admin-pass').value = '';
-            } else {
-                alert('Password salah! Password yang benar adalah: 0903cs');
-            }
-        }
-
-        let isMaintenanceOn = false;
-        function toggleMaintenance() {
-            isMaintenanceOn = !isMaintenanceOn;
-            const btn = document.getElementById('maintenance-toggle');
-            if (isMaintenanceOn) {
-                btn.className = 'px-4 py-2 rounded-lg bg-rose-600 text-white font-medium text-sm';
-                btn.innerText = 'Status: ON';
-            } else {
-                btn.className = 'px-4 py-2 rounded-lg bg-emerald-600 text-white font-medium text-sm';
-                btn.innerText = 'Status: OFF';
-            }
-        }
-
-        function resetQueue() {
-            localStorage.setItem('ciaa_queue_num', '01');
-            alert('Nomor antrian berhasil di-reset kembali ke awal (01).');
-            location.reload();
-        }
-
-        function clearQueue() {
-            alert('Nomor antrian dan daftar pesanan telah dibersihkan oleh admin.');
-        }
-
-        function changeStatus(el) {
-            console.log('Status diubah ke:', el.value);
-        }
-    </script>
 </body>
 </html>
