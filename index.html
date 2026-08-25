@@ -69,6 +69,17 @@
             border: 2px solid rgba(255, 255, 255, 0.8);
         }
 
+        .admin-login-trigger {
+            position: fixed; top: 20px; right: 20px;
+            width: 46px; height: 46px; border-radius: 50%;
+            background: #fff; border: 2px solid var(--pink-main);
+            box-shadow: 0 4px 15px rgba(218, 92, 128, 0.3);
+            cursor: pointer; z-index: 100000; padding: 2px;
+            transition: all 0.3s ease; display: flex; align-items: center; justify-content: center;
+        }
+        .admin-login-trigger img { width: 100%; height: 100%; border-radius: 50%; object-fit: cover; }
+        .admin-login-trigger:hover { transform: scale(1.1) rotate(10deg); }
+
         .header img {
             width: 100%; height: auto; max-height: 240px; object-fit: cover;
             border-radius: 18px; margin-bottom: 20px; border: 2px solid var(--pink-main); display: block;
@@ -210,125 +221,82 @@
 
         .payment-card {
             border: 2px solid var(--pink-bright); border-radius: 14px; padding: 12px 15px;
-            margin-top: 10px; background: #fff; display: flex; align-items: center; justify-content: space-between; cursor: pointer;
+            margin-top: 10px; background: #fff; cursor: pointer; transition: 0.2s;
         }
         .payment-card.active { border-color: var(--pink-dark); background: var(--pink-bright); }
-        .payment-info { display: flex; align-items: center; gap: 12px; }
-        .copy-btn { background: var(--pink-main); color: white; border: none; padding: 5px 12px; border-radius: 8px; font-size: 0.8rem; font-weight: bold; cursor: pointer; }
+        .payment-title { font-weight: bold; color: var(--pink-dark); font-size: 0.95rem; }
+        .payment-sub { font-size: 0.83rem; color: #555; margin-top: 2px; }
 
         .btn-action-main {
             width: 100%; background-color: var(--pink-dark); color: white; border: none; padding: 16px;
             border-radius: 14px; font-weight: bold; font-size: 1rem; cursor: pointer; margin-top: 22px;
-            display: flex; align-items: center; justify-content: center; gap: 10px; transition: 0.25s;
+            display: flex; align-items: center; justify-content: center; gap: 10px; transition: 0.25s; text-decoration: none;
         }
 
-        .btn-wa-confirm {
-            width: 100%; background-color: #25d366; color: white; border: none; padding: 16px;
-            border-radius: 14px; font-weight: bold; font-size: 1rem; cursor: pointer; margin-top: 15px;
-            display: flex; align-items: center; justify-content: center; gap: 10px; text-decoration: none;
+        .btn-copy-num {
+            width: 100%; background-color: #fff; color: var(--pink-dark); border: 2px solid var(--pink-main); padding: 12px;
+            border-radius: 14px; font-weight: bold; font-size: 0.92rem; cursor: pointer; margin-top: 15px;
+            display: flex; align-items: center; justify-content: center; gap: 8px; transition: 0.25s;
         }
 
-        /* SEARCH BAR KUSTOM */
-        .search-box {
-            position: relative;
-            margin-bottom: 18px;
+        .invoice-box {
+            background: #fff; border: 2px dashed var(--pink-main); border-radius: 16px;
+            padding: 18px; margin: 15px 0 10px 0; text-align: left;
         }
-        .search-box input {
-            padding-left: 42px;
-            border-color: var(--pink-main);
+        .invoice-row { display: flex; justify-content: space-between; margin-bottom: 10px; font-size: 0.88rem; border-bottom: 1px dashed #ffe4ec; padding-bottom: 8px; }
+        .invoice-row:last-child { border-bottom: none; margin-bottom: 0; padding-bottom: 0; }
+
+        .maintenance-overlay {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(255, 240, 245, 0.97); backdrop-filter: blur(15px);
+            z-index: 9999; display: none; align-items: center; justify-content: center;
+            flex-direction: column; text-align: center; padding: 25px;
         }
-        .search-box i {
-            position: absolute;
-            left: 15px;
-            top: 50%;
-            transform: translateY(-50%);
-            color: var(--pink-dark);
-            font-size: 1rem;
-        }
+        .maintenance-overlay.active { display: flex; }
+        .maintenance-icon { font-size: 3.8rem; color: var(--pink-dark); margin-bottom: 15px; animation: bounce 2s infinite; }
+        .maintenance-title { font-size: 1.5rem; font-weight: bold; color: var(--pink-dark); margin-bottom: 10px; }
+        .maintenance-desc { font-size: 0.95rem; color: #666; max-width: 400px; line-height: 1.5; }
+
+        @keyframes bounce { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-10px); } }
+
+        .search-box { position: relative; margin-bottom: 18px; }
+        .search-box input { padding-left: 42px; border-color: var(--pink-main); }
+        .search-box i { position: absolute; left: 15px; top: 50%; transform: translateY(-50%); color: var(--pink-dark); font-size: 1rem; }
 
         .queue-card {
             background: #fff; border: 2px solid var(--pink-bright); border-radius: 16px; padding: 14px; margin-bottom: 12px;
             display: flex; align-items: center; justify-content: space-between;
         }
         .queue-number { background: var(--pink-main); color: white; font-weight: bold; padding: 8px 12px; border-radius: 12px; font-size: 0.82rem; white-space: nowrap; }
-        .queue-details { flex: 1; margin-left: 12px; }
-        .queue-service { font-weight: bold; color: var(--pink-dark); font-size: 0.9rem; }
-        .queue-target { font-size: 0.82rem; color: #666; white-space: pre-line; word-break: break-all; }
-        .queue-status { font-size: 0.78rem; font-weight: bold; padding: 5px 10px; border-radius: 10px; background: #fef08a; color: #854d0e; }
 
-        .summary-box {
-            background: #fff; border: 2px dashed var(--pink-main); border-radius: 16px; padding: 18px; margin-bottom: 20px;
-        }
-        .summary-row { display: flex; justify-content: space-between; margin-bottom: 8px; font-size: 0.9rem; }
-        .summary-row strong { color: var(--pink-dark); }
-        
-        .qris-display-area {
-            text-align: center; background: #fff; border: 2px solid var(--pink-bright); border-radius: 20px; padding: 20px; margin-bottom: 20px;
-        }
-        .qrcode-container { display: flex; justify-content: center; margin: 15px 0; }
-        .qris-code-box {
-            background: #f8fafc; border: 1px solid #cbd5e1; font-family: monospace; font-size: 0.75rem;
-            padding: 10px; word-break: break-all; border-radius: 8px; margin-top: 10px; color: #334155; text-align: left;
-        }
-
-        .contact-card-container {
-            display: flex;
-            flex-direction: column;
-            gap: 15px;
-            margin-top: 10px;
-        }
+        .contact-card-container { display: flex; flex-direction: column; gap: 15px; margin-top: 10px; }
         .contact-card {
             background: linear-gradient(135deg, #fff0f5 0%, #ffe4ec 100%);
-            border: 2px solid var(--pink-main);
-            border-radius: 18px;
-            padding: 16px 20px;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            text-decoration: none;
-            color: #444;
-            transition: all 0.25s ease;
+            border: 2px solid var(--pink-main); border-radius: 18px; padding: 16px 20px;
+            display: flex; align-items: center; justify-content: space-between; text-decoration: none; color: #444; transition: all 0.25s ease;
             box-shadow: 0 4px 12px rgba(255, 158, 187, 0.15);
         }
-        .contact-card:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 8px 20px rgba(216, 92, 128, 0.25);
-            background: linear-gradient(135deg, #ffe4ec 0%, #ff9ebb 100%);
-        }
-        .contact-info {
-            display: flex;
-            align-items: center;
-            gap: 15px;
-        }
-        .contact-icon {
-            width: 48px;
-            height: 48px;
-            border-radius: 50%;
-            background: #fff;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 1.5rem;
-            color: var(--pink-dark);
-            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
-        }
-        .contact-text-title {
-            font-weight: bold;
-            color: var(--pink-dark);
-            font-size: 0.98rem;
-        }
-        .contact-text-sub {
-            font-size: 0.82rem;
-            color: #666;
-            margin-top: 2px;
-        }
-        .contact-arrow {
-            font-size: 1.2rem;
-            color: var(--pink-dark);
-        }
+        .contact-card:hover { transform: translateY(-3px); box-shadow: 0 8px 20px rgba(216, 92, 128, 0.25); background: linear-gradient(135deg, #ffe4ec 0%, #ff9ebb 100%); }
+        .contact-info { display: flex; align-items: center; gap: 15px; }
+        .contact-icon { width: 48px; height: 48px; border-radius: 50%; background: #fff; display: flex; align-items: center; justify-content: center; font-size: 1.5rem; color: var(--pink-dark); box-shadow: 0 2px 8px rgba(0,0,0,0.08); }
+        .contact-text-title { font-weight: bold; color: var(--pink-dark); font-size: 0.98rem; }
+        .contact-text-sub { font-size: 0.82rem; color: #666; margin-top: 2px; }
+        .contact-arrow { font-size: 1.2rem; color: var(--pink-dark); }
     </style>
 </head>
 <body>
+
+<div id="maintenanceOverlay" class="maintenance-overlay">
+    <i class="fa-solid fa-screwdriver-wrench maintenance-icon"></i>
+    <div class="maintenance-title">SYSTEM UNDER MAINTENANCE</div>
+    <div class="maintenance-desc">
+        Halo Dear! Website Ciaa Store sedang dalam perbaikan dan pemeliharaan sistem sementara waktu. Silakan datang kembali nanti ya~ ✨
+    </div>
+</div>
+
+<button class="admin-login-trigger" onclick="openAdminPanel()" title="Login Admin Website">
+    <img src="logo.jpg" alt="Admin Login" onerror="this.src='https://via.placeholder.com/50'">
+</button>
 
 <div class="container">
     <div class="header">
@@ -424,10 +392,10 @@
 
             <a href="https://linktr.ee/ciaastore.yo" target="_blank" class="contact-card">
                 <div class="contact-info">
-                    <div class="contact-icon" style="color: #39e09b;"><i class="fa-solid fa-link"></i></div>
+                    <div class="contact-icon" style="color: #d85c80;"><i class="fa-solid fa-link"></i></div>
                     <div>
-                        <div class="contact-text-title">Linktree Resmi</div>
-                        <div class="contact-text-sub">linktr.ee/ciaastore.yo</div>
+                        <div class="contact-text-title">Linktree Ciaa Store</div>
+                        <div class="contact-text-sub">Semua Akses & Informasi</div>
                     </div>
                 </div>
                 <div class="contact-arrow"><i class="fa-solid fa-chevron-right"></i></div>
@@ -435,20 +403,31 @@
         </div>
     </div>
 
-    <!-- QUEUE PAGE WITH SEARCH -->
+    <!-- CEK ANTRIAN PAGE -->
     <div id="queuePage" class="page">
         <div class="category-title">📊 Daftar Antrian Proses Terkini</div>
-        
-        <!-- KOLOM SEARCH ANTRIAN -->
-        <div class="search-box">
-            <i class="fa-solid fa-magnifying-glass"></i>
-            <input type="text" id="queueSearchInput" placeholder="Cari No. Antrian / Layanan / Detail..." onkeyup="filterQueueList()">
-        </div>
-
         <div id="queueList"></div>
     </div>
 
-    <!-- DETAIL PAGE -->
+    <!-- ADMIN PANEL PAGE -->
+    <div id="adminPage" class="page">
+        <button class="btn-back" onclick="goHome()">← Keluar dari Panel Admin</button>
+        <div class="category-title">👑 Panel Kelola Admin</div>
+        
+        <div style="background:#fff; border:2px solid var(--pink-main); border-radius:16px; padding:20px; margin-bottom:20px; text-align:center;">
+            <strong style="color:var(--pink-dark); font-size:1.1rem; display:block; margin-bottom:8px;">⚙️ Pengaturan Status Server Website</strong>
+            <p style="font-size:0.85rem; color:#666; margin:0 0 15px 0;">Tekan tombol di bawah ini untuk mengontrol apakah website sedang maintenance atau normal bagi pembeli.</p>
+            
+            <button id="btnToggleMaintenance" onclick="toggleMaintenanceServer()" style="padding:12px 24px; border-radius:12px; border:none; font-weight:bold; cursor:pointer; background:#ef4444; color:white; font-size:0.95rem; transition:0.2s;">
+                🚨 Matikan Server (Aktifkan Maintenance)
+            </button>
+        </div>
+
+        <div class="category-title" style="text-align:left; font-size:0.98rem;">📋 Kelola Antrian Masuk:</div>
+        <div id="adminQueueList"></div>
+    </div>
+
+    <!-- DETAIL SERVICE PAGE -->
     <div id="detailPage" class="page">
         <button class="btn-back" onclick="goHome()">← Kembali</button>
         <h2 id="serviceTitle" style="color: var(--pink-dark); margin-top:0; font-size:1.1rem;"></h2>
@@ -463,380 +442,186 @@
         <div class="grid-container" id="itemsGrid"></div>
 
         <div class="section-title">3. Pilih Metode Pembayaran</div>
-        
-        <div class="payment-card" onclick="selectPayment('DANA', this)">
-            <div class="payment-info">
-                <i class="fa-solid fa-mobile-screen-button" style="color:#22c55e;"></i>
-                <div>
-                    <div style="font-weight:bold; font-size:0.85rem;">DANA</div>
-                    <div style="font-size:0.75rem; color:#666;">081338224767 (AGUS SUTIARNO)</div>
-                </div>
-            </div>
-            <button class="copy-btn" onclick="copyText('081338224767', event)">Salin</button>
+        <div class="payment-card" onclick="selectPayment('DANA', '081338224767', 'AGUS SUTIARNO', this)">
+            <div class="payment-title">DANA</div>
+            <div class="payment-sub">Nomor: <strong>081338224767</strong></div>
         </div>
-
-        <div class="payment-card" onclick="selectPayment('GOPAY', this)">
-            <div class="payment-info">
-                <i class="fa-solid fa-wallet" style="color:#00a5cf;"></i>
-                <div>
-                    <div style="font-weight:bold; font-size:0.85rem;">GOPAY</div>
-                    <div style="font-size:0.75rem; color:#666;">089505929536 (-)</div>
-                </div>
-            </div>
-            <button class="copy-btn" onclick="copyText('089505929536', event)">Salin</button>
-        </div>
-
-        <div class="payment-card" onclick="selectPayment('QRIS', this)">
-            <div class="payment-info">
-                <i class="fa-solid fa-qrcode" style="color:#f59e0b;"></i>
-                <div>
-                    <div style="font-weight:bold; font-size:0.85rem;">QRIS Dinamis (All Payment)</div>
-                    <div style="font-size:0.75rem; color:#666;">Nominal terisi otomatis & siap di-scan</div>
-                </div>
-            </div>
+        <div class="payment-card" onclick="selectPayment('GOPAY', '089505929536', 'TIDAK ADA', this)">
+            <div class="payment-title">GOPAY</div>
+            <div class="payment-sub">Nomor: <strong>089505929536</strong></div>
         </div>
 
         <button id="btnMainAction" class="btn-action-main" onclick="handleMainAction()">
-            💳 Lanjutkan ke Pembayaran
+            💳 Lanjutkan Pembayaran
         </button>
     </div>
 
-    <!-- PAYMENT PAGE FOR DANA / GOPAY / QRIS -->
+    <!-- PAYMENT INVOICE PAGE -->
     <div id="paymentPage" class="page">
         <button class="btn-back" onclick="goBackToDetail()">← Ubah Pesanan</button>
-        <div class="category-title" id="paymentPageTitle">💳 Instruksi Pembayaran</div>
-
-        <div class="summary-box">
-            <div class="summary-row"><span>Status Antrian:</span><strong id="payQueueNo">Menunggu Konfirmasi WA</strong></div>
-            <div class="summary-row"><span>Layanan:</span><strong id="payServiceTitle">-</strong></div>
-            <div class="summary-row"><span>Paket:</span><strong id="payItemName">-</strong></div>
-            <div class="summary-row"><span>Total Tagihan:</span><strong id="payItemPrice" style="font-size:1.1rem; color:var(--pink-dark);">-</strong></div>
-            <div class="summary-row"><span>Merchant:</span><strong>Ciaa Store Real</strong></div>
+        <div class="category-title">💳 Silahkan Lakukan Pembayaran</div>
+        
+        <div class="invoice-box">
+            <div class="invoice-row"><span>Metode</span><span id="invPaymentMethod">-</span></div>
+            <div class="invoice-row"><span>Paket</span><span id="invPackage">-</span></div>
+            <div class="invoice-row"><span>Harga</span><span id="invPrice">-</span></div>
+            <div class="invoice-row"><span>Nomor Tujuan</span><span id="invNumber">-</span></div>
+            <div class="invoice-row"><span>A/N</span><span id="invHolder">-</span></div>
         </div>
 
-        <!-- DANA / GOPAY PAYMENT DISPLAY AREA -->
-        <div id="ewalletDisplayArea" class="qris-display-area" style="display: none;">
-            <div style="font-weight:bold; font-size:1rem; color:var(--pink-dark); margin-bottom:8px;" id="ewalletInstructionText">
-                Silakan transfer sesuai nominal yang kamu pesan ke nomor berikut:
-            </div>
-            
-            <div class="summary-box" style="border-style: solid; background: #fff0f5; text-align: left; margin-bottom: 0;">
-                <div class="summary-row"><span style="color:#666;">Metode Pembayaran:</span><strong id="ewalletMethodName">DANA</strong></div>
-                <div class="summary-row"><span style="color:#666;">Nominal Bayar:</span><strong id="ewalletAmountDisplay" style="color:var(--pink-dark); font-size:1.1rem;">Rp 0</strong></div>
-                <div class="summary-row"><span style="color:#666;">Nomor Tujuan:</span><strong id="ewalletNumberDisplay">081338224767</strong></div>
-                <div class="summary-row"><span style="color:#666;">Atas Nama (A/N):</span><strong id="ewalletNameDisplay">AGUS SUTIARNO</strong></div>
-            </div>
+        <button id="btnCopyNumber" class="btn-copy-num" onclick="copyPaymentNumber()">
+            <i class="fa-regular fa-copy"></i> Salin Nomor Tujuan
+        </button>
 
-            <button class="copy-btn" style="margin-top:12px; width:100%; padding:10px; font-size:0.9rem;" onclick="copyEwalletNumber()">
-                📋 Salin Nomor Tujuan
-            </button>
-        </div>
-
-        <!-- QRIS DISPLAY AREA -->
-        <div id="qrisDisplayArea" class="qris-display-area" style="display: none;">
-            <div style="font-weight:bold; font-size:0.9rem; color:var(--pink-dark);">Scan QRIS untuk Membayar</div>
-            <div style="font-size:0.8rem; color:#666; margin-top:4px;">Nominal transaksi sudah terisi secara otomatis</div>
-            
-            <div class="qrcode-container" id="qrcode"></div>
-
-            <div style="font-weight:bold; font-size:0.8rem; color:var(--pink-dark); margin-top:10px;">Kode Teks QRIS Valid:</div>
-            <div class="qris-code-box" id="qrisCodeText">Memuat kode QRIS...</div>
-            <button class="copy-btn" style="margin-top:8px; width:100%; padding:8px;" onclick="copyQrisText()">📋 Salin Kode Teks QRIS</button>
-        </div>
-
-        <button id="btnWaConfirm" class="btn-wa-confirm">
-            <i class="fa-brands fa-whatsapp"></i> Konfirmasi Pembayaran & Masuk Antrian via WA
+        <button id="btnWaConfirm" class="btn-action-main" style="background:#25d366;">
+            <i class="fa-brands fa-whatsapp"></i> Konfirmasi Pembayaran Via WhatsApp
         </button>
     </div>
 </div>
 
 <script>
-    const BASE_QRIS_STATIC = "00020101021126570011ID.DANA.WWW011893600915376556859902097655685990303UMI51440014ID.CO.QRIS.WWW0215ID10253787183610303UMI5204481453033605802ID5914Ciaa Store All6014Kota Pontianak61057811363048AD2";
-
     const servicesData = {
-        'ff': { 
-            title: 'Free Fire', 
-            label: 'Masukkan User ID (FF)', 
+        'jasher': {
+            title: 'Jasher (Jasa Share)',
+            items: [
+                { name: '1 Hari', price: 500 },
+                { name: '3 Hari', price: 1500 },
+                { name: '5 Hari', price: 2500 },
+                { name: '1 Minggu', price: 3000 },
+                { name: '2 Minggu', price: 6000 },
+                { name: '1 Bulan', price: 10000 },
+                { name: '2 Bulan', price: 20000 },
+                { name: '3 Bulan', price: 30000 },
+                { name: '4 Bulan', price: 40000 },
+                { name: '5 Bulan', price: 50000 },
+                { name: '6 Bulan', price: 60000 },
+                { name: '7 Bulan', price: 70000 },
+                { name: '8 Bulan', price: 80000 },
+                { name: '9 Bulan', price: 90000 },
+                { name: '10 Bulan', price: 100000 },
+                { name: '11 Bulan', price: 110000 },
+                { name: '1 Tahun', price: 120000 },
+                { name: 'Permanen', price: 150000 }
+            ]
+        },
+        'jpm': {
+            title: 'JPM (Jasa Push Member)',
+            items: [
+                { name: '50 Member', price: 3000 },
+                { name: '100 Member', price: 5000 },
+                { name: '150 Member', price: 8000 },
+                { name: '200 Member', price: 10000 },
+                { name: '250 Member', price: 13000 },
+                { name: '300 Member', price: 15000 },
+                { name: '350 Member', price: 18000 },
+                { name: '400 Member', price: 20000 },
+                { name: '450 Member', price: 23000 },
+                { name: '500 Member', price: 25000 },
+                { name: '600 Member', price: 30000 },
+                { name: '700 Member', price: 35000 },
+                { name: '800 Member', price: 40000 },
+                { name: '900 Member', price: 45000 },
+                { name: '1000 Member', price: 50000 }
+            ]
+        },
+        'ff': {
+            title: 'Free Fire',
             items: [
                 { name: '5 Diamond', price: 1000 },
-                { name: '10 Diamond', price: 2000 },
-                { name: '20 Diamond', price: 5000 },
-                { name: '25 Diamond', price: 6000 },
-                { name: '30 Diamond', price: 7000 },
-                { name: '50 Diamond', price: 9000 },
-                { name: '70 Diamond', price: 11000 },
-                { name: '75 Diamond', price: 12000 },
-                { name: '100 Diamond', price: 16000 },
-                { name: '120 Diamond', price: 18000 },
+                { name: '12 Diamond', price: 2000 },
+                { name: '50 Diamond', price: 8000 },
+                { name: '70 Diamond', price: 10000 },
                 { name: '140 Diamond', price: 20000 },
-                { name: '150 Diamond', price: 22000 },
-                { name: '160 Diamond', price: 24000 },
-                { name: '210 Diamond', price: 30000 },
-                { name: '250 Diamond', price: 36000 },
-                { name: '355 Diamond', price: 49000 },
-                { name: '500 Diamond', price: 66000 },
-                { name: '720 Diamond', price: 96000 },
-                { name: '1000 Diamond', price: 134000 },
-                { name: '1450 Diamond', price: 190000 },
-                { name: '2000 Diamond', price: 264000 },
-                { name: 'Membership Mingguan (MM)', price: 30000 },
-                { name: 'Membership Bulanan (MB)', price: 89000 }
-            ] 
+                { name: '355 Diamond', price: 50000 },
+                { name: '720 Diamond', price: 100000 },
+                { name: 'Member Mingguan', price: 30000 },
+                { name: 'Member Bulanan', price: 120000 }
+            ]
         },
-        'ml': { 
-            title: 'Mobile Legends', 
-            label: 'Masukkan User ID & Server', 
+        'ml': {
+            title: 'Mobile Legends',
             items: [
-                { name: '12 Diamond', price: 4000 },
-                { name: '28 Diamond', price: 8000 },
-                { name: '50 Diamond', price: 14000 },
-                { name: '70 Diamond', price: 20000 },
-                { name: '112 Diamond', price: 32000 },
-                { name: '140 Diamond', price: 42000 },
-                { name: '170 Diamond', price: 50000 },
-                { name: '222 Diamond', price: 60000 },
-                { name: '257 Diamond', price: 70000 },
-                { name: '296 Diamond', price: 79000 },
-                { name: '355 Diamond', price: 96000 },
-                { name: '408 Diamond', price: 110000 },
-                { name: '460 Diamond', price: 125000 },
-                { name: '514 Diamond', price: 137000 },
-                { name: '568 Diamond', price: 150000 },
-                { name: '600 Diamond', price: 158000 },
-                { name: '706 Diamond', price: 185000 },
-                { name: '875 Diamond', price: 226000 },
-                { name: '963 Diamond', price: 245000 },
-                { name: '1050 Diamond', price: 270000 },
-                { name: '1412 Diamond', price: 365000 },
-                { name: 'Weekly Diamond Pass (WDP)', price: 28000 }
-            ] 
+                { name: '5 Diamond', price: 1500 },
+                { name: '14 Diamond', price: 4000 },
+                { name: '42 Diamond', price: 12000 },
+                { name: '86 Diamond', price: 23000 },
+                { name: '172 Diamond', price: 45000 },
+                { name: '257 Diamond', price: 68000 },
+                { name: '344 Diamond', price: 90000 },
+                { name: 'Weekly Diamond Pass', price: 30000 }
+            ]
         },
-        'ml_ftu': { 
-            title: 'ML First Top Up', 
-            label: 'Masukkan User ID & Server', 
-            items: [
-                { name: '50 + Bonus', price: 16000 },
-                { name: '150 + Bonus', price: 45000 },
-                { name: '250 + Bonus', price: 76000 },
-                { name: '500 + Bonus', price: 152000 }
-            ] 
-        },
-        'pubg': { 
-            title: 'PUBG Mobile', 
-            label: 'Masukkan ID PUBG', 
-            items: [
-                { name: '60 UC', price: 18000 },
-                { name: '120 UC', price: 33000 },
-                { name: '240 UC', price: 68000 },
-                { name: '300 UC', price: 85000 },
-                { name: '385 UC', price: 106000 },
-                { name: '445 UC', price: 120000 },
-                { name: '505 UC', price: 136000 },
-                { name: '565 UC', price: 157000 },
-                { name: '600 UC', price: 165000 },
-                { name: '720 UC', price: 195000 },
-                { name: '840 UC', price: 218000 },
-                { name: '900 UC', price: 236000 },
-                { name: '1500 UC', price: 386000 },
-                { name: '1800 UC', price: 420000 }
-            ] 
-        },
-        'hok': { 
-            title: 'Honor of Kings', 
-            label: 'Masukkan Player ID', 
-            items: [
-                { name: '16 Tokens', price: 3500 },
-                { name: '80 Tokens', price: 19000 },
-                { name: '240 Tokens', price: 53000 },
-                { name: '400 Tokens', price: 83000 },
-                { name: '560 Tokens', price: 115000 },
-                { name: '800 Tokens', price: 162000 },
-                { name: '1200 Tokens', price: 253000 },
-                { name: '2400 Tokens', price: 503000 }
-            ] 
-        },
-        'bs': { 
-            title: 'Blood Strike', 
-            label: 'Masukkan User ID', 
-            items: [
-                { name: '100 Gold', price: 16000 },
-                { name: '300 Gold', price: 45000 },
-                { name: '500 Gold', price: 75000 },
-                { name: '1000 Gold', price: 136000 },
-                { name: '2000 Gold', price: 258000 },
-                { name: '5000 Gold', price: 640000 }
-            ] 
-        },
-        'jasher': { 
-            title: 'Jasher (Jasa Share)', 
-            label: 'Nama Store', 
-            items: [
-                { name: '12 Jam', price: 200 },
-                { name: '1 Hari', price: 500 },
-                { name: '3 Hari', price: 1000 },
-                { name: '1 Minggu', price: 3000 },
-                { name: '2 Minggu', price: 4000 },
-                { name: '1 Bulan', price: 6000 },
-                { name: '3 Bulan', price: 7000 }
-            ] 
-        },
-        'jpm': { 
-            title: 'JPM (Jasa Push Member)', 
-            label: 'Nama Store', 
-            items: [
-                { name: '10 Member', price: 500 },
-                { name: '20 Member', price: 1000 },
-                { name: '50 Member', price: 3000 },
-                { name: '70 Member', price: 4000 },
-                { name: '100 Member', price: 5000 },
-                { name: '150 Member', price: 7000 },
-                { name: '250 Member', price: 8000 },
-                { name: '400 Member', price: 12000 },
-                { name: '500 Member', price: 16000 }
-            ] 
-        },
-        'canva': { 
-            title: 'Canva Pro', 
-            label: 'Masukkan Email Canva', 
-            items: [
-                { name: 'Canva 1 Bulan', price: 3000 },
-                { name: 'Canva Head 1 Bulan', price: 7000 }
-            ] 
-        },
-        'am': { 
-            title: 'Alight Motion', 
-            label: 'Masukkan Email Alight Motion', 
-            items: [
-                { name: 'Alight Motion 1 Tahun', price: 4000 }
-            ] 
-        },
-        'yt': { 
-            title: 'YouTube Premium', 
-            label: 'Masukkan Email YouTube', 
-            items: [
-                { name: 'YouTube 1 Bulan (Family)', price: 5000 }
-            ] 
-        },
-        'iqiyi': { 
-            title: 'iQIYI', 
-            label: 'Masukkan Email / No HP', 
-            items: [
-                { name: 'iQIYI 1 Bulan (Private VIP Standar)', price: 37000 }
-            ] 
-        },
-        'capcut': { 
-            title: 'CapCut Pro', 
-            label: 'Masukkan Email CapCut', 
-            items: [
-                { name: 'CapCut Pro 7 Hari Private', price: 8500 },
-                { name: 'CapCut Pro 1 Bulan Private', price: 25000 }
-            ] 
-        },
-        'wetv': { 
-            title: 'WeTV', 
-            label: 'Masukkan No HP / Email', 
-            items: [
-                { name: 'WeTV 1 Bulan Sharing', price: 11000 },
-                { name: 'WeTV 3 Bulan Sharing', price: 27000 },
-                { name: 'WeTV 1 Bulan Private', price: 28000 }
-            ] 
-        },
-        'gemini': { 
-            title: 'Gemini AI', 
-            label: 'Masukkan Email', 
-            items: [
-                { name: 'AI Gemini Pro 1 Bulan', price: 16000 }
-            ] 
-        },
-        'pixellab': { 
-            title: 'Pixellab Mod', 
-            label: 'Masukkan Email / No WA', 
-            items: [
-                { name: 'Pixellab Mod', price: 2000 }
-            ] 
-        }
+        'ml_ftu': { title: 'ML First Top Up', items: [{ name: 'Paket FTU', price: 15000 }] },
+        'pubg': { title: 'PUBG Mobile', items: [{ name: '60 UC', price: 15000 }, { name: '325 UC', price: 75000 }] },
+        'hok': { title: 'Honor of Kings', items: [{ name: '17 Tokens', price: 4000 }, { name: '88 Tokens', price: 18000 }] },
+        'bs': { title: 'Blood Strike', items: [{ name: '100 Gold', price: 15000 }] },
+        'canva': { title: 'Canva Pro', items: [{ name: '1 Bulan Pro', price: 10000 }, { name: '1 Tahun Pro', price: 35000 }] },
+        'am': { title: 'Alight Motion', items: [{ name: '1 Tahun Premium', price: 15000 }] },
+        'yt': { title: 'YouTube Premium', items: [{ name: '1 Bulan Individual', price: 12000 }] },
+        'iqiyi': { title: 'iQIYI VIP', items: [{ name: '1 Bulan VIP', price: 15000 }] },
+        'capcut': { title: 'CapCut Pro', items: [{ name: '1 Bulan Pro', price: 20000 }] },
+        'wetv': { title: 'WeTV VIP', items: [{ name: '1 Bulan VIP', price: 15000 }] },
+        'gemini': { title: 'Gemini AI Pro', items: [{ name: '1 Bulan Pro', price: 25000 }] },
+        'pixellab': { title: 'Pixellab Mod', items: [{ name: 'Full Version', price: 10000 }] }
     };
 
     let selectedServiceKey = '';
     let selectedItem = null;
-    let selectedPaymentMethod = '';
-    
-    // PENULISAN DAN NILAI AWAL NOL (0)
+    let selectedPayment = { method: '', number: '', holder: '' };
     let currentQueueNumber = parseInt(localStorage.getItem('lastQueueNumber')) || 0;
-    
-    // MENGAMBIL DAFTAR RIWAYAT ANTRIAN DARI LOCALSTORAGE
     let queueListArray = JSON.parse(localStorage.getItem('allQueuesList')) || [];
-    
-    let currentQrisPayload = '';
-    let currentEwalletNumber = '';
 
-    function maskSensitiveText(text) {
-        if (!text) return '';
+    let isMaintenance = localStorage.getItem('isMaintenance') === 'true';
+    let isAdminLoggedIn = false;
 
-        return text.split('\n').map(line => {
-            line = line.replace(/(https?:\/\/[^\s]+)/g, (url) => {
-                try {
-                    let parsed = new URL(url);
-                    return `${parsed.protocol}//${parsed.hostname}/***`;
-                } catch(e) {
-                    return url.substring(0, 12) + '***';
-                }
-            });
+    checkMaintenanceState();
 
-            line = line.replace(/([a-zA-Z0-9._%+-]+)(@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,})/g, (match, name, domain) => {
-                if (name.length <= 2) return name[0] + '***' + domain;
-                return name[0] + '***' + name[name.length - 1] + domain;
-            });
+    function checkMaintenanceState() {
+        const overlay = document.getElementById('maintenanceOverlay');
+        const btnToggle = document.getElementById('btnToggleMaintenance');
 
-            line = line.replace(/\b(\+?\d{3,4})[\d\s-]{3,}(\d{2})\b/g, (match, start, end) => {
-                return start + '*****' + end;
-            });
-
-            if (line.includes('Nama Store:')) {
-                line = line.replace(/(Nama Store:\s*)(.+)/gi, (match, label, val) => {
-                    let v = val.trim();
-                    if (v.length <= 2) return label + '***';
-                    return label + v.substring(0, 2) + '***' + v.substring(v.length - 1);
-                });
-            }
-
-            return line;
-        }).join('\n');
-    }
-
-    function calcCRC16(str) {
-        let crc = 0xFFFF;
-        for (let c = 0; c < str.length; c++) {
-            crc ^= str.charCodeAt(c) << 8;
-            for (let i = 0; i < 8; i++) {
-                if ((crc & 0x8000) !== 0) {
-                    crc = (crc << 1) ^ 0x1021;
-                } else {
-                    crc = crc << 1;
-                }
+        if (btnToggle) {
+            if (isMaintenance) {
+                btnToggle.innerText = "✅ Buka Server (Matikan Maintenance)";
+                btnToggle.style.background = "#22c55e";
+            } else {
+                btnToggle.innerText = "🚨 Matikan Server (Aktifkan Maintenance)";
+                btnToggle.style.background = "#ef4444";
             }
         }
-        crc = crc & 0xFFFF;
-        return crc.toString(16).toUpperCase().padStart(4, '0');
-    }
 
-    function generateDynamicQris(staticQris, amount) {
-        let qris = staticQris.slice(0, -8);
-        qris = qris.replace("010211", "010212");
-
-        const amtStr = amount.toString();
-        const amtTag = "54" + amtStr.length.toString().padStart(2, '0') + amtStr;
-
-        const splitIndex = qris.indexOf("5802ID");
-        if (splitIndex !== -1) {
-            qris = qris.slice(0, splitIndex) + amtTag + qris.slice(splitIndex);
+        if (isMaintenance && !isAdminLoggedIn) {
+            if (overlay) overlay.classList.add('active');
         } else {
-            qris = qris + amtTag;
+            if (overlay) overlay.classList.remove('active');
         }
+    }
 
-        qris = qris + "6304";
-        const newCrc = calcCRC16(qris);
-        return qris + newCrc;
+    function openAdminPanel() {
+        const pwd = prompt("Masukkan Sandi Admin Website:");
+        if (pwd === "0903cs") {
+            isAdminLoggedIn = true;
+            document.getElementById('maintenanceOverlay').classList.remove('active');
+            
+            hideAllPages();
+            document.getElementById('adminPage').classList.add('active');
+            renderAdminQueueList();
+            checkMaintenanceState();
+        } else if (pwd !== null) {
+            alert("Sandi Admin Salah!");
+        }
+    }
+
+    function toggleMaintenanceServer() {
+        isMaintenance = !isMaintenance;
+        localStorage.setItem('isMaintenance', isMaintenance.toString());
+        checkMaintenanceState();
+        
+        if (isMaintenance) {
+            alert("Mode Maintenance BERHASIL DIAKTIFKAN!\n\nWebsite sekarang terkunci untuk pengunjung biasa, tetapi Anda tetap dapat mengelolanya dari panel admin ini.");
+        } else {
+            alert("Mode Maintenance BERHASIL DIMATIKAN!\n\nWebsite kembali normal dan dapat diakses oleh semua pembeli.");
+        }
     }
 
     function hideAllPages() {
@@ -847,6 +632,7 @@
         hideAllPages();
         document.getElementById('homePage').classList.add('active');
         setActiveTab(0);
+        checkMaintenanceState();
     }
 
     function openApkSubMenu() {
@@ -856,45 +642,22 @@
 
     function openPage(serviceKey) {
         selectedServiceKey = serviceKey;
-        const data = servicesData[serviceKey] || { title: 'Layanan', label: 'Masukkan Data', items: [] };
-        
+        const data = servicesData[serviceKey] || { title: 'Layanan', items: [] };
         document.getElementById('serviceTitle').innerText = 'Layanan ' + data.title;
         
         const storeNameInput = document.getElementById('storeNameInput');
         const userDataInput = document.getElementById('userData');
-        const detailPage = document.getElementById('detailPage');
-
-        const existingDescGroup = document.getElementById('descGroupSection');
-        if (existingDescGroup) {
-            existingDescGroup.remove();
-        }
-
         userDataInput.value = '';
         storeNameInput.value = '';
 
         if (serviceKey === 'jasher' || serviceKey === 'jpm') {
-            document.getElementById('inputLabel').innerText = '1. Nama Store';
+            document.getElementById('inputLabel').innerText = '1. Nama Store & Link';
             storeNameInput.style.display = 'block';
-            storeNameInput.placeholder = "Contoh: Ciaa Store";
-            
-            userDataInput.style.display = 'none';
-
-            const itemsGrid = document.getElementById('itemsGrid');
-            const descGroup = document.createElement('div');
-            descGroup.id = 'descGroupSection';
-            descGroup.className = 'form-group';
-            descGroup.style.marginTop = '20px';
-            descGroup.innerHTML = `
-                <div class="section-title" style="margin-top:0;">Deskripsi / Tempat Link</div>
-                <textarea id="descLinkInput" placeholder="*NAMA GB*\nhttps://chat.whatsapp.com/..."></textarea>
-            `;
-            itemsGrid.parentNode.insertBefore(descGroup, itemsGrid.nextSibling);
-
+            userDataInput.placeholder = "(Tempel link mu / teks mu di sini)";
         } else {
-            document.getElementById('inputLabel').innerText = '1. ' + data.label;
+            document.getElementById('inputLabel').innerText = '1. Masukkan Data';
             storeNameInput.style.display = 'none';
-            userDataInput.style.display = 'block';
-            userDataInput.placeholder = "Masukkan Data...";
+            userDataInput.placeholder = "Masukkan User ID / Email...";
         }
 
         const grid = document.getElementById('itemsGrid');
@@ -904,10 +667,7 @@
         data.items.forEach((item) => {
             const card = document.createElement('div');
             card.className = 'item-card';
-            card.innerHTML = `
-                <div class="item-title">${item.name}</div>
-                <div class="item-price">Rp ${item.price.toLocaleString('id-ID')}</div>
-            `;
+            card.innerHTML = `<div class="item-title">${item.name}</div><div class="item-price">Rp ${item.price.toLocaleString('id-ID')}</div>`;
             card.onclick = () => {
                 document.querySelectorAll('.item-card').forEach(c => c.classList.remove('active'));
                 card.classList.add('active');
@@ -917,144 +677,53 @@
         });
 
         hideAllPages();
-        detailPage.classList.add('active');
+        document.getElementById('detailPage').classList.add('active');
     }
 
-    function selectPayment(method, element) {
-        selectedPaymentMethod = method;
+    function selectPayment(method, number, holder, element) {
+        selectedPayment = { method, number, holder };
         document.querySelectorAll('.payment-card').forEach(c => c.classList.remove('active'));
         element.classList.add('active');
     }
 
-    function copyText(text, event) {
-        event.stopPropagation();
-        navigator.clipboard.writeText(text);
-        alert('Nomor berhasil disalin: ' + text);
-    }
-
     function handleMainAction() {
-        let finalDataTarget = '';
+        let finalDataTarget = document.getElementById('userData').value.trim();
+        if (!finalDataTarget) { alert('Harap isi data tujuan terlebih dahulu!'); return; }
+        if (!selectedItem) { alert('Harap pilih nominal terlebih dahulu!'); return; }
+        if (!selectedPayment.method) { alert('Harap pilih metode pembayaran!'); return; }
 
-        if (selectedServiceKey === 'jasher' || selectedServiceKey === 'jpm') {
-            const storeName = document.getElementById('storeNameInput').value.trim();
-            const descLink = document.getElementById('descLinkInput') ? document.getElementById('descLinkInput').value.trim() : '';
+        document.getElementById('invPaymentMethod').innerText = selectedPayment.method;
+        document.getElementById('invPackage').innerText = `${servicesData[selectedServiceKey].title} (${selectedItem.name})`;
+        document.getElementById('invPrice').innerText = `Rp ${selectedItem.price.toLocaleString('id-ID')}`;
+        document.getElementById('invNumber').innerText = selectedPayment.number;
+        document.getElementById('invHolder').innerText = selectedPayment.holder;
 
-            if (!storeName) {
-                alert('Harap isi Nama Store terlebih dahulu!');
-                return;
-            }
-            if (!descLink) {
-                alert('Harap isi Deskripsi / Tempat Link terlebih dahulu!');
-                return;
-            }
+        const btnCopy = document.getElementById('btnCopyNumber');
+        btnCopy.innerHTML = `<i class="fa-regular fa-copy"></i> Salin Nomor ${selectedPayment.method} (${selectedPayment.number})`;
 
-            finalDataTarget = `Nama Store: ${storeName}\n\nDeskripsi / Tempat Link:\n${descLink}`;
-        } else {
-            finalDataTarget = document.getElementById('userData').value.trim();
-            if (!finalDataTarget) {
-                alert('Harap isi data tujuan terlebih dahulu!');
-                return;
-            }
-        }
-
-        if (!selectedItem) {
-            alert('Harap pilih nominal / paket terlebih dahulu!');
-            return;
-        }
-        if (!selectedPaymentMethod) {
-            alert('Harap pilih metode pembayaran!');
-            return;
-        }
-
-        openPaymentGatewayPage(finalDataTarget);
-    }
-
-    function openPaymentGatewayPage(userData) {
         hideAllPages();
         document.getElementById('paymentPage').classList.add('active');
-
-        const serviceTitle = servicesData[selectedServiceKey].title;
-        document.getElementById('payServiceTitle').innerText = serviceTitle;
-        document.getElementById('payItemName').innerText = selectedItem.name;
-        document.getElementById('payItemPrice').innerText = 'Rp ' + selectedItem.price.toLocaleString('id-ID');
-
-        const ewalletArea = document.getElementById('ewalletDisplayArea');
-        const qrisArea = document.getElementById('qrisDisplayArea');
-
-        if (selectedPaymentMethod === 'DANA' || selectedPaymentMethod === 'GOPAY') {
-            document.getElementById('paymentPageTitle').innerText = '💳 Pembayaran ' + selectedPaymentMethod;
-            ewalletArea.style.display = 'block';
-            qrisArea.style.display = 'none';
-
-            let num = '';
-            let name = '';
-
-            if (selectedPaymentMethod === 'DANA') {
-                num = '081338224767';
-                name = 'AGUS SUTIARNO';
-            } else if (selectedPaymentMethod === 'GOPAY') {
-                num = '089505929536';
-                name = '-';
-            }
-
-            currentEwalletNumber = num;
-            document.getElementById('ewalletInstructionText').innerText = `Silakan transfer sesuai nominal yang kamu pesan ke nomor ${selectedPaymentMethod} berikut:`;
-            document.getElementById('ewalletMethodName').innerText = selectedPaymentMethod;
-            document.getElementById('ewalletAmountDisplay').innerText = 'Rp ' + selectedItem.price.toLocaleString('id-ID');
-            document.getElementById('ewalletNumberDisplay').innerText = num;
-            document.getElementById('ewalletNameDisplay').innerText = name;
-
-        } else if (selectedPaymentMethod === 'QRIS') {
-            document.getElementById('paymentPageTitle').innerText = '💳 Pembayaran QRIS Dinamis';
-            ewalletArea.style.display = 'none';
-            qrisArea.style.display = 'block';
-
-            currentQrisPayload = generateDynamicQris(BASE_QRIS_STATIC, selectedItem.price);
-            document.getElementById('qrisCodeText').innerText = currentQrisPayload;
-
-            const qrContainer = document.getElementById('qrcode');
-            qrContainer.innerHTML = '';
-            
-            new QRCode(qrContainer, {
-                text: currentQrisPayload,
-                width: 200,
-                height: 200,
-                colorDark : "#000000",
-                colorLight : "#ffffff",
-                correctLevel : QRCode.CorrectLevel.M
-            });
-        }
-
-        const btnWa = document.getElementById('btnWaConfirm');
-        btnWa.onclick = function() {
-            confirmAndSendWA(userData);
+        
+        document.getElementById('btnWaConfirm').onclick = function() {
+            confirmAndSendWA(finalDataTarget);
         };
     }
 
-    function copyEwalletNumber() {
-        if (currentEwalletNumber) {
-            navigator.clipboard.writeText(currentEwalletNumber);
-            alert('Nomor tujuan berhasil disalin: ' + currentEwalletNumber);
-        }
+    function copyPaymentNumber() {
+        if (!selectedPayment.number) return;
+        navigator.clipboard.writeText(selectedPayment.number).then(() => {
+            alert(`Nomor ${selectedPayment.method} (${selectedPayment.number}) berhasil disalin!`);
+        });
     }
 
-    function copyQrisText() {
-        navigator.clipboard.writeText(currentQrisPayload);
-        alert('Kode Teks QRIS Valid Berhasil Disalin!');
-    }
-
-    // FUNGSI UTAMA PENETAPAN KODE ANTRIAN DENGAN FORMAT CS-TAHUN-#01
     function confirmAndSendWA(userData) {
         currentQueueNumber++;
         localStorage.setItem('lastQueueNumber', currentQueueNumber);
-
-        const currentYear = new Date().getFullYear();
-        const numPadded = String(currentQueueNumber).padStart(2, '0');
-        const queueNo = `CS-${currentYear}-#${numPadded}`;
-
+        const queueNo = `CS-2026-#${String(currentQueueNumber).padStart(2, '0')}`;
         const serviceTitle = servicesData[selectedServiceKey].title;
 
         const newQueueItem = {
+            id: Date.now(),
             queueNo: queueNo,
             service: serviceTitle,
             item: selectedItem.name,
@@ -1062,42 +731,17 @@
             status: 'Proses / Menunggu Verifikasi'
         };
 
-        // Simpan ke array antrian
         queueListArray.unshift(newQueueItem);
         localStorage.setItem('allQueuesList', JSON.stringify(queueListArray));
 
-        const payQueueElement = document.getElementById('payQueueNo');
-        if (payQueueElement) {
-            payQueueElement.innerText = queueNo;
-        }
-
-        const waMsg = `🛍️ *FORM PESANAN CIAA STORE REAL*\n` +
-                      `==============================\n\n` +
-                      `📌 *No. Antrian:* ${queueNo}\n` +
-                      `🎮 *Layanan:* ${serviceTitle}\n` +
-                      `📦 *Paket:* ${selectedItem.name}\n` +
-                      `🎯 *Data / Detail Pesanan:*\n${userData}\n\n` +
-                      `💰 *Total:* Rp ${selectedItem.price.toLocaleString('id-ID')}\n` +
-                      `💳 *Metode Pembayaran:* ${selectedPaymentMethod}\n\n` +
-                      `Mohon segera diproses ya Min! Terima kasih.`;
-
+        const waMsg = `🛍️ *FORM PESANAN CIAA STORE REAL*\n📌 *No. Antrian:* ${queueNo}\n🎮 *Layanan:* ${serviceTitle}\n📦 *Paket:* ${selectedItem.name}\n💰 *Total:* Rp ${selectedItem.price.toLocaleString('id-ID')}\n💳 *Metode:* ${selectedPayment.method}`;
         window.open(`https://wa.me/6289505929536?text=${encodeURIComponent(waMsg)}`, '_blank');
     }
 
     function switchTab(tab) {
-        if (tab === 'services') {
-            setActiveTab(0);
-            goHome();
-        } else if (tab === 'contact') {
-            setActiveTab(1);
-            hideAllPages();
-            document.getElementById('contactPage').classList.add('active');
-        } else if (tab === 'queue') {
-            setActiveTab(2);
-            hideAllPages();
-            document.getElementById('queuePage').classList.add('active');
-            renderQueueList(queueListArray);
-        }
+        if (tab === 'services') goHome();
+        else if (tab === 'contact') { hideAllPages(); document.getElementById('contactPage').classList.add('active'); setActiveTab(1); }
+        else if (tab === 'queue') { hideAllPages(); document.getElementById('queuePage').classList.add('active'); renderQueueList(queueListArray); setActiveTab(2); }
     }
 
     function setActiveTab(index) {
@@ -1106,71 +750,28 @@
         if (buttons[index]) buttons[index].classList.add('active');
     }
 
-    // FUNGSI RENDER ANTRIAN
     function renderQueueList(items) {
         const queueContainer = document.getElementById('queueList');
-        queueContainer.innerHTML = '';
-
-        if (!items || items.length === 0) {
-            queueContainer.innerHTML = `
-                <div style="text-align: center; color: #888; padding: 30px 10px;">
-                    Belum ada antrian yang cocok/ditemukan.
-                </div>
-            `;
-            return;
-        }
+        queueContainer.innerHTML = items.length ? '' : '<div style="text-align: center; color: #888; padding: 30px;">Belum ada antrian.</div>';
 
         items.forEach(item => {
-            const maskedTarget = maskSensitiveText(item.target);
-
             const card = document.createElement('div');
             card.className = 'queue-card';
-            card.innerHTML = `
-                <div class="queue-number">${item.queueNo}</div>
-                <div class="queue-details">
-                    <div class="queue-service">${item.service} - ${item.item}</div>
-                    <div class="queue-target">${maskedTarget}</div>
-                </div>
-                <div class="queue-status">${item.status}</div>
-            `;
+            card.innerHTML = `<div class="queue-number">${item.queueNo}</div><div><strong>${item.service}</strong></div><div>${item.status}</div>`;
             queueContainer.appendChild(card);
         });
-
-        const clearBtn = document.createElement('button');
-        clearBtn.className = 'btn-back';
-        clearBtn.style.cssText = 'width: 100%; margin-top: 15px; background: #fee2e2; color: #dc2626; border: 1px solid #fca5a5;';
-        clearBtn.innerHTML = '🗑️ Bersihkan Riwayat Antrian';
-        clearBtn.onclick = clearQueue;
-        queueContainer.appendChild(clearBtn);
     }
 
-    // FUNGSI PENCARIAN (SEARCH) ANTRIAN
-    function filterQueueList() {
-        const query = document.getElementById('queueSearchInput').value.toLowerCase().trim();
-        
-        const filtered = queueListArray.filter(q => {
-            return q.queueNo.toLowerCase().includes(query) ||
-                   q.service.toLowerCase().includes(query) ||
-                   q.item.toLowerCase().includes(query) ||
-                   q.target.toLowerCase().includes(query);
+    function renderAdminQueueList() {
+        const adminContainer = document.getElementById('adminQueueList');
+        adminContainer.innerHTML = queueListArray.length ? '' : '<p style="text-align:center; color:#777;">Belum ada antrian masuk.</p>';
+
+        queueListArray.forEach(item => {
+            const card = document.createElement('div');
+            card.className = 'queue-card';
+            card.innerHTML = `<div><strong>${item.queueNo}</strong> (${item.service}) - ${item.status}</div>`;
+            adminContainer.appendChild(card);
         });
-
-        renderQueueList(filtered);
-    }
-
-    function clearQueue() {
-        if (confirm('Apakah Anda yakin ingin menghapus catatan antrian ini? Nomor antrian juga akan di-reset.')) {
-            queueListArray = [];
-            currentQueueNumber = 0;
-            localStorage.removeItem('allQueuesList');
-            localStorage.removeItem('lastQueueNumber');
-            document.getElementById('queueSearchInput').value = '';
-            renderQueueList(queueListArray);
-        }
-    }
-
-    function goBackFromDetail() {
-        goHome();
     }
 
     function goBackToDetail() {
