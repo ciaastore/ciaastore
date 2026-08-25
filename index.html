@@ -63,7 +63,6 @@
             border: 2px solid rgba(255, 255, 255, 0.8);
         }
 
-        /* TOMBOL LOGIN ADMIN SELALU BISA DIKLIK WALAUPUN MAINTENANCE */
         .admin-login-trigger {
             position: fixed; top: 20px; right: 20px;
             width: 46px; height: 46px; border-radius: 50%;
@@ -167,7 +166,6 @@
         .invoice-row { display: flex; justify-content: space-between; margin-bottom: 10px; font-size: 0.88rem; border-bottom: 1px dashed #ffe4ec; padding-bottom: 8px; }
         .invoice-row:last-child { border-bottom: none; margin-bottom: 0; padding-bottom: 0; }
 
-        /* OVERLAY MAINTENANCE DENGAN Z-INDEX DI BAWAH TOMBOL LOGIN ADMIN */
         .maintenance-overlay {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             background: rgba(255, 240, 245, 0.97); backdrop-filter: blur(15px);
@@ -190,7 +188,6 @@
 </head>
 <body>
 
-<!-- OVERLAY MAINTENANCE -->
 <div id="maintenanceOverlay" class="maintenance-overlay">
     <i class="fa-solid fa-screwdriver-wrench maintenance-icon"></i>
     <div class="maintenance-title">SYSTEM UNDER MAINTENANCE</div>
@@ -199,7 +196,6 @@
     </div>
 </div>
 
-<!-- TOMBOL LOGIN ADMIN (BISA DIKLIK KAPAN PUN) -->
 <button class="admin-login-trigger" onclick="openAdminPanel()" title="Login Admin Website">
     <img src="logo.jpg" alt="Admin Login" onerror="this.src='https://via.placeholder.com/50'">
 </button>
@@ -242,14 +238,13 @@
         <div id="queueList"></div>
     </div>
 
-    <!-- HALAMAN PANEL ADMIN -->
     <div id="adminPage" class="page">
         <button class="btn-back" onclick="goHome()">← Keluar dari Panel Admin</button>
         <div class="category-title">👑 Panel Kelola Admin</div>
         
         <div style="background:#fff; border:2px solid var(--pink-main); border-radius:16px; padding:20px; margin-bottom:20px; text-align:center;">
             <strong style="color:var(--pink-dark); font-size:1.1rem; display:block; margin-bottom:8px;">⚙️ Pengaturan Status Server Website</strong>
-            <p style="font-size:0.85rem; color:#666; margin:0 0 15px 0;">Tekan tombol di bawah ini untuk mengubah status maintenance secara langsung.</p>
+            <p style="font-size:0.85rem; color:#666; margin:0 0 15px 0;">Tekan tombol di bawah ini untuk mengontrol apakah website sedang maintenance atau normal bagi pembeli.</p>
             
             <button id="btnToggleMaintenance" onclick="toggleMaintenanceServer()" style="padding:12px 24px; border-radius:12px; border:none; font-weight:bold; cursor:pointer; background:#ef4444; color:white; font-size:0.95rem; transition:0.2s;">
                 🚨 Matikan Server (Aktifkan Maintenance)
@@ -311,11 +306,78 @@
 </div>
 
 <script>
+    // LIST LENGKAP DIPERTAHANKAN
     const servicesData = {
-        'jasher': { title: 'Jasher (Jasa Share)', items: [{ name: '1 Hari', price: 500 }, { name: '1 Minggu', price: 3000 }] },
-        'jpm': { title: 'JPM (Jasa Push Member)', items: [{ name: '50 Member', price: 3000 }, { name: '100 Member', price: 5000 }] },
-        'ff': { title: 'Free Fire', items: [{ name: '100 Diamond', price: 16000 }] },
-        'ml': { title: 'Mobile Legends', items: [{ name: '86 Diamond', price: 20000 }] }
+        'jasher': {
+            title: 'Jasher (Jasa Share)',
+            items: [
+                { name: '1 Hari', price: 500 },
+                { name: '3 Hari', price: 1500 },
+                { name: '5 Hari', price: 2500 },
+                { name: '1 Minggu', price: 3000 },
+                { name: '2 Minggu', price: 6000 },
+                { name: '1 Bulan', price: 10000 },
+                { name: '2 Bulan', price: 20000 },
+                { name: '3 Bulan', price: 30000 },
+                { name: '4 Bulan', price: 40000 },
+                { name: '5 Bulan', price: 50000 },
+                { name: '6 Bulan', price: 60000 },
+                { name: '7 Bulan', price: 70000 },
+                { name: '8 Bulan', price: 80000 },
+                { name: '9 Bulan', price: 90000 },
+                { name: '10 Bulan', price: 100000 },
+                { name: '11 Bulan', price: 110000 },
+                { name: '1 Tahun', price: 120000 },
+                { name: 'Permanen', price: 150000 }
+            ]
+        },
+        'jpm': {
+            title: 'JPM (Jasa Push Member)',
+            items: [
+                { name: '50 Member', price: 3000 },
+                { name: '100 Member', price: 5000 },
+                { name: '150 Member', price: 8000 },
+                { name: '200 Member', price: 10000 },
+                { name: '250 Member', price: 13000 },
+                { name: '300 Member', price: 15000 },
+                { name: '350 Member', price: 18000 },
+                { name: '400 Member', price: 20000 },
+                { name: '450 Member', price: 23000 },
+                { name: '500 Member', price: 25000 },
+                { name: '600 Member', price: 30000 },
+                { name: '700 Member', price: 35000 },
+                { name: '800 Member', price: 40000 },
+                { name: '900 Member', price: 45000 },
+                { name: '1000 Member', price: 50000 }
+            ]
+        },
+        'ff': {
+            title: 'Free Fire',
+            items: [
+                { name: '5 Diamond', price: 1000 },
+                { name: '12 Diamond', price: 2000 },
+                { name: '50 Diamond', price: 8000 },
+                { name: '70 Diamond', price: 10000 },
+                { name: '140 Diamond', price: 20000 },
+                { name: '355 Diamond', price: 50000 },
+                { name: '720 Diamond', price: 100000 },
+                { name: 'Member Mingguan', price: 30000 },
+                { name: 'Member Bulanan', price: 120000 }
+            ]
+        },
+        'ml': {
+            title: 'Mobile Legends',
+            items: [
+                { name: '5 Diamond', price: 1500 },
+                { name: '14 Diamond', price: 4000 },
+                { name: '42 Diamond', price: 12000 },
+                { name: '86 Diamond', price: 23000 },
+                { name: '172 Diamond', price: 45000 },
+                { name: '257 Diamond', price: 68000 },
+                { name: '344 Diamond', price: 90000 },
+                { name: 'Weekly Diamond Pass', price: 30000 }
+            ]
+        }
     };
 
     let selectedServiceKey = '';
@@ -324,54 +386,56 @@
     let currentQueueNumber = parseInt(localStorage.getItem('lastQueueNumber')) || 0;
     let queueListArray = JSON.parse(localStorage.getItem('allQueuesList')) || [];
 
-    // INISIALISASI STATUS MAINTENANCE
     let isMaintenance = localStorage.getItem('isMaintenance') === 'true';
+    let isAdminLoggedIn = false;
 
-    // JALANKAN PENGECEKAN MAINTENANCE SAAT HALAMAN DIBUKA
     checkMaintenanceState();
 
     function checkMaintenanceState() {
         const overlay = document.getElementById('maintenanceOverlay');
         const btnToggle = document.getElementById('btnToggleMaintenance');
 
-        if (isMaintenance) {
-            if (overlay) overlay.classList.add('active');
-            if (btnToggle) {
+        if (btnToggle) {
+            if (isMaintenance) {
                 btnToggle.innerText = "✅ Buka Server (Matikan Maintenance)";
                 btnToggle.style.background = "#22c55e";
-            }
-        } else {
-            if (overlay) overlay.classList.remove('active');
-            if (btnToggle) {
+            } else {
                 btnToggle.innerText = "🚨 Matikan Server (Aktifkan Maintenance)";
                 btnToggle.style.background = "#ef4444";
             }
         }
+
+        if (isMaintenance && !isAdminLoggedIn) {
+            if (overlay) overlay.classList.add('active');
+        } else {
+            if (overlay) overlay.classList.remove('active');
+        }
     }
 
-    // FUNGSI UTAMA UNTUK MENGUBAH MAINTENANCE DI PANEL ADMIN
+    function openAdminPanel() {
+        const pwd = prompt("Masukkan Sandi Admin Website:");
+        if (pwd === "0903cs") {
+            isAdminLoggedIn = true;
+            document.getElementById('maintenanceOverlay').classList.remove('active');
+            
+            hideAllPages();
+            document.getElementById('adminPage').classList.add('active');
+            renderAdminQueueList();
+            checkMaintenanceState();
+        } else if (pwd !== null) {
+            alert("Sandi Admin Salah!");
+        }
+    }
+
     function toggleMaintenanceServer() {
         isMaintenance = !isMaintenance;
         localStorage.setItem('isMaintenance', isMaintenance.toString());
         checkMaintenanceState();
         
         if (isMaintenance) {
-            alert("Mode Maintenance AKTIF! Pengunjung biasa tidak dapat mengakses website.");
+            alert("Mode Maintenance BERHASIL DIAKTIFKAN!\n\nWebsite sekarang terkunci untuk pengunjung biasa, tetapi Anda tetap dapat mengelolanya dari panel admin ini.");
         } else {
-            alert("Mode Maintenance NONAKTIF! Website kembali normal.");
-        }
-    }
-
-    // FUNGSI UNTUK MASUK KE ADMIN PANEL (PASSWORD: 0903cs)
-    function openAdminPanel() {
-        const pwd = prompt("Masukkan Sandi Admin Website:");
-        if (pwd === "0903cs") {
-            hideAllPages();
-            document.getElementById('adminPage').classList.add('active');
-            renderAdminQueueList();
-            checkMaintenanceState(); // Pembaruan UI Tombol
-        } else if (pwd !== null) {
-            alert("Sandi Admin Salah!");
+            alert("Mode Maintenance BERHASIL DIMATIKAN!\n\nWebsite kembali normal dan dapat diakses oleh semua pembeli.");
         }
     }
 
