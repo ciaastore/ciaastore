@@ -58,25 +58,26 @@
             100% { transform: translateY(50%); }
         }
 
-        .glowing-butterfly {
+        /* KUPU-KUPU PUTIH/PINK SOFT MENGEPAK & TRANSPARAN */
+        .translucent-butterfly {
             position: fixed;
-            width: 35px; height: 35px;
+            width: 38px; height: 38px;
             background: url('https://cdn-icons-png.flaticon.com/512/3069/3069176.png') no-repeat center/contain;
-            filter: drop-shadow(0 0 8px rgba(255, 105, 180, 0.8)) drop-shadow(0 0 15px rgba(255, 255, 255, 0.9));
+            opacity: 0.45;
+            filter: drop-shadow(0 0 4px rgba(255, 255, 255, 0.6));
             z-index: 99;
             pointer-events: none;
-            opacity: 0.85;
-            animation: flyGlowing 14s ease-in-out infinite;
+            animation: flyTranslucent 16s ease-in-out infinite;
         }
-        .glowing-butterfly:nth-child(2) { top: 25%; left: -10px; animation-duration: 18s; animation-delay: 2s; transform: scale(0.8); }
-        .glowing-butterfly:nth-child(3) { top: 65%; right: -10px; animation-duration: 16s; animation-delay: 4s; transform: scale(0.65); }
+        .translucent-butterfly:nth-child(2) { top: 30%; left: -20px; animation-duration: 20s; animation-delay: 3s; transform: scale(0.75); }
+        .translucent-butterfly:nth-child(3) { top: 60%; right: -20px; animation-duration: 18s; animation-delay: 6s; transform: scale(0.6); }
 
-        @keyframes flyGlowing {
-            0% { transform: translate(0, 0) rotate(0deg) scale(0.7); filter: drop-shadow(0 0 5px rgba(255,105,180,0.6)); }
-            25% { transform: translate(220px, -70px) rotate(20deg) scale(0.85); filter: drop-shadow(0 0 12px rgba(255,255,255,0.9)); }
-            50% { transform: translate(400px, 40px) rotate(-10deg) scale(0.75); filter: drop-shadow(0 0 8px rgba(255,105,180,0.8)); }
-            75% { transform: translate(180px, 100px) rotate(15deg) scale(0.9); filter: drop-shadow(0 0 15px rgba(255,255,255,1)); }
-            100% { transform: translate(0, 0) rotate(0deg) scale(0.7); filter: drop-shadow(0 0 5px rgba(255,105,180,0.6)); }
+        @keyframes flyTranslucent {
+            0% { transform: translate(0, 0) rotate(0deg) scale(0.7); }
+            25% { transform: translate(250px, -60px) rotate(15deg) scale(0.85); }
+            50% { transform: translate(450px, 50px) rotate(-10deg) scale(0.7); }
+            75% { transform: translate(200px, 120px) rotate(12deg) scale(0.8); }
+            100% { transform: translate(0, 0) rotate(0deg) scale(0.7); }
         }
 
         .main-wrapper {
@@ -96,18 +97,31 @@
         .btn-admin:hover { transform: scale(1.1); }
         .btn-admin img { width: 22px; height: 22px; border-radius: 50%; object-fit: cover; display: block; }
 
-        /* BANNER PAPAN PROMOSI BERGESER (MARQUEE) */
-        .promo-banner {
-            background: linear-gradient(90deg, #ffb6c1, #ff69b4, #ffb6c1);
-            color: white;
-            padding: 8px 0;
-            font-weight: bold;
-            font-size: 13px;
-            overflow: hidden;
-            white-space: nowrap;
-            box-shadow: inset 0 2px 5px rgba(0,0,0,0.1);
+        /* BANNER PROMOSI BISA DIGESER (HORIZONTAL SCROLL) */
+        .promo-scroll-container {
+            display: flex;
+            overflow-x: auto;
+            gap: 12px;
+            padding: 10px 15px;
+            scrollbar-width: none;
+            background: var(--soft-pink);
+            border-bottom: 1px solid var(--light-pink);
         }
-        .promo-banner marquee { width: 100%; }
+        .promo-scroll-container::-webkit-scrollbar { display: none; }
+        
+        .promo-card-item {
+            min-width: 260px;
+            background: linear-gradient(135deg, #fff0f5 0%, #ffe4e1 100%);
+            border: 1.5px solid var(--primary-pink);
+            border-radius: 12px;
+            padding: 10px 14px;
+            font-size: 13px;
+            font-weight: bold;
+            color: var(--deep-pink);
+            box-shadow: 0 2px 6px rgba(255,182,193,0.2);
+            flex-shrink: 0;
+            text-align: center;
+        }
 
         /* SAPAAN PELANGGAN */
         .greeting-box {
@@ -133,7 +147,7 @@
         .section.active { display: block; }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: translateY(0); } }
 
-        /* GRID KOTAK 1:1 MELENGKUNG TIDAK TERLALU BESAR */
+        /* GRID KOTAK 1:1 MELENGKUNG */
         .grid-services {
             display: grid;
             grid-template-columns: repeat(2, 1fr);
@@ -198,7 +212,19 @@
         .product-card h4 { font-size: 12px; color: var(--dark-text); font-weight: 600; line-height: 1.3; }
         
         .alert-box { background: #ffe4e1; border: 1.5px dashed var(--deep-pink); padding: 10px 12px; margin-bottom: 12px; border-radius: 12px; font-size: 13px; color: #b22222; line-height: 1.4; }
-        .info-box { background: #e0ffff; border: 1.5px solid #afeeee; padding: 10px 12px; margin-bottom: 12px; border-radius: 12px; font-size: 13px; color: #008b8b; line-height: 1.4; }
+        
+        /* INFO BOX KHUSUS APLIKASI PREMIUM (PINK SOFT / PUTIH, TIDAK ADA BIRU) */
+        .info-box-pink { 
+            background: #fff0f5; 
+            border: 1.5px solid var(--primary-pink); 
+            padding: 10px 12px; 
+            margin-bottom: 12px; 
+            border-radius: 12px; 
+            font-size: 13px; 
+            color: var(--deep-pink); 
+            line-height: 1.4; 
+            box-shadow: 0 2px 6px rgba(255,182,193,0.15);
+        }
 
         .contact-card { background: var(--white); border: 2px solid var(--primary-pink); border-radius: var(--card-radius); padding: 15px; margin-bottom: 12px; text-align: center; box-shadow: 0 3px 10px rgba(255,182,193,0.25); }
         .contact-card h3 { color: var(--deep-pink); margin-bottom: 6px; font-size: 15px; }
@@ -226,7 +252,7 @@
         .qris-container { text-align: center; background: white; padding: 15px; border-radius: var(--card-radius); margin: 12px 0; border: 2px solid var(--primary-pink); }
         #qrcode { display: flex; justify-content: center; margin-top: 8px; }
 
-        /* OVERLAY MAINTENANCE MENGGUNAKAN maintenance1.jpg (MELAYANG & BERGERAK TANPA LATAR BELAKANG) */
+        /* OVERLAY MAINTENANCE MENGGUNAKAN maintenance1.jpg */
         #maintenance-overlay { 
             position: fixed; top: 0; left: 0; width: 100%; height: 100%; 
             background: rgba(255, 240, 245, 0.95); 
@@ -251,10 +277,10 @@
 <body>
 
     <div class="light-beam"></div>
-    <div class="glowing-butterfly" style="top: 20%; left: 5%;"></div>
-    <div class="glowing-butterfly" style="top: 70%; right: 5%;"></div>
+    <div class="translucent-butterfly" style="top: 20%; left: 5%;"></div>
+    <div class="translucent-butterfly" style="top: 70%; right: 5%;"></div>
 
-    <!-- MAINTENANCE OVERLAY DENGAN maintenance1.jpg -->
+    <!-- MAINTENANCE OVERLAY -->
     <div id="maintenance-overlay" style="display: none;">
         <img src="maintenance1.jpg" alt="Maintenance Logo" class="maintenance-logo" onerror="this.src='logo.jpg'">
         <h2 style="color: var(--deep-pink); margin-bottom: 8px; font-size: 18px;">Situs Sedang Dalam Pemeliharaan 🛠️</h2>
@@ -271,12 +297,14 @@
             <img src="banner.jpg" alt="Ciaa Store Banner" class="banner-utama" onerror="this.style.display='none'">
         </header>
 
-        <!-- BANNER PROMOSI BERGESER (COMING SOON) -->
-        <div class="promo-banner">
-            <marquee behavior="scroll" direction="left">✨ 🚀 COMING SOON: Jasa Buat Website & Top Up Voucher Game! Tingkatkan kelas bisnismu dan nikmati kemudahan belanja di Ciaa Store! 💖 ✨</marquee>
+        <!-- BANNER PROMOSI BISA DIGESER (SCROLL HORIZONTAL) -->
+        <div class="promo-scroll-container">
+            <div class="promo-card-item">🚀 Coming Soon: Jasa Buat Website Spesial untuk Bisnismu! ✨</div>
+            <div class="promo-card-item">🎟️ Coming Soon: Top Up Voucher Game Terlengkap & Termurah! 💎</div>
+            <div class="promo-card-item">💖 Belanja Aman, Cepat, & Terpercaya hanya di Ciaa Store! 🌸</div>
         </div>
 
-        <!-- KOTAK SAPAAN PELANGGAN BERDASARKAN WAKTU -->
+        <!-- SAPAAN PELANGGAN -->
         <div class="greeting-box" id="greeting-text">
             Halo juragan! Selamat berbelanja ✨
         </div>
@@ -291,33 +319,46 @@
 
         <div class="container">
             
-            <!-- SECTION: MENU UTAMA LAYANAN (GRID 1:1 MELENGKUNG) -->
+            <!-- SECTION: MENU UTAMA LAYANAN (GAME & JASA TERSEDIA DI GRID) -->
             <div id="layanan-section" class="section active">
-                <div class="info-box">
-                    <strong>⏰ (Open 06.00–20.40 WIB)</strong><br>
-                    Akun Premium terkadang dikirim oleh mimin, jika ada kendala/masalah bisa tanyakan kepada mimin yaw! 🤭✨
-                </div>
-                
                 <div class="grid-services">
-                    <!-- KOTAK APLIKASI PREMIUM -->
+                    <!-- APLIKASI PREMIUM -->
                     <div class="service-box" onclick="openAppPremiumPage()">
                         <img src="logo.jpg" alt="Aplikasi Premium" onerror="this.src='https://cdn-icons-png.flaticon.com/512/869/869034.png'">
                         <h4>📱 Aplikasi Premium</h4>
                     </div>
 
-                    <!-- KOTAK TOP UP GAME -->
-                    <div class="service-box" onclick="switchCategory('topup-game')">
-                        <img src="ff.jpg" alt="Top Up Game" onerror="this.src='https://cdn-icons-png.flaticon.com/512/869/869034.png'">
-                        <h4>🎮 Top Up Game</h4>
+                    <!-- FREE FIRE -->
+                    <div class="service-box" onclick="openForm('ff', 'topup-game')">
+                        <img src="ff.jpg" alt="Free Fire" onerror="this.src='https://cdn-icons-png.flaticon.com/512/869/869034.png'">
+                        <h4>🔥 Free Fire</h4>
                     </div>
 
-                    <!-- KOTAK JASHER -->
+                    <!-- MOBILE LEGENDS -->
+                    <div class="service-box" onclick="openForm('mlbb', 'topup-game')">
+                        <img src="ml.jpg" alt="Mobile Legends" onerror="this.src='https://cdn-icons-png.flaticon.com/512/869/869034.png'">
+                        <h4>⚔️ Mobile Legends</h4>
+                    </div>
+
+                    <!-- BLOOD STRIKE -->
+                    <div class="service-box" onclick="openForm('bs', 'topup-game')">
+                        <img src="bs.jpg" alt="Blood Strike" onerror="this.src='https://cdn-icons-png.flaticon.com/512/869/869034.png'">
+                        <h4>💎 Blood Strike</h4>
+                    </div>
+
+                    <!-- GAME LAINNYA (HALAMAN PILIHAN GAME) -->
+                    <div class="service-box" onclick="switchCategory('topup-game')">
+                        <img src="pubg.jpg" alt="Game Lainnya" onerror="this.src='https://cdn-icons-png.flaticon.com/512/869/869034.png'">
+                        <h4>🎮 Game Lainnya</h4>
+                    </div>
+
+                    <!-- JASHER -->
                     <div class="service-box" onclick="openForm('jasher', 'jasa-ciaa')">
                         <img src="logo.jpg" alt="Jasher" onerror="this.src='https://cdn-icons-png.flaticon.com/512/869/869034.png'">
                         <h4>🚀 Jasher</h4>
                     </div>
 
-                    <!-- KOTAK JPM -->
+                    <!-- JPM -->
                     <div class="service-box" onclick="openForm('jpm', 'jasa-ciaa')">
                         <img src="logo.jpg" alt="JPM" onerror="this.src='https://cdn-icons-png.flaticon.com/512/869/869034.png'">
                         <h4>📈 JPM</h4>
@@ -332,14 +373,14 @@
                 <div class="mini-grid" id="grid-game-page"></div>
             </div>
 
-            <!-- SECTION: HALAMAN KHUSUS APLIKASI PREMIUM DENGAN JAM OPERASIONAL -->
+            <!-- SECTION: HALAMAN KHUSUS APLIKASI PREMIUM (CATATAN WARNA PINK SOFT / PUTIH) -->
             <div id="app-premium-section" class="section">
                 <button onclick="backToMenu()" style="margin-bottom: 12px; border:none; background:var(--light-pink); padding:6px 12px; border-radius:8px; font-weight:bold; cursor:pointer; font-size: 12px;">⬅ Kembali ke Layanan</button>
                 <h2 style="color: var(--deep-pink); font-size: 16px; margin-bottom: 10px;">📱 Aplikasi Premium</h2>
                 
-                <div class="info-box">
+                <div class="info-box-pink">
                     <strong>⏰ Open 06.00–20.40 WIB</strong><br>
-                    Akun Premium terkadang di kirim oleh mimin, jika ada kendala/masalah bisa tanyakan kepada mimin yaw! 🌸
+                    Akun Premium terkadang dikirim oleh mimin, jika ada kendala/masalah bisa tanyakan kepada mimin yaw! 🌸
                 </div>
 
                 <div class="mini-grid" id="grid-app-page"></div>
@@ -360,7 +401,7 @@
                 <div class="form-group">
                     <input type="text" id="search-antrian" class="form-control" placeholder="Cari nomor antrian atau nama kamu di sini..." oninput="filterAntrian()">
                 </div>
-                <div class="info-box" id="list-antrian" style="max-height: 300px; overflow-y: auto; font-size: 13px;">
+                <div class="info-box-pink" id="list-antrian" style="max-height: 300px; overflow-y: auto;">
                     Belum ada antrian aktif hari ini. Yuk buat pesananmu sekarang! 💖
                 </div>
             </div>
@@ -392,7 +433,7 @@
             <!-- SECTION: TUTORIAL ORDER -->
             <div id="tutorial-section" class="section">
                 <h2 style="color: var(--deep-pink); margin-bottom: 12px; font-size: 16px;">📖 Panduan & Tutorial Order di Ciaa Store</h2>
-                <div class="info-box" style="line-height: 1.6; font-size: 13px;">
+                <div class="info-box-pink" style="line-height: 1.6;">
                     <strong>Langkah-langkah Mudah Belanja:</strong><br>
                     1️⃣ Masuk ke menu <strong>Layanan</strong>, lalu pilih kotak layanan yang diinginkan (Aplikasi Premium, Top Up Game, Jasher, atau JPM).<br>
                     2️⃣ Isi data yang diminta dengan teliti (seperti User ID, Email, atau Nomor WhatsApp).<br>
@@ -429,7 +470,7 @@
             <div id="checkout-page" class="section">
                 <h2 style="text-align: center; color: var(--deep-pink); font-size: 16px; margin-bottom: 12px;">Silakan transfer terlebih dahulu untuk melanjutkan pesanan Anda ✨</h2>
                 
-                <div class="info-box" style="margin-top: 15px;">
+                <div class="info-box-pink" style="margin-top: 15px;">
                     <strong>Ringkasan Pesanan:</strong>
                     <p id="co-antrian">No. Antrian: -</p>
                     <p id="co-produk">Layanan: -</p>
@@ -899,4 +940,3 @@
     </script>
 </body>
 </html>
-
