@@ -3,633 +3,513 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Ciaa Store - Top Up & Services</title>
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <title>Ciaa Store - Premium Digital Services</title>
+    
+    <!-- Library untuk QR Code & Firebase -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
+
     <style>
         :root {
-            --pink-main: #ff9ebb;
-            --pink-soft: rgba(255, 240, 245, 0.92);
-            --pink-bright: #ffe4ec;
-            --pink-dark: #d85c80;
-            --bg-color: #fff0f5;
-            --card-bg: rgba(255, 255, 255, 0.94);
+            --primary-pink: #ffb6c1;
+            --soft-pink: #fff0f5;
+            --dark-text: #2c3e50;
+            --white: #ffffff;
+            --wa-color: #25D366;
+            --bg-gray: #f8f9fa;
         }
 
-        * { box-sizing: border-box; }
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', Tahoma, sans-serif; }
+        body { background-color: var(--soft-pink); color: var(--dark-text); overflow-x: hidden; }
 
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background-color: var(--bg-color);
-            margin: 0;
-            padding: 15px;
-            padding-bottom: 80px;
-            color: #444;
-            min-height: 100vh;
-            position: relative;
-            overflow-x: hidden;
-        }
+        /* HEADER & LOGIN ADMIN */
+        .header { background: var(--white); text-align: center; position: relative; box-shadow: 0 2px 10px rgba(0,0,0,0.05); }
+        .banner-utama { width: 100%; max-height: 250px; object-fit: cover; display: block; }
+        .btn-admin { position: absolute; top: 10px; left: 10px; background: rgba(255, 255, 255, 0.9); border: none; padding: 6px; border-radius: 50%; cursor: pointer; z-index: 1001; box-shadow: 0 2px 5px rgba(0,0,0,0.2); }
+        .btn-admin img { width: 24px; height: 24px; border-radius: 50%; object-fit: cover; display: block; }
 
-        body::before {
-            content: '';
-            position: fixed;
-            top: 0; left: 0; width: 100%; height: 100%;
-            background-image: url('logo.jpg');
-            background-size: cover;
-            background-position: center;
-            filter: blur(18px) brightness(1.15) opacity(0.35);
-            transform: scale(1.08);
-            z-index: -2;
-        }
+        /* MENU TAB GESER */
+        .nav-tabs { display: flex; overflow-x: auto; background: var(--white); padding: 10px; white-space: nowrap; border-bottom: 2px solid var(--primary-pink); scrollbar-width: none; }
+        .nav-tabs::-webkit-scrollbar { display: none; }
+        .tab-item { padding: 10px 20px; margin-right: 10px; background: var(--bg-gray); border-radius: 20px; cursor: pointer; font-weight: bold; border: 1px solid #ddd; transition: 0.3s; }
+        .tab-item.active { background: var(--primary-pink); color: var(--white); border-color: var(--primary-pink); }
 
-        body::after {
-            content: '';
-            position: fixed;
-            top: 0; left: 0; width: 100%; height: 100%;
-            background: 
-                radial-gradient(circle at 15% 20%, rgba(255, 255, 255, 0.9) 0%, transparent 25%),
-                radial-gradient(circle at 85% 30%, rgba(255, 182, 193, 0.4) 0%, transparent 35%),
-                radial-gradient(circle at 50% 80%, rgba(255, 255, 255, 0.8) 0%, transparent 30%),
-                linear-gradient(135deg, rgba(255, 240, 245, 0.6) 0%, rgba(255, 228, 236, 0.6) 100%);
-            z-index: -1;
-            pointer-events: none;
-        }
+        /* KONTEN UTAMA */
+        .container { max-width: 800px; margin: 20px auto; padding: 0 15px; min-height: 60vh; }
+        .section { display: none; animation: fadeIn 0.3s ease; }
+        .section.active { display: block; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
 
-        .container {
-            max-width: 1000px;
-            width: 92%;
-            margin: 20px auto;
-            background: var(--card-bg);
-            backdrop-filter: blur(12px);
-            padding: 30px;
-            border-radius: 24px;
-            box-shadow: 0 10px 30px rgba(255, 158, 187, 0.25);
-            position: relative;
-            z-index: 1;
-            border: 2px solid rgba(255, 255, 255, 0.8);
-        }
+        /* BANNER COMING SOON (HTML/CSS) */
+        .coming-soon-card { background: var(--white); border-radius: 12px; padding: 25px; text-align: center; margin-bottom: 20px; border: 2px dashed var(--primary-pink); box-shadow: 0 4px 15px rgba(255,182,193,0.2); }
+        .coming-soon-icon { font-size: 40px; margin-bottom: 10px; animation: bounce 2s infinite; }
+        @keyframes bounce { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-8px); } }
 
-        .admin-login-trigger {
-            position: fixed; top: 20px; right: 20px;
-            width: 46px; height: 46px; border-radius: 50%;
-            background: #fff; border: 2px solid var(--pink-main);
-            box-shadow: 0 4px 15px rgba(218, 92, 128, 0.3);
-            cursor: pointer; z-index: 100000; padding: 2px;
-            transition: all 0.3s ease; display: flex; align-items: center; justify-content: center;
-        }
-        .admin-login-trigger img { width: 100%; height: 100%; border-radius: 50%; object-fit: cover; }
-        .admin-login-trigger:hover { transform: scale(1.1) rotate(10deg); }
+        /* GRID PRODUK */
+        .grid-container { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 15px; margin-top: 15px; }
+        .product-card { background: var(--white); border-radius: 10px; padding: 15px; text-align: center; box-shadow: 0 2px 5px rgba(0,0,0,0.05); cursor: pointer; border: 1px solid transparent; transition: 0.2s; }
+        .product-card:hover { border-color: var(--primary-pink); transform: translateY(-3px); }
+        .product-card img { width: 60px; height: 60px; border-radius: 10px; margin-bottom: 10px; object-fit: cover; }
+        
+        /* NOTIFIKASI */
+        .alert-box { background: #ffebee; border-left: 4px solid #ff4c4c; padding: 10px 15px; margin-bottom: 15px; border-radius: 4px; font-size: 14px; }
+        .info-box { background: #e3f2fd; border-left: 4px solid #2196f3; padding: 10px 15px; margin-bottom: 15px; border-radius: 4px; font-size: 14px; }
 
-        .header img {
-            width: 100%; height: auto; max-height: 240px; object-fit: cover;
-            border-radius: 18px; margin-bottom: 20px; border: 2px solid var(--pink-main); display: block;
-        }
+        /* FORM & CHECKOUT */
+        .form-group { margin-bottom: 15px; text-align: left; }
+        .form-group label { display: block; font-weight: bold; margin-bottom: 5px; font-size: 14px; }
+        .form-control { width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 6px; font-size: 14px; }
+        textarea.form-control { resize: vertical; min-height: 80px; }
+        .btn-primary { width: 100%; background: var(--primary-pink); color: var(--dark-text); font-weight: bold; padding: 12px; border: none; border-radius: 6px; cursor: pointer; font-size: 16px; margin-top: 10px; }
+        .btn-wa { background: var(--wa-color); color: white; }
+        .btn-copy { background: #e0e0e0; border: none; padding: 5px 10px; border-radius: 4px; cursor: pointer; font-size: 12px; margin-left: 10px; }
 
-        .profile-box {
-            text-align: center; margin-bottom: 25px; padding: 20px 15px 15px;
-            background: var(--pink-soft); border-radius: 18px; border: 1px solid rgba(255, 158, 187, 0.4);
-            box-shadow: 0 4px 12px rgba(255, 182, 193, 0.15);
-        }
+        /* SUB-TABS */
+        .sub-tabs { display: flex; margin-bottom: 15px; }
+        .sub-tab { flex: 1; text-align: center; padding: 8px; background: #eee; cursor: pointer; font-weight: bold; font-size: 14px; border-radius: 4px 4px 0 0; }
+        .sub-tab.active { background: var(--primary-pink); color: white; }
 
-        .profile-avatar {
-            width: 85px; height: 85px; border-radius: 50%; border: 3px solid var(--pink-main);
-            object-fit: cover; margin-top: -45px; background: #fff; box-shadow: 0 4px 12px rgba(218, 92, 128, 0.2);
-        }
+        /* PEMBAYARAN */
+        .payment-option { display: flex; align-items: center; padding: 10px; border: 1px solid #ddd; border-radius: 6px; margin-bottom: 10px; cursor: pointer; }
+        .payment-option input { margin-right: 10px; }
+        .qris-container { text-align: center; background: white; padding: 20px; border-radius: 10px; margin: 15px 0; display: none; }
+        #qrcode { display: flex; justify-content: center; margin-top: 10px; }
 
-        .profile-title { font-size: 1.3rem; font-weight: bold; color: var(--pink-dark); margin: 8px 0 3px 0; }
-        .profile-desc { font-size: 0.88rem; color: #666; margin-bottom: 10px; }
-        .status-badge {
-            display: inline-block; background: #25d366; color: white;
-            font-size: 0.75rem; padding: 4px 12px; border-radius: 12px; font-weight: bold;
-        }
+        /* MAINTENANCE OVERLAY */
+        #maintenance-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(255, 240, 245, 0.98); z-index: 999; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; padding: 20px; }
+        .maintenance-logo { width: 120px; height: 120px; object-fit: contain; margin-bottom: 20px; animation: floatLogo 3s ease-in-out infinite; }
+        @keyframes floatLogo { 0%, 100% { transform: translateY(0) scale(1); } 50% { transform: translateY(-12px) scale(1.05); } }
 
-        .coming-soon-banner {
-            background: linear-gradient(135deg, #ff9ebb 0%, #d85c80 100%);
-            border-radius: 20px;
-            padding: 20px;
-            color: #fff;
-            text-align: center;
-            margin-bottom: 25px;
-            box-shadow: 0 8px 20px rgba(216, 92, 128, 0.25);
-            border: 2px dashed #ffffff;
-            position: relative;
-            overflow: hidden;
-        }
-        .coming-soon-banner::before {
-            content: '🚀';
-            position: absolute;
-            right: -10px;
-            bottom: -10px;
-            font-size: 5rem;
-            opacity: 0.15;
-            transform: rotate(-15deg);
-        }
-        .cs-tag {
-            display: inline-block;
-            background: #fff;
-            color: var(--pink-dark);
-            font-weight: 800;
-            font-size: 0.75rem;
-            padding: 4px 12px;
-            border-radius: 20px;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            margin-bottom: 8px;
-        }
-        .cs-title {
-            font-size: 1.25rem;
-            font-weight: bold;
-            margin-bottom: 6px;
-            text-shadow: 0 2px 4px rgba(0,0,0,0.1);
-        }
-        .cs-desc {
-            font-size: 0.85rem;
-            opacity: 0.95;
-            line-height: 1.4;
-        }
-
-        .nav-tabs { display: flex; gap: 8px; margin-bottom: 20px; }
-        .tab-btn {
-            flex: 1; padding: 12px 6px; border: 2px solid var(--pink-bright); background: #fff;
-            color: var(--pink-dark); border-radius: 14px; font-weight: bold; cursor: pointer; text-align: center; font-size: 0.85rem; transition: 0.2s;
-        }
-        .tab-btn.active { background: var(--pink-main); color: white; border-color: var(--pink-main); }
-
-        .page { display: none; }
-        .page.active { display: block; }
-
-        .category-title { color: var(--pink-dark); font-size: 1.1rem; margin-bottom: 18px; font-weight: bold; text-align: center; }
-
-        .menu-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 18px; }
-
-        .menu-card {
-            border: 2px solid var(--pink-bright); padding: 16px 12px; border-radius: 18px; text-align: center;
-            cursor: pointer; transition: all 0.25s ease; background: #fff; font-weight: bold; font-size: 0.92rem;
-            color: var(--pink-dark); display: flex; align-items: center; justify-content: center; gap: 8px; min-height: 60px;
-        }
-        .menu-card:hover { border-color: var(--pink-main); background-color: var(--pink-bright); transform: translateY(-3px); }
-
-        .apk-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 18px; margin-top: 15px; }
-        .apk-card {
-            border: 2px solid var(--pink-bright); padding: 16px 12px; border-radius: 18px; text-align: center;
-            cursor: pointer; background: #fff; transition: 0.25s; display: flex; flex-direction: column; align-items: center; justify-content: center;
-        }
-        .apk-card:hover { border-color: var(--pink-main); background-color: var(--pink-bright); transform: translateY(-3px); }
-        .apk-icon { width: 60px; height: 60px; border-radius: 50%; object-fit: cover; border: 2px solid var(--pink-main); margin-bottom: 8px; }
-        .apk-title { font-weight: bold; font-size: 0.9rem; color: var(--pink-dark); }
-
-        @media (min-width: 768px) {
-            .menu-grid { grid-template-columns: repeat(3, 1fr); gap: 22px; }
-            .apk-grid { grid-template-columns: repeat(4, 1fr); gap: 22px; }
-            .grid-container { grid-template-columns: repeat(3, 1fr) !important; gap: 15px !important; }
-            .tab-btn { font-size: 0.95rem; padding: 12px; }
-        }
-
-        .btn-back {
-            background-color: var(--pink-bright); color: var(--pink-dark); border: none; padding: 10px 18px;
-            border-radius: 12px; font-weight: bold; cursor: pointer; margin-bottom: 18px;
-        }
-
-        .section-title { color: var(--pink-dark); font-size: 1rem; margin-top: 20px; border-bottom: 2px solid var(--pink-bright); padding-bottom: 6px; font-weight: bold; }
-        .form-group { margin-bottom: 18px; }
-        label { display: block; font-weight: bold; margin-bottom: 6px; color: var(--pink-dark); font-size: 0.9rem; }
-
-        input, textarea {
-            width: 100%; padding: 12px 15px; border: 2px solid var(--pink-bright); border-radius: 12px;
-            outline: none; font-size: 0.92rem; background: #fff; font-family: inherit;
-        }
-
-        textarea {
-            resize: vertical;
-            min-height: 90px;
-        }
-
-        .info-box {
-            background: #fff0f3; border: 1px dashed var(--pink-dark); color: var(--pink-dark);
-            padding: 12px 15px; border-radius: 12px; font-size: 0.85rem; margin-bottom: 15px; line-height: 1.5;
-        }
-
-        .grid-container { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; margin-top: 12px; }
-
-        .item-card {
-            border: 2px solid var(--pink-bright); padding: 14px 10px; border-radius: 14px;
-            text-align: center; cursor: pointer; transition: 0.2s; background: #fff;
-        }
-        .item-card.active { border-color: var(--pink-dark); background-color: var(--pink-bright); }
-        .item-title { font-size: 0.9rem; font-weight: bold; color: #444; }
-        .item-price { font-size: 0.85rem; color: var(--pink-dark); margin-top: 4px; font-weight: 600; }
-
-        .payment-card {
-            border: 2px solid var(--pink-bright); border-radius: 14px; padding: 12px 15px;
-            margin-top: 10px; background: #fff; cursor: pointer; transition: 0.2s;
-        }
-        .payment-card.active { border-color: var(--pink-dark); background: var(--pink-bright); }
-        .payment-title { font-weight: bold; color: var(--pink-dark); font-size: 0.95rem; }
-        .payment-sub { font-size: 0.83rem; color: #555; margin-top: 2px; }
-
-        .btn-action-main {
-            width: 100%; background-color: var(--pink-dark); color: white; border: none; padding: 16px;
-            border-radius: 14px; font-weight: bold; font-size: 1rem; cursor: pointer; margin-top: 22px;
-            display: flex; align-items: center; justify-content: center; gap: 10px; transition: 0.25s; text-decoration: none;
-        }
-
-        .btn-copy-num {
-            width: 100%; background-color: #fff; color: var(--pink-dark); border: 2px solid var(--pink-main); padding: 12px;
-            border-radius: 14px; font-weight: bold; font-size: 0.92rem; cursor: pointer; margin-top: 15px;
-            display: flex; align-items: center; justify-content: center; gap: 8px; transition: 0.25s;
-        }
-
-        .invoice-box {
-            background: #fff; border: 2px dashed var(--pink-main); border-radius: 16px;
-            padding: 18px; margin: 15px 0 10px 0; text-align: left;
-        }
-        .invoice-row { display: flex; justify-content: space-between; margin-bottom: 10px; font-size: 0.88rem; border-bottom: 1px dashed #ffe4ec; padding-bottom: 8px; }
-        .invoice-row:last-child { border-bottom: none; margin-bottom: 0; padding-bottom: 0; }
-
-        .maintenance-overlay {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(255, 240, 245, 0.97); backdrop-filter: blur(15px);
-            z-index: 9999; display: none; align-items: center; justify-content: center;
-            flex-direction: column; text-align: center; padding: 25px;
-        }
-        .maintenance-overlay.active { display: flex; }
-        .maintenance-icon { font-size: 3.8rem; color: var(--pink-dark); margin-bottom: 15px; animation: bounce 2s infinite; }
-        .maintenance-title { font-size: 1.5rem; font-weight: bold; color: var(--pink-dark); margin-bottom: 10px; }
-        .maintenance-desc { font-size: 0.95rem; color: #666; max-width: 400px; line-height: 1.5; }
-
-        @keyframes bounce { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-10px); } }
-
-        .contact-card-container { display: flex; flex-direction: column; gap: 15px; margin-top: 10px; }
-        .contact-card {
-            background: linear-gradient(135deg, #fff0f5 0%, #ffe4ec 100%);
-            border: 2px solid var(--pink-main); border-radius: 18px; padding: 16px 20px;
-            display: flex; align-items: center; justify-content: space-between; text-decoration: none; color: #444; transition: all 0.25s ease;
-            box-shadow: 0 4px 12px rgba(255, 158, 187, 0.15);
-        }
-        .contact-card:hover { transform: translateY(-3px); box-shadow: 0 8px 20px rgba(216, 92, 128, 0.25); background: linear-gradient(135deg, #ffe4ec 0%, #ff9ebb 100%); }
-        .contact-info { display: flex; align-items: center; gap: 15px; }
-        .contact-icon { width: 48px; height: 48px; border-radius: 50%; background: #fff; display: flex; align-items: center; justify-content: center; font-size: 1.5rem; color: var(--pink-dark); box-shadow: 0 2px 8px rgba(0,0,0,0.08); }
-        .contact-text-title { font-weight: bold; color: var(--pink-dark); font-size: 0.98rem; }
-        .contact-text-sub { font-size: 0.82rem; color: #666; margin-top: 2px; }
-        .contact-arrow { font-size: 1.2rem; color: var(--pink-dark); }
-
-        /* --- STYLES KHUSUS ANTRIAN & PANEL ADMIN --- */
-        .queue-card {
-            background: #ffffff;
-            border: 2px solid var(--pink-bright);
-            border-radius: 16px;
-            padding: 16px;
-            margin-bottom: 14px;
-            box-shadow: 0 4px 10px rgba(255, 158, 187, 0.1);
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
-            word-wrap: break-word;
-            overflow-wrap: break-word;
-            word-break: break-word;
-        }
-
-        .queue-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            flex-wrap: wrap;
-            gap: 8px;
-            border-bottom: 1px dashed var(--pink-bright);
-            padding-bottom: 8px;
-        }
-
-        .queue-number {
-            font-weight: 800;
-            color: var(--pink-dark);
-            font-size: 0.95rem;
-            background: var(--pink-soft);
-            padding: 4px 10px;
-            border-radius: 8px;
-        }
-
-        .queue-badge {
-            font-size: 0.78rem;
-            font-weight: bold;
-            padding: 4px 10px;
-            border-radius: 10px;
-            display: inline-block;
-        }
-        .badge-pending { background: #fef3c7; color: #d97706; }
-        .badge-process { background: #e0f2fe; color: #0284c7; }
-        .badge-success { background: #dcfce7; color: #15803d; }
-        .badge-cancel { background: #fee2e2; color: #dc2626; }
-
-        .queue-body {
-            font-size: 0.88rem;
-            line-height: 1.5;
-            color: #444;
-        }
-
-        .queue-target-box {
-            background: #fafafa;
-            border: 1px solid #eee;
-            border-radius: 10px;
-            padding: 8px 12px;
-            font-size: 0.82rem;
-            color: #555;
-            white-space: pre-line;
-            margin-top: 5px;
-        }
-
-        .admin-action-btns {
-            display: flex;
-            gap: 6px;
-            flex-wrap: wrap;
-            margin-top: 8px;
-        }
-        .btn-status {
-            padding: 6px 12px;
-            border: none;
-            border-radius: 8px;
-            font-size: 0.78rem;
-            font-weight: bold;
-            cursor: pointer;
-            transition: 0.2s;
-            flex: 1;
-            min-width: 90px;
-            text-align: center;
-        }
-        .btn-status-process { background: #3b82f6; color: white; }
-        .btn-status-success { background: #22c55e; color: white; }
-        .btn-status-cancel { background: #ef4444; color: white; }
-        .btn-status:hover { opacity: 0.9; transform: translateY(-1px); }
+        /* FAB CS */
+        .fab { position: fixed; bottom: 20px; right: 20px; background: var(--wa-color); color: white; width: 50px; height: 50px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 24px; box-shadow: 0 4px 10px rgba(0,0,0,0.2); cursor: pointer; text-decoration: none; z-index: 1000; }
+        
+        .footer { text-align: center; padding: 20px; font-size: 14px; color: #777; margin-top: 40px; }
+        .bg-sticker { position: fixed; bottom: -50px; left: -50px; width: 200px; opacity: 0.1; z-index: -1; pointer-events: none; }
     </style>
 </head>
 <body>
 
-<div id="maintenanceOverlay" class="maintenance-overlay">
-    <i class="fa-solid fa-screwdriver-wrench maintenance-icon"></i>
-    <div class="maintenance-title">SYSTEM UNDER MAINTENANCE</div>
-    <div class="maintenance-desc">
-        Halo Dear! Website Ciaa Store sedang dalam perbaikan dan pemeliharaan sistem sementara waktu. Silakan datang kembali nanti ya~ ✨
-    </div>
-</div>
-
-<button class="admin-login-trigger" onclick="openAdminPanel()" title="Login Admin Website">
-    <img src="logo.jpg" alt="Admin Login" onerror="this.src='https://via.placeholder.com/50'">
-</button>
-
-<div class="container">
-    <div class="header">
-        <img src="banner.jpg" alt="Ciaa Store Banner" onerror="this.src='logo.jpg'">
+    <!-- OVERLAY MAINTENANCE (Bisa dimatikan lewat Admin) -->
+    <div id="maintenance-overlay" style="display: none;">
+        <img src="maintenance.png" alt="Maintenance Logo" class="maintenance-logo" onerror="this.src='logo.jpg'">
+        <h2 style="color: var(--dark-text); margin-bottom: 10px;">Situs Sedang Dalam Pemeliharaan</h2>
+        <p style="color: #666; max-width: 400px; font-size: 14px;">Mohon bersabar, Ciaa Store sedang melakukan upgrade sistem agar pelayanan menjadi jauh lebih optimal. Silakan kembali beberapa saat lagi!</p>
     </div>
 
-    <div class="profile-box">
-        <img src="logo.jpg" alt="Logo Ciaa Store" class="profile-avatar">
-        <div class="profile-title">Ciaa Store Real</div>
-        <div class="profile-desc">Layanan Top Up Game & Premium Apk Terpercaya</div>
-        <span class="status-badge">● System Online</span>
+    <!-- TOMBOL LOGIN ADMIN (Selalu aktif di kiri atas) -->
+    <button class="btn-admin" onclick="adminLogin()" title="Admin Login">
+        <img src="logo.jpg" alt="Admin" onerror="this.src='https://cdn-icons-png.flaticon.com/512/2913/2913133.png'">
+    </button>
+
+    <header class="header">
+        <img src="banner.jpg" alt="Ciaa Store Banner" class="banner-utama" onerror="this.style.display='none'">
+    </header>
+
+    <!-- MENU TABS -->
+    <div class="nav-tabs">
+        <div class="tab-item active" onclick="switchMenu('app-premium')">Aplikasi Premium</div>
+        <div class="tab-item" onclick="switchMenu('topup-game')">Top Up Game & Voucher</div>
+        <div class="tab-item" onclick="switchMenu('jasa-ciaa')">Jasa Ciaa Store</div>
+        <div class="tab-item" onclick="switchMenu('antrian')">Nomor Antrian</div>
+        <div class="tab-item" onclick="switchMenu('kontak')">Informasi Kontak</div>
     </div>
 
-    <div class="nav-tabs" id="mainTabs">
-        <button class="tab-btn active" onclick="switchTab('services')">🛍️ Layanan</button>
-        <button class="tab-btn" onclick="switchTab('contact')">📞 Kontak Resmi</button>
-        <button class="tab-btn" onclick="switchTab('queue')">📋 Cek Antrian</button>
-    </div>
-
-    <!-- HOME PAGE -->
-    <div id="homePage" class="page active">
-        <div class="coming-soon-banner">
-            <span class="cs-tag">✨ SEGERA HADIR ✨</span>
-            <div class="cs-title">🌐 Jasa Pembuatan Website Custom</div>
-            <div class="cs-desc">Buat toko online, portofolio, atau landing page impianmu dengan harga terjangkau & desain modern khas Ciaa Store!</div>
-        </div>
-
-        <div class="category-title">✨ Silakan Pilih Layanan ✨</div>
-        <div class="menu-grid">
-            <div class="menu-card" onclick="openApkSubMenu()">👑 Premium Apk</div>
-            <div class="menu-card" onclick="openPage('ff')">🎮 Free Fire</div>
-            <div class="menu-card" onclick="openPage('ml')">⚔️ Mobile Legends</div>
-            <div class="menu-card" onclick="openPage('ml_ftu')">🌟 ML First Top Up</div>
-            <div class="menu-card" onclick="openPage('pubg')">🪂 PUBG Mobile</div>
-            <div class="menu-card" onclick="openPage('hok')">👑 Honor of Kings</div>
-            <div class="menu-card" onclick="openPage('bs')">🔫 Blood Strike</div>
-            <div class="menu-card" onclick="openPage('jasher')">📢 Jasher (Jasa Share)</div>
-            <div class="menu-card" onclick="openPage('jpm')">👥 JPM (Push Member)</div>
-        </div>
-    </div>
-
-    <!-- APK SUB MENU -->
-    <div id="apkSubMenuPage" class="page">
-        <button class="btn-back" onclick="goHome()">← Kembali ke Menu Utama</button>
-        <div class="category-title">👑 Premium Aplikasi</div>
+    <div class="container">
         
-        <div class="info-box" style="text-align: center;">
-            <strong>🕒 Open 06.00 - 22.00 WIB</strong><br>
-            Akun biasa dikirimkan oleh mimin 😀. Apabila ada kendala hubungi layanan bantuan yaw ~
+        <!-- SECTION: APLIKASI PREMIUM -->
+        <div id="app-premium" class="section active">
+            <div class="info-box">
+                <strong>(Open 06.00–20.30 WIB)</strong><br>
+                Akun Premium biasanya di kirimkan oleh mimin lewat WhatsApp , jika ada kendala / pertanyaan bisa tanyakan langsung kepada mimin yaw! mimin ga makan orang kok 🤭
+            </div>
+            <div class="grid-container" id="grid-app"></div>
         </div>
 
-        <div class="apk-grid">
-            <div class="apk-card" onclick="openPage('canva')"><img src="canva.jpg" class="apk-icon" onerror="this.src='logo.jpg'"><div class="apk-title">Canva Premium</div></div>
-            <div class="apk-card" onclick="openPage('am')"><img src="alightmotion.jpg" class="apk-icon" onerror="this.src='logo.jpg'"><div class="apk-title">Alight Motion</div></div>
-            <div class="apk-card" onclick="openPage('yt')"><img src="youtube.jpg" class="apk-icon" onerror="this.src='logo.jpg'"><div class="apk-title">YouTube Premium</div></div>
-            <div class="apk-card" onclick="openPage('iqiyi')"><img src="iqiyi.jpg" class="apk-icon" onerror="this.src='logo.jpg'"><div class="apk-title">iQIYI Premium</div></div>
-            <div class="apk-card" onclick="openPage('capcut')"><img src="capcut.jpg" class="apk-icon" onerror="this.src='logo.jpg'"><div class="apk-title">CapCut Pro</div></div>
-            <div class="apk-card" onclick="openPage('wetv')"><img src="wetv.jpg" class="apk-icon" onerror="this.src='logo.jpg'"><div class="apk-title">WeTV VIP</div></div>
-            <div class="apk-card" onclick="openPage('gemini')"><img src="gemini.jpg" class="apk-icon" onerror="this.src='logo.jpg'"><div class="apk-title">Gemini AI Pro</div></div>
-            <div class="apk-card" onclick="openPage('pixellab')"><img src="pixellab.jpg" class="apk-icon" onerror="this.src='logo.jpg'"><div class="apk-title">Pixellab Mod</div></div>
+        <!-- SECTION: TOP UP GAME & VOUCHER -->
+        <div id="topup-game" class="section">
+            <div class="coming-soon-card">
+                <div class="coming-soon-icon">🎟️</div>
+                <h3>Top Up Voucher Game (Coming Soon)</h3>
+                <p style="margin-top: 8px; color: #555;">Kode redeem anti-ribet, mendarat dengan cepat! Fitur Top Up Voucher Game sedang kami siapkan. Pantau terus untuk mendapatkan akses ke ribuan voucher dengan harga paling miring!</p>
+            </div>
+            <h3 style="margin-top: 20px; border-bottom: 2px solid var(--primary-pink); padding-bottom: 5px;">Daftar Game</h3>
+            <div class="grid-container" id="grid-game"></div>
         </div>
-    </div>
 
-    <!-- KONTAK RESMI PAGE -->
-    <div id="contactPage" class="page">
-        <div class="category-title">📞 Kontak Resmi Ciaa Store</div>
-        <div class="info-box" style="text-align: center; margin-bottom: 20px;">
-            Silakan hubungi kami melalui saluran resmi di bawah ini jika membutuhkan bantuan atau informasi tambahan.
+        <!-- SECTION: JASA CIAA STORE -->
+        <div id="jasa-ciaa" class="section">
+            <div class="coming-soon-card">
+                <div class="coming-soon-icon">✨</div>
+                <h3>Jasa Edit Website Jualan / Linktr.ee (Coming Soon)</h3>
+                <p style="margin-top: 8px; color: #555;">Tingkatkan kelas bisnismu! Punya toko online tapi tampilan masih kaku? Jasa Edit Website & Linktr.ee eksklusif dari Ciaa Store akan segera hadir. Bersiaplah menyambut desain elegan yang bikin pelanggan makin betah belanja!</p>
+            </div>
+            <div class="grid-container" id="grid-jasa"></div>
         </div>
-        
-        <div class="contact-card-container">
-            <a href="https://wa.me/6289505929536" target="_blank" class="contact-card">
-                <div class="contact-info">
-                    <div class="contact-icon" style="color: #25d366;"><i class="fa-brands fa-whatsapp"></i></div>
-                    <div>
-                        <div class="contact-text-title">No Utama Ciaa Store</div>
-                        <div class="contact-text-sub">+62 895-0592-9536</div>
-                    </div>
-                </div>
-                <div class="contact-arrow"><i class="fa-solid fa-chevron-right"></i></div>
-            </a>
 
-            <a href="https://wa.me/6289509452777" target="_blank" class="contact-card">
-                <div class="contact-info">
-                    <div class="contact-icon" style="color: #25d366;"><i class="fa-brands fa-whatsapp"></i></div>
-                    <div>
-                        <div class="contact-text-title">No Customer Service</div>
-                        <div class="contact-text-sub">+62 895-0945-2777</div>
-                    </div>
-                </div>
-                <div class="contact-arrow"><i class="fa-solid fa-chevron-right"></i></div>
-            </a>
-
-            <a href="https://linktr.ee/ciaastore.yo" target="_blank" class="contact-card">
-                <div class="contact-info">
-                    <div class="contact-icon" style="color: #d85c80;"><i class="fa-solid fa-link"></i></div>
-                    <div>
-                        <div class="contact-text-title">Linktree Ciaa Store</div>
-                        <div class="contact-text-sub">Semua Akses & Informasi</div>
-                    </div>
-                </div>
-                <div class="contact-arrow"><i class="fa-solid fa-chevron-right"></i></div>
-            </a>
+        <!-- SECTION: NOMOR ANTRIAN -->
+        <div id="antrian" class="section">
+            <h2 style="margin-bottom: 15px;">Daftar Antrian Hari Ini</h2>
+            <div class="info-box" id="list-antrian">
+                Sistem antrian real-time aktif via Firebase.
+            </div>
         </div>
-    </div>
 
-    <!-- CEK ANTRIAN PAGE -->
-    <div id="queuePage" class="page">
-        <div class="category-title">📊 Daftar Antrian Proses Terkini</div>
-        <div id="queueList"></div>
-    </div>
+        <!-- SECTION: KONTAK -->
+        <div id="kontak" class="section">
+            <div class="info-box" style="text-align: center;">
+                <h3>Ciaa Store Official</h3>
+                <p style="margin: 10px 0;">WhatsApp Admin Utama:<br><strong>6289505929536</strong></p>
+                <p style="margin: 10px 0;">WhatsApp CS:<br><strong>6289509452777</strong></p>
+                <p style="margin: 10px 0;"><a href="https://linktr.ee/ciaastore.yo" target="_blank">🔗 Linktr.ee Kami</a></p>
+                <p style="margin: 10px 0;"><a href="https://www.instagram.com/ciaastoree.yo" target="_blank">📸 Instagram: @ciaastoree.yo</a></p>
+            </div>
+        </div>
 
-    <!-- ADMIN PANEL PAGE -->
-    <div id="adminPage" class="page">
-        <button class="btn-back" onclick="goHome()">← Keluar dari Panel Admin</button>
-        <div class="category-title">👑 Panel Kelola Admin</div>
-        
-        <div style="background:#fff; border:2px solid var(--pink-main); border-radius:16px; padding:20px; margin-bottom:20px; text-align:center;">
-            <strong style="color:var(--pink-dark); font-size:1.1rem; display:block; margin-bottom:8px;">⚙️ Pengaturan Status Server Website</strong>
-            <p style="font-size:0.85rem; color:#666; margin:0 0 15px 0;">Tekan tombol di bawah ini untuk mengontrol apakah website sedang maintenance atau normal bagi pembeli.</p>
+        <!-- SECTION: FORM PEMESANAN -->
+        <div id="form-pesanan" class="section">
+            <button onclick="backToMenu()" style="margin-bottom: 15px; border:none; background:transparent; font-weight:bold; cursor:pointer;">⬅ Kembali</button>
+            <h2 id="form-title" style="margin-bottom: 10px;">Judul Produk</h2>
             
-            <button id="btnToggleMaintenance" onclick="toggleMaintenanceServer()" style="padding:12px 24px; border-radius:12px; border:none; font-weight:bold; cursor:pointer; background:#ef4444; color:white; font-size:0.95rem; transition:0.2s;">
-                🚨 Matikan Server (Aktifkan Maintenance)
-            </button>
+            <div id="sub-tabs-container" style="display: none;"></div>
+            <div id="product-notes" class="alert-box" style="display: none;"></div>
+
+            <div id="dynamic-inputs"></div>
+
+            <h3 style="margin-top: 20px; margin-bottom: 10px;">Pilih Paket</h3>
+            <div class="grid-container" id="package-list" style="margin-top:0;"></div>
+
+            <h3 style="margin-top: 20px; margin-bottom: 10px;">Pilih Pembayaran</h3>
+            <div class="payment-option"><input type="radio" name="pay-method" value="QRIS" id="pay-qris" checked> <label for="pay-qris">QRIS (Otomatis)</label></div>
+            <div class="payment-option"><input type="radio" name="pay-method" value="DANA" id="pay-dana"> <label for="pay-dana">DANA</label></div>
+            <div class="payment-option"><input type="radio" name="pay-method" value="GOPAY" id="pay-gopay"> <label for="pay-gopay">GoPay</label></div>
+
+            <button class="btn-primary" onclick="proceedToCheckout()">Lanjutkan Pembayaran</button>
         </div>
 
-        <div class="category-title" style="text-align:left; font-size:0.98rem;">📋 Kelola Pesanan & Konfirmasi Status Antrian:</div>
-        <div id="adminQueueList"></div>
+        <!-- SECTION: CHECKOUT -->
+        <div id="checkout-page" class="section">
+            <h2 style="text-align: center; color: #e74c3c;">Silakan transfer terlebih dahulu untuk melanjutkan pesanan Anda</h2>
+            
+            <div class="info-box" style="margin-top: 20px;">
+                <strong>Ringkasan Pesanan:</strong>
+                <p id="co-antrian">No. Antrian: -</p>
+                <p id="co-produk">Layanan: -</p>
+                <p id="co-data">Data: -</p>
+                <p id="co-harga" style="font-size: 18px; font-weight: bold; margin-top: 10px;">Total: Rp -</p>
+            </div>
+
+            <div id="transfer-info" class="alert-box" style="background: var(--white); border-color: var(--primary-pink); text-align: center;">
+                <h3 id="co-method-title">Metode</h3>
+                <p id="co-method-number" style="font-size: 18px; font-weight: bold; margin: 10px 0;"></p>
+                <button id="btn-copy-rek" class="btn-copy" onclick="copyText(document.getElementById('co-method-number').innerText)">Salin Nomor</button>
+            </div>
+
+            <div class="qris-container" id="qris-box">
+                <p style="font-size: 12px; color: #666;">Scan kode QR ini menggunakan e-wallet Anda. Nominal sudah termasuk biaya admin otomatis.</p>
+                <div id="qrcode"></div>
+            </div>
+
+            <div class="alert-box">
+                ⚠️ PENTING: Mohon sertakan foto/screenshot bukti transfer saat mengirim pesan ke Admin agar pesanan Anda dapat segera diproses.
+            </div>
+
+            <button class="btn-primary btn-wa" onclick="sendToWhatsApp()">Konfirmasi Pembayaran ke Admin 💬</button>
+        </div>
+
     </div>
 
-    <!-- DETAIL SERVICE PAGE -->
-    <div id="detailPage" class="page">
-        <button class="btn-back" onclick="goHome()">← Kembali</button>
-        <h2 id="serviceTitle" style="color: var(--pink-dark); margin-top:0; font-size:1.1rem;"></h2>
-
-        <div class="form-group">
-            <label id="inputLabel">1. Masukkan Data</label>
-            <input type="text" id="storeNameInput" placeholder="Masukkan Nama Store..." style="margin-bottom: 10px; display: none;">
-            <textarea id="userData" placeholder=""></textarea>
-        </div>
-
-        <div class="section-title">2. Pilih Nominal / Paket</div>
-        <div class="grid-container" id="itemsGrid"></div>
-
-        <div class="section-title">3. Pilih Metode Pembayaran</div>
-        <!-- KEMBALIKAN PILIHAN QRIS -->
-        <div class="payment-card" onclick="selectPayment('QRIS', 'Scan QR Code Otomatis', 'AGUS SUTIARNO', this)">
-            <div class="payment-title">QRIS (All Payment)</div>
-            <div class="payment-sub">Scan QR untuk semua e-wallet & bank (Bebas Admin)</div>
-        </div>
-        <div class="payment-card" onclick="selectPayment('DANA', '081338224767', 'AGUS SUTIARNO', this)">
-            <div class="payment-title">DANA</div>
-            <div class="payment-sub">Nomor: <strong>081338224767</strong></div>
-            <div class="payment-sub">A/N: <strong>AGUS SUTIARNO</strong></div>
-        </div>
-        <div class="payment-card" onclick="selectPayment('GOPAY', '089505929536', 'AGUS SUTIARNO', this)">
-            <div class="payment-title">GOPAY</div>
-            <div class="payment-sub">Nomor: <strong>089505929536</strong></div>
-            <div class="payment-sub">A/N: <strong>AGUS SUTIARNO</strong></div>
-        </div>
-
-        <button id="btnMainAction" class="btn-action-main" onclick="handleMainAction()">
-            💳 Lanjutkan Pembayaran
-        </button>
+    <div class="footer">
+        &copy; 2026 Ciaa Store. All rights reserved.
     </div>
+    
+    <a href="https://wa.me/6289509452777" target="_blank" class="fab" title="Hubungi CS">💬</a>
 
-    <!-- PAYMENT INVOICE PAGE -->
-    <div id="paymentPage" class="page">
-        <button class="btn-back" onclick="goBackToDetail()">← Ubah Pesanan</button>
-        <div class="category-title">💳 Silahkan Lakukan Pembayaran</div>
-        
-        <div class="invoice-box">
-            <div class="invoice-row"><span>Metode</span><span id="invPaymentMethod">-</span></div>
-            <div class="invoice-row"><span>Paket</span><span id="invPackage">-</span></div>
-            <div class="invoice-row"><span>Harga</span><span id="invPrice">-</span></div>
-            <div class="invoice-row"><span>Nomor Tujuan</span><span id="invNumber">-</span></div>
-            <div class="invoice-row"><span>A/N</span><span id="invHolder">-</span></div>
-        </div>
+    <!-- SCRIPT UTAMA -->
+    <script>
+        // Konfigurasi Firebase (Bisa diisi nanti)
+        const firebaseConfig = {
+            apiKey: "ISI_NANTI",
+            authDomain: "ISI_NANTI",
+            databaseURL: "ISI_NANTI",
+            projectId: "ISI_NANTI",
+            storageBucket: "ISI_NANTI",
+            messagingSenderId: "ISI_NANTI",
+            appId: "ISI_NANTI"
+        };
+        // firebase.initializeApp(firebaseConfig);
 
-        <button id="btnCopyNumber" class="btn-copy-num" onclick="copyPaymentNumber()">
-            <i class="fa-regular fa-copy"></i> Salin Nomor Tujuan
-        </button>
+        // Cek status maintenance dari localStorage atau sistem Admin
+        if(localStorage.getItem('ciaa_maintenance') === 'true') {
+            document.getElementById('maintenance-overlay').style.display = 'flex';
+        }
 
-        <button id="btnWaConfirm" class="btn-action-main" style="background:#25d366;">
-            <i class="fa-brands fa-whatsapp"></i> Konfirmasi Pembayaran Via WhatsApp
-        </button>
-    </div>
-</div>
-
-<script>
-    const servicesData = {
-        'jasher': {
-            title: 'Jasher (Jasa Share)',
-            items: [
-                { name: '12 Jam', price: 200 },
-                { name: '1 Hari', price: 500 },
-                { name: '3 Hari', price: 1000 },
-                { name: '1 Minggu', price: 3000 },
-                { name: '2 Minggu', price: 4000 },
-                { name: '1 Bulan', price: 6000 },
-                { name: '3 Bulan', price: 7000 }
+        const dataProduk = {
+            "app-premium": [
+                { id: "canva", nama: "Canva", img: "canva.jpg", type: "ui-canva" },
+                { id: "viu", nama: "Viu", img: "viu.jpg", type: "ui-viu" },
+                { id: "yt", nama: "YouTube", img: "youtube.jpg", type: "ui-yt", catatan: "Family Plan: Isi email | Individual Plan: Isi No WhatsApp. Lakukan verifikasi akun agar aman." },
+                { id: "am", nama: "Alight Motion", img: "alightmotion.jpg", type: "ui-std", inputs: ["Email/No WA"] },
+                { id: "iqiyi", nama: "IQIYI", img: "iqiyi.jpg", type: "ui-std", inputs: ["No WhatsApp"], catatan: "Proses Manual - Lambat. Akun dikirim ke WA." },
+                { id: "capcut", nama: "Capcut", img: "capcut.jpg", type: "ui-std", inputs: ["No WhatsApp"], catatan: "Proses Lambat: Manual. Akun Jangan Disebar. Kirim SS profil setelah login max 1x24 Jam." },
+                { id: "wetv", nama: "WeTV", img: "wetv.jpg", type: "ui-std", inputs: ["No WhatsApp"], catatan: "Akun dikirim ke Whatsappnya." },
+                { id: "gemini", nama: "AI Gemini Pro", img: "gemini.jpg", type: "ui-std", inputs: ["No WhatsApp"], catatan: "1x Pembelian untuk 1 Orang (tidak boleh disebar)." },
+                { id: "meitu", nama: "Meitu", img: "meitu.jpg", type: "ui-std", inputs: ["No WhatsApp"], catatan: "Meitu 1 Minggu. Proses Manual." }
+            ],
+            "jasa-ciaa": [
+                { id: "jasher", nama: "Jasher (Jasa Share)", img: "", type: "ui-jasa", ph_desc: "(Contoh: masukkan nama grup dan link grup/teks jasher)", catatan: "Bukan Jasa Push Member! Konfirmasi pembayaran di web. No reff." },
+                { id: "jpm", nama: "JPM (Jasa Push Member)", img: "", type: "ui-jasa", ph_desc: "(Contoh: masukkan nama grup dan link target!)", catatan: "Push member sesuai target. Settingan GB nyalakan persetujuan admin." }
+            ],
+            "topup-game": [
+                { id: "ff", nama: "Free Fire", img: "ff.jpg", type: "ui-game", inputs: ["Username", "ID Game"] },
+                { id: "mlbb", nama: "Mobile Legends", img: "ml.jpg", type: "ui-game", inputs: ["Username", "ID Game", "Server"] },
+                { id: "pubg", nama: "PUBG Mobile", img: "pubg.jpg", type: "ui-game", inputs: ["Username", "ID Game"] },
+                { id: "hok", nama: "Honor Of Kings", img: "hok.jpg", type: "ui-game", inputs: ["Username", "ID Game"] },
+                { id: "bs", nama: "Blood Strike", img: "bs.jpg", type: "ui-game", inputs: ["Username", "ID Game"] }
             ]
-        },
-        'jpm': {
-            title: 'JPM (Jasa Push Member)',
-            items: [
-                { name: '10 Member', price: 500 },
-                { name: '20 Member', price: 1000 },
-                { name: '50 Member', price: 3000 },
-                { name: '70 Member', price: 4000 },
-                { name: '100 Member', price: 5000 },
-                { name: '150 Member', price: 7000 },
-                { name: '250 Member', price: 8000 },
-                { name: '400 Member', price: 12000 },
-                { name: '500 Member', price: 16000 }
-            ]
-        },
-        'ff': {
-            title: 'Free Fire',
-            items: [
-                { name: '5 Diamond', price: 1000 },
-                { name: '10 Diamond', price: 2000 },
-                { name: '20 Diamond', price: 5000 },
-                { name: '25 Diamond', price: 6000 },
-                { name: '30 Diamond', price: 7000 },
-                { name: '50 Diamond', price: 9000 },
-                { name: '70 Diamond', price: 11000 },
-                { name: '75 Diamond', price: 12000 },
-                { name: '100 Diamond', price: 16000 },
-                { name: '120 Diamond', price: 18000 },
-                { name: '140 Diamond', price: 20000 },
-                { name: '150 Diamond', price: 22000 },
-                { name: '160 Diamond', price: 24000 },
-                { name: '210 Diamond', price: 30000 },
-                { name: '250 Diamond', price: 36000 },
-                { name: '355 Diamond', price: 49000 },
-                { name: '500 Diamond', price: 66000 },
-                { name: '720 Diamond', price: 96000 },
-                { name: '1000 Diamond', price: 134000 },
-                { name: '1450 Diamond', price: 190000 },
-                { name: '2000 Diamond', price: 264000 },
-                { name: 'Membership Mingguan (Untuk mengubah nama menjadi **AGUS SUTIARNO** di bagian atas, mohon tempelkan (*paste*) draf teks atau format dokumen yang sedang Anda kerjakan ke sini. Saya akan bantu menyesuaikannya tanpa mengubah bagian lainnya.
+        };
 
-Mengenai fitur atau tombol QRIS yang tiba-tiba hilang dari aplikasi dompet digital atau *m-banking* Anda, ada beberapa faktor teknis dan administratif yang biasanya menjadi penyebabnya.
+        const listHarga = {
+            "canva": [ { nama: "Canva 1 Bulan", harga: 3000, tag: "tim" }, { nama: "Canva Head 1 Bulan", harga: 7000, tag: "head" } ],
+            "viu": [ { nama: "Viu 1 Tahun (Private) – No Gar", harga: 5000, tag: "oto" }, { nama: "Paket Viu Prem 5 Akun (6 Bln)", harga: 8000, tag: "man" }, { nama: "Viu Plus 1 Bulan (Sharing)", harga: 18000, tag: "man" } ],
+            "yt": [ { nama: "YouTube 1 Bulan (Family Plan)", harga: 5000 } ],
+            "am": [ { nama: "Alight Motion 1 Tahun", harga: 4000 } ],
+            "iqiyi": [ { nama: "IQIYI 1 Bulan (Private Vip Standar)", harga: 37000 } ],
+            "capcut": [ { nama: "Capcut Pro 7 Hari (Private)", harga: 5000 }, { nama: "Capcut Pro 1 Bulan (Private)", harga: 25000 } ],
+            "wetv": [ { nama: "WeTV 1 Bulan (Sharing)", harga: 11000 }, { nama: "WeTV 3 Bulan (Sharing)", harga: 27000 }, { nama: "WeTV 1 Bulan (Private)", harga: 28000 } ],
+            "gemini": [ { nama: "AI Gemini Pro 1 Bulan", harga: 15000 } ],
+            "meitu": [ { nama: "Meitu 1 Minggu", harga: 10000 } ],
+            "jasher": [ {nama: "12 Jam", harga: 200}, {nama: "1 Hari", harga: 500}, {nama: "1 Minggu", harga: 3000}, {nama: "Jasher Kelas Premium 1 Bln", harga: 10000} ],
+            "jpm": [ {nama: "10 Mem", harga: 500}, {nama: "50 Mem", harga: 3000}, {nama: "100 Mem", harga: 5000}, {nama: "500 Mem", harga: 16000} ],
+            "ff": [ {nama: "5 Diamonds", harga: 1000}, {nama: "70 Diamonds", harga: 11000}, {nama: "140 Diamonds", harga: 20000} ],
+            "mlbb": [ {nama: "12 Diamonds", harga: 4000}, {nama: "86 Diamonds", harga: 20000}, {nama: "WDP", harga: 28000} ],
+            "pubg": [ {nama: "60 UC", harga: 18000}, {nama: "300 UC", harga: 85000} ],
+            "hok": [ {nama: "16 Tokens", harga: 3500}, {nama: "80 Tokens", harga: 19000} ],
+            "bs": [ {nama: "100 Gold", harga: 16000}, {nama: "300 Gold", harga: 45000} ]
+        };
 
-### Penyebab Umum QRIS Hilang
-*   **Aplikasi Belum Diperbarui:** Versi aplikasi yang sudah usang (*outdated*) sering kali mengalami *bug* atau gagal memuat tampilan antarmuka secara penuh, termasuk menyembunyikan beberapa menu pembayaran.
-*   **Status Akun Belum Premium:** Banyak dompet digital mewajibkan penggunanya untuk melakukan peningkatan akun (misalnya DANA Premium atau GoPay Plus) dengan verifikasi KTP agar bisa menggunakan fitur QRIS. Jika sistem meminta verifikasi ulang, fitur ini bisa ditangguhkan sementara.
-*   **Pemeliharaan Sistem (*Maintenance*):** Server penyedia layanan (bank atau dompet digital) mungkin sedang mengalami perbaikan atau gangguan jaringan, sehingga menu transaksi disembunyikan untuk mencegah kegagalan pembayaran.
-*   **Penumpukan *Cache* Aplikasi:** Data *cache* yang terlalu penuh atau rusak (*corrupt*) di sistem ponsel Android Anda bisa membuat aplikasi tidak berjalan optimal.
-*   **Pembatasan Keamanan:** Jika sistem mendeteksi aktivitas *login* yang tidak biasa atau transaksi yang mencurigakan, fitur pembayaran dapat dibekukan sementara oleh sistem untuk melindungi saldo Anda.
+        let activeProduct = null;
+        let activeVariant = null;
+        let checkoutData = {};
+        const qrisStatis = "00020101021126570011ID.DANA.WWW011893600915376556859902097655685990303UMI51440014ID.CO.QRIS.WWW0215ID10253787183610303UMI5204481453033605802ID5914Ciaa Store All6014Kota Pontianak61057811363048AD2";
 
-### Langkah Solusi yang Bisa Dicoba
-1.  **Cek Pembaruan:** Buka Google Play Store dan pastikan aplikasi yang Anda gunakan sudah diperbarui ke versi paling baru.
-2.  **Bersihkan *Cache*:** Masuk ke Pengaturan ponsel > Aplikasi > cari aplikasi dompet digital tersebut > Penyimpanan > pilih **Hapus Cache** (*Clear Cache*).
-3.  **Cek Status Verifikasi:** Buka menu profil di dalam aplikasi dan pastikan tidak ada permintaan untuk memverifikasi ulang identitas Anda.
-4.  **Tutup dan *Login* Ulang:** Lakukan *logout* (keluar) dari akun Anda, tutup aplikasi sepenuhnya, lalu coba *login* kembali.
+        window.onload = () => {
+            renderGrid('app-premium', 'grid-app');
+            renderGrid('topup-game', 'grid-game');
+            renderGrid('jasa-ciaa', 'grid-jasa');
+        };
 
-Aplikasi spesifik apa (misalnya DANA, m-banking, atau aplikasi lain) yang sedang Anda gunakan saat ini saat QRIS tersebut hilang?
+        function switchMenu(menuId) {
+            document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+            document.querySelectorAll('.tab-item').forEach(t => t.classList.remove('active'));
+            document.getElementById(menuId).classList.add('active');
+            event.target.classList.add('active');
+        }
+
+        function backToMenu() {
+            document.getElementById('form-pesanan').classList.remove('active');
+            document.getElementById('app-premium').classList.add('active');
+            window.scrollTo(0,0);
+        }
+
+        function renderGrid(kategori, elId) {
+            const container = document.getElementById(elId);
+            container.innerHTML = "";
+            dataProduk[kategori].forEach(item => {
+                let html = `<div class="product-card" onclick="openForm('${item.id}', '${kategori}')">`;
+                if(item.img) html += `<img src="${item.img}" alt="${item.nama}" onerror="this.src='https://cdn-icons-png.flaticon.com/512/869/869034.png'">`;
+                html += `<h4>${item.nama}</h4></div>`;
+                container.innerHTML += html;
+            });
+        }
+
+        function openForm(itemId, kategori) {
+            document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+            document.getElementById('form-pesanan').classList.add('active');
+            
+            const prod = dataProduk[kategori].find(p => p.id === itemId);
+            activeProduct = prod;
+            document.getElementById('form-title').innerText = prod.nama;
+            
+            const notesEl = document.getElementById('product-notes');
+            const subTabsEl = document.getElementById('sub-tabs-container');
+            const inputsEl = document.getElementById('dynamic-inputs');
+            
+            subTabsEl.style.display = 'none';
+            notesEl.style.display = 'none';
+            inputsEl.innerHTML = '';
+
+            if(prod.catatan) {
+                notesEl.innerHTML = prod.catatan;
+                notesEl.style.display = 'block';
+            }
+
+            if(prod.type === 'ui-canva') {
+                subTabsEl.style.display = 'flex';
+                subTabsEl.innerHTML = `
+                    <div class="sub-tab active" onclick="switchSubTab('tim')">Canva Tim</div>
+                    <div class="sub-tab" onclick="switchSubTab('head')">Canva Head</div>
+                `;
+                renderInputs(['email@gmail.com']);
+                notesEl.innerHTML = "• Canva Tim (25-28 hari = 1 bulan)<br>• Proses Instan - Cek detail transaksi nya";
+                notesEl.style.display = 'block';
+                renderPackages('canva', 'tim');
+            } 
+            else if(prod.type === 'ui-viu') {
+                subTabsEl.style.display = 'flex';
+                subTabsEl.innerHTML = `
+                    <div class="sub-tab active" onclick="switchSubTab('oto')">Otomatis</div>
+                    <div class="sub-tab" onclick="switchSubTab('man')">Manual</div>
+                `;
+                renderInputs(['Nomor WhatsApp']);
+                renderPackages('viu', 'oto');
+            }
+            else if(prod.type === 'ui-jasa') {
+                renderInputs(['Nama Store']);
+                inputsEl.innerHTML += `
+                    <div class="form-group" style="margin-top:20px;">
+                        <label>Deskripsi / Link Target</label>
+                        <textarea class="form-control" id="input-desc" placeholder="${prod.ph_desc}"></textarea>
+                    </div>
+                `;
+                renderPackages(prod.id);
+            }
+            else {
+                renderInputs(prod.inputs);
+                renderPackages(prod.id);
+            }
+            window.scrollTo(0,0);
+        }
+
+        function switchSubTab(tag) {
+            document.querySelectorAll('.sub-tab').forEach(el => el.classList.remove('active'));
+            event.target.classList.add('active');
+            
+            const notesEl = document.getElementById('product-notes');
+            
+            if(activeProduct.id === 'canva') {
+                if(tag === 'tim') {
+                    renderInputs(['email@gmail.com']);
+                    notesEl.innerHTML = "• Canva Tim (25-28 hari = 1 bulan)<br>• Proses Instan - Cek detail transaksi nya";
+                } else {
+                    renderInputs(['Nomor WhatsApp']);
+                    notesEl.innerHTML = "Produk Diproses Manual - Slow<br>• Dapat mengundang hingga 10 member<br>• Garansi 25 hari, Proses 1x24 Jam";
+                }
+            } else if (activeProduct.id === 'viu') {
+                renderInputs(['Nomor WhatsApp']);
+            }
+            renderPackages(activeProduct.id, tag);
+        }
+
+        function renderInputs(arr) {
+            const el = document.getElementById('dynamic-inputs');
+            el.innerHTML = '';
+            arr.forEach((item) => {
+                el.innerHTML += `<div class="form-group"><label>${item}</label><input type="text" class="form-control inputs-data" placeholder="Masukkan ${item}"></div>`;
+            });
+        }
+
+        function renderPackages(itemId, tag = null) {
+            const list = listHarga[itemId];
+            const el = document.getElementById('package-list');
+            el.innerHTML = '';
+            list.forEach(pkt => {
+                if(!tag || pkt.tag === tag) {
+                    el.innerHTML += `
+                        <div class="product-card" onclick="selectPackage(this, '${pkt.nama}', ${pkt.harga})">
+                            <h4 style="font-size:14px; margin-bottom:5px;">${pkt.nama}</h4>
+                            <p style="color:var(--wa-color); font-weight:bold;">Rp ${pkt.harga.toLocaleString('id-ID')}</p>
+                        </div>
+                    `;
+                }
+            });
+        }
+
+        function selectPackage(element, nama, harga) {
+            document.querySelectorAll('#package-list .product-card').forEach(el => el.style.borderColor = 'transparent');
+            element.style.borderColor = 'var(--wa-color)';
+            activeVariant = { nama, harga };
+        }
+
+        function proceedToCheckout() {
+            if(!activeVariant) return alert("Silakan pilih paket produk terlebih dahulu!");
+            
+            const date = new Date();
+            const dStr = String(date.getDate()).padStart(2, '0') + String(date.getMonth()+1).padStart(2, '0') + String(date.getFullYear()).slice(-2);
+            const antrianNo = `cs-${dStr}-#${Math.floor(Math.random()*99)+1}`;
+            
+            let dataPelanggan = [];
+            document.querySelectorAll('.inputs-data').forEach(i => dataPelanggan.push(i.value));
+            const desc = document.getElementById('input-desc') ? document.getElementById('input-desc').value : "";
+            
+            const unik = Math.floor(Math.random() * 99) + 1;
+            const totalBayar = activeVariant.harga + unik;
+            const payMethod = document.querySelector('input[name="pay-method"]:checked').value;
+
+            checkoutData = { antrian: antrianNo, produk: activeProduct.nama, paket: activeVariant.nama, data: dataPelanggan.join(" | "), desc: desc, total: totalBayar, metode: payMethod, type: activeProduct.type };
+
+            document.getElementById('co-antrian').innerText = `No. Antrian: ${antrianNo}`;
+            document.getElementById('co-produk').innerText = `Layanan: ${activeProduct.nama} - ${activeVariant.nama}`;
+            document.getElementById('co-data').innerText = `Data: ${checkoutData.data}`;
+            document.getElementById('co-harga').innerText = `Total: Rp ${totalBayar.toLocaleString('id-ID')} (Termasuk kode unik Rp${unik})`;
+            
+            const transferInfo = document.getElementById('transfer-info');
+            const qrisBox = document.getElementById('qris-box');
+            document.getElementById('qrcode').innerHTML = ""; 
+            
+            if(payMethod === "DANA") {
+                transferInfo.style.display = 'block'; qrisBox.style.display = 'none';
+                document.getElementById('co-method-title').innerText = "Transfer DANA";
+                document.getElementById('co-method-number').innerText = "081338224767 (A/N AGUS SUTIARNO)";
+            } else if (payMethod === "GOPAY") {
+                transferInfo.style.display = 'block'; qrisBox.style.display = 'none';
+                document.getElementById('co-method-title').innerText = "Transfer GoPay";
+                document.getElementById('co-method-number').innerText = "089505929536";
+            } else {
+                transferInfo.style.display = 'none'; qrisBox.style.display = 'block';
+                new QRCode(document.getElementById("qrcode"), { text: qrisStatis, width: 200, height: 200 });
+            }
+
+            document.getElementById('form-pesanan').classList.remove('active');
+            document.getElementById('checkout-page').classList.add('active');
+            window.scrollTo(0,0);
+        }
+
+        function sendToWhatsApp() {
+            const noWA = "6289505929536";
+            let teks = "";
+            
+            if(checkoutData.type === 'ui-jasa') {
+                teks = `Halo Admin Ciaa Store! ✨\nSaya sudah transfer untuk pemesanan Jasa:\n\n🎫 No. Antrian: ${checkoutData.antrian}\n🚀 Layanan: ${checkoutData.produk}\n📦 Paket: ${checkoutData.paket}\n🏪 Nama Store: ${checkoutData.data}\n💰 Total Bayar: Rp${checkoutData.total.toLocaleString('id-ID')}\n💳 Pembayaran: ${checkoutData.metode}\n\n🔗 Deskripsi/Link Target:\n${checkoutData.desc}\n\nBukti transfer saya kirimkan di bawah ini ya Min. Ditunggu prosesnya! 🙏`;
+            } else if (checkoutData.type === 'ui-game') {
+                teks = `Halo Admin Ciaa Store! 🎮\nSaya sudah melakukan transfer dan ingin konfirmasi pesanan:\n\n🎫 No. Antrian: ${checkoutData.antrian}\n🛒 Layanan: ${checkoutData.produk}\n💎 Item/Paket: ${checkoutData.paket}\n👤 Data: ${checkoutData.data}\n💰 Total Bayar: Rp${checkoutData.total.toLocaleString('id-ID')}\n💳 Pembayaran: ${checkoutData.metode}\n\nBerikut saya lampirkan bukti transfernya. Mohon segera diproses ya Min! 🙏`;
+            } else {
+                teks = `Halo Admin Ciaa Store! 📱\nSaya mau konfirmasi pembayaran untuk Aplikasi Premium:\n\n🎫 No. Antrian: ${checkoutData.antrian}\n🎬 Aplikasi: ${checkoutData.produk}\n📦 Paket: ${checkoutData.paket}\n📧 Data: ${checkoutData.data}\n💰 Total Bayar: Rp${checkoutData.total.toLocaleString('id-ID')}\n💳 Pembayaran: ${checkoutData.metode}\n\nBukti transfer sudah saya siapkan dan kirim di bawah pesanan ini. Terima kasih! 🙏`;
+            }
+
+            const url = `https://wa.me/${noWA}?text=${encodeURIComponent(teks)}`;
+            window.open(url, '_blank');
+        }
+
+        function copyText(text) {
+            navigator.clipboard.writeText(text);
+            alert("Nomor berhasil disalin!");
+        }
+
+        function adminLogin() {
+            let pass = prompt("Masukkan Kata Sandi Admin:");
+            if (pass === "1709ca") {
+                let currentStatus = localStorage.getItem('ciaa_maintenance') === 'true';
+                let action = confirm(`Sandi Benar!\nStatus Maintenance saat ini: ${currentStatus ? 'AKTIF' : 'MATI'}\n\nTekan OK untuk Toggle (Ubah) Status Maintenance, atau Cancel untuk tetap.`);
+                if(action) {
+                    localStorage.setItem('ciaa_maintenance', !currentStatus);
+                    alert("Status maintenance berhasil diubah! Silakan refresh halaman.");
+                    location.reload();
+                }
+            } else if(pass !== null) {
+                alert("Sandi salah!");
+            }
+        }
+    </script>
+</body>
+</html>
