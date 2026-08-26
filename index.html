@@ -96,6 +96,33 @@
         .btn-admin:hover { transform: scale(1.1); }
         .btn-admin img { width: 22px; height: 22px; border-radius: 50%; object-fit: cover; display: block; }
 
+        /* BANNER PAPAN PROMOSI BERGESER (MARQUEE) */
+        .promo-banner {
+            background: linear-gradient(90deg, #ffb6c1, #ff69b4, #ffb6c1);
+            color: white;
+            padding: 8px 0;
+            font-weight: bold;
+            font-size: 13px;
+            overflow: hidden;
+            white-space: nowrap;
+            box-shadow: inset 0 2px 5px rgba(0,0,0,0.1);
+        }
+        .promo-banner marquee { width: 100%; }
+
+        /* SAPAAN PELANGGAN */
+        .greeting-box {
+            background: #fff0f5;
+            border: 1.5px solid var(--primary-pink);
+            border-radius: 12px;
+            padding: 10px 15px;
+            margin: 12px 15px 0 15px;
+            text-align: center;
+            font-weight: bold;
+            color: var(--deep-pink);
+            font-size: 13px;
+            box-shadow: 0 2px 8px rgba(255,182,193,0.2);
+        }
+
         .nav-tabs { display: flex; overflow-x: auto; background: var(--white); padding: 10px; white-space: nowrap; border-bottom: 2px solid var(--light-pink); scrollbar-width: none; gap: 6px; }
         .nav-tabs::-webkit-scrollbar { display: none; }
         .tab-item { padding: 6px 14px; background: var(--soft-pink); border-radius: 12px; cursor: pointer; font-weight: bold; font-size: 13px; border: 2px solid var(--primary-pink); color: var(--dark-text); transition: 0.3s; }
@@ -106,21 +133,49 @@
         .section.active { display: block; }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: translateY(0); } }
 
-        .folder-card {
-            background: linear-gradient(135deg, #fff0f5 0%, #ffe4e1 100%);
-            border: 2px solid var(--primary-pink);
+        /* GRID KOTAK 1:1 MELENGKUNG TIDAK TERLALU BESAR */
+        .grid-services {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 12px;
+            margin-top: 10px;
+        }
+        @media(min-width: 500px) {
+            .grid-services { grid-template-columns: repeat(3, 1fr); }
+        }
+
+        .service-box {
+            background: var(--white);
+            border: 2px solid var(--light-pink);
             border-radius: var(--card-radius);
-            padding: 15px;
-            margin-bottom: 12px;
-            box-shadow: 0 4px 12px rgba(255,182,193,0.25);
+            padding: 15px 10px;
+            text-align: center;
             cursor: pointer;
+            box-shadow: 0 3px 10px rgba(255,182,193,0.2);
             transition: 0.2s;
+            aspect-ratio: 1 / 1;
             display: flex;
-            justify-content: space-between;
+            flex-direction: column;
+            justify-content: center;
             align-items: center;
         }
-        .folder-card:hover { border-color: var(--deep-pink); transform: translateY(-2px); }
-        .folder-title { font-size: 15px; font-weight: bold; color: var(--deep-pink); }
+        .service-box:hover {
+            border-color: var(--deep-pink);
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(255,105,180,0.3);
+        }
+        .service-box img {
+            width: 55px; height: 55px;
+            border-radius: 50%;
+            object-fit: cover;
+            margin-bottom: 8px;
+            border: 2px solid var(--primary-pink);
+        }
+        .service-box h4 {
+            font-size: 13px;
+            color: var(--dark-text);
+            font-weight: 600;
+        }
 
         .mini-grid {
             display: grid;
@@ -171,9 +226,21 @@
         .qris-container { text-align: center; background: white; padding: 15px; border-radius: var(--card-radius); margin: 12px 0; border: 2px solid var(--primary-pink); }
         #qrcode { display: flex; justify-content: center; margin-top: 8px; }
 
-        #maintenance-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(255, 240, 245, 0.98); z-index: 999; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; padding: 20px; }
-        .maintenance-logo { width: 120px; height: 120px; object-fit: contain; margin-bottom: 15px; border-radius: 15px; animation: floatLogo 3s ease-in-out infinite; }
-        @keyframes floatLogo { 0%, 100% { transform: translateY(0) scale(1); } 50% { transform: translateY(-10px) scale(1.03); } }
+        /* OVERLAY MAINTENANCE MENGGUNAKAN maintenance1.jpg (MELAYANG & BERGERAK TANPA LATAR BELAKANG) */
+        #maintenance-overlay { 
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%; 
+            background: rgba(255, 240, 245, 0.95); 
+            z-index: 999; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; padding: 20px; 
+        }
+        .maintenance-logo { 
+            width: 150px; height: 150px; object-fit: contain; margin-bottom: 15px; 
+            animation: floatMaintenance 3.5s ease-in-out infinite; 
+            filter: drop-shadow(0 10px 15px rgba(255, 105, 180, 0.4));
+        }
+        @keyframes floatMaintenance { 
+            0%, 100% { transform: translateY(0) rotate(0deg) scale(1); } 
+            50% { transform: translateY(-15px) rotate(3deg) scale(1.05); } 
+        }
 
         .fab { position: fixed; bottom: 20px; right: 20px; background: var(--wa-color); color: white; width: 48px; height: 48px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 22px; box-shadow: 0 4px 12px rgba(37,211,102,0.4); cursor: pointer; text-decoration: none; z-index: 1000; border: 2px solid white; transition: 0.2s; }
         .fab:hover { transform: scale(1.1); }
@@ -187,11 +254,11 @@
     <div class="glowing-butterfly" style="top: 20%; left: 5%;"></div>
     <div class="glowing-butterfly" style="top: 70%; right: 5%;"></div>
 
-    <!-- MAINTENANCE OVERLAY -->
+    <!-- MAINTENANCE OVERLAY DENGAN maintenance1.jpg -->
     <div id="maintenance-overlay" style="display: none;">
         <img src="maintenance1.jpg" alt="Maintenance Logo" class="maintenance-logo" onerror="this.src='logo.jpg'">
-        <h2 style="color: var(--dark-text); margin-bottom: 8px; font-size: 18px;">Situs Sedang Dalam Pemeliharaan 🛠️</h2>
-        <p style="color: #666; max-width: 380px; font-size: 13px;">Ciaa Store sedang mempercantik sistem agar makin imut & optimal. Silakan kembali beberapa saat lagi ya!</p>
+        <h2 style="color: var(--deep-pink); margin-bottom: 8px; font-size: 18px;">Situs Sedang Dalam Pemeliharaan 🛠️</h2>
+        <p style="color: #555; max-width: 380px; font-size: 13px; line-height: 1.5;">Mohon maaf juragan, Ciaa Store sedang dalam pemeliharaan sistem. Coba kembali lagi beberapa saat ya! 💖</p>
     </div>
 
     <!-- TOMBOL LOGIN ADMIN -->
@@ -204,6 +271,16 @@
             <img src="banner.jpg" alt="Ciaa Store Banner" class="banner-utama" onerror="this.style.display='none'">
         </header>
 
+        <!-- BANNER PROMOSI BERGESER (COMING SOON) -->
+        <div class="promo-banner">
+            <marquee behavior="scroll" direction="left">✨ 🚀 COMING SOON: Jasa Buat Website & Top Up Voucher Game! Tingkatkan kelas bisnismu dan nikmati kemudahan belanja di Ciaa Store! 💖 ✨</marquee>
+        </div>
+
+        <!-- KOTAK SAPAAN PELANGGAN BERDASARKAN WAKTU -->
+        <div class="greeting-box" id="greeting-text">
+            Halo juragan! Selamat berbelanja ✨
+        </div>
+
         <div class="nav-tabs">
             <div class="tab-item active" onclick="switchMenu('layanan-section')">🛍️ Layanan</div>
             <div class="tab-item" onclick="switchMenu('coming-soon-section')">🎟️ Top Up Voucher Coming Soon</div>
@@ -214,41 +291,57 @@
 
         <div class="container">
             
-            <!-- SECTION: MENU UTAMA LAYANAN -->
+            <!-- SECTION: MENU UTAMA LAYANAN (GRID 1:1 MELENGKUNG) -->
             <div id="layanan-section" class="section active">
                 <div class="info-box">
-                    <strong>⏰ (Open 06.00–20.30 WIB)</strong><br>
-                    Akun Premium biasanya dikirimkan oleh mimin lewat WhatsApp, jika ada kendala / pertanyaan bisa tanyakan langsung kepada mimin yaw! Mimin ga makan orang kok 🤭✨
+                    <strong>⏰ (Open 06.00–20.40 WIB)</strong><br>
+                    Akun Premium terkadang dikirim oleh mimin, jika ada kendala/masalah bisa tanyakan kepada mimin yaw! 🤭✨
                 </div>
                 
-                <!-- FOLDER: APLIKASI PREMIUM (MEMBUKA HALAMAN KHUSUS APLIKASI PREMIUM) -->
-                <div class="folder-card" onclick="openAppPremiumPage()">
-                    <span class="folder-title">📱 🌸 Folder Aplikasi Premium</span>
-                    <span style="font-size: 12px; color: var(--deep-pink); font-weight: bold;">Buka ➔</span>
-                </div>
+                <div class="grid-services">
+                    <!-- KOTAK APLIKASI PREMIUM -->
+                    <div class="service-box" onclick="openAppPremiumPage()">
+                        <img src="logo.jpg" alt="Aplikasi Premium" onerror="this.src='https://cdn-icons-png.flaticon.com/512/869/869034.png'">
+                        <h4>📱 Aplikasi Premium</h4>
+                    </div>
 
-                <!-- FOLDER: TOP UP GAME -->
-                <div class="folder-card" onclick="toggleFolder('folder-game')">
-                    <span class="folder-title">🎮 ⚔️ Folder Top Up Game</span>
-                    <span id="arrow-game" style="font-size: 12px; color: var(--deep-pink); font-weight: bold;">▼ Buka</span>
-                </div>
-                <div id="folder-game" class="mini-grid" style="display: none; margin-bottom: 12px;"></div>
+                    <!-- KOTAK TOP UP GAME -->
+                    <div class="service-box" onclick="switchCategory('topup-game')">
+                        <img src="ff.jpg" alt="Top Up Game" onerror="this.src='https://cdn-icons-png.flaticon.com/512/869/869034.png'">
+                        <h4>🎮 Top Up Game</h4>
+                    </div>
 
-                <!-- FOLDER: JASA -->
-                <div class="folder-card" onclick="toggleFolder('folder-jasa')">
-                    <span class="folder-title">✨ 🚀 Folder Jasa Ciaa Store</span>
-                    <span id="arrow-jasa" style="font-size: 12px; color: var(--deep-pink); font-weight: bold;">▼ Buka</span>
+                    <!-- KOTAK JASHER -->
+                    <div class="service-box" onclick="openForm('jasher', 'jasa-ciaa')">
+                        <img src="logo.jpg" alt="Jasher" onerror="this.src='https://cdn-icons-png.flaticon.com/512/869/869034.png'">
+                        <h4>🚀 Jasher</h4>
+                    </div>
+
+                    <!-- KOTAK JPM -->
+                    <div class="service-box" onclick="openForm('jpm', 'jasa-ciaa')">
+                        <img src="logo.jpg" alt="JPM" onerror="this.src='https://cdn-icons-png.flaticon.com/512/869/869034.png'">
+                        <h4>📈 JPM</h4>
+                    </div>
                 </div>
-                <div id="folder-jasa" class="mini-grid" style="display: none; margin-bottom: 12px;"></div>
             </div>
 
-            <!-- SECTION: HALAMAN KHUSUS APLIKASI PREMIUM -->
+            <!-- SECTION: SUB-MENU KATEGORI GAME -->
+            <div id="game-category-section" class="section">
+                <button onclick="backToMenu()" style="margin-bottom: 12px; border:none; background:var(--light-pink); padding:6px 12px; border-radius:8px; font-weight:bold; cursor:pointer; font-size: 12px;">⬅ Kembali ke Layanan</button>
+                <h2 style="color: var(--deep-pink); font-size: 16px; margin-bottom: 10px;">🎮 Pilih Game Top Up</h2>
+                <div class="mini-grid" id="grid-game-page"></div>
+            </div>
+
+            <!-- SECTION: HALAMAN KHUSUS APLIKASI PREMIUM DENGAN JAM OPERASIONAL -->
             <div id="app-premium-section" class="section">
                 <button onclick="backToMenu()" style="margin-bottom: 12px; border:none; background:var(--light-pink); padding:6px 12px; border-radius:8px; font-weight:bold; cursor:pointer; font-size: 12px;">⬅ Kembali ke Layanan</button>
-                <h2 style="color: var(--deep-pink); font-size: 16px; margin-bottom: 10px;">📱 Halaman Aplikasi Premium</h2>
-                <div class="info-box" style="margin-bottom: 12px;">
-                    Silakan pilih aplikasi premium yang kamu butuhkan di bawah ini ya! 💖
+                <h2 style="color: var(--deep-pink); font-size: 16px; margin-bottom: 10px;">📱 Aplikasi Premium</h2>
+                
+                <div class="info-box">
+                    <strong>⏰ Open 06.00–20.40 WIB</strong><br>
+                    Akun Premium terkadang di kirim oleh mimin, jika ada kendala/masalah bisa tanyakan kepada mimin yaw! 🌸
                 </div>
+
                 <div class="mini-grid" id="grid-app-page"></div>
             </div>
 
@@ -301,7 +394,7 @@
                 <h2 style="color: var(--deep-pink); margin-bottom: 12px; font-size: 16px;">📖 Panduan & Tutorial Order di Ciaa Store</h2>
                 <div class="info-box" style="line-height: 1.6; font-size: 13px;">
                     <strong>Langkah-langkah Mudah Belanja:</strong><br>
-                    1️⃣ Masuk ke menu <strong>Layanan</strong>, lalu pilih <strong>Folder Aplikasi Premium</strong> atau game lainnya.<br>
+                    1️⃣ Masuk ke menu <strong>Layanan</strong>, lalu pilih kotak layanan yang diinginkan (Aplikasi Premium, Top Up Game, Jasher, atau JPM).<br>
                     2️⃣ Isi data yang diminta dengan teliti (seperti User ID, Email, atau Nomor WhatsApp).<br>
                     3️⃣ Baca catatan khusus / syarat order yang tertera di bawah kolom input.<br>
                     4️⃣ Pilih paket dan metode pembayaran (QRIS otomatis, DANA, atau GoPay).<br>
@@ -376,11 +469,29 @@
             document.getElementById('maintenance-overlay').style.display = 'flex';
         }
 
+        // SAPAAN OTOMATIS BERDASARKAN WAKTU LOKAL
+        function setDynamicGreeting() {
+            const now = new Date();
+            const hour = now.getHours();
+            let greetingText = "";
+
+            if (hour >= 4 && hour <= 11) {
+                greetingText = "Selamat pagi, have a nice day juragan! ✨";
+            } else if (hour >= 12 && hour <= 14) {
+                greetingText = "Selamat siang, udah makan belum juragan? Jangan lupa belanja di sini yaw! 🤭";
+            } else if (hour >= 15 && hour <= 17) {
+                greetingText = "Selamat sore, ada yang bisa di bantu? Belanja dulu juragan! 😉";
+            } else {
+                greetingText = "Selamat malam, jangan lupa tidur juragan ‹(^°^)›!";
+            }
+            document.getElementById('greeting-text').innerText = greetingText;
+        }
+
         const dataProduk = {
             "app-premium": [
                 { id: "meitu", nama: "📸 Meitu", img: "meitu.jpg", type: "ui-std", inputs: ["No WhatsApp"], catatan: "<strong>Catatan:</strong><br>• Meitu 1 Minggu<br>• Proses Manual - Akun dikirim ke WhatsApp" },
                 { id: "am", nama: "✨ Alight Motion", img: "alightmotion.jpg", type: "ui-std", inputs: ["Email/No WA"], catatan: "• Alight Motion 1 Tahun.<br>• Proses cepat & aman." },
-                { id: "pixellab", nama: "🎨 Pixellab", img: "pixellab.jpg", type: "ui-std", inputs: ["No WhatsApp"], catatan: "• Pixellab Pro / Mod / Asset.<br>• Proses cepat." },
+                { id: "pixellab", nama: "🎨 Pixellab", img: "pixellab.jpg", type: "ui-std", inputs: ["No WhatsApp"], catatan: "• Pixellab Pro / Full Asset.<br>• Proses cepat." },
                 { id: "canva", nama: "🎨 Canva", img: "canva.jpg", type: "ui-canva" },
                 { id: "viu", nama: "🎬 Viu", img: "viu.jpg", type: "ui-viu" },
                 { id: "yt", nama: "▶️ YouTube", img: "youtube.jpg", type: "ui-std", inputs: ["Email (Family) / No WA (Individual)"], catatan: "<strong>Catatan Format Pemesanan:</strong><br>• Family Plan: Diisi email akun YouTube<br>• Individual Plan: Diisi Nomor WhatsApp<br><br><strong>Ketentuan:</strong><br>• Family Plan: Pastikan email belum limit undangan family (Max 2 family / 1 tahun)<br>• Individual Plan: Lakukan verifikasi akun agar tidak dinonaktifkan Google" },
@@ -464,9 +575,9 @@
         const rawQrisStatis = "00020101021126570011ID.DANA.WWW011893600915376556859902097655685990303UMI51440014ID.CO.QRIS.WWW0215ID10253787183610303UMI5204481453033605802ID5914Ciaa Store All6014Kota Pontianak61057811363048AD2";
 
         window.onload = () => {
+            setDynamicGreeting();
             renderGrid('app-premium', 'grid-app-page');
-            renderGrid('topup-game', 'folder-game');
-            renderGrid('jasa-ciaa', 'folder-jasa');
+            renderGrid('topup-game', 'grid-game-page');
             loadAntrianList();
         };
 
@@ -478,22 +589,30 @@
             window.scrollTo(0,0);
         }
 
+        // PENGECEKAN JAM OPERASIONAL (06.00 - 20.40) UNTUK APLIKASI PREMIUM
         function openAppPremiumPage() {
+            const now = new Date();
+            const hours = now.getHours();
+            const minutes = now.getMinutes();
+            const currentTime = hours * 60 + minutes;
+
+            const openTime = 6 * 60;          // 06.00
+            const closeTime = 20 * 60 + 40;   // 20.40
+
+            if (currentTime < openTime || currentTime > closeTime) {
+                alert("🌸 Mohon maaf juragan, layanan Aplikasi Premium sedang tutup (Jam Operasional: 06.00 - 20.40 WIB). Silakan datang lagi besok ya! Terima kasih 💖");
+                return;
+            }
+
             document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
             document.getElementById('app-premium-section').classList.add('active');
             window.scrollTo(0,0);
         }
 
-        function toggleFolder(folderId) {
-            let el = document.getElementById(folderId);
-            let arrow = document.getElementById(folderId.replace('folder-', 'arrow-'));
-            if(el.style.display === 'none' || el.style.display === '') {
-                el.style.display = 'grid';
-                arrow.innerText = '▲ Tutup';
-            } else {
-                el.style.display = 'none';
-                arrow.innerText = '▼ Buka';
-            }
+        function switchCategory(cat) {
+            document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+            document.getElementById('game-category-section').classList.add('active');
+            window.scrollTo(0,0);
         }
 
         function backToMenu() {
@@ -780,3 +899,4 @@
     </script>
 </body>
 </html>
+
