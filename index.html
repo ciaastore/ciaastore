@@ -523,7 +523,7 @@
             } else if (hour >= 15 && hour <= 17) {
                 greetingText = "Selamat sore, ada yang bisa di bantu? Belanja dulu juragan! 😉";
             } else {
-                greetingText = "Selamat malam, jangan lupa tidur juragan ‹(^°^)›!";
+                greetingText = "Selamat malam, jangan lupa tidur juragan!";
             }
             document.getElementById('greeting-text').innerText = greetingText;
         }
@@ -666,9 +666,9 @@
             const container = document.getElementById(elId);
             container.innerHTML = "";
             dataProduk[kategori].forEach(item => {
-                let html = `<div class="product-card" onclick="openForm('${item.id}', '${kategori}')">`;
-                if(item.img) html += `<img src="${item.img}" alt="${item.nama}" onerror="this.src='https://cdn-icons-png.flaticon.com/512/869/869034.png'">`;
-                html += `<h4>${item.nama}</h4></div>`;
+                let html = '<div class="product-card" onclick="openForm(\'' + item.id + '\', \'' + kategori + '\')">';
+                if(item.img) html += '<img src="' + item.img + '" alt="' + item.nama + '" onerror="this.src=\'https://cdn-icons-png.flaticon.com/512/869/869034.png\'">';
+                html += '<h4>' + item.nama + '</h4></div>';
                 container.innerHTML += html;
             });
         }
@@ -756,7 +756,7 @@
             const el = document.getElementById('dynamic-inputs');
             el.innerHTML = '';
             arr.forEach((item) => {
-                el.innerHTML += `<div class="form-group"><label>${item}</label><input type="text" class="form-control inputs-data" placeholder="Masukkan ${item}"></div>`;
+                el.innerHTML += '<div class="form-group"><label>' + item + '</label><input type="text" class="form-control inputs-data" placeholder="Masukkan ' + item + '"></div>';
             });
         }
 
@@ -810,7 +810,7 @@
             
             const date = new Date();
             const dStr = String(date.getDate()).padStart(2, '0') + String(date.getMonth()+1).padStart(2, '0') + String(date.getFullYear()).slice(-2);
-            const antrianNo = `cs-${dStr}-#${Math.floor(Math.random()*89+10)}`;
+            const antrianNo = 'cs-' + dStr + '-#' + Math.floor(Math.random()*89+10);
             
             let dataPelanggan = [];
             document.querySelectorAll('.inputs-data').forEach(i => dataPelanggan.push(i.value));
@@ -824,10 +824,10 @@
 
             saveAntrianToStorage(antrianNo, checkoutData.produk + " - " + checkoutData.paket);
 
-            document.getElementById('co-antrian').innerText = `No. Antrian: ${antrianNo}`;
-            document.getElementById('co-produk').innerText = `Layanan: ${activeProduct.nama} - ${activeVariant.nama}`;
-            document.getElementById('co-data').innerText = `Data: ${checkoutData.data}`;
-            document.getElementById('co-harga').innerText = `Total: Rp ${totalBayar.toLocaleString('id-ID')} (Termasuk kode unik Rp${unik})`;
+            document.getElementById('co-antrian').innerText = 'No. Antrian: ' + antrianNo;
+            document.getElementById('co-produk').innerText = 'Layanan: ' + activeProduct.nama + ' - ' + activeVariant.nama;
+            document.getElementById('co-data').innerText = 'Data: ' + checkoutData.data;
+            document.getElementById('co-harga').innerText = 'Total: Rp ' + totalBayar.toLocaleString('id-ID') + ' (Termasuk kode unik Rp' + unik + ')';
             
             const transferInfo = document.getElementById('transfer-info');
             const qrisBox = document.getElementById('qris-box');
@@ -857,14 +857,14 @@
             let teks = "";
             
             if(checkoutData.type === 'ui-jasa') {
-                teks = `Halo Admin Ciaa Store! ✨\nSaya sudah transfer untuk pemesanan Jasa:\n\n🎫 No. Antrian: ${checkoutData.antrian}\n🚀 Layanan: ${checkoutData.produk}\n📦 Paket: ${checkoutData.paket}\n🏪 Nama Store: ${checkoutData.data}\n💰 Total Bayar: Rp${checkoutData.total.toLocaleString('id-ID')}\n💳 Pembayaran: ${checkoutData.metode}\n\n🔗 Deskripsi/Link Target:\n${checkoutData.desc}\n\nBukti transfer saya kirimkan di bawah ini ya Min. Ditunggu prosesnya! 🙏`;
+                teks = "Halo Admin Ciaa Store! ✨\nSaya sudah transfer untuk pemesanan Jasa:\n\n🎫 No. Antrian: " + checkoutData.antrian + "\n🚀 Layanan: " + checkoutData.produk + "\n📦 Paket: " + checkoutData.paket + "\n🏪 Nama Store: " + checkoutData.data + "\n💰 Total Bayar: Rp" + checkoutData.total.toLocaleString('id-ID') + "\n💳 Pembayaran: " + checkoutData.metode + "\n\n🔗 Deskripsi/Link Target:\n" + checkoutData.desc + "\n\nBukti transfer saya kirimkan di bawah ini ya Min. Ditunggu prosesnya! 🙏";
             } else if (checkoutData.type === 'ui-game') {
-                teks = `Halo Admin Ciaa Store! 🎮\nSaya sudah melakukan transfer dan ingin konfirmasi pesanan:\n\n🎫 No. Antrian: ${checkoutData.antrian}\n🛒 Layanan: ${checkoutData.produk}\n💎 Item/Paket: ${checkoutData.paket}\n👤 Data: ${checkoutData.data}\n💰 Total Bayar: Rp${checkoutData.total.toLocaleString('id-ID')}\n💳 Pembayaran: ${checkoutData.metode}\n\nBerikut saya lampirkan bukti transfernya. Mohon segera diproses ya Min! 🙏`;
+                teks = "Halo Admin Ciaa Store! 🎮\nSaya sudah melakukan transfer dan ingin konfirmasi pesanan:\n\n🎫 No. Antrian: " + checkoutData.antrian + "\n🛒 Layanan: " + checkoutData.produk + "\n💎 Item/Paket: " + checkoutData.paket + "\n👤 Data: " + checkoutData.data + "\n💰 Total Bayar: Rp" + checkoutData.total.toLocaleString('id-ID') + "\n💳 Pembayaran: " + checkoutData.metode + "\n\nBerikut saya lampirkan bukti transfernya. Mohon segera diproses ya Min! 🙏";
             } else {
-                teks = `Halo Admin Ciaa Store! 📱\nSaya mau konfirmasi pembayaran untuk Aplikasi Premium:\n\n🎫 No. Antrian: ${checkoutData.antrian}\n🎬 Aplikasi: ${checkoutData.produk}\n📦 Paket: ${checkoutData.paket}\n📧 Data: ${checkoutData.data}\n💰 Total Bayar: Rp${checkoutData.total.toLocaleString('id-ID')}\n💳 Pembayaran: ${checkoutData.metode}\n\nBukti transfer sudah saya siapkan dan kirim di bawah pesanan ini. Terima kasih! 🙏`;
+                teks = "Halo Admin Ciaa Store! 📱\nSaya mau konfirmasi pembayaran untuk Aplikasi Premium:\n\n🎫 No. Antrian: " + checkoutData.antrian + "\n🎬 Aplikasi: " + checkoutData.produk + "\n📦 Paket: " + checkoutData.paket + "\n📧 Data: " + checkoutData.data + "\n💰 Total Bayar: Rp" + checkoutData.total.toLocaleString('id-ID') + "\n💳 Pembayaran: " + checkoutData.metode + "\n\nBukti transfer sudah saya siapkan dan kirim di bawah pesanan ini. Terima kasih! 🙏";
             }
 
-            const url = `https://wa.me/${noWA}?text=${encodeURIComponent(teks)}`;
+            const url = "https://wa.me/" + noWA + "?text=" + encodeURIComponent(teks);
             window.open(url, '_blank');
         }
 
@@ -875,7 +875,7 @@
 
         function saveAntrianToStorage(no, detail) {
             let antrianList = JSON.parse(localStorage.getItem('ciaa_antrian') || '[]');
-            antrianList.unshift({ no, detail, status: "Pending.. ⏳", time: new Date().toLocaleTimeString() });
+            antrianList.unshift({ no: no, detail: detail, status: "Pending.. ⏳", time: new Date().toLocaleTimeString() });
             localStorage.setItem('ciaa_antrian', JSON.stringify(antrianList));
             loadAntrianList();
         }
@@ -889,17 +889,7 @@
             }
             container.innerHTML = "";
             antrianList.forEach(item => {
-                container.innerHTML += `
-                    <div style="background:white; padding:10px; border-radius:10px; margin-bottom:8px; border:1.5px solid var(--primary-pink); display:flex; justify-content:space-between; align-items:center;">
-                        <div>
-                            <strong>🎫 ${item.no}</strong><br>
-                            <span style="font-size:12px; color:#555;">${item.detail}</span><br>
-                            <span style="font-size:10px; color:#888;">${item.time}</span>
-                        </div>
-                        <div>
-                            <span style="padding:4px 10px; border-radius:6px; font-size:11px; font-weight:bold; background:#fff0f5; border:1px solid var(--deep-pink);">${item.status}</span>
-                        </div>
-                    </div>`;
+                container.innerHTML += '<div style="background:white; padding:10px; border-radius:10px; margin-bottom:8px; border:1.5px solid var(--primary-pink); display:flex; justify-content:space-between; align-items:center;"><div><strong>🎫 ' + item.no + '</strong><br><span style="font-size:12px; color:#555;">' + item.detail + '</span><br><span style="font-size:10px; color:#888;">' + item.time + '</span></div><div><span style="padding:4px 10px; border-radius:6px; font-size:11px; font-weight:bold; background:#fff0f5; border:1px solid var(--deep-pink);">' + item.status + '</span></div></div>';
             });
         }
 
@@ -915,17 +905,7 @@
             }
             container.innerHTML = "";
             filtered.forEach(item => {
-                container.innerHTML += `
-                    <div style="background:white; padding:10px; border-radius:10px; margin-bottom:8px; border:1.5px solid var(--primary-pink); display:flex; justify-content:space-between; align-items:center;">
-                        <div>
-                            <strong>🎫 ${item.no}</strong><br>
-                            <span style="font-size:12px; color:#555;">${item.detail}</span><br>
-                            <span style="font-size:10px; color:#888;">${item.time}</span>
-                        </div>
-                        <div>
-                            <span style="padding:4px 10px; border-radius:6px; font-size:11px; font-weight:bold; background:#fff0f5; border:1px solid var(--deep-pink);">${item.status}</span>
-                        </div>
-                    </div>`;
+                container.innerHTML += '<div style="background:white; padding:10px; border-radius:10px; margin-bottom:8px; border:1.5px solid var(--primary-pink); display:flex; justify-content:space-between; align-items:center;"><div><strong>🎫 ' + item.no + '</strong><br><span style="font-size:12px; color:#555;">' + item.detail + '</span><br><span style="font-size:10px; color:#888;">' + item.time + '</span></div><div><span style="padding:4px 10px; border-radius:6px; font-size:11px; font-weight:bold; background:#fff0f5; border:1px solid var(--deep-pink);">' + item.status + '</span></div></div>';
             });
         }
 
