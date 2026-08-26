@@ -17,7 +17,7 @@
             --dark-text: #4a4a4a;
             --white: #ffffff;
             --wa-color: #25D366;
-            --card-radius: 20px;
+            --card-radius: 16px;
         }
 
         * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', Tahoma, sans-serif; }
@@ -33,13 +33,14 @@
             min-height: 100vh;
             position: relative;
             padding: 15px;
+            font-size: 14px;
         }
 
         body::before {
             content: "";
             position: fixed;
             top: 0; left: 0; width: 100%; height: 100%;
-            background: linear-gradient(180deg, rgba(255,255,255,0.7) 0%, rgba(255,228,225,0.85) 100%);
+            background: linear-gradient(180deg, rgba(255,255,255,0.75) 0%, rgba(255,228,225,0.9) 100%);
             z-index: -2;
             pointer-events: none;
         }
@@ -47,7 +48,7 @@
         .light-beam {
             position: fixed;
             top: -100%; left: 0; width: 100%; height: 200%;
-            background: linear-gradient(180deg, rgba(255,255,255,0) 0%, rgba(255,255,255,0.4) 50%, rgba(255,255,255,0) 100%);
+            background: linear-gradient(180deg, rgba(255,255,255,0) 0%, rgba(255,255,255,0.3) 50%, rgba(255,255,255,0) 100%);
             animation: beamMove 8s linear infinite;
             z-index: -1;
             pointer-events: none;
@@ -57,111 +58,143 @@
             100% { transform: translateY(50%); }
         }
 
-        .butterfly {
+        .glowing-butterfly {
             position: fixed;
-            width: 30px; height: 30px;
+            width: 35px; height: 35px;
             background: url('https://cdn-icons-png.flaticon.com/512/3069/3069176.png') no-repeat center/contain;
+            filter: drop-shadow(0 0 8px rgba(255, 105, 180, 0.8)) drop-shadow(0 0 15px rgba(255, 255, 255, 0.9));
             z-index: 99;
             pointer-events: none;
-            opacity: 0.7;
-            animation: flyAround 15s ease-in-out infinite;
+            opacity: 0.85;
+            animation: flyGlowing 14s ease-in-out infinite;
         }
-        .butterfly:nth-child(2) { top: 30%; left: 10%; animation-duration: 20s; animation-delay: 2s; transform: scale(0.8); }
-        .butterfly:nth-child(3) { top: 60%; right: 10%; animation-duration: 18s; animation-delay: 5s; transform: scale(0.6); }
+        .glowing-butterfly:nth-child(2) { top: 25%; left: -10px; animation-duration: 18s; animation-delay: 2s; transform: scale(0.8); }
+        .glowing-butterfly:nth-child(3) { top: 65%; right: -10px; animation-duration: 16s; animation-delay: 4s; transform: scale(0.65); }
 
-        @keyframes flyAround {
-            0% { transform: translate(0, 0) rotate(0deg) scale(0.7); }
-            25% { transform: translate(150px, -80px) rotate(25deg) scale(0.8); }
-            50% { transform: translate(300px, 50px) rotate(-15deg) scale(0.7); }
-            75% { transform: translate(100px, 120px) rotate(10deg) scale(0.9); }
-            100% { transform: translate(0, 0) rotate(0deg) scale(0.7); }
+        @keyframes flyGlowing {
+            0% { transform: translate(0, 0) rotate(0deg) scale(0.7); filter: drop-shadow(0 0 5px rgba(255,105,180,0.6)); }
+            25% { transform: translate(220px, -70px) rotate(20deg) scale(0.85); filter: drop-shadow(0 0 12px rgba(255,255,255,0.9)); }
+            50% { transform: translate(400px, 40px) rotate(-10deg) scale(0.75); filter: drop-shadow(0 0 8px rgba(255,105,180,0.8)); }
+            75% { transform: translate(180px, 100px) rotate(15deg) scale(0.9); filter: drop-shadow(0 0 15px rgba(255,255,255,1)); }
+            100% { transform: translate(0, 0) rotate(0deg) scale(0.7); filter: drop-shadow(0 0 5px rgba(255,105,180,0.6)); }
         }
 
         .main-wrapper {
-            max-width: 800px;
+            max-width: 750px;
             margin: 0 auto;
-            background: rgba(255, 255, 255, 0.92);
+            background: rgba(255, 255, 255, 0.94);
             border-radius: var(--card-radius);
-            box-shadow: 0 10px 30px rgba(255, 182, 193, 0.4);
-            border: 3px solid var(--primary-pink);
+            box-shadow: 0 8px 25px rgba(255, 182, 193, 0.35);
+            border: 2px solid var(--primary-pink);
             overflow: hidden;
             backdrop-filter: blur(5px);
         }
 
-        .header { background: var(--light-pink); text-align: center; position: relative; padding: 10px; border-bottom: 2px dashed var(--primary-pink); }
-        .banner-utama { width: 100%; max-height: 220px; object-fit: cover; border-radius: 15px; display: block; }
-        .btn-admin { position: absolute; top: 15px; left: 15px; background: var(--white); border: 2px solid var(--primary-pink); padding: 5px; border-radius: 50%; cursor: pointer; z-index: 101; box-shadow: 0 4px 10px rgba(0,0,0,0.1); transition: 0.2s; }
+        .header { background: var(--light-pink); text-align: center; position: relative; padding: 8px; border-bottom: 2px dashed var(--primary-pink); }
+        .banner-utama { width: 100%; max-height: 180px; object-fit: cover; border-radius: 12px; display: block; }
+        .btn-admin { position: absolute; top: 12px; left: 12px; background: var(--white); border: 2px solid var(--primary-pink); padding: 4px; border-radius: 50%; cursor: pointer; z-index: 101; box-shadow: 0 3px 8px rgba(0,0,0,0.1); transition: 0.2s; }
         .btn-admin:hover { transform: scale(1.1); }
-        .btn-admin img { width: 24px; height: 24px; border-radius: 50%; object-fit: cover; display: block; }
+        .btn-admin img { width: 22px; height: 22px; border-radius: 50%; object-fit: cover; display: block; }
 
-        .nav-tabs { display: flex; overflow-x: auto; background: var(--white); padding: 12px; white-space: nowrap; border-bottom: 2px solid var(--light-pink); scrollbar-width: none; gap: 8px; }
+        .nav-tabs { display: flex; overflow-x: auto; background: var(--white); padding: 10px; white-space: nowrap; border-bottom: 2px solid var(--light-pink); scrollbar-width: none; gap: 6px; }
         .nav-tabs::-webkit-scrollbar { display: none; }
-        .tab-item { padding: 8px 16px; background: var(--soft-pink); border-radius: 15px; cursor: pointer; font-weight: bold; font-size: 14px; border: 2px solid var(--primary-pink); color: var(--dark-text); transition: 0.3s; }
-        .tab-item.active, .tab-item:hover { background: var(--primary-pink); color: var(--white); box-shadow: 0 4px 10px rgba(255,105,180,0.3); }
+        .tab-item { padding: 6px 14px; background: var(--soft-pink); border-radius: 12px; cursor: pointer; font-weight: bold; font-size: 13px; border: 2px solid var(--primary-pink); color: var(--dark-text); transition: 0.3s; }
+        .tab-item.active, .tab-item:hover { background: var(--primary-pink); color: var(--white); box-shadow: 0 3px 8px rgba(255,105,180,0.3); }
 
-        .container { padding: 20px; min-height: 50vh; }
-        .section { display: none; animation: fadeIn 0.4s ease; }
+        .container { padding: 15px; min-height: 45vh; }
+        .section { display: none; animation: fadeIn 0.3s ease; }
         .section.active { display: block; }
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: translateY(0); } }
 
-        .grid-container { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 15px; margin-top: 15px; }
-        .product-card { background: var(--white); border-radius: var(--card-radius); padding: 15px; text-align: center; box-shadow: 0 4px 12px rgba(255,182,193,0.2); cursor: pointer; border: 2px solid var(--light-pink); transition: 0.2s; }
-        .product-card:hover { border-color: var(--deep-pink); transform: translateY(-4px); box-shadow: 0 6px 15px rgba(255,105,180,0.3); }
-        .product-card img { width: 60px; height: 60px; border-radius: 12px; margin-bottom: 8px; object-fit: cover; }
+        .folder-card {
+            background: linear-gradient(135deg, #fff0f5 0%, #ffe4e1 100%);
+            border: 2px solid var(--primary-pink);
+            border-radius: var(--card-radius);
+            padding: 15px;
+            margin-bottom: 12px;
+            box-shadow: 0 4px 12px rgba(255,182,193,0.25);
+            cursor: pointer;
+            transition: 0.2s;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .folder-card:hover { border-color: var(--deep-pink); transform: translateY(-2px); }
+        .folder-title { font-size: 15px; font-weight: bold; color: var(--deep-pink); }
+
+        .mini-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(110px, 1fr));
+            gap: 10px;
+            margin-top: 10px;
+        }
+        .product-card { 
+            background: var(--white); 
+            border-radius: 12px; 
+            padding: 10px; 
+            text-align: center; 
+            box-shadow: 0 2px 8px rgba(255,182,193,0.15); 
+            cursor: pointer; 
+            border: 1.5px solid var(--light-pink); 
+            transition: 0.2s; 
+        }
+        .product-card:hover { border-color: var(--deep-pink); transform: translateY(-3px); }
+        .product-card img { width: 45px; height: 45px; border-radius: 10px; margin-bottom: 6px; object-fit: cover; }
+        .product-card h4 { font-size: 12px; color: var(--dark-text); font-weight: 600; line-height: 1.3; }
         
-        .alert-box { background: #ffe4e1; border: 2px dashed var(--deep-pink); padding: 12px 15px; margin-bottom: 15px; border-radius: var(--card-radius); font-size: 14px; color: #b22222; line-height: 1.5; }
-        .info-box { background: #e0ffff; border: 2px solid #afeeee; padding: 12px 15px; margin-bottom: 15px; border-radius: var(--card-radius); font-size: 14px; color: #008b8b; }
+        .alert-box { background: #ffe4e1; border: 1.5px dashed var(--deep-pink); padding: 10px 12px; margin-bottom: 12px; border-radius: 12px; font-size: 13px; color: #b22222; line-height: 1.4; }
+        .info-box { background: #e0ffff; border: 1.5px solid #afeeee; padding: 10px 12px; margin-bottom: 12px; border-radius: 12px; font-size: 13px; color: #008b8b; line-height: 1.4; }
 
-        .contact-card { background: var(--white); border: 2px solid var(--primary-pink); border-radius: var(--card-radius); padding: 20px; margin-bottom: 15px; text-align: center; box-shadow: 0 4px 15px rgba(255,182,193,0.3); }
-        .contact-card h3 { color: var(--deep-pink); margin-bottom: 10px; }
-        .contact-btn { display: inline-block; background: var(--primary-pink); color: var(--dark-text); padding: 8px 16px; border-radius: 12px; text-decoration: none; font-weight: bold; margin-top: 8px; border: 2px solid var(--deep-pink); transition: 0.2s; }
+        .contact-card { background: var(--white); border: 2px solid var(--primary-pink); border-radius: var(--card-radius); padding: 15px; margin-bottom: 12px; text-align: center; box-shadow: 0 3px 10px rgba(255,182,193,0.25); }
+        .contact-card h3 { color: var(--deep-pink); margin-bottom: 6px; font-size: 15px; }
+        .contact-card p { font-size: 13px; color: #555; }
+        .contact-btn { display: inline-block; background: var(--primary-pink); color: var(--dark-text); padding: 6px 14px; border-radius: 10px; text-decoration: none; font-weight: bold; font-size: 13px; margin-top: 6px; border: 1.5px solid var(--deep-pink); transition: 0.2s; }
         .contact-btn:hover { background: var(--deep-pink); color: white; }
 
-        .form-group { margin-bottom: 15px; text-align: left; }
-        .form-group label { display: block; font-weight: bold; margin-bottom: 5px; font-size: 14px; color: var(--dark-text); }
-        .form-control { width: 100%; padding: 12px; border: 2px solid var(--primary-pink); border-radius: 15px; font-size: 14px; background: var(--soft-pink); outline: none; }
+        .form-group { margin-bottom: 12px; text-align: left; }
+        .form-group label { display: block; font-weight: bold; margin-bottom: 4px; font-size: 13px; color: var(--dark-text); }
+        .form-control { width: 100%; padding: 10px; border: 2px solid var(--primary-pink); border-radius: 12px; font-size: 13px; background: var(--soft-pink); outline: none; }
         .form-control:focus { border-color: var(--deep-pink); background: white; }
-        textarea.form-control { resize: vertical; min-height: 80px; }
+        textarea.form-control { resize: vertical; min-height: 70px; }
         
-        .btn-primary { width: 100%; background: var(--primary-pink); color: var(--dark-text); font-weight: bold; padding: 14px; border: 2px solid var(--deep-pink); border-radius: 15px; cursor: pointer; font-size: 16px; margin-top: 10px; transition: 0.2s; box-shadow: 0 4px 10px rgba(255,105,180,0.3); }
+        .btn-primary { width: 100%; background: var(--primary-pink); color: var(--dark-text); font-weight: bold; padding: 12px; border: 2px solid var(--deep-pink); border-radius: 12px; cursor: pointer; font-size: 14px; margin-top: 8px; transition: 0.2s; box-shadow: 0 3px 8px rgba(255,105,180,0.25); }
         .btn-primary:hover { background: var(--deep-pink); color: white; }
         .btn-wa { background: var(--wa-color); border-color: #128C7E; color: white; }
-        .btn-copy { background: #ffc0cb; border: 1px solid var(--deep-pink); padding: 6px 12px; border-radius: 10px; cursor: pointer; font-size: 12px; font-weight: bold; margin-left: 10px; }
+        .btn-copy { background: #ffc0cb; border: 1px solid var(--deep-pink); padding: 5px 10px; border-radius: 8px; cursor: pointer; font-size: 11px; font-weight: bold; margin-left: 8px; }
 
-        .sub-tabs { display: flex; margin-bottom: 15px; gap: 5px; }
-        .sub-tab { flex: 1; text-align: center; padding: 10px; background: var(--soft-pink); cursor: pointer; font-weight: bold; font-size: 14px; border-radius: 12px; border: 2px solid var(--primary-pink); color: var(--dark-text); }
+        .sub-tabs { display: flex; margin-bottom: 12px; gap: 4px; }
+        .sub-tab { flex: 1; text-align: center; padding: 8px; background: var(--soft-pink); cursor: pointer; font-weight: bold; font-size: 13px; border-radius: 10px; border: 1.5px solid var(--primary-pink); color: var(--dark-text); }
         .sub-tab.active { background: var(--deep-pink); color: white; border-color: var(--deep-pink); }
 
-        .payment-option { display: flex; align-items: center; padding: 12px; border: 2px solid var(--primary-pink); border-radius: 15px; margin-bottom: 10px; cursor: pointer; background: var(--white); }
-        .payment-option input { margin-right: 10px; accent-color: var(--deep-pink); }
-        .qris-container { text-align: center; background: white; padding: 20px; border-radius: var(--card-radius); margin: 15px 0; border: 2px solid var(--primary-pink); }
-        #qrcode { display: flex; justify-content: center; margin-top: 10px; }
+        .payment-option { display: flex; align-items: center; padding: 10px; border: 1.5px solid var(--primary-pink); border-radius: 12px; margin-bottom: 8px; cursor: pointer; background: var(--white); font-size: 13px; }
+        .payment-option input { margin-right: 8px; accent-color: var(--deep-pink); }
+        .qris-container { text-align: center; background: white; padding: 15px; border-radius: var(--card-radius); margin: 12px 0; border: 2px solid var(--primary-pink); }
+        #qrcode { display: flex; justify-content: center; margin-top: 8px; }
 
-        /* OVERLAY MAINTENANCE MENGGUNAKAN maintenance1.jpg */
         #maintenance-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(255, 240, 245, 0.98); z-index: 999; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; padding: 20px; }
-        .maintenance-logo { width: 140px; height: 140px; object-fit: contain; margin-bottom: 20px; border-radius: 20px; animation: floatLogo 3s ease-in-out infinite; }
-        @keyframes floatLogo { 0%, 100% { transform: translateY(0) scale(1); } 50% { transform: translateY(-12px) scale(1.05); } }
+        .maintenance-logo { width: 120px; height: 120px; object-fit: contain; margin-bottom: 15px; border-radius: 15px; animation: floatLogo 3s ease-in-out infinite; }
+        @keyframes floatLogo { 0%, 100% { transform: translateY(0) scale(1); } 50% { transform: translateY(-10px) scale(1.03); } }
 
-        .fab { position: fixed; bottom: 25px; right: 25px; background: var(--wa-color); color: white; width: 55px; height: 55px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 26px; box-shadow: 0 6px 15px rgba(37,211,102,0.4); cursor: pointer; text-decoration: none; z-index: 1000; border: 2px solid white; transition: 0.2s; }
+        .fab { position: fixed; bottom: 20px; right: 20px; background: var(--wa-color); color: white; width: 48px; height: 48px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 22px; box-shadow: 0 4px 12px rgba(37,211,102,0.4); cursor: pointer; text-decoration: none; z-index: 1000; border: 2px solid white; transition: 0.2s; }
         .fab:hover { transform: scale(1.1); }
         
-        .footer { text-align: center; padding: 20px; font-size: 14px; color: #666; margin-top: 20px; border-top: 2px dashed var(--light-pink); }
+        .footer { text-align: center; padding: 15px; font-size: 12px; color: #666; margin-top: 15px; border-top: 2px dashed var(--light-pink); }
     </style>
 </head>
 <body>
 
     <div class="light-beam"></div>
-    <div class="butterfly" style="top: 20%; left: 5%;"></div>
-    <div class="butterfly" style="top: 70%; right: 5%;"></div>
+    <div class="glowing-butterfly" style="top: 20%; left: 5%;"></div>
+    <div class="glowing-butterfly" style="top: 70%; right: 5%;"></div>
 
-    <!-- MAINTENANCE OVERLAY DENGAN maintenance1.jpg -->
+    <!-- MAINTENANCE OVERLAY -->
     <div id="maintenance-overlay" style="display: none;">
         <img src="maintenance1.jpg" alt="Maintenance Logo" class="maintenance-logo" onerror="this.src='logo.jpg'">
-        <h2 style="color: var(--dark-text); margin-bottom: 10px;">Situs Sedang Dalam Pemeliharaan 🛠️</h2>
-        <p style="color: #666; max-width: 400px; font-size: 14px;">Ciaa Store sedang mempercantik sistem agar makin imut & optimal. Silakan kembali beberapa saat lagi ya!</p>
+        <h2 style="color: var(--dark-text); margin-bottom: 8px; font-size: 18px;">Situs Sedang Dalam Pemeliharaan 🛠️</h2>
+        <p style="color: #666; max-width: 380px; font-size: 13px;">Ciaa Store sedang mempercantik sistem agar makin imut & optimal. Silakan kembali beberapa saat lagi ya!</p>
     </div>
 
-    <!-- TOMBOL LOGIN ADMIN (MENGARAH KE HALAMAN ADMIN KHUSUS) -->
+    <!-- TOMBOL LOGIN ADMIN -->
     <button class="btn-admin" onclick="adminLogin()" title="Admin Login">
         <img src="logo.jpg" alt="Admin" onerror="this.src='https://cdn-icons-png.flaticon.com/512/2913/2913133.png'">
     </button>
@@ -181,46 +214,67 @@
 
         <div class="container">
             
-            <!-- SECTION: LAYANAN -->
+            <!-- SECTION: MENU UTAMA LAYANAN -->
             <div id="layanan-section" class="section active">
                 <div class="info-box">
                     <strong>⏰ (Open 06.00–20.30 WIB)</strong><br>
                     Akun Premium biasanya dikirimkan oleh mimin lewat WhatsApp, jika ada kendala / pertanyaan bisa tanyakan langsung kepada mimin yaw! Mimin ga makan orang kok 🤭✨
                 </div>
                 
-                <h3 style="margin-top:15px; color:var(--deep-pink);">📱 Aplikasi Premium</h3>
-                <div class="grid-container" id="grid-app"></div>
+                <!-- FOLDER: APLIKASI PREMIUM (MEMBUKA HALAMAN KHUSUS APLIKASI PREMIUM) -->
+                <div class="folder-card" onclick="openAppPremiumPage()">
+                    <span class="folder-title">📱 🌸 Folder Aplikasi Premium</span>
+                    <span style="font-size: 12px; color: var(--deep-pink); font-weight: bold;">Buka ➔</span>
+                </div>
 
-                <h3 style="margin-top:25px; color:var(--deep-pink);">🎮 Top Up Game</h3>
-                <div class="grid-container" id="grid-game"></div>
+                <!-- FOLDER: TOP UP GAME -->
+                <div class="folder-card" onclick="toggleFolder('folder-game')">
+                    <span class="folder-title">🎮 ⚔️ Folder Top Up Game</span>
+                    <span id="arrow-game" style="font-size: 12px; color: var(--deep-pink); font-weight: bold;">▼ Buka</span>
+                </div>
+                <div id="folder-game" class="mini-grid" style="display: none; margin-bottom: 12px;"></div>
 
-                <h3 style="margin-top:25px; color:var(--deep-pink);">✨ Jasa Ciaa Store</h3>
-                <div class="grid-container" id="grid-jasa"></div>
+                <!-- FOLDER: JASA -->
+                <div class="folder-card" onclick="toggleFolder('folder-jasa')">
+                    <span class="folder-title">✨ 🚀 Folder Jasa Ciaa Store</span>
+                    <span id="arrow-jasa" style="font-size: 12px; color: var(--deep-pink); font-weight: bold;">▼ Buka</span>
+                </div>
+                <div id="folder-jasa" class="mini-grid" style="display: none; margin-bottom: 12px;"></div>
+            </div>
+
+            <!-- SECTION: HALAMAN KHUSUS APLIKASI PREMIUM -->
+            <div id="app-premium-section" class="section">
+                <button onclick="backToMenu()" style="margin-bottom: 12px; border:none; background:var(--light-pink); padding:6px 12px; border-radius:8px; font-weight:bold; cursor:pointer; font-size: 12px;">⬅ Kembali ke Layanan</button>
+                <h2 style="color: var(--deep-pink); font-size: 16px; margin-bottom: 10px;">📱 Halaman Aplikasi Premium</h2>
+                <div class="info-box" style="margin-bottom: 12px;">
+                    Silakan pilih aplikasi premium yang kamu butuhkan di bawah ini ya! 💖
+                </div>
+                <div class="mini-grid" id="grid-app-page"></div>
             </div>
 
             <!-- SECTION: TOP UP VOUCHER COMING SOON -->
             <div id="coming-soon-section" class="section">
                 <div class="contact-card" style="border: 2px dashed var(--deep-pink);">
-                    <div style="font-size: 50px; margin-bottom: 10px;">🎟️</div>
-                    <h2 style="color: var(--deep-pink); margin-bottom: 10px;">Top Up Voucher Game (Coming Soon)</h2>
-                    <p style="color: #555; line-height: 1.6;">Kode redeem anti-ribet, mendarat dengan cepat! Fitur Top Up Voucher Game sedang kami siapkan dengan penuh cinta. Pantau terus ya untuk mendapatkan akses ke ribuan voucher dengan harga paling miring! ✨</p>
+                    <div style="font-size: 40px; margin-bottom: 8px;">🎟️</div>
+                    <h2 style="color: var(--deep-pink); margin-bottom: 6px; font-size: 16px;">Top Up Voucher Game (Coming Soon)</h2>
+                    <p style="color: #555; line-height: 1.5; font-size: 13px;">Kode redeem anti-ribet, mendarat dengan cepat! Fitur Top Up Voucher Game sedang kami siapkan dengan penuh cinta. Pantau terus ya untuk mendapatkan akses ke ribuan voucher dengan harga paling miring! ✨</p>
                 </div>
             </div>
 
             <!-- SECTION: NO. ANTRIAN & PENCARIAN -->
             <div id="antrian-section" class="section">
-                <h2 style="margin-bottom: 15px; color: var(--deep-pink);">🎫 Daftar & Status Antrian Pesanan</h2>
+                <h2 style="margin-bottom: 12px; color: var(--deep-pink); font-size: 16px;">🎫 Daftar & Status Antrian Pesanan</h2>
                 <div class="form-group">
                     <input type="text" id="search-antrian" class="form-control" placeholder="Cari nomor antrian atau nama kamu di sini..." oninput="filterAntrian()">
                 </div>
-                <div class="info-box" id="list-antrian" style="max-height: 350px; overflow-y: auto;">
+                <div class="info-box" id="list-antrian" style="max-height: 300px; overflow-y: auto; font-size: 13px;">
                     Belum ada antrian aktif hari ini. Yuk buat pesananmu sekarang! 💖
                 </div>
             </div>
 
             <!-- SECTION: KONTAK CIAA STORE -->
             <div id="kontak-section" class="section">
-                <h2 style="text-align:center; color:var(--deep-pink); margin-bottom:20px;">✨ Hubungi Ciaa Store ✨</h2>
+                <h2 style="text-align:center; color:var(--deep-pink); margin-bottom:15px; font-size: 16px;">✨ Hubungi Ciaa Store ✨</h2>
                 
                 <div class="contact-card">
                     <h3>👑 WhatsApp Admin Utama</h3>
@@ -237,17 +291,17 @@
                 <div class="contact-card">
                     <h3>🔗 Linktr.ee & Media Sosial</h3>
                     <p>Linktr.ee: <a href="https://linktr.ee/ciaastore.yo" target="_blank" style="color:var(--deep-pink);">ciaastore.yo</a></p>
-                    <p style="margin-top:5px;">Instagram: <a href="https://www.instagram.com/ciaastoree.yo" target="_blank" style="color:var(--deep-pink);">@ciaastoree.yo</a></p>
+                    <p style="margin-top:4px;">Instagram: <a href="https://www.instagram.com/ciaastoree.yo" target="_blank" style="color:var(--deep-pink);">@ciaastoree.yo</a></p>
                     <a href="https://linktr.ee/ciaastore.yo" target="_blank" class="contact-btn">Kunjungi Linktr.ee 🌟</a>
                 </div>
             </div>
 
             <!-- SECTION: TUTORIAL ORDER -->
             <div id="tutorial-section" class="section">
-                <h2 style="color: var(--deep-pink); margin-bottom: 15px;">📖 Panduan & Tutorial Order di Ciaa Store</h2>
-                <div class="info-box" style="line-height: 1.8;">
+                <h2 style="color: var(--deep-pink); margin-bottom: 12px; font-size: 16px;">📖 Panduan & Tutorial Order di Ciaa Store</h2>
+                <div class="info-box" style="line-height: 1.6; font-size: 13px;">
                     <strong>Langkah-langkah Mudah Belanja:</strong><br>
-                    1️⃣ Masuk ke menu <strong>Layanan</strong> dan pilih produk atau game yang kamu inginkan.<br>
+                    1️⃣ Masuk ke menu <strong>Layanan</strong>, lalu pilih <strong>Folder Aplikasi Premium</strong> atau game lainnya.<br>
                     2️⃣ Isi data yang diminta dengan teliti (seperti User ID, Email, atau Nomor WhatsApp).<br>
                     3️⃣ Baca catatan khusus / syarat order yang tertera di bawah kolom input.<br>
                     4️⃣ Pilih paket dan metode pembayaran (QRIS otomatis, DANA, atau GoPay).<br>
@@ -259,18 +313,18 @@
 
             <!-- SECTION: FORM PEMESANAN -->
             <div id="form-pesanan" class="section">
-                <button onclick="backToMenu()" style="margin-bottom: 15px; border:none; background:var(--light-pink); padding:8px 15px; border-radius:10px; font-weight:bold; cursor:pointer;">⬅ Kembali ke Menu</button>
-                <h2 id="form-title" style="margin-bottom: 10px; color: var(--deep-pink);">Judul Produk</h2>
+                <button onclick="backToMenu()" style="margin-bottom: 12px; border:none; background:var(--light-pink); padding:6px 12px; border-radius:8px; font-weight:bold; cursor:pointer; font-size: 12px;">⬅ Kembali</button>
+                <h2 id="form-title" style="margin-bottom: 8px; color: var(--deep-pink); font-size: 16px;">Judul Produk</h2>
                 
                 <div id="sub-tabs-container" style="display: none;"></div>
                 <div id="product-notes" class="alert-box" style="display: none;"></div>
 
                 <div id="dynamic-inputs"></div>
 
-                <h3 style="margin-top: 20px; margin-bottom: 10px; color: var(--deep-pink);">Pilih Paket</h3>
-                <div class="grid-container" id="package-list" style="margin-top:0;"></div>
+                <h3 style="margin-top: 15px; margin-bottom: 8px; color: var(--deep-pink); font-size: 14px;">Pilih Paket</h3>
+                <div class="mini-grid" id="package-list" style="margin-top:0;"></div>
 
-                <h3 style="margin-top: 20px; margin-bottom: 10px; color: var(--deep-pink);">Pilih Pembayaran</h3>
+                <h3 style="margin-top: 15px; margin-bottom: 8px; color: var(--deep-pink); font-size: 14px;">Pilih Pembayaran</h3>
                 <div class="payment-option"><input type="radio" name="pay-method" value="QRIS" id="pay-qris" checked> <label for="pay-qris">QRIS (Otomatis Nominal)</label></div>
                 <div class="payment-option"><input type="radio" name="pay-method" value="DANA" id="pay-dana"> <label for="pay-dana">DANA (081338224767 A/N AGUS SUTIARNO)</label></div>
                 <div class="payment-option"><input type="radio" name="pay-method" value="GOPAY" id="pay-gopay"> <label for="pay-gopay">GoPay (089505929536)</label></div>
@@ -280,24 +334,24 @@
 
             <!-- SECTION: CHECKOUT -->
             <div id="checkout-page" class="section">
-                <h2 style="text-align: center; color: var(--deep-pink);">Silakan transfer terlebih dahulu untuk melanjutkan pesanan Anda ✨</h2>
+                <h2 style="text-align: center; color: var(--deep-pink); font-size: 16px; margin-bottom: 12px;">Silakan transfer terlebih dahulu untuk melanjutkan pesanan Anda ✨</h2>
                 
-                <div class="info-box" style="margin-top: 20px;">
+                <div class="info-box" style="margin-top: 15px;">
                     <strong>Ringkasan Pesanan:</strong>
                     <p id="co-antrian">No. Antrian: -</p>
                     <p id="co-produk">Layanan: -</p>
                     <p id="co-data">Data: -</p>
-                    <p id="co-harga" style="font-size: 18px; font-weight: bold; margin-top: 10px; color: var(--deep-pink);">Total: Rp -</p>
+                    <p id="co-harga" style="font-size: 16px; font-weight: bold; margin-top: 8px; color: var(--deep-pink);">Total: Rp -</p>
                 </div>
 
                 <div id="transfer-info" class="alert-box" style="background: var(--white); border-color: var(--primary-pink); text-align: center; display:none;">
-                    <h3 id="co-method-title" style="color:var(--deep-pink);">Metode</h3>
-                    <p id="co-method-number" style="font-size: 18px; font-weight: bold; margin: 10px 0;"></p>
+                    <h3 id="co-method-title" style="color:var(--deep-pink); font-size: 14px;">Metode</h3>
+                    <p id="co-method-number" style="font-size: 16px; font-weight: bold; margin: 8px 0;"></p>
                     <button id="btn-copy-rek" class="btn-copy" onclick="copyText(document.getElementById('co-method-number').innerText)">Salin Nomor 📋</button>
                 </div>
 
                 <div class="qris-container" id="qris-box">
-                    <p style="font-size: 13px; color: #555; margin-bottom:10px;">Scan QRIS ini menggunakan e-wallet Anda. Nominal sudah termasuk kode unik otomatis!</p>
+                    <p style="font-size: 12px; color: #555; margin-bottom:8px;">Scan QRIS ini menggunakan e-wallet Anda. Nominal sudah termasuk kode unik otomatis!</p>
                     <div id="qrcode"></div>
                 </div>
 
@@ -324,27 +378,27 @@
 
         const dataProduk = {
             "app-premium": [
-                { id: "canva", nama: "Canva", img: "canva.jpg", type: "ui-canva" },
-                { id: "viu", nama: "Viu", img: "viu.jpg", type: "ui-viu" },
-                { id: "yt", nama: "YouTube", img: "youtube.jpg", type: "ui-std", inputs: ["Email (Family) / No WA (Individual)"], catatan: "<strong>Catatan Format Pemesanan:</strong><br>• Family Plan: Diisi email akun YouTube<br>• Individual Plan: Diisi Nomor WhatsApp<br><br><strong>Ketentuan:</strong><br>• Family Plan: Pastikan email belum limit undangan family (Max 2 family / 1 tahun)<br>• Individual Plan: Lakukan verifikasi akun agar tidak dinonaktifkan Google" },
-                { id: "am", nama: "Alight Motion", img: "alightmotion.jpg", type: "ui-std", inputs: ["Email/No WA"], catatan: "• Alight Motion 1 Tahun.<br>• Proses cepat & aman." },
-                { id: "iqiyi", nama: "IQIYI", img: "iqiyi.jpg", type: "ui-std", inputs: ["No WhatsApp"], catatan: "<strong>Catatan:</strong><br>• Proses Manual - Lambat<br>• Akun dikirim ke WhatsApp" },
-                { id: "capcut", nama: "Capcut", img: "capcut.jpg", type: "ui-std", inputs: ["No WhatsApp"], catatan: "<strong>Catatan:</strong><br>• Proses Lambat: Manual<br>• Akun dikirim ke WhatsApp<br>• Akun Jangan Disebar<br>• Kirim screenshot profil setelah login untuk AKTIFKAN GARANSI (Maks 1x24Jam)" },
-                { id: "wetv", nama: "WeTV", img: "wetv.jpg", type: "ui-std", inputs: ["No WhatsApp"], catatan: "<strong>Catatan:</strong><br>• Kolom di atas diisi Nomor WhatsApp<br>• Akun dikirim ke WhatsAppnya" },
-                { id: "gemini", nama: "AI Gemini Pro", img: "gemini.jpg", type: "ui-std", inputs: ["No WhatsApp"], catatan: "<strong>Catatan:</strong><br>• Kolom di atas diisi Nomor WhatsApp<br>• Akun dikirim ke WhatsAppnya<br>• 1x Pembelian untuk 1 Orang (tidak boleh disebar - akan di-out + limit akun)" },
-                { id: "meitu", nama: "Meitu", img: "meitu.jpg", type: "ui-std", inputs: ["No WhatsApp"], catatan: "<strong>Catatan:</strong><br>• Meitu 1 Minggu<br>• Proses Manual - Akun dikirim ke WhatsApp" }
+                { id: "meitu", nama: "📸 Meitu", img: "meitu.jpg", type: "ui-std", inputs: ["No WhatsApp"], catatan: "<strong>Catatan:</strong><br>• Meitu 1 Minggu<br>• Proses Manual - Akun dikirim ke WhatsApp" },
+                { id: "am", nama: "✨ Alight Motion", img: "alightmotion.jpg", type: "ui-std", inputs: ["Email/No WA"], catatan: "• Alight Motion 1 Tahun.<br>• Proses cepat & aman." },
+                { id: "pixellab", nama: "🎨 Pixellab", img: "pixellab.jpg", type: "ui-std", inputs: ["No WhatsApp"], catatan: "• Pixellab Pro / Mod / Asset.<br>• Proses cepat." },
+                { id: "canva", nama: "🎨 Canva", img: "canva.jpg", type: "ui-canva" },
+                { id: "viu", nama: "🎬 Viu", img: "viu.jpg", type: "ui-viu" },
+                { id: "yt", nama: "▶️ YouTube", img: "youtube.jpg", type: "ui-std", inputs: ["Email (Family) / No WA (Individual)"], catatan: "<strong>Catatan Format Pemesanan:</strong><br>• Family Plan: Diisi email akun YouTube<br>• Individual Plan: Diisi Nomor WhatsApp<br><br><strong>Ketentuan:</strong><br>• Family Plan: Pastikan email belum limit undangan family (Max 2 family / 1 tahun)<br>• Individual Plan: Lakukan verifikasi akun agar tidak dinonaktifkan Google" },
+                { id: "iqiyi", nama: "🍿 IQIYI", img: "iqiyi.jpg", type: "ui-std", inputs: ["No WhatsApp"], catatan: "<strong>Catatan:</strong><br>• Proses Manual - Lambat<br>• Akun dikirim ke WhatsApp" },
+                { id: "capcut", nama: "✂️ Capcut", img: "capcut.jpg", type: "ui-std", inputs: ["No WhatsApp"], catatan: "<strong>Catatan:</strong><br>• Proses Lambat: Manual<br>• Akun dikirim ke WhatsApp<br>• Akun Jangan Disebar<br>• Kirim screenshot profil setelah login untuk AKTIFKAN GARANSI (Maks 1x24Jam)" },
+                { id: "gemini", nama: "🤖 AI Gemini Pro", img: "gemini.jpg", type: "ui-std", inputs: ["No WhatsApp"], catatan: "<strong>Catatan:</strong><br>• Kolom di atas diisi Nomor WhatsApp<br>• Akun dikirim ke WhatsAppnya<br>• 1x Pembelian untuk 1 Orang (tidak boleh disebar - akan di-out + limit akun)" }
             ],
             "topup-game": [
-                { id: "ff", nama: "Free Fire", img: "ff.jpg", type: "ui-game", inputs: ["Username", "ID Game"], catatan: "• Top Up Free Fire (Via Username + ID)" },
-                { id: "mlbb", nama: "Mobile Legends", img: "ml.jpg", type: "ui-game", inputs: ["Username", "ID Game", "Server"], catatan: "• Top Up Mobile Legends (Via Username - ID - Server)" },
-                { id: "mlbb-first", nama: "MLBB First Top Up", img: "ml.jpg", type: "ui-game", inputs: ["Username", "ID Game", "Server"], catatan: "<strong>Catatan:</strong> Top up ini hanya berlaku bagi akun yang belum melakukan top up pertama kali di akunnya. Jika tidak teliti, tidak ada refund!" },
-                { id: "pubg", nama: "PUBG Mobile", img: "pubg.jpg", type: "ui-game", inputs: ["Username", "ID Game"], catatan: "• Top Up PUBG Mobile (Via Username + ID)" },
-                { id: "hok", nama: "Honor Of Kings", img: "hok.jpg", type: "ui-game", inputs: ["Username", "ID Game"], catatan: "• Top Up Honor Of Kings (Via Username + ID)" },
-                { id: "bs", nama: "Blood Strike", img: "bs.jpg", type: "ui-game", inputs: ["Username", "ID Game"], catatan: "• Top Up Blood Strike (Via Username + ID)" }
+                { id: "ff", nama: "🔥 Free Fire", img: "ff.jpg", type: "ui-game", inputs: ["Username", "ID Game"], catatan: "• Top Up Free Fire (Via Username + ID)" },
+                { id: "mlbb", nama: "⚔️ Mobile Legends", img: "ml.jpg", type: "ui-game", inputs: ["Username", "ID Game", "Server"], catatan: "• Top Up Mobile Legends (Via Username - ID - Server)" },
+                { id: "mlbb-first", nama: "⭐ MLBB First Top Up", img: "ml.jpg", type: "ui-game", inputs: ["Username", "ID Game", "Server"], catatan: "<strong>Catatan:</strong> Top up ini hanya berlaku bagi akun yang belum melakukan top up pertama kali di akunnya. Jika tidak teliti, tidak ada refund!" },
+                { id: "pubg", nama: "🎯 PUBG Mobile", img: "pubg.jpg", type: "ui-game", inputs: ["Username", "ID Game"], catatan: "• Top Up PUBG Mobile (Via Username + ID)" },
+                { id: "hok", nama: "👑 Honor Of Kings", img: "hok.jpg", type: "ui-game", inputs: ["Username", "ID Game"], catatan: "• Top Up Honor Of Kings (Via Username + ID)" },
+                { id: "bs", nama: "💎 Blood Strike", img: "bs.jpg", type: "ui-game", inputs: ["Username", "ID Game"], catatan: "• Top Up Blood Strike (Via Username + ID)" }
             ],
             "jasa-ciaa": [
-                { id: "jasher", nama: "Jasher (Jasa Share)", img: "", type: "ui-jasa", ph_desc: "(Contoh: masukkan nama grup dan link grup/teks jasher)", catatan: "<strong>Catatan Jasher:</strong><br>• Jasher (Jasa Share), bukan Jasa Push Member!<br>• Isi nama store<br>• Deskripsi isi dengan link grup dan nama group/teks yang ingin di share!<br>• Konfirmasi pembayaran di web untuk melanjutkan pemesanan via WhatsApp<br>• No reff" },
-                { id: "jpm", nama: "JPM (Jasa Push Member)", img: "", type: "ui-jasa", ph_desc: "(Contoh: masukkan nama grup dan link target!)", catatan: "<strong>Catatan JPM:</strong><br>• JPM (Jasa Push Member), push member sesuai dengan target<br>• Isi nama store<br>• Deskripsi isi dengan link grup & nama grup<br>• Settingan GB nyalakan persetujuan admin<br>• Dilarang acc member sebelum done/sesuai target, acc = done no toleransi<br>• Konfirmasi pembayaran di web untuk melanjutkan pemesanan via WhatsApp<br>• No reff" }
+                { id: "jasher", nama: "🚀 Jasher (Jasa Share)", img: "", type: "ui-jasa", ph_desc: "(Contoh: masukkan nama grup dan link grup/teks jasher)", catatan: "<strong>Catatan Jasher:</strong><br>• Jasher (Jasa Share), bukan Jasa Push Member!<br>• Isi nama store<br>• Deskripsi isi dengan link grup dan nama group/teks yang ingin di share!<br>• Konfirmasi pembayaran di web untuk melanjutkan pemesanan via WhatsApp<br>• No reff" },
+                { id: "jpm", nama: "📈 JPM (Jasa Push Member)", img: "", type: "ui-jasa", ph_desc: "(Contoh: masukkan nama grup dan link target!)", catatan: "<strong>Catatan JPM:</strong><br>• JPM (Jasa Push Member), push member sesuai dengan target<br>• Isi nama store<br>• Deskripsi isi dengan link grup & nama grup<br>• Settingan GB nyalakan persetujuan admin<br>• Dilarang acc member sebelum done/sesuai target, acc = done no toleransi<br>• Konfirmasi pembayaran di web untuk melanjutkan pemesanan via WhatsApp<br>• No reff" }
             ]
         };
 
@@ -353,9 +407,9 @@
             "viu": [ { nama: "Viu 1 Tahun (Private) – No Gar", harga: 5000, tag: "oto" }, { nama: "Paket Viu Prem 5 Akun (6 Bulan Private)", harga: 8000, tag: "man" }, { nama: "Viu Plus 1 Bulan (Sharing)", harga: 18000, tag: "man" } ],
             "yt": [ { nama: "YouTube 1 Bulan (Family Plan)", harga: 5000 } ],
             "am": [ { nama: "Alight Motion 1 Tahun", harga: 4000 } ],
+            "pixellab": [ { nama: "Pixellab Pro / Full Asset", harga: 5000 } ],
             "iqiyi": [ { nama: "IQIYI 1 Bulan (Private Vip Standar)", harga: 37000 } ],
             "capcut": [ { nama: "Capcut Pro 7 Hari (Private)", harga: 5000 }, { nama: "Capcut Pro 1 Bulan (Private)", harga: 25000 } ],
-            "wetv": [ { nama: "WeTV 1 Bulan (Sharing)", harga: 11000 }, { nama: "WeTV 3 Bulan (Sharing)", harga: 27000 }, { nama: "WeTV 1 Bulan (Private)", harga: 28000 } ],
             "gemini": [ { nama: "AI Gemini Pro 1 Bulan", harga: 15000 } ],
             "meitu": [ { nama: "Meitu 1 Minggu", harga: 10000 } ],
             "jasher": [ 
@@ -410,9 +464,9 @@
         const rawQrisStatis = "00020101021126570011ID.DANA.WWW011893600915376556859902097655685990303UMI51440014ID.CO.QRIS.WWW0215ID10253787183610303UMI5204481453033605802ID5914Ciaa Store All6014Kota Pontianak61057811363048AD2";
 
         window.onload = () => {
-            renderGrid('app-premium', 'grid-app');
-            renderGrid('topup-game', 'grid-game');
-            renderGrid('jasa-ciaa', 'grid-jasa');
+            renderGrid('app-premium', 'grid-app-page');
+            renderGrid('topup-game', 'folder-game');
+            renderGrid('jasa-ciaa', 'folder-jasa');
             loadAntrianList();
         };
 
@@ -424,8 +478,26 @@
             window.scrollTo(0,0);
         }
 
+        function openAppPremiumPage() {
+            document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+            document.getElementById('app-premium-section').classList.add('active');
+            window.scrollTo(0,0);
+        }
+
+        function toggleFolder(folderId) {
+            let el = document.getElementById(folderId);
+            let arrow = document.getElementById(folderId.replace('folder-', 'arrow-'));
+            if(el.style.display === 'none' || el.style.display === '') {
+                el.style.display = 'grid';
+                arrow.innerText = '▲ Tutup';
+            } else {
+                el.style.display = 'none';
+                arrow.innerText = '▼ Buka';
+            }
+        }
+
         function backToMenu() {
-            document.getElementById('form-pesanan').classList.remove('active');
+            document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
             document.getElementById('layanan-section').classList.add('active');
             window.scrollTo(0,0);
         }
@@ -486,7 +558,7 @@
                 renderInputs(['Nama Store']);
                 let placeholderText = itemId === 'jasher' ? "(Contoh: masukkan nama grup dan link grup/teks jasher)" : "(Contoh: masukkan nama grup dan link target!)";
                 inputsEl.innerHTML += `
-                    <div class="form-group" style="margin-top:15px;">
+                    <div class="form-group" style="margin-top:12px;">
                         <label>Deskripsi / Link Target</label>
                         <textarea class="form-control" id="input-desc" placeholder="${placeholderText}"></textarea>
                     </div>
@@ -536,8 +608,8 @@
                 if(!tag || pkt.tag === tag) {
                     el.innerHTML += `
                         <div class="product-card" onclick="selectPackage(this, '${pkt.nama}', ${pkt.harga})">
-                            <h4 style="font-size:14px; margin-bottom:5px;">${pkt.nama}</h4>
-                            <p style="color:var(--deep-pink); font-weight:bold;">Rp ${pkt.harga.toLocaleString('id-ID')}</p>
+                            <h4 style="font-size:12px; margin-bottom:4px;">${pkt.nama}</h4>
+                            <p style="color:var(--deep-pink); font-weight:bold; font-size:12px;">Rp ${pkt.harga.toLocaleString('id-ID')}</p>
                         </div>
                     `;
                 }
@@ -612,7 +684,7 @@
             } else {
                 transferInfo.style.display = 'none'; qrisBox.style.display = 'block';
                 const dynamicQR = generateDynamicQRIS(rawQrisStatis, totalBayar);
-                new QRCode(document.getElementById("qrcode"), { text: dynamicQR, width: 200, height: 200 });
+                new QRCode(document.getElementById("qrcode"), { text: dynamicQR, width: 180, height: 180 });
             }
 
             document.getElementById('form-pesanan').classList.remove('active');
@@ -658,14 +730,14 @@
             container.innerHTML = "";
             antrianList.forEach(item => {
                 container.innerHTML += `
-                    <div style="background:white; padding:12px; border-radius:12px; margin-bottom:10px; border:2px solid var(--primary-pink); display:flex; justify-content:space-between; align-items:center;">
+                    <div style="background:white; padding:10px; border-radius:10px; margin-bottom:8px; border:1.5px solid var(--primary-pink); display:flex; justify-content:space-between; align-items:center;">
                         <div>
                             <strong>🎫 ${item.no}</strong><br>
-                            <span style="font-size:13px; color:#555;">${item.detail}</span><br>
-                            <span style="font-size:11px; color:#888;">${item.time}</span>
+                            <span style="font-size:12px; color:#555;">${item.detail}</span><br>
+                            <span style="font-size:10px; color:#888;">${item.time}</span>
                         </div>
                         <div>
-                            <span style="padding:6px 12px; border-radius:8px; font-size:12px; font-weight:bold; background:#fff0f5; border:1px solid var(--deep-pink);">${item.status}</span>
+                            <span style="padding:4px 10px; border-radius:6px; font-size:11px; font-weight:bold; background:#fff0f5; border:1px solid var(--deep-pink);">${item.status}</span>
                         </div>
                     </div>`;
             });
@@ -684,14 +756,14 @@
             container.innerHTML = "";
             filtered.forEach(item => {
                 container.innerHTML += `
-                    <div style="background:white; padding:12px; border-radius:12px; margin-bottom:10px; border:2px solid var(--primary-pink); display:flex; justify-content:space-between; align-items:center;">
+                    <div style="background:white; padding:10px; border-radius:10px; margin-bottom:8px; border:1.5px solid var(--primary-pink); display:flex; justify-content:space-between; align-items:center;">
                         <div>
                             <strong>🎫 ${item.no}</strong><br>
-                            <span style="font-size:13px; color:#555;">${item.detail}</span><br>
-                            <span style="font-size:11px; color:#888;">${item.time}</span>
+                            <span style="font-size:12px; color:#555;">${item.detail}</span><br>
+                            <span style="font-size:10px; color:#888;">${item.time}</span>
                         </div>
                         <div>
-                            <span style="padding:6px 12px; border-radius:8px; font-size:12px; font-weight:bold; background:#fff0f5; border:1px solid var(--deep-pink);">${item.status}</span>
+                            <span style="padding:4px 10px; border-radius:6px; font-size:11px; font-weight:bold; background:#fff0f5; border:1px solid var(--deep-pink);">${item.status}</span>
                         </div>
                     </div>`;
             });
