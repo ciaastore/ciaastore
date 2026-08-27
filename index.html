@@ -36,24 +36,51 @@
             font-size: 14px;
         }
 
-        body::before {
-            content: "";
-            position: fixed;
-            top: 0; left: 0; width: 100%; height: 100%;
-            background: linear-gradient(180deg, rgba(255,255,255,0.75) 0%, rgba(255,228,225,0.9) 100%);
-            z-index: -2;
-            pointer-events: none;
+        /* EFEK CAHAYA BERSINAR */
+        .light-rays {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: radial-gradient(circle at 50% -20%, rgba(255, 255, 255, 0.95) 0%, rgba(255, 228, 225, 0.7) 40%, rgba(255, 240, 245, 0.3) 100%);
+            z-index: -2; pointer-events: none;
         }
 
+        /* ANIMASI KUPU-KUPU 3D REALISTIS BERKELILING LAYAR */
+        .real-butterfly {
+            position: fixed; pointer-events: none; z-index: -1;
+            width: 35px; height: 35px; transform-style: preserve-3d;
+            filter: drop-shadow(0 4px 6px rgba(255, 105, 180, 0.4));
+        }
+        .real-butterfly::before, .real-butterfly::after {
+            content: ''; position: absolute; top: 0; width: 17px; height: 30px;
+            background: radial-gradient(circle at 50% 50%, rgba(255,105,180,0.85), rgba(255,182,193,0.4));
+            border-radius: 50% 10% 50% 40%; transform-origin: right center;
+            box-shadow: inset 0 0 4px rgba(255,255,255,0.6);
+        }
+        .real-butterfly::after {
+            left: 17px; border-radius: 10% 50% 40% 50%; transform-origin: left center;
+            animation: flapRight 0.15s ease-in-out infinite alternate;
+        }
+        .real-butterfly::before {
+            left: 0; animation: flapLeft 0.15s ease-in-out infinite alternate;
+        }
+        @keyframes flapLeft { 0% { transform: rotateY(0deg); } 100% { transform: rotateY(70deg); } }
+        @keyframes flapRight { 0% { transform: rotateY(0deg); } 100% { transform: rotateY(-70deg); } }
+
+        /* Jalur Terbang Kupu-kupu */
+        .fly-path-1 { animation: fly1 18s ease-in-out infinite alternate; }
+        .fly-path-2 { animation: fly2 22s ease-in-out infinite alternate; }
+        .fly-path-3 { animation: fly3 15s ease-in-out infinite alternate; }
+        .fly-path-4 { animation: fly4 25s ease-in-out infinite alternate; }
+
+        @keyframes fly1 { 0% { top: 90%; left: -10%; transform: rotate(15deg) scale(0.9); } 100% { top: 10%; left: 110%; transform: rotate(45deg) scale(1.1); } }
+        @keyframes fly2 { 0% { top: -10%; left: 80%; transform: rotate(-120deg) scale(1); } 100% { top: 110%; left: 20%; transform: rotate(-80deg) scale(0.8); } }
+        @keyframes fly3 { 0% { top: 40%; left: -10%; transform: rotate(30deg) scale(0.7); } 100% { top: 70%; left: 110%; transform: rotate(10deg) scale(1); } }
+        @keyframes fly4 { 0% { top: 110%; left: 30%; transform: rotate(-45deg) scale(1.2); } 100% { top: -10%; left: 60%; transform: rotate(25deg) scale(0.9); } }
+
+
         .main-wrapper {
-            max-width: 750px;
-            margin: 0 auto;
-            background: rgba(255, 255, 255, 0.94);
-            border-radius: var(--card-radius);
-            box-shadow: 0 8px 25px rgba(255, 182, 193, 0.35);
-            border: 2px solid var(--primary-pink);
-            overflow: hidden;
-            backdrop-filter: blur(5px);
+            max-width: 750px; margin: 0 auto; background: rgba(255, 255, 255, 0.94);
+            border-radius: var(--card-radius); box-shadow: 0 8px 25px rgba(255, 182, 193, 0.35);
+            border: 2px solid var(--primary-pink); overflow: hidden; backdrop-filter: blur(5px);
         }
 
         .header { background: var(--light-pink); text-align: center; position: relative; padding: 8px; border-bottom: 2px dashed var(--primary-pink); }
@@ -63,29 +90,25 @@
         .btn-admin:hover { transform: scale(1.1); }
         .btn-admin img { width: 22px; height: 22px; border-radius: 50%; object-fit: cover; display: block; }
 
-        .promo-poster-banner {
-            background: linear-gradient(135deg, #ffb6c1 0%, #ff69b4 100%);
-            border-radius: 14px;
-            margin: 12px 15px 0 15px;
-            padding: 16px;
-            text-align: center;
-            color: white;
-            box-shadow: 0 4px 15px rgba(255, 105, 180, 0.3);
-            border: 2px solid #fff;
+        /* SLIDER PROMOSI HORIZONTAL SOFT PINK */
+        .promo-slider {
+            display: flex; overflow-x: auto; gap: 12px; padding: 15px 15px 5px 15px;
+            scroll-snap-type: x mandatory; scrollbar-width: none;
         }
-        .promo-poster-banner h3 { font-size: 15px; margin-bottom: 6px; font-weight: bold; }
-        .promo-poster-banner p { font-size: 12px; line-height: 1.4; opacity: 0.95; }
+        .promo-slider::-webkit-scrollbar { display: none; }
+        .promo-card-h {
+            min-width: 85%; flex-shrink: 0; scroll-snap-align: center;
+            background: linear-gradient(135deg, #ffffff 0%, var(--soft-pink) 100%);
+            border: 2px solid var(--primary-pink); border-radius: 14px;
+            padding: 14px; box-shadow: 0 4px 12px rgba(255,182,193,0.3);
+        }
+        .promo-card-h h3 { font-size: 14px; color: var(--deep-pink); margin-bottom: 6px; display: flex; align-items: center; gap: 5px; font-weight: bold;}
+        .promo-card-h p { font-size: 12px; line-height: 1.5; color: var(--dark-text); }
 
         .greeting-box {
-            background: #fff0f5;
-            border: 1.5px solid var(--primary-pink);
-            border-radius: 12px;
-            padding: 10px 15px;
-            margin: 12px 15px 0 15px;
-            text-align: center;
-            font-weight: bold;
-            color: var(--deep-pink);
-            font-size: 13px;
+            background: #fff0f5; border: 1.5px solid var(--primary-pink);
+            border-radius: 12px; padding: 10px 15px; margin: 12px 15px 0 15px;
+            text-align: center; font-weight: bold; color: var(--deep-pink); font-size: 13px;
         }
 
         .nav-tabs { display: flex; overflow-x: auto; background: var(--white); padding: 10px; white-space: nowrap; border-bottom: 2px solid var(--light-pink); scrollbar-width: none; gap: 6px; }
@@ -98,79 +121,24 @@
         .section.active { display: block; }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: translateY(0); } }
 
-        .grid-services {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 8px;
-            margin-top: 10px;
-        }
-
+        .grid-services { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin-top: 10px; }
         .service-box {
-            background: var(--white);
-            border: 1.5px solid var(--light-pink);
-            border-radius: 12px;
-            padding: 10px 6px;
-            text-align: center;
-            cursor: pointer;
-            box-shadow: 0 2px 6px rgba(255,182,193,0.15);
-            transition: 0.2s;
-            aspect-ratio: 1 / 1;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
+            background: var(--white); border: 1.5px solid var(--light-pink); border-radius: 12px; padding: 10px 6px;
+            text-align: center; cursor: pointer; box-shadow: 0 2px 6px rgba(255,182,193,0.15); transition: 0.2s;
+            aspect-ratio: 1 / 1; display: flex; flex-direction: column; justify-content: center; align-items: center;
         }
-        .service-box:hover {
-            border-color: var(--deep-pink);
-            transform: translateY(-2px);
-            box-shadow: 0 4px 12px rgba(255,105,180,0.25);
-        }
-        .service-box img {
-            width: 40px; height: 40px;
-            border-radius: 50%;
-            object-fit: cover;
-            margin-bottom: 6px;
-            border: 1.5px solid var(--primary-pink);
-        }
-        .service-box h4 {
-            font-size: 11px;
-            color: var(--dark-text);
-            font-weight: 600;
-            line-height: 1.2;
-        }
+        .service-box:hover { border-color: var(--deep-pink); transform: translateY(-2px); box-shadow: 0 4px 12px rgba(255,105,180,0.25); }
+        .service-box img { width: 40px; height: 40px; border-radius: 50%; object-fit: cover; margin-bottom: 6px; border: 1.5px solid var(--primary-pink); }
+        .service-box h4 { font-size: 11px; color: var(--dark-text); font-weight: 600; line-height: 1.2; }
 
-        .mini-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
-            gap: 8px;
-            margin-top: 10px;
-        }
-        .product-card { 
-            background: var(--white); 
-            border-radius: 10px; 
-            padding: 8px; 
-            text-align: center; 
-            box-shadow: 0 2px 6px rgba(255,182,193,0.15); 
-            cursor: pointer; 
-            border: 1.5px solid var(--light-pink); 
-            transition: 0.2s; 
-        }
+        .mini-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(100px, 1fr)); gap: 8px; margin-top: 10px; }
+        .product-card { background: var(--white); border-radius: 10px; padding: 8px; text-align: center; box-shadow: 0 2px 6px rgba(255,182,193,0.15); cursor: pointer; border: 1.5px solid var(--light-pink); transition: 0.2s; }
         .product-card:hover { border-color: var(--deep-pink); transform: translateY(-2px); }
         .product-card img { width: 40px; height: 40px; border-radius: 8px; margin-bottom: 4px; object-fit: cover; }
         .product-card h4 { font-size: 11px; color: var(--dark-text); font-weight: 600; line-height: 1.2; }
         
         .alert-box { background: #ffe4e1; border: 1.5px dashed var(--deep-pink); padding: 10px 12px; margin-bottom: 12px; border-radius: 12px; font-size: 13px; color: #b22222; line-height: 1.4; }
-        
-        .info-box-pink { 
-            background: #fff0f5; 
-            border: 1.5px solid var(--primary-pink); 
-            padding: 10px 12px; 
-            margin-bottom: 12px; 
-            border-radius: 12px; 
-            font-size: 13px; 
-            color: var(--deep-pink); 
-            line-height: 1.4; 
-        }
+        .info-box-pink { background: #fff0f5; border: 1.5px solid var(--primary-pink); padding: 10px 12px; margin-bottom: 12px; border-radius: 12px; font-size: 13px; color: var(--deep-pink); line-height: 1.4; }
 
         .contact-card { background: var(--white); border: 2px solid var(--primary-pink); border-radius: var(--card-radius); padding: 15px; margin-bottom: 12px; text-align: center; }
         .contact-card h3 { color: var(--deep-pink); margin-bottom: 6px; font-size: 15px; }
@@ -195,67 +163,29 @@
         .payment-option { display: flex; align-items: center; padding: 10px; border: 1.5px solid var(--primary-pink); border-radius: 12px; margin-bottom: 8px; cursor: pointer; background: var(--white); font-size: 13px; }
         .payment-option input { margin-right: 8px; accent-color: var(--deep-pink); }
         
-        /* FIX TOTAL: RAPI DI TENGAH & KOSONG ATAS HILANG */
-        .qris-container { 
-            text-align: center; 
-            background: white; 
-            padding: 15px; 
-            border-radius: var(--card-radius); 
-            margin: 12px 0; 
-            border: 2px solid var(--primary-pink); 
-            width: 100%; 
-            box-sizing: border-box;
-        }
-        
-        #qrcode { 
-            display: flex !important; 
-            justify-content: center !important; 
-            align-items: center !important; 
-            margin: 10px auto 0 auto !important; 
-            width: 100% !important; 
-        }
-        
-        #qrcode canvas, #qrcode img { 
-            display: block !important; 
-            margin: 0 auto !important; 
-            max-width: 200px !important; 
-            width: 100% !important;
-            height: auto !important; 
-            border-radius: 8px;
-        }
+        .qris-container { text-align: center; background: white; padding: 15px; border-radius: var(--card-radius); margin: 12px 0; border: 2px solid var(--primary-pink); width: 100%; box-sizing: border-box; }
+        #qrcode { display: flex !important; justify-content: center !important; align-items: center !important; margin: 10px auto 0 auto !important; width: 100% !important; }
+        #qrcode canvas, #qrcode img { display: block !important; margin: 0 auto !important; max-width: 200px !important; width: 100% !important; height: auto !important; border-radius: 8px; }
 
-        #maintenance-overlay { 
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%; 
-            background: #ffe4e1; 
-            z-index: 9999; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; padding: 20px; 
-        }
-        .maintenance-logo { 
-            width: 150px; height: 150px; object-fit: contain; margin-bottom: 15px; 
-            animation: floatMaintenance 3.5s ease-in-out infinite; 
-            filter: drop-shadow(0 10px 15px rgba(255, 105, 180, 0.4));
-        }
-        @keyframes floatMaintenance { 
-            0%, 100% { transform: translateY(0) rotate(0deg) scale(1); } 
-            50% { transform: translateY(-15px) rotate(3deg) scale(1.05); } 
-        }
-
-        #admin-login-modal {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0, 0, 0, 0.5);
-            z-index: 10000; display: none; align-items: center; justify-content: center; padding: 20px;
-        }
-        .admin-login-box {
-            background: white; border: 2px solid var(--deep-pink); border-radius: var(--card-radius);
-            padding: 20px; width: 100%; max-width: 340px; text-align: center;
-        }
+        #maintenance-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #ffe4e1; z-index: 9999; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; padding: 20px; }
+        .maintenance-logo { width: 150px; height: 150px; object-fit: contain; margin-bottom: 15px; animation: floatMaintenance 3.5s ease-in-out infinite; filter: drop-shadow(0 10px 15px rgba(255, 105, 180, 0.4)); }
+        
+        #admin-login-modal { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.5); z-index: 10000; display: none; align-items: center; justify-content: center; padding: 20px; }
+        .admin-login-box { background: white; border: 2px solid var(--deep-pink); border-radius: var(--card-radius); padding: 20px; width: 100%; max-width: 340px; text-align: center; }
 
         .fab { position: fixed; bottom: 20px; right: 20px; background: var(--wa-color); color: white; width: 48px; height: 48px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 22px; cursor: pointer; text-decoration: none; z-index: 1000; border: 2px solid white; transition: 0.2s; }
         .fab:hover { transform: scale(1.1); }
-        
         .footer { text-align: center; padding: 15px; font-size: 12px; color: #666; margin-top: 15px; border-top: 2px dashed var(--light-pink); }
     </style>
 </head>
 <body>
+
+    <!-- CAHAYA & KUPU-KUPU 3D CSS -->
+    <div class="light-rays"></div>
+    <div class="real-butterfly fly-path-1"></div>
+    <div class="real-butterfly fly-path-2"></div>
+    <div class="real-butterfly fly-path-3"></div>
+    <div class="real-butterfly fly-path-4"></div>
 
     <button class="btn-admin" onclick="openAdminLoginModal()" title="Admin Login">
         <img src="logo.jpg" alt="Admin" onerror="this.src='https://cdn-icons-png.flaticon.com/512/2913/2913133.png'">
@@ -288,9 +218,16 @@
             <img src="banner.jpg" alt="Ciaa Store Banner" class="banner-utama" onerror="this.style.display='none'">
         </header>
 
-        <div class="promo-poster-banner">
-            <h3>🌟 Ciaa Store Official 🌟</h3>
-            <p>✨ Belanja Aman, Kilat & Terpercaya! 🚀<br>Top Up Game, Jasa Sosmed & App Premium Termurah se-Indonesia! 💖</p>
+        <!-- PAPAN PROMOSI GESER -->
+        <div class="promo-slider">
+            <div class="promo-card-h">
+                <h3>🌐 Jasa Buat Website 💻✨</h3>
+                <p>Wujudkan website impianmu bersama tim Ciaa Store! 🚀 Desain super elegan, responsif, & kekinian banget sesuai tema usahamu. Cocok buat jualan, portofolio, atau profil bisnis. Kualitas OKE, Harga Ramah di Kantong! Yuk konsultasi sekarang! 💬💖</p>
+            </div>
+            <div class="promo-card-h">
+                <h3>🎮 Top Up Voucher Game 🎊🔖</h3>
+                <p>Mau gacha tapi diamond kurang? Top up di sini aja! 💎✨ Proses secepat kilat ⚡, 100% aman & legal! 🎀 Tersedia buat player MLBB, FF, PUBG, dan masih banyak lagi. Nikmati promo melimpah setiap harinya! Gasss Cobain! 🛒💖</p>
+            </div>
         </div>
 
         <div class="greeting-box" id="greeting-text">
@@ -309,50 +246,15 @@
             
             <div id="layanan-section" class="section active">
                 <div class="grid-services">
-                    <div class="service-box" onclick="openAppPremiumPage()">
-                        <img src="logo.jpg" alt="Aplikasi Premium" onerror="this.src='https://cdn-icons-png.flaticon.com/512/869/869034.png'">
-                        <h4>📱 Aplikasi Premium</h4>
-                    </div>
-
-                    <div class="service-box" onclick="openForm('ff', 'topup-game')">
-                        <img src="ff.jpg" alt="Free Fire" onerror="this.src='https://cdn-icons-png.flaticon.com/512/869/869034.png'">
-                        <h4>🔥 Free Fire</h4>
-                    </div>
-
-                    <div class="service-box" onclick="openForm('mlbb', 'topup-game')">
-                        <img src="ml.jpg" alt="Mobile Legends" onerror="this.src='https://cdn-icons-png.flaticon.com/512/869/869034.png'">
-                        <h4>⚔️ Mobile Legends</h4>
-                    </div>
-
-                    <div class="service-box" onclick="openForm('mlbb-first', 'topup-game')">
-                        <img src="ml.jpg" alt="MLBB First" onerror="this.src='https://cdn-icons-png.flaticon.com/512/869/869034.png'">
-                        <h4>⭐ MLBB First</h4>
-                    </div>
-
-                    <div class="service-box" onclick="openForm('pubg', 'topup-game')">
-                        <img src="pubg.jpg" alt="PUBG Mobile" onerror="this.src='https://cdn-icons-png.flaticon.com/512/869/869034.png'">
-                        <h4>🎯 PUBG Mobile</h4>
-                    </div>
-
-                    <div class="service-box" onclick="openForm('hok', 'topup-game')">
-                        <img src="hok.jpg" alt="Honor Of Kings" onerror="this.src='https://cdn-icons-png.flaticon.com/512/869/869034.png'">
-                        <h4>👑 Honor Of Kings</h4>
-                    </div>
-
-                    <div class="service-box" onclick="openForm('bs', 'topup-game')">
-                        <img src="bs.jpg" alt="Blood Strike" onerror="this.src='https://cdn-icons-png.flaticon.com/512/869/869034.png'">
-                        <h4>💎 Blood Strike</h4>
-                    </div>
-
-                    <div class="service-box" onclick="openForm('jasher', 'jasa-ciaa')">
-                        <img src="logo.jpg" alt="Jasher" onerror="this.src='https://cdn-icons-png.flaticon.com/512/869/869034.png'">
-                        <h4>🚀 Jasher</h4>
-                    </div>
-
-                    <div class="service-box" onclick="openForm('jpm', 'jasa-ciaa')">
-                        <img src="logo.jpg" alt="JPM" onerror="this.src='https://cdn-icons-png.flaticon.com/512/869/869034.png'">
-                        <h4>📈 JPM</h4>
-                    </div>
+                    <div class="service-box" onclick="openAppPremiumPage()"><img src="logo.jpg" onerror="this.src='https://cdn-icons-png.flaticon.com/512/869/869034.png'"><h4>📱 Aplikasi Premium</h4></div>
+                    <div class="service-box" onclick="openForm('ff', 'topup-game')"><img src="ff.jpg" onerror="this.src='https://cdn-icons-png.flaticon.com/512/869/869034.png'"><h4>🔥 Free Fire</h4></div>
+                    <div class="service-box" onclick="openForm('mlbb', 'topup-game')"><img src="ml.jpg" onerror="this.src='https://cdn-icons-png.flaticon.com/512/869/869034.png'"><h4>⚔️ Mobile Legends</h4></div>
+                    <div class="service-box" onclick="openForm('mlbb-first', 'topup-game')"><img src="ml.jpg" onerror="this.src='https://cdn-icons-png.flaticon.com/512/869/869034.png'"><h4>⭐ MLBB First</h4></div>
+                    <div class="service-box" onclick="openForm('pubg', 'topup-game')"><img src="pubg.jpg" onerror="this.src='https://cdn-icons-png.flaticon.com/512/869/869034.png'"><h4>🎯 PUBG Mobile</h4></div>
+                    <div class="service-box" onclick="openForm('hok', 'topup-game')"><img src="hok.jpg" onerror="this.src='https://cdn-icons-png.flaticon.com/512/869/869034.png'"><h4>👑 Honor Of Kings</h4></div>
+                    <div class="service-box" onclick="openForm('bs', 'topup-game')"><img src="bs.jpg" onerror="this.src='https://cdn-icons-png.flaticon.com/512/869/869034.png'"><h4>💎 Blood Strike</h4></div>
+                    <div class="service-box" onclick="openForm('jasher', 'jasa-ciaa')"><img src="logo.jpg" onerror="this.src='https://cdn-icons-png.flaticon.com/512/869/869034.png'"><h4>🚀 Jasher</h4></div>
+                    <div class="service-box" onclick="openForm('jpm', 'jasa-ciaa')"><img src="logo.jpg" onerror="this.src='https://cdn-icons-png.flaticon.com/512/869/869034.png'"><h4>📈 JPM</h4></div>
                 </div>
             </div>
 
@@ -364,7 +266,6 @@
                     <strong>⏰ Open 06.00–20.40 WIB</strong><br>
                     Akun Premium terkadang dikirim oleh mimin, jika ada kendala/masalah bisa tanyakan kepada mimin yaw! 🌸
                 </div>
-
                 <div class="mini-grid" id="grid-app-page"></div>
             </div>
 
@@ -373,26 +274,22 @@
                     <h2 style="color: var(--deep-pink); font-size: 16px;">🛠️ Panel Admin Eksklusif</h2>
                     <button onclick="logoutAdmin()" style="border:none; background:var(--light-pink); padding:6px 12px; border-radius:8px; font-weight:bold; cursor:pointer; font-size: 12px;">🚪 Keluar Admin</button>
                 </div>
-
                 <div class="sub-tabs" style="margin-bottom: 12px;">
                     <div class="sub-tab active" onclick="switchAdminTab('dashboard', event)">📊 Dashboard & Statistik</div>
                     <div class="sub-tab" onclick="switchAdminTab('antrian', event)">🎫 Kelola Antrian</div>
                 </div>
-
                 <div id="admin-tab-dashboard" class="admin-sub-section">
                     <div class="info-box-pink" style="text-align: center; padding: 15px;">
                         <h3 style="color: var(--deep-pink); font-size: 14px; margin-bottom: 4px;">📈 Total Pemasukan Hari Ini</h3>
                         <p id="admin-total-income" style="font-size: 20px; font-weight: bold; color: var(--deep-pink);">Rp 0</p>
                         <p id="admin-total-orders" style="font-size: 12px; color: #555; margin-top: 4px;">Jumlah Orderan Hari Ini: 0</p>
                     </div>
-
                     <div class="info-box-pink">
                         <strong>🛠️ Kontrol Server & Pemeliharaan:</strong>
                         <p style="font-size: 12px; color: #555; margin-top: 4px;">Nyalakan atau matikan mode maintenance situs toko.</p>
                         <button class="btn-primary" id="btn-toggle-maintenance" onclick="toggleMaintenanceMode()" style="margin-top: 8px;">Aktifkan Mode Maintenance 🛠️</button>
                     </div>
                 </div>
-
                 <div id="admin-tab-antrian" class="admin-sub-section" style="display: none;">
                     <div style="display: flex; gap: 8px; margin-bottom: 10px;">
                         <input type="text" id="search-admin-antrian" class="form-control" placeholder="Cari nomor antrian atau nama pelanggan..." oninput="filterAdminAntrian()" style="flex: 1; margin-bottom: 0;">
@@ -422,19 +319,16 @@
 
             <div id="kontak-section" class="section">
                 <h2 style="text-align:center; color:var(--deep-pink); margin-bottom:15px; font-size: 16px;">✨ Hubungi Ciaa Store ✨</h2>
-                
                 <div class="contact-card">
                     <h3>👑 WhatsApp Admin Utama</h3>
                     <p>Nomor: <strong>6289505929536</strong></p>
                     <a href="https://wa.me/6289505929536" target="_blank" class="contact-btn">Chat Admin 💬</a>
                 </div>
-
                 <div class="contact-card">
                     <h3>🌸 WhatsApp Customer Service</h3>
                     <p>Nomor: <strong>6289509452777</strong></p>
                     <a href="https://wa.me/6289509452777" target="_blank" class="contact-btn">Chat CS 🎀</a>
                 </div>
-
                 <div class="contact-card">
                     <h3>🔗 Linktr.ee & Media Sosial</h3>
                     <p>Linktr.ee: <a href="https://linktr.ee/ciaastore.yo" target="_blank" style="color:var(--deep-pink);">ciaastore.yo</a></p>
@@ -462,21 +356,19 @@
                 
                 <div id="sub-tabs-container" style="display: none;"></div>
                 <div id="product-notes" class="alert-box" style="display: none;"></div>
-
                 <div id="dynamic-inputs"></div>
 
                 <h3 style="margin-top: 15px; margin-bottom: 8px; color: var(--deep-pink); font-size: 14px;">Pilih Paket</h3>
                 <div class="mini-grid" id="package-list" style="margin-top:0;"></div>
 
                 <h3 style="margin-top: 15px; margin-bottom: 8px; color: var(--deep-pink); font-size: 14px;">Pilih Pembayaran</h3>
-                <div class="payment-option"><input type="radio" name="pay-method" value="QRIS" id="pay-qris" checked> <label for="pay-qris">QRIS All Payment (Silakan masukkan nominal total secara pas)</label></div>
-                <div class="payment-option"><input type="radio" name="pay-method" value="DANA" id="pay-dana"> <label for="pay-dana">DANA (081338224767 A/N AGUS SUTIARNO – Tanpa Biaya Admin)</label></div>
-                <div class="payment-option"><input type="radio" name="pay-method" value="GOPAY" id="pay-gopay"> <label for="pay-gopay">GoPay (089505929536 – Tanpa Biaya Admin)</label></div>
+                <div class="payment-option"><input type="radio" name="pay-method" value="QRIS" id="pay-qris" checked> <label for="pay-qris">QRIS All Payment (Otomatis + Admin 0.01%)</label></div>
+                <div class="payment-option"><input type="radio" name="pay-method" value="DANA" id="pay-dana"> <label for="pay-dana">DANA (081338224767 A/N AGUS SUTIARNO)</label></div>
+                <div class="payment-option"><input type="radio" name="pay-method" value="GOPAY" id="pay-gopay"> <label for="pay-gopay">GoPay (089505929536)</label></div>
 
                 <button class="btn-primary" onclick="proceedToCheckout()">Lanjutkan Pembayaran 💖</button>
             </div>
 
-            <!-- CHECKOUT / HALAMAN PEMBAYARAN -->
             <div id="checkout-page" class="section">
                 <h2 style="text-align: center; color: var(--deep-pink); font-size: 16px; margin-bottom: 12px;">Silakan transfer terlebih dahulu untuk melanjutkan pesanan Anda ✨</h2>
                 
@@ -494,12 +386,12 @@
                 </div>
 
                 <div class="qris-container" id="qris-box">
-                    <p style="font-size: 12px; color: #555; margin-bottom:8px;">Scan QRIS ini menggunakan E-Wallet / Mobile Banking Anda.<br><strong>Masukkan nominal persis sesuai Total di atas!</strong></p>
+                    <p style="font-size: 12px; color: #555; margin-bottom:8px;">Scan QRIS ini menggunakan E-Wallet / Mobile Banking.<br><strong>Nominal otomatis terinput sesuai tagihan!</strong></p>
                     <div id="qrcode"></div>
                 </div>
 
                 <div class="alert-box">
-                    ⚠️ PENTING: Mohon sertakan foto/screenshot bukti transfer saat mengirim pesan ke Admin agar pesanan Anda dapat segera diproses ya! 🌸
+                    ⚠️ PENTING: Klik tombol di bawah setelah Anda mentransfer untuk mengirimkan bukti ke WhatsApp Admin ya! 🌸
                 </div>
 
                 <button class="btn-primary btn-wa" onclick="sendToWhatsApp()">Konfirmasi Pembayaran ke Admin 💬</button>
@@ -523,16 +415,10 @@
             const now = new Date();
             const hour = now.getHours();
             let greetingText = "";
-
-            if (hour >= 4 && hour <= 11) {
-                greetingText = "Selamat pagi, have a nice day juragan! ✨";
-            } else if (hour >= 12 && hour <= 14) {
-                greetingText = "Selamat siang, udah makan belum juragan? Jangan lupa belanja di sini yaw! 🤭";
-            } else if (hour >= 15 && hour <= 17) {
-                greetingText = "Selamat sore, ada yang bisa di bantu? Belanja dulu juragan! 😉";
-            } else {
-                greetingText = "Selamat malam, jangan lupa tidur juragan!";
-            }
+            if (hour >= 4 && hour <= 11) greetingText = "Selamat pagi, have a nice day juragan! ✨";
+            else if (hour >= 12 && hour <= 14) greetingText = "Selamat siang, udah makan belum juragan? Jangan lupa belanja di sini yaw! 🤭";
+            else if (hour >= 15 && hour <= 17) greetingText = "Selamat sore, ada yang bisa di bantu? Belanja dulu juragan! 😉";
+            else greetingText = "Selamat malam, jangan lupa tidur juragan!";
             document.getElementById('greeting-text').innerText = greetingText;
         }
 
@@ -540,84 +426,48 @@
             "app-premium": [
                 { id: "canva", nama: "🎨 Canva", img: "canva.jpg", type: "ui-canva" },
                 { id: "am", nama: "✨ Alight Motion", img: "alightmotion.jpg", type: "ui-std", inputs: ["Nomor WhatsApp"], catatan: "• Alight Motion 1 Tahun.<br>• Proses cepat & aman." },
-                { id: "yt", nama: "▶️ YouTube", img: "youtube.jpg", type: "ui-std", inputs: ["Email (Family) / No WA (Individual)"], catatan: "<strong>Catatan Format Pemesanan:</strong><br>• Family Plan: Diisi email akun YouTube (Pastikan belum limit undangan family, Max 2 family/1 tahun)<br>• Individual Plan: Diisi Nomor WhatsApp (Lakukan verifikasi akun agar tidak dinonaktifkan Google)" },
+                { id: "yt", nama: "▶️ YouTube", img: "youtube.jpg", type: "ui-std", inputs: ["Email (Family) / No WA (Individual)"], catatan: "<strong>Catatan Format Pemesanan:</strong><br>• Family Plan: Diisi email akun YouTube<br>• Individual Plan: Diisi Nomor WhatsApp" },
                 { id: "iqiyi", nama: "🍿 IQIYI", img: "iqiyi.jpg", type: "ui-std", inputs: ["Nomor WhatsApp"], catatan: "• Proses Manual - Lambat<br>• Akun dikirim ke WhatsApp" },
-                { id: "capcut", nama: "✂️ Capcut", img: "capcut.jpg", type: "ui-std", inputs: ["Nomor WhatsApp"], catatan: "• Proses Lambat: Manual<br>• Akun dikirim ke WhatsApp<br>• Akun Jangan Disebar<br>• Kirim screenshot profil setelah login untuk AKTIFKAN GARANSI (Maks 1x24 Jam)" },
-                { id: "wetv", nama: "🎬 WeTV", img: "viu.jpg", type: "ui-viu-wetv", inputs: ["Nomor WhatsApp"], catatan: "• Kolom di atas diisi Nomor WhatsApp<br>• Akun dikirim ke WhatsApp-nya" },
-                { id: "gemini", nama: "🤖 AI Gemini Pro", img: "gemini.jpg", type: "ui-std", inputs: ["Nomor WhatsApp"], catatan: "• Kolom di atas diisi Nomor WhatsApp<br>• Akun dikirim ke WhatsApp-nya<br>• 1x Pembelian untuk 1 Orang (tidak boleh disebar - akan di-out + limit akun)" },
-                { id: "meitu", nama: "📸 Meitu", img: "meitu.jpg", type: "ui-std", inputs: ["Nomor WhatsApp"], catatan: "• Meitu 1 Minggu<br>• Proses Manual - Akun dikirim ke WhatsApp" },
-                { id: "pixellab", nama: "🎨 Pixellab", img: "pixellab.jpg", type: "ui-std", inputs: ["Nomor WhatsApp"], catatan: "• Isi nomor WhatsApp saja." },
+                { id: "capcut", nama: "✂️ Capcut", img: "capcut.jpg", type: "ui-std", inputs: ["Nomor WhatsApp"], catatan: "• Akun dikirim ke WhatsApp<br>• Kirim screenshot profil setelah login untuk AKTIFKAN GARANSI" },
+                { id: "wetv", nama: "🎬 WeTV", img: "viu.jpg", type: "ui-viu-wetv", inputs: ["Nomor WhatsApp"] },
+                { id: "gemini", nama: "🤖 AI Gemini Pro", img: "gemini.jpg", type: "ui-std", inputs: ["Nomor WhatsApp"] },
+                { id: "meitu", nama: "📸 Meitu", img: "meitu.jpg", type: "ui-std", inputs: ["Nomor WhatsApp"] },
+                { id: "pixellab", nama: "🎨 Pixellab", img: "pixellab.jpg", type: "ui-std", inputs: ["Nomor WhatsApp"] },
                 { id: "viu", nama: "🎬 Viu", img: "viu.jpg", type: "ui-viu" }
             ],
             "topup-game": [
-                { id: "ff", nama: "🔥 Free Fire", img: "ff.jpg", type: "ui-game", inputs: ["Username", "ID Game"], catatan: "• Top Up Free Fire (Via Username + ID)" },
-                { id: "mlbb", nama: "⚔️ Mobile Legends", img: "ml.jpg", type: "ui-game", inputs: ["Username", "ID Game", "Server"], catatan: "• Top Up Mobile Legends (Via Username - ID - Server)" },
-                { id: "mlbb-first", nama: "⭐ MLBB First Top Up", img: "ml.jpg", type: "ui-game", inputs: ["Username", "ID Game", "Server"], catatan: "Top up ini hanya berlaku bagi akun yang belum melakukan top up pertama kali di akunnya. Jika tidak teliti, tidak ada refund!" },
-                { id: "pubg", nama: "🎯 PUBG Mobile", img: "pubg.jpg", type: "ui-game", inputs: ["Username", "ID Game"], catatan: "• Top Up PUBG Mobile (Via Username + ID)" },
-                { id: "hok", nama: "👑 Honor Of Kings", img: "hok.jpg", type: "ui-game", inputs: ["Username", "ID Game"], catatan: "• Top Up Honor Of Kings (Via Username + ID)" },
-                { id: "bs", nama: "💎 Blood Strike", img: "bs.jpg", type: "ui-game", inputs: ["Username", "ID Game"], catatan: "• Top Up Blood Strike (Via Username + ID)" }
+                { id: "ff", nama: "🔥 Free Fire", img: "ff.jpg", type: "ui-game", inputs: ["Username", "ID Game"] },
+                { id: "mlbb", nama: "⚔️ Mobile Legends", img: "ml.jpg", type: "ui-game", inputs: ["Username", "ID Game", "Server"] },
+                { id: "mlbb-first", nama: "⭐ MLBB First Top Up", img: "ml.jpg", type: "ui-game", inputs: ["Username", "ID Game", "Server"] },
+                { id: "pubg", nama: "🎯 PUBG Mobile", img: "pubg.jpg", type: "ui-game", inputs: ["Username", "ID Game"] },
+                { id: "hok", nama: "👑 Honor Of Kings", img: "hok.jpg", type: "ui-game", inputs: ["Username", "ID Game"] },
+                { id: "bs", nama: "💎 Blood Strike", img: "bs.jpg", type: "ui-game", inputs: ["Username", "ID Game"] }
             ],
             "jasa-ciaa": [
-                { id: "jasher", nama: "🚀 Jasher (Jasa Share)", img: "logo.jpg", type: "ui-jasa", catatan: "• Jasher (Jasa Share), bukan Jasa Push Member!<br>• Isi nama store.<br>• Deskripsi wajib diisi dengan link grup/teks yang ingin di-share!<br>• Konfirmasi pembayaran di web untuk melanjutkan pemesanan via WhatsApp<br>• No reff" },
-                { id: "jpm", nama: "📈 JPM (Jasa Push Member)", img: "logo.jpg", type: "ui-jasa", catatan: "• JPM (Jasa Push Member), push member sesuai dengan target.<br>• Isi nama store.<br>• Deskripsi wajib diisi dengan link grup & nama grup.<br>• Settingan GB nyalakan persetujuan admin.<br>• Dilarang acc member sebelum done/sesuai target, acc = done no toleransi.<br>• Konfirmasi pembayaran di web untuk melanjutkan pemesanan via WhatsApp<br>• No reff" }
+                { id: "jasher", nama: "🚀 Jasher (Jasa Share)", img: "logo.jpg", type: "ui-jasa", catatan: "• Jasher (Jasa Share), bukan Jasa Push Member!<br>• Deskripsi wajib diisi dengan link grup/teks yang ingin di-share!" },
+                { id: "jpm", nama: "📈 JPM (Jasa Push Member)", img: "logo.jpg", type: "ui-jasa", catatan: "• JPM (Jasa Push Member), push member sesuai dengan target.<br>• Deskripsi wajib diisi dengan link grup & nama grup." }
             ]
         };
 
         const listHarga = {
             "canva": [ { nama: "Canva 1 Bulan", harga: 3000, tag: "tim" }, { nama: "Canva Head 1 Bulan", harga: 7000, tag: "head" } ],
-            "viu": [ { nama: "Viu 1 Tahun (Private) – No Gar", harga: 5000, tag: "oto" }, { nama: "Paket Viu Prem 5 Akun (6 Bulan Private)", harga: 8000, tag: "man" }, { nama: "Viu Plus 1 Bulan (Sharing)", harga: 18000, tag: "man" } ],
-            "wetv": [ { nama: "WeTV 1 Bulan (Sharing)", harga: 11000 }, { nama: "WeTV 3 Bulan (Sharing)", harga: 27000 }, { nama: "WeTV 1 Bulan (Private)", harga: 28000 } ],
-            "yt": [ { nama: "YouTube 1 Bulan (Family Plan)", harga: 5000 } ],
+            "viu": [ { nama: "Viu 1 Tahun", harga: 5000, tag: "oto" }, { nama: "Viu Prem 5 Akun", harga: 8000, tag: "man" } ],
+            "wetv": [ { nama: "WeTV 1 Bulan", harga: 11000 }, { nama: "WeTV 3 Bulan", harga: 27000 } ],
+            "yt": [ { nama: "YouTube 1 Bulan (Family)", harga: 5000 } ],
             "am": [ { nama: "Alight Motion 1 Tahun", harga: 4000 } ],
-            "pixellab": [ { nama: "Pixellab Mod – No Pw", harga: 3000 } ],
-            "iqiyi": [ { nama: "IQIYI 1 Bulan (Private Vip Standar)", harga: 37000 } ],
-            "capcut": [ { nama: "Capcut Pro 7 Hari (Private)", harga: 5000 }, { nama: "Capcut Pro 1 Bulan (Private)", harga: 25000 } ],
+            "pixellab": [ { nama: "Pixellab Mod", harga: 3000 } ],
+            "iqiyi": [ { nama: "IQIYI 1 Bulan", harga: 37000 } ],
+            "capcut": [ { nama: "Capcut Pro 7 Hari", harga: 5000 }, { nama: "Capcut Pro 1 Bulan", harga: 25000 } ],
             "gemini": [ { nama: "AI Gemini Pro 1 Bulan", harga: 15000 } ],
             "meitu": [ { nama: "Meitu 1 Minggu", harga: 10000 } ],
-            "jasher": [ 
-                {nama: "12 Jam", harga: 200}, {nama: "1 Hari", harga: 500}, {nama: "3 Hari", harga: 1000}, 
-                {nama: "1 Minggu", harga: 3000}, {nama: "2 Minggu", harga: 4000}, {nama: "1 Bulan", harga: 7000}, 
-                {nama: "Jasher Kelas Premium 1 Bulan", harga: 10000}, {nama: "Jasher Kelas VIP 2 Bulan", harga: 15000} 
-            ],
-            "jpm": [ 
-                {nama: "10 Mem", harga: 500}, {nama: "20 Mem", harga: 1000}, {nama: "50 Mem", harga: 3000}, 
-                {nama: "70 Mem", harga: 4000}, {nama: "100 Mem", harga: 5000}, {nama: "150 Mem", harga: 7000}, 
-                {nama: "250 Mem", harga: 8000}, {nama: "400 Mem", harga: 12000}, {nama: "500 Mem", harga: 16000} 
-            ],
-            "ff": [ 
-                {nama: "5", harga: 1000}, {nama: "10", harga: 2000}, {nama: "20", harga: 5000}, {nama: "25", harga: 6000}, 
-                {nama: "30", harga: 7000}, {nama: "50", harga: 9000}, {nama: "70", harga: 11000}, {nama: "75", harga: 12000}, 
-                {nama: "100", harga: 16000}, {nama: "120", harga: 18000}, {nama: "140", harga: 20000}, {nama: "150", harga: 22000}, 
-                {nama: "160", harga: 24000}, {nama: "210", harga: 30000}, {nama: "250", harga: 36000}, {nama: "355", harga: 49000}, 
-                {nama: "500", harga: 66000}, {nama: "720", harga: 96000}, {nama: "1000", harga: 134000}, {nama: "1450", harga: 190000}, 
-                {nama: "2000", harga: 264000}, {nama: "MM", harga: 30000}, {nama: "MB", harga: 89000} 
-            ],
-            "mlbb": [ 
-                {nama: "12", harga: 4000}, {nama: "28", harga: 8000}, {nama: "50", harga: 14000}, {nama: "70", harga: 20000}, 
-                {nama: "112", harga: 32000}, {nama: "140", harga: 42000}, {nama: "170", harga: 50000}, {nama: "222", harga: 60000}, 
-                {nama: "257", harga: 70000}, {nama: "296", harga: 79000}, {nama: "355", harga: 96000}, {nama: "408", harga: 110000}, 
-                {nama: "460", harga: 125000}, {nama: "514", harga: 137000}, {nama: "568", harga: 150000}, {nama: "600", harga: 158000}, 
-                {nama: "706", harga: 185000}, {nama: "875", harga: 226000}, {nama: "963", harga: 245000}, {nama: "1050", harga: 270000}, 
-                {nama: "1412", harga: 365000}, {nama: "WDP", harga: 28000} 
-            ],
-            "mlbb-first": [ 
-                {nama: "50 + Bonus", harga: 16000}, {nama: "150 + Bonus", harga: 45000}, 
-                {nama: "250 + Bonus", harga: 76000}, {nama: "500 + Bonus", harga: 152000} 
-            ],
-            "pubg": [ 
-                {nama: "60", harga: 18000}, {nama: "120", harga: 33000}, {nama: "240", harga: 68000}, {nama: "300", harga: 85000}, 
-                {nama: "385", harga: 106000}, {nama: "445", harga: 120000}, {nama: "505", harga: 136000}, {nama: "565", harga: 157000}, 
-                {nama: "600", harga: 165000}, {nama: "720", harga: 195000}, {nama: "840", harga: 218000}, {nama: "900", harga: 236000}, 
-                {nama: "1500", harga: 386000}, {nama: "1800", harga: 420000} 
-            ],
-            "hok": [ 
-                {nama: "16", harga: 3500}, {nama: "80", harga: 19000}, {nama: "240", harga: 53000}, {nama: "400", harga: 83000}, 
-                {nama: "560", harga: 115000}, {nama: "800", harga: 162000}, {nama: "1200", harga: 253000}, {nama: "2400", harga: 503000} 
-            ],
-            "bs": [ 
-                {nama: "100", harga: 16000}, {nama: "300", harga: 45000}, {nama: "500", harga: 75000}, 
-                {nama: "1000", harga: 136000}, {nama: "2000", harga: 258000}, {nama: "5000", harga: 640000} 
-            ]
+            "jasher": [ {nama: "12 Jam", harga: 200}, {nama: "1 Hari", harga: 500}, {nama: "1 Minggu", harga: 3000}, {nama: "1 Bulan", harga: 7000} ],
+            "jpm": [ {nama: "10 Mem", harga: 500}, {nama: "50 Mem", harga: 3000}, {nama: "100 Mem", harga: 5000}, {nama: "250 Mem", harga: 8000} ],
+            "ff": [ {nama: "5", harga: 1000}, {nama: "50", harga: 9000}, {nama: "140", harga: 20000}, {nama: "355", harga: 49000} ],
+            "mlbb": [ {nama: "12", harga: 4000}, {nama: "50", harga: 14000}, {nama: "170", harga: 50000}, {nama: "355", harga: 96000} ],
+            "mlbb-first": [ {nama: "50 + Bonus", harga: 16000}, {nama: "250 + Bonus", harga: 76000} ],
+            "pubg": [ {nama: "60", harga: 18000}, {nama: "300", harga: 85000}, {nama: "600", harga: 165000} ],
+            "hok": [ {nama: "16", harga: 3500}, {nama: "240", harga: 53000}, {nama: "800", harga: 162000} ],
+            "bs": [ {nama: "100", harga: 16000}, {nama: "500", harga: 75000}, {nama: "2000", harga: 258000} ]
         };
 
         let activeProduct = null;
@@ -641,12 +491,6 @@
         }
 
         function openAppPremiumPage() {
-            const now = new Date();
-            const currentTime = now.getHours() * 60 + now.getMinutes();
-            if (currentTime < 360 || currentTime > 1240) {
-                alert("🌸 Mohon maaf juragan, layanan Aplikasi Premium sedang tutup (Jam Operasional: 06.00 - 20.40 WIB).");
-                return;
-            }
             document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
             document.getElementById('app-premium-section').classList.add('active');
             window.scrollTo(0,0);
@@ -663,9 +507,9 @@
             const container = document.getElementById(elId);
             container.innerHTML = "";
             dataProduk[kategori].forEach(item => {
-                let html = '<div class="product-card" onclick="openForm(\'' + item.id + '\', \'' + kategori + '\')">';
-                if(item.img) html += '<img src="' + item.img + '" alt="' + item.nama + '" onerror="this.src=\'https://cdn-icons-png.flaticon.com/512/869/869034.png\'">';
-                html += '<h4>' + item.nama + '</h4></div>';
+                let html = `<div class="product-card" onclick="openForm('${item.id}', '${kategori}')">
+                    <img src="${item.img || 'logo.jpg'}" alt="${item.nama}" onerror="this.src='https://cdn-icons-png.flaticon.com/512/869/869034.png'">
+                    <h4>${item.nama}</h4></div>`;
                 container.innerHTML += html;
             });
         }
@@ -682,55 +526,38 @@
                 }
             }
             
-            activeProduct = prod;
-            activeVariant = null; 
+            activeProduct = prod; activeVariant = null; 
             document.getElementById('form-title').innerText = prod.nama;
             
             const notesEl = document.getElementById('product-notes');
             const subTabsEl = document.getElementById('sub-tabs-container');
             const inputsEl = document.getElementById('dynamic-inputs');
             
-            subTabsEl.style.display = 'none';
-            notesEl.style.display = 'none';
-            inputsEl.innerHTML = '';
+            subTabsEl.style.display = 'none'; notesEl.style.display = 'none'; inputsEl.innerHTML = '';
 
-            if(prod.catatan) {
-                notesEl.innerHTML = prod.catatan;
-                notesEl.style.display = 'block';
-            }
+            if(prod.catatan) { notesEl.innerHTML = prod.catatan; notesEl.style.display = 'block'; }
 
             if(prod.type === 'ui-canva') {
                 subTabsEl.style.display = 'flex';
-                subTabsEl.innerHTML = `
-                    <div class="sub-tab active" onclick="switchSubTab('tim', event)">Canva Tim</div>
-                    <div class="sub-tab" onclick="switchSubTab('head', event)">Canva Head</div>
-                `;
+                subTabsEl.innerHTML = `<div class="sub-tab active" onclick="switchSubTab('tim', event)">Canva Tim</div>
+                                       <div class="sub-tab" onclick="switchSubTab('head', event)">Canva Head</div>`;
                 renderInputs(['Isi Email Canva yang akan di Premium kan']);
-                notesEl.innerHTML = "<strong>Catatan Canva Tim:</strong><br>• Canva Tim (25-28 hari = 1 bulan)<br>• Kolom di atas: Isi Email Canva yang akan di-premium-kan<br>• Proses Instan - Cek detail transaksinya";
-                notesEl.style.display = 'block';
                 renderPackages('canva', 'tim');
-            } 
-            else if(prod.type === 'ui-viu') {
+            } else if(prod.type === 'ui-viu') {
                 subTabsEl.style.display = 'flex';
-                subTabsEl.innerHTML = `
-                    <div class="sub-tab active" onclick="switchSubTab('oto', event)">Otomatis</div>
-                    <div class="sub-tab" onclick="switchSubTab('man', event)">Manual</div>
-                `;
+                subTabsEl.innerHTML = `<div class="sub-tab active" onclick="switchSubTab('oto', event)">Otomatis</div>
+                                       <div class="sub-tab" onclick="switchSubTab('man', event)">Manual</div>`;
                 renderInputs(['Nomor WhatsApp']);
                 renderPackages('viu', 'oto');
-            }
-            else if(prod.type === 'ui-jasa') {
+            } else if(prod.type === 'ui-jasa') {
                 renderInputs(['Nama Store']);
-                let placeholderText = "Wajib sertakan link target! (Contoh: https://chat.whatsapp.com/xxx)";
                 inputsEl.innerHTML += `
                     <div class="form-group" style="margin-top:12px;">
                         <label>Deskripsi & Link Target (Wajib Ada Link!)</label>
-                        <textarea class="form-control" id="input-desc" placeholder="${placeholderText}"></textarea>
-                    </div>
-                `;
+                        <textarea class="form-control" id="input-desc" placeholder="Wajib sertakan link target! (Contoh: https://chat.whatsapp.com/xxx)"></textarea>
+                    </div>`;
                 renderPackages(prod.id);
-            }
-            else {
+            } else {
                 renderInputs(prod.inputs);
                 renderPackages(prod.id);
             }
@@ -741,15 +568,9 @@
             document.querySelectorAll('.sub-tab').forEach(el => el.classList.remove('active'));
             if (event && event.target) event.target.classList.add('active');
             
-            const notesEl = document.getElementById('product-notes');
             if(activeProduct.id === 'canva') {
-                if(tag === 'tim') {
-                    renderInputs(['Isi Email Canva yang akan di Premium kan']);
-                    notesEl.innerHTML = "<strong>Catatan Canva Tim:</strong><br>• Canva Tim (25-28 hari = 1 bulan)<br>• Proses Instan";
-                } else {
-                    renderInputs(['Nomor WhatsApp']);
-                    notesEl.innerHTML = "<strong>Catatan Canva Head:</strong><br>• Produk Diproses Manual - Slow<br>• Kolom di atas diisi Nomor WhatsApp<br>• Canva Head (28-29 hari)<br>• Dapat mengundang hingga 10 member<br>• Garansi 25 hari<br>• Proses 1x24 Jam";
-                }
+                if(tag === 'tim') renderInputs(['Isi Email Canva yang akan di Premium kan']);
+                else renderInputs(['Nomor WhatsApp']);
             } else if (activeProduct.id === 'viu') {
                 renderInputs(['Nomor WhatsApp']);
             }
@@ -759,8 +580,8 @@
         function renderInputs(arr) {
             const el = document.getElementById('dynamic-inputs');
             el.innerHTML = '';
-            arr.forEach((item) => {
-                el.innerHTML += '<div class="form-group"><label>' + item + '</label><input type="text" class="form-control inputs-data" placeholder="Masukkan ' + item + '"></div>';
+            arr.forEach(item => {
+                el.innerHTML += `<div class="form-group"><label>${item}</label><input type="text" class="form-control inputs-data" placeholder="Masukkan ${item}"></div>`;
             });
         }
 
@@ -770,12 +591,10 @@
             el.innerHTML = '';
             list.forEach(pkt => {
                 if(!tag || pkt.tag === tag) {
-                    el.innerHTML += `
-                        <div class="product-card" onclick="selectPackage(this, '${pkt.nama}', ${pkt.harga})">
+                    el.innerHTML += `<div class="product-card" onclick="selectPackage(this, '${pkt.nama}', ${pkt.harga})">
                             <h4 style="font-size:11px; margin-bottom:4px;">${pkt.nama}</h4>
                             <p style="color:var(--deep-pink); font-weight:bold; font-size:11px;">Rp ${pkt.harga.toLocaleString('id-ID')}</p>
-                        </div>
-                    `;
+                        </div>`;
                 }
             });
         }
@@ -786,15 +605,36 @@
             activeVariant = { nama, harga };
         }
 
+        function crc16(str) {
+            let crc = 0xFFFF;
+            for (let c = 0; c < str.length; c++) {
+                crc ^= str.charCodeAt(c) << 8;
+                for (let i = 0; i < 8; i++) {
+                    if (crc & 0x8000) crc = (crc << 1) ^ 0x1021;
+                    else crc = crc << 1;
+                }
+            }
+            return (crc & 0xFFFF).toString(16).toUpperCase().padStart(4, '0');
+        }
+
+        function generateDynamicQRIS(qrisStr, amount) {
+            let amountStr = amount.toString();
+            let tag54 = "54" + amountStr.length.toString().padStart(2, '0') + amountStr;
+            let base = qrisStr.substring(0, qrisStr.length - 4); 
+            base = base.substring(0, base.length - 4); 
+            base = base.replace("5802ID", tag54 + "5802ID");
+            let payloadWithoutCRC = base + "6304";
+            let newCRC = crc16(payloadWithoutCRC);
+            return payloadWithoutCRC + newCRC;
+        }
+
         function proceedToCheckout() {
             if(!activeVariant) return alert("Silakan pilih paket produk terlebih dahulu ya! 🌸");
             
             let dataInputs = document.querySelectorAll('.inputs-data');
             let dataPelanggan = [];
             for(let input of dataInputs) {
-                if(!input.value.trim()) {
-                    return alert("⚠️ Mohon isi semua kolom data pengisian! Jangan sampai ada yang kosong ya.");
-                }
+                if(!input.value.trim()) return alert("⚠️ Mohon isi semua kolom data pengisian!");
                 dataPelanggan.push(input.value.trim());
             }
 
@@ -802,83 +642,53 @@
             let descText = "";
             if(descEl) {
                 descText = descEl.value.trim();
-                if(!descText) {
-                    return alert("⚠️ Kolom Deskripsi/Link Wajib Diisi!");
-                }
-                const urlPattern = /(https?:\/\/|www\.|wa\.me|t\.me|linktr\.ee)/i;
-                if(activeProduct.id === 'jasher' || activeProduct.id === 'jpm') {
-                    if(!urlPattern.test(descText)) {
-                        return alert("⚠️ Untuk layanan Jasher & JPM, Anda WAJIB menyertakan LINK (contoh: https://... atau wa.me/...) di kolom Deskripsi!");
-                    }
-                }
+                if(!descText) return alert("⚠️ Kolom Deskripsi/Link Wajib Diisi!");
             }
 
             const payMethod = document.querySelector('input[name="pay-method"]:checked').value;
-            
             let totalBayar = activeVariant.harga;
             let ketHarga = "";
 
             if(payMethod === "QRIS") {
-                const unik = Math.floor(Math.random() * 99) + 1;
-                totalBayar += unik;
-                ketHarga = ` (Termasuk kode unik Rp${unik})`;
-            } else {
-                ketHarga = ` (Tanpa biaya admin)`;
+                let adminFee = Math.max(1, Math.ceil(totalBayar * 0.0001)); 
+                totalBayar += adminFee;
+                ketHarga = ` (Termasuk Admin Rp${adminFee})`;
             }
 
             checkoutData = { 
-                produkId: activeProduct.id,
-                produk: activeProduct.nama, 
-                paket: activeVariant.nama, 
-                data: dataPelanggan.join(" | "), 
-                desc: descText, 
-                total: totalBayar, 
-                metode: payMethod, 
-                type: activeProduct.type 
+                produkId: activeProduct.id, produk: activeProduct.nama, paket: activeVariant.nama, 
+                data: dataPelanggan.join(" | "), desc: descText, total: totalBayar, metode: payMethod, type: activeProduct.type 
             };
 
             document.getElementById('co-produk').innerText = 'Layanan: ' + activeProduct.nama + ' - ' + activeVariant.nama;
-            document.getElementById('co-data').innerText = 'Data: ' + checkoutData.data + (checkoutData.desc ? ' | Link/Deskripsi: ' + checkoutData.desc : '');
+            document.getElementById('co-data').innerText = 'Data: ' + checkoutData.data;
             document.getElementById('co-harga').innerText = 'Total: Rp ' + totalBayar.toLocaleString('id-ID') + ketHarga;
             
             const transferInfo = document.getElementById('transfer-info');
             const qrisBox = document.getElementById('qris-box');
             const qrContainer = document.getElementById('qrcode');
-            
             qrContainer.innerHTML = ""; 
             
-            if(payMethod === "DANA") {
-                transferInfo.style.display = 'block'; 
-                qrisBox.style.display = 'none';
-                document.getElementById('co-method-title').innerText = "Transfer DANA";
-                document.getElementById('co-method-number').innerText = "081338224767 (A/N AGUS SUTIARNO)";
-            } else if (payMethod === "GOPAY") {
-                transferInfo.style.display = 'block'; 
-                qrisBox.style.display = 'none';
-                document.getElementById('co-method-title').innerText = "Transfer GoPay";
-                document.getElementById('co-method-number').innerText = "089505929536";
-            } else {
+            if(payMethod === "QRIS") {
                 transferInfo.style.display = 'none'; 
                 qrisBox.style.display = 'block';
-                
+                let dynamicQrisPayload = generateDynamicQRIS(rawQrisStatis, totalBayar);
                 try {
-                    if (typeof QRCode !== 'undefined') {
-                        new QRCode(qrContainer, {
-                            text: rawQrisStatis,
-                            width: 200,
-                            height: 200,
-                            colorDark: "#000000",
-                            colorLight: "#ffffff",
-                            correctLevel: QRCode.CorrectLevel.H
-                        });
-                    } else {
-                        throw new Error("Library offline tidak termuat");
-                    }
+                    new QRCode(qrContainer, { text: dynamicQrisPayload, width: 200, height: 200, colorDark: "#000000", colorLight: "#ffffff", correctLevel: QRCode.CorrectLevel.H });
                 } catch(e) {
                     let imgFallback = document.createElement('img');
-                    imgFallback.src = "https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=" + encodeURIComponent(rawQrisStatis);
-                    imgFallback.alt = "QRIS Barcode";
+                    imgFallback.src = "https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=" + encodeURIComponent(dynamicQrisPayload);
                     qrContainer.appendChild(imgFallback);
+                }
+            } else {
+                transferInfo.style.display = 'block'; 
+                qrisBox.style.display = 'none';
+                if(payMethod === "DANA") {
+                    document.getElementById('co-method-title').innerText = "Transfer DANA";
+                    document.getElementById('co-method-number').innerText = "081338224767 (A/N AGUS SUTIARNO)";
+                } else {
+                    document.getElementById('co-method-title').innerText = "Transfer GoPay";
+                    document.getElementById('co-method-number').innerText = "089505929536";
                 }
             }
 
@@ -888,45 +698,48 @@
         }
 
         function getOrGenerateQueueNumber() {
-            let sessionKey = 'ciaa_active_queue_' + checkoutData.produk + '_' + checkoutData.data;
+            let sessionKey = 'ciaa_queue_' + checkoutData.produk + '_' + checkoutData.data;
             let existingQueue = localStorage.getItem(sessionKey);
+            if (existingQueue) return existingQueue;
             
-            if (existingQueue) {
-                return existingQueue;
-            } else {
-                const date = new Date();
-                const dStr = String(date.getDate()).padStart(2, '0') + String(date.getMonth()+1).padStart(2, '0') + String(date.getFullYear()).slice(-2);
-                
-                let antrianList = JSON.parse(localStorage.getItem('ciaa_antrian') || '[]');
-                let todayCount = antrianList.filter(item => item.no.includes(dStr)).length + 1;
-                let antrianNo = 'CS-' + dStr + '-#' + String(todayCount).padStart(2, '0');
-                
-                localStorage.setItem(sessionKey, antrianNo);
-                saveAntrianToStorage(antrianNo, checkoutData.produk + " - " + checkoutData.paket, activeVariant.harga);
-                
-                return antrianNo;
-            }
+            const date = new Date();
+            const dStr = String(date.getDate()).padStart(2, '0') + String(date.getMonth()+1).padStart(2, '0') + String(date.getFullYear()).slice(-2);
+            let antrianList = JSON.parse(localStorage.getItem('ciaa_antrian') || '[]');
+            let todayCount = antrianList.filter(item => item.no.includes(dStr)).length + 1;
+            let antrianNo = 'CS-' + dStr + '-#' + String(todayCount).padStart(2, '0');
+            
+            localStorage.setItem(sessionKey, antrianNo);
+            saveAntrianToStorage(antrianNo, checkoutData.produk + " - " + checkoutData.paket, checkoutData.total);
+            return antrianNo;
         }
 
-        /* SUSUNAN PESAN KHUSUS WHATSAPP SETIAP KATEGORI LAYANAN */
+        /* FORMAT WA DINAMIS BERBEDA UNTUK SETIAP JENIS LAYANAN */
         function sendToWhatsApp() {
             const noWA = "6289505929536";
             let antrianNo = getOrGenerateQueueNumber();
-            let teks = "";
+            let teks = `Halo Admin Ciaa Store! ✨\nSaya sudah melakukan pembayaran untuk:\n\n🎫 No. Antrian: ${antrianNo}\n🛒 Layanan: ${checkoutData.produk} - ${checkoutData.paket}\n💳 Pembayaran: ${checkoutData.metode}\n💰 Total: Rp${checkoutData.total.toLocaleString('id-ID')}\n\n`;
 
-            if (checkoutData.produkId === 'jasher' || checkoutData.produkId === 'jpm') {
-                teks = `Halo Admin Ciaa Store! ✨\nSaya sudah melakukan pembayaran untuk:\n\n🎫 No. Antrian: ${antrianNo}\n🛒 Layanan: ${checkoutData.produk} - ${checkoutData.paket}\n👤 Data: ${checkoutData.data}\n📝 Deskripsi & Link Target: ${checkoutData.desc}\n💰 Total: Rp${checkoutData.total.toLocaleString('id-ID')}\n💳 Pembayaran: ${checkoutData.metode}\n\nKemudian ini adalah bukti transfer saya, mohon segera di proses ya mimin!`;
+            if (checkoutData.type === 'ui-game') {
+                // FORMAT TOP UP GAME
+                teks += `🎮 [Detail Top Up Game]\n👤 Data ID/Server: ${checkoutData.data}\n\n`;
+                teks += `Saya akan mencantumkan bukti transfer saya, mohon segera di proses ya mimin! 😀`;
+                
+            } else if (checkoutData.type === 'ui-jasa') {
+                // FORMAT JASA & JPM (Deskripsi/Link dipisah dengan Jarak di bagian paling bawah)
+                teks += `🚀 [Detail Layanan Jasa]\n👤 Nama Store: ${checkoutData.data}\n\n`;
+                teks += `📝 Deskripsi / Link Pesanan:\n${checkoutData.desc}\n\n\n`;
+                teks += `Saya akan mencantumkan bukti transfer saya, mohon segera di proses ya mimin! 😀`;
+                
             } else {
-                teks = `Halo Admin Ciaa Store! ✨\nSaya sudah melakukan pembayaran untuk:\n\n🎫 No. Antrian: ${antrianNo}\n🛒 Layanan: ${checkoutData.produk} - ${checkoutData.paket}\n👤 Data: ${checkoutData.data}\n💰 Total: Rp${checkoutData.total.toLocaleString('id-ID')}\n💳 Pembayaran: ${checkoutData.metode}\n\nKemudian ini adalah bukti transfer saya, mohon segera di proses ya mimin!`;
+                // FORMAT APLIKASI PREMIUM
+                teks += `📱 [Detail App Premium]\n👤 No WA/Email: ${checkoutData.data}\n\n`;
+                teks += `Saya akan mencantumkan bukti transfer saya, mohon segera di proses ya mimin! 😀`;
             }
 
             window.open("https://wa.me/" + noWA + "?text=" + encodeURIComponent(teks), '_blank');
         }
 
-        function copyText(text) {
-            navigator.clipboard.writeText(text);
-            alert("Nomor berhasil disalin! 📋");
-        }
+        function copyText(text) { navigator.clipboard.writeText(text); alert("Nomor berhasil disalin! 📋"); }
 
         function saveAntrianToStorage(no, detail, harga) {
             let antrianList = JSON.parse(localStorage.getItem('ciaa_antrian') || '[]');
@@ -938,10 +751,7 @@
         function loadAntrianList() {
             let antrianList = JSON.parse(localStorage.getItem('ciaa_antrian') || '[]');
             const container = document.getElementById('list-antrian');
-            if(antrianList.length === 0) {
-                container.innerHTML = "Belum ada antrian aktif hari ini. Yuk buat pesananmu sekarang! 💖";
-                return;
-            }
+            if(antrianList.length === 0) return container.innerHTML = "Belum ada antrian aktif hari ini. Yuk buat pesananmu sekarang! 💖";
             container.innerHTML = "";
             antrianList.forEach(item => {
                 container.innerHTML += `<div style="background:white; padding:10px; border-radius:10px; margin-bottom:8px; border:1.5px solid var(--primary-pink); display:flex; justify-content:space-between; align-items:center;"><div><strong>🎫 ${item.no}</strong><br><span style="font-size:12px; color:#555;">${item.detail}</span><br><span style="font-size:10px; color:#888;">${item.time}</span></div><div><span style="padding:4px 10px; border-radius:6px; font-size:11px; font-weight:bold; background:#fff0f5; border:1px solid var(--deep-pink);">${item.status}</span></div></div>`;
@@ -953,11 +763,7 @@
             let antrianList = JSON.parse(localStorage.getItem('ciaa_antrian') || '[]');
             const container = document.getElementById('list-antrian');
             let filtered = antrianList.filter(item => item.no.toLowerCase().includes(query) || item.detail.toLowerCase().includes(query));
-            
-            if(filtered.length === 0) {
-                container.innerHTML = "Nomor antrian tidak ditemukan! 🌸";
-                return;
-            }
+            if(filtered.length === 0) return container.innerHTML = "Nomor antrian tidak ditemukan! 🌸";
             container.innerHTML = "";
             filtered.forEach(item => {
                 container.innerHTML += `<div style="background:white; padding:10px; border-radius:10px; margin-bottom:8px; border:1.5px solid var(--primary-pink); display:flex; justify-content:space-between; align-items:center;"><div><strong>🎫 ${item.no}</strong><br><span style="font-size:12px; color:#555;">${item.detail}</span><br><span style="font-size:10px; color:#888;">${item.time}</span></div><div><span style="padding:4px 10px; border-radius:6px; font-size:11px; font-weight:bold; background:#fff0f5; border:1px solid var(--deep-pink);">${item.status}</span></div></div>`;
@@ -971,17 +777,12 @@
             let uId = document.getElementById('admin-userid').value.trim().toLowerCase();
             let pass = document.getElementById('admin-password').value;
             if (uId === "ciaa store" && pass === "1709ca") {
-                closeAdminLogin();
-                document.getElementById('maintenance-overlay').style.display = 'none'; 
+                closeAdminLogin(); document.getElementById('maintenance-overlay').style.display = 'none'; 
                 document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
                 document.getElementById('admin-panel-section').classList.add('active');
                 document.getElementById('main-nav-tabs').style.display = 'none'; 
-                loadAdminDashboard();
-                loadAdminAntrianList();
-                window.scrollTo(0,0);
-            } else {
-                alert("User ID atau Kata Sandi Salah! ❌");
-            }
+                loadAdminDashboard(); loadAdminAntrianList(); window.scrollTo(0,0);
+            } else { alert("User ID atau Kata Sandi Salah! ❌"); }
         }
 
         function logoutAdmin() {
@@ -1018,27 +819,10 @@
         function loadAdminAntrianList() {
             let antrianList = JSON.parse(localStorage.getItem('ciaa_antrian') || '[]');
             const container = document.getElementById('admin-antrian-list');
-            if(antrianList.length === 0) {
-                container.innerHTML = "<p style='text-align:center; color:#555;'>Belum ada pesanan masuk.</p>";
-                return;
-            }
+            if(antrianList.length === 0) return container.innerHTML = "<p style='text-align:center; color:#555;'>Belum ada pesanan masuk.</p>";
             container.innerHTML = "";
             antrianList.forEach((item, index) => {
-                container.innerHTML += `
-                    <div style="background:white; padding:12px; border-radius:10px; margin-bottom:10px; border:1.5px solid var(--primary-pink);">
-                        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom: 6px;">
-                            <strong>🎫 ${item.no}</strong>
-                            <span style="font-size:11px; font-weight:bold; padding:3px 8px; border-radius:6px; background:#fff0f5; border:1px solid var(--deep-pink);">${item.status}</span>
-                        </div>
-                        <p style="font-size:12px; color:#555; margin-bottom:6px;">${item.detail} | Rp ${(item.harga || 0).toLocaleString('id-ID')} (${item.time})</p>
-                        <div style="display:grid; grid-template-columns: repeat(2, 1fr); gap:5px; margin-top:6px;">
-                            <button onclick="updateStatusAntrian(${index}, 'Pending.. ⏳')" style="background:#fff3cd; color:#856404; border:none; padding:5px; border-radius:6px; font-size:11px; font-weight:bold; cursor:pointer;">⏳ Menunggu</button>
-                            <button onclick="updateStatusAntrian(${index}, 'Diproses 🔄')" style="background:#ffe5d0; color:#b45309; border:none; padding:5px; border-radius:6px; font-size:11px; font-weight:bold; cursor:pointer;">🔄 Diproses</button>
-                            <button onclick="updateStatusAntrian(${index}, 'Selesai ✅')" style="background:#d4edda; color:#155724; border:none; padding:5px; border-radius:6px; font-size:11px; font-weight:bold; cursor:pointer;">✅ Selesai</button>
-                            <button onclick="updateStatusAntrian(${index}, 'Dibatalkan ❌')" style="background:#f8d7da; color:#721c24; border:none; padding:5px; border-radius:6px; font-size:11px; font-weight:bold; cursor:pointer;">❌ Dibatalkan</button>
-                        </div>
-                        <button onclick="hapusAntrian(${index})" style="width:100%; margin-top:6px; background:#ff4d4d; color:white; border:none; padding:4px; border-radius:6px; font-size:11px; font-weight:bold; cursor:pointer;">Hapus Pesanan</button>
-                    </div>`;
+                container.innerHTML += `<div style="background:white; padding:12px; border-radius:10px; margin-bottom:10px; border:1.5px solid var(--primary-pink);"><div style="display:flex; justify-content:space-between; align-items:center; margin-bottom: 6px;"><strong>🎫 ${item.no}</strong><span style="font-size:11px; font-weight:bold; padding:3px 8px; border-radius:6px; background:#fff0f5; border:1px solid var(--deep-pink);">${item.status}</span></div><p style="font-size:12px; color:#555; margin-bottom:6px;">${item.detail} | Rp ${(item.harga || 0).toLocaleString('id-ID')} (${item.time})</p><div style="display:grid; grid-template-columns: repeat(2, 1fr); gap:5px; margin-top:6px;"><button onclick="updateStatusAntrian(${index}, 'Pending.. ⏳')" style="background:#fff3cd; color:#856404; border:none; padding:5px; border-radius:6px; font-size:11px; font-weight:bold; cursor:pointer;">⏳ Menunggu</button><button onclick="updateStatusAntrian(${index}, 'Diproses 🔄')" style="background:#ffe5d0; color:#b45309; border:none; padding:5px; border-radius:6px; font-size:11px; font-weight:bold; cursor:pointer;">🔄 Diproses</button><button onclick="updateStatusAntrian(${index}, 'Selesai ✅')" style="background:#d4edda; color:#155724; border:none; padding:5px; border-radius:6px; font-size:11px; font-weight:bold; cursor:pointer;">✅ Selesai</button><button onclick="updateStatusAntrian(${index}, 'Dibatalkan ❌')" style="background:#f8d7da; color:#721c24; border:none; padding:5px; border-radius:6px; font-size:11px; font-weight:bold; cursor:pointer;">❌ Dibatalkan</button></div><button onclick="hapusAntrian(${index})" style="width:100%; margin-top:6px; background:#ff4d4d; color:white; border:none; padding:4px; border-radius:6px; font-size:11px; font-weight:bold; cursor:pointer;">Hapus Pesanan</button></div>`;
             });
         }
 
@@ -1047,45 +831,27 @@
             let antrianList = JSON.parse(localStorage.getItem('ciaa_antrian') || '[]');
             const container = document.getElementById('admin-antrian-list');
             let filtered = antrianList.filter(item => item.no.toLowerCase().includes(query) || item.detail.toLowerCase().includes(query));
-            
-            if(filtered.length === 0) {
-                container.innerHTML = "<p style='text-align:center; color:#555;'>Data antrian tidak ditemukan! 🌸</p>";
-                return;
-            }
+            if(filtered.length === 0) return container.innerHTML = "<p style='text-align:center; color:#555;'>Data antrian tidak ditemukan! 🌸</p>";
             container.innerHTML = "";
-            filtered.forEach((item, index) => {
-                container.innerHTML += `<div style="background:white; padding:12px; border-radius:10px; margin-bottom:10px; border:1.5px solid var(--primary-pink);"><p><strong>🎫 ${item.no}</strong> - ${item.detail}</p></div>`;
-            });
+            filtered.forEach((item, index) => { container.innerHTML += `<div style="background:white; padding:12px; border-radius:10px; margin-bottom:10px; border:1.5px solid var(--primary-pink);"><p><strong>🎫 ${item.no}</strong> - ${item.detail}</p></div>`; });
         }
 
         function updateStatusAntrian(index, status) {
             let antrianList = JSON.parse(localStorage.getItem('ciaa_antrian') || '[]');
-            if(antrianList[index]) {
-                antrianList[index].status = status;
-                localStorage.setItem('ciaa_antrian', JSON.stringify(antrianList));
-                loadAdminAntrianList();
-                loadAntrianList();
-            }
+            if(antrianList[index]) { antrianList[index].status = status; localStorage.setItem('ciaa_antrian', JSON.stringify(antrianList)); loadAdminAntrianList(); loadAntrianList(); }
         }
 
         function hapusAntrian(index) {
             if(confirm("Yakin ingin menghapus antrian ini?")) {
                 let antrianList = JSON.parse(localStorage.getItem('ciaa_antrian') || '[]');
-                antrianList.splice(index, 1);
-                localStorage.setItem('ciaa_antrian', JSON.stringify(antrianList));
-                loadAdminAntrianList();
-                loadAntrianList();
-                loadAdminDashboard();
+                antrianList.splice(index, 1); localStorage.setItem('ciaa_antrian', JSON.stringify(antrianList));
+                loadAdminAntrianList(); loadAntrianList(); loadAdminDashboard();
             }
         }
 
         function resetAllAntrian() {
-            if(confirm("PERINGATAN: Apakah Anda yakin ingin mereset dan menghapus SELURUH riwayat orderan?")) {
-                localStorage.removeItem('ciaa_antrian');
-                loadAdminAntrianList();
-                loadAntrianList();
-                loadAdminDashboard();
-                alert("Semua riwayat orderan berhasil direset! 🗑️✨");
+            if(confirm("PERINGATAN: Yakin ingin mereset SELURUH riwayat orderan?")) {
+                localStorage.removeItem('ciaa_antrian'); loadAdminAntrianList(); loadAntrianList(); loadAdminDashboard(); alert("Semua riwayat direset! 🗑️✨");
             }
         }
 
@@ -1100,15 +866,8 @@
             let isMaint = localStorage.getItem('ciaa_maintenance') === 'true';
             const btn = document.getElementById('btn-toggle-maintenance');
             if(btn) {
-                if(isMaint) {
-                    btn.innerText = "Matikan Mode Maintenance 🟢";
-                    btn.style.background = "#25D366";
-                    btn.style.color = "white";
-                } else {
-                    btn.innerText = "Aktifkan Mode Maintenance 🛠️";
-                    btn.style.background = "#ffc0cb";
-                    btn.style.color = "var(--dark-text)";
-                }
+                if(isMaint) { btn.innerText = "Matikan Mode Maintenance 🟢"; btn.style.background = "#25D366"; btn.style.color = "white"; }
+                else { btn.innerText = "Aktifkan Mode Maintenance 🛠️"; btn.style.background = "#ffc0cb"; btn.style.color = "var(--dark-text)"; }
             }
         }
     </script>
