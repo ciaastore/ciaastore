@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Ciaa Store - Cute & Aesthetic Digital Shop</title>
     
-    <!-- Library QR Code Utama -->
+    <!-- Library QR Code -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
 
     <style>
@@ -194,9 +194,10 @@
 
         .payment-option { display: flex; align-items: center; padding: 10px; border: 1.5px solid var(--primary-pink); border-radius: 12px; margin-bottom: 8px; cursor: pointer; background: var(--white); font-size: 13px; }
         .payment-option input { margin-right: 8px; accent-color: var(--deep-pink); }
-        .qris-container { text-align: center; background: white; padding: 15px; border-radius: var(--card-radius); margin: 12px 0; border: 2px solid var(--primary-pink); }
-        #qrcode { display: flex; justify-content: center; align-items: center; margin-top: 8px; min-height: 180px; }
-        #qrcode img { display: block; margin: 0 auto; max-width: 100%; }
+        
+        .qris-container { text-align: center; background: white; padding: 15px; border-radius: var(--card-radius); margin: 12px 0; border: 2px solid var(--primary-pink); overflow: hidden; }
+        #qrcode { display: flex; justify-content: center; align-items: center; margin-top: 10px; width: 100%; }
+        #qrcode canvas, #qrcode img { display: block; margin: 0 auto; max-width: 100%; height: auto !important; }
 
         #maintenance-overlay { 
             position: fixed; top: 0; left: 0; width: 100%; height: 100%; 
@@ -512,36 +513,38 @@
 
         const dataProduk = {
             "app-premium": [
-                { id: "meitu", nama: "📸 Meitu", img: "meitu.jpg", type: "ui-std", inputs: ["No WhatsApp"], catatan: "<strong>Catatan:</strong><br>• Meitu 1 Minggu<br>• Proses Manual - Akun dikirim ke WhatsApp" },
-                { id: "am", nama: "✨ Alight Motion", img: "alightmotion.jpg", type: "ui-std", inputs: ["Email/No WA"], catatan: "• Alight Motion 1 Tahun.<br>• Proses cepat & aman." },
-                { id: "pixellab", nama: "🎨 Pixellab", img: "pixellab.jpg", type: "ui-std", inputs: ["No WhatsApp"], catatan: "• Pixellab Pro / Full Asset.<br>• Proses cepat." },
                 { id: "canva", nama: "🎨 Canva", img: "canva.jpg", type: "ui-canva" },
-                { id: "viu", nama: "🎬 Viu", img: "viu.jpg", type: "ui-viu" },
-                { id: "yt", nama: "▶️ YouTube", img: "youtube.jpg", type: "ui-std", inputs: ["Email (Family) / No WA (Individual)"], catatan: "<strong>Catatan Format Pemesanan:</strong><br>• Family Plan: Diisi email akun YouTube<br>• Individual Plan: Diisi Nomor WhatsApp" },
-                { id: "iqiyi", nama: "🍿 IQIYI", img: "iqiyi.jpg", type: "ui-std", inputs: ["No WhatsApp"], catatan: "• Proses Manual - Akun dikirim ke WhatsApp" },
-                { id: "capcut", nama: "✂️ Capcut", img: "capcut.jpg", type: "ui-std", inputs: ["No WhatsApp"], catatan: "• Akun dikirim ke WhatsApp<br>• Kirim screenshot profil setelah login untuk garansi." },
-                { id: "gemini", nama: "🤖 AI Gemini Pro", img: "gemini.jpg", type: "ui-std", inputs: ["No WhatsApp"], catatan: "• Akun dikirim ke WhatsApp." }
+                { id: "am", nama: "✨ Alight Motion", img: "alightmotion.jpg", type: "ui-std", inputs: ["Nomor WhatsApp"], catatan: "• Alight Motion 1 Tahun.<br>• Proses cepat & aman." },
+                { id: "yt", nama: "▶️ YouTube", img: "youtube.jpg", type: "ui-std", inputs: ["Email (Family) / No WA (Individual)"], catatan: "<strong>Catatan Format Pemesanan:</strong><br>• Family Plan: Diisi email akun YouTube (Pastikan belum limit undangan family, Max 2 family/1 tahun)<br>• Individual Plan: Diisi Nomor WhatsApp (Lakukan verifikasi akun agar tidak dinonaktifkan Google)" },
+                { id: "iqiyi", nama: "🍿 IQIYI", img: "iqiyi.jpg", type: "ui-std", inputs: ["Nomor WhatsApp"], catatan: "• Proses Manual - Lambat<br>• Akun dikirim ke WhatsApp" },
+                { id: "capcut", nama: "✂️ Capcut", img: "capcut.jpg", type: "ui-std", inputs: ["Nomor WhatsApp"], catatan: "• Proses Lambat: Manual<br>• Akun dikirim ke WhatsApp<br>• Akun Jangan Disebar<br>• Kirim screenshot profil setelah login untuk AKTIFKAN GARANSI (Maks 1x24 Jam)" },
+                { id: "wetv", nama: "🎬 WeTV", img: "viu.jpg", type: "ui-viu-wetv", inputs: ["Nomor WhatsApp"], catatan: "• Kolom di atas diisi Nomor WhatsApp<br>• Akun dikirim ke WhatsApp-nya" },
+                { id: "gemini", nama: "🤖 AI Gemini Pro", img: "gemini.jpg", type: "ui-std", inputs: ["Nomor WhatsApp"], catatan: "• Kolom di atas diisi Nomor WhatsApp<br>• Akun dikirim ke WhatsApp-nya<br>• 1x Pembelian untuk 1 Orang (tidak boleh disebar - akan di-out + limit akun)" },
+                { id: "meitu", nama: "📸 Meitu", img: "meitu.jpg", type: "ui-std", inputs: ["Nomor WhatsApp"], catatan: "• Meitu 1 Minggu<br>• Proses Manual - Akun dikirim ke WhatsApp" },
+                { id: "pixellab", nama: "🎨 Pixellab", img: "pixellab.jpg", type: "ui-std", inputs: ["Nomor WhatsApp"], catatan: "• Isi nomor WhatsApp saja." },
+                { id: "viu", nama: "🎬 Viu", img: "viu.jpg", type: "ui-viu" }
             ],
             "topup-game": [
                 { id: "ff", nama: "🔥 Free Fire", img: "ff.jpg", type: "ui-game", inputs: ["Username", "ID Game"], catatan: "• Top Up Free Fire (Via Username + ID)" },
                 { id: "mlbb", nama: "⚔️ Mobile Legends", img: "ml.jpg", type: "ui-game", inputs: ["Username", "ID Game", "Server"], catatan: "• Top Up Mobile Legends (Via Username - ID - Server)" },
-                { id: "mlbb-first", nama: "⭐ MLBB First Top Up", img: "ml.jpg", type: "ui-game", inputs: ["Username", "ID Game", "Server"], catatan: "Top up ini hanya berlaku bagi akun yang belum melakukan top up pertama kali." },
+                { id: "mlbb-first", nama: "⭐ MLBB First Top Up", img: "ml.jpg", type: "ui-game", inputs: ["Username", "ID Game", "Server"], catatan: "Top up ini hanya berlaku bagi akun yang belum melakukan top up pertama kali di akunnya. Jika tidak teliti, tidak ada refund!" },
                 { id: "pubg", nama: "🎯 PUBG Mobile", img: "pubg.jpg", type: "ui-game", inputs: ["Username", "ID Game"], catatan: "• Top Up PUBG Mobile (Via Username + ID)" },
                 { id: "hok", nama: "👑 Honor Of Kings", img: "hok.jpg", type: "ui-game", inputs: ["Username", "ID Game"], catatan: "• Top Up Honor Of Kings (Via Username + ID)" },
                 { id: "bs", nama: "💎 Blood Strike", img: "bs.jpg", type: "ui-game", inputs: ["Username", "ID Game"], catatan: "• Top Up Blood Strike (Via Username + ID)" }
             ],
             "jasa-ciaa": [
-                { id: "jasher", nama: "🚀 Jasher (Jasa Share)", img: "logo.jpg", type: "ui-jasa", catatan: "• Jasher (Jasa Share), bukan Jasa Push Member!<br>• Isi nama store dan link/teks di deskripsi." },
-                { id: "jpm", nama: "📈 JPM (Jasa Push Member)", img: "logo.jpg", type: "ui-jasa", catatan: "• JPM (Jasa Push Member)<br>• Isi nama store dan link group di deskripsi." }
+                { id: "jasher", nama: "🚀 Jasher (Jasa Share)", img: "logo.jpg", type: "ui-jasa", catatan: "• Jasher (Jasa Share), bukan Jasa Push Member!<br>• Isi nama store.<br>• Deskripsi isi dengan link grup dan nama group/teks yang ingin di-share!<br>• Konfirmasi pembayaran di web untuk melanjutkan pemesanan via WhatsApp<br>• No reff" },
+                { id: "jpm", nama: "📈 JPM (Jasa Push Member)", img: "logo.jpg", type: "ui-jasa", catatan: "• JPM (Jasa Push Member), push member sesuai dengan target.<br>• Isi nama store.<br>• Deskripsi isi dengan link grup & nama grup.<br>• Settingan GB nyalakan persetujuan admin.<br>• Dilarang acc member sebelum done/sesuai target, acc = done no toleransi.<br>• Konfirmasi pembayaran di web untuk melanjutkan pemesanan via WhatsApp<br>• No reff" }
             ]
         };
 
         const listHarga = {
             "canva": [ { nama: "Canva 1 Bulan", harga: 3000, tag: "tim" }, { nama: "Canva Head 1 Bulan", harga: 7000, tag: "head" } ],
             "viu": [ { nama: "Viu 1 Tahun (Private) – No Gar", harga: 5000, tag: "oto" }, { nama: "Paket Viu Prem 5 Akun (6 Bulan Private)", harga: 8000, tag: "man" }, { nama: "Viu Plus 1 Bulan (Sharing)", harga: 18000, tag: "man" } ],
+            "wetv": [ { nama: "WeTV 1 Bulan (Sharing)", harga: 11000 }, { nama: "WeTV 3 Bulan (Sharing)", harga: 27000 }, { nama: "WeTV 1 Bulan (Private)", harga: 28000 } ],
             "yt": [ { nama: "YouTube 1 Bulan (Family Plan)", harga: 5000 } ],
             "am": [ { nama: "Alight Motion 1 Tahun", harga: 4000 } ],
-            "pixellab": [ { nama: "Pixellab Pro / Full Asset", harga: 5000 } ],
+            "pixellab": [ { nama: "Pixellab Mod – No Pw", harga: 3000 } ],
             "iqiyi": [ { nama: "IQIYI 1 Bulan (Private Vip Standar)", harga: 37000 } ],
             "capcut": [ { nama: "Capcut Pro 7 Hari (Private)", harga: 5000 }, { nama: "Capcut Pro 1 Bulan (Private)", harga: 25000 } ],
             "gemini": [ { nama: "AI Gemini Pro 1 Bulan", harga: 15000 } ],
@@ -677,7 +680,7 @@
                     <div class="sub-tab" onclick="switchSubTab('head', event)">Canva Head</div>
                 `;
                 renderInputs(['Isi Email Canva yang akan di Premium kan']);
-                notesEl.innerHTML = "<strong>Catatan Canva Tim:</strong><br>• Canva Tim (25-28 hari = 1 bulan)";
+                notesEl.innerHTML = "<strong>Catatan Canva Tim:</strong><br>• Canva Tim (25-28 hari = 1 bulan)<br>• Kolom di atas: Isi Email Canva yang akan di-premium-kan<br>• Proses Instan - Cek detail transaksinya";
                 notesEl.style.display = 'block';
                 renderPackages('canva', 'tim');
             } 
@@ -692,7 +695,7 @@
             }
             else if(prod.type === 'ui-jasa') {
                 renderInputs(['Nama Store']);
-                let placeholderText = itemId === 'jasher' ? "(Contoh: masukkan nama grup dan link grup/teks jasher)" : "(Contoh: masukkan nama grup dan link target!)";
+                let placeholderText = itemId === 'jasher' ? "(Masukkan link grup dan nama grup/teks yang ingin di-share)" : "(Masukkan link grup & nama grup target)";
                 inputsEl.innerHTML += `
                     <div class="form-group" style="margin-top:12px;">
                         <label>Deskripsi / Link Target</label>
@@ -716,10 +719,10 @@
             if(activeProduct.id === 'canva') {
                 if(tag === 'tim') {
                     renderInputs(['Isi Email Canva yang akan di Premium kan']);
-                    notesEl.innerHTML = "<strong>Catatan Canva Tim:</strong><br>• Canva Tim (25-28 hari = 1 bulan)";
+                    notesEl.innerHTML = "<strong>Catatan Canva Tim:</strong><br>• Canva Tim (25-28 hari = 1 bulan)<br>• Proses Instan";
                 } else {
                     renderInputs(['Nomor WhatsApp']);
-                    notesEl.innerHTML = "<strong>Catatan Canva Head:</strong><br>• Produk Diproses Manual";
+                    notesEl.innerHTML = "<strong>Catatan Canva Head:</strong><br>• Produk Diproses Manual - Slow<br>• Kolom di atas diisi Nomor WhatsApp<br>• Canva Head (28-29 hari)<br>• Dapat mengundang hingga 10 member<br>• Garansi 25 hari<br>• Proses 1x24 Jam";
                 }
             } else if (activeProduct.id === 'viu') {
                 renderInputs(['Nomor WhatsApp']);
@@ -835,13 +838,12 @@
                 
                 const dynamicQR = generateDynamicQRIS(rawQrisStatis, totalBayar);
                 
-                // Render QR dengan pengaman fallback API eksternal jika library lokal gagal
                 try {
                     if (typeof QRCode !== 'undefined') {
                         new QRCode(qrContainer, {
                             text: dynamicQR,
-                            width: 180,
-                            height: 180,
+                            width: 170,
+                            height: 170,
                             colorDark: "#000000",
                             colorLight: "#ffffff",
                             correctLevel: QRCode.CorrectLevel.H
@@ -850,9 +852,8 @@
                         throw new Error("Library offline tidak termuat");
                     }
                 } catch(e) {
-                    // Fallback menggunakan API gambar QR code eksternal yang aman dari kendala koneksi lokal
                     let imgFallback = document.createElement('img');
-                    imgFallback.src = "https://api.qrserver.com/v1/create-qr-code/?size=180x180&data=" + encodeURIComponent(dynamicQR);
+                    imgFallback.src = "https://api.qrserver.com/v1/create-qr-code/?size=170x170&data=" + encodeURIComponent(dynamicQR);
                     imgFallback.alt = "QRIS Barcode";
                     qrContainer.appendChild(imgFallback);
                 }
