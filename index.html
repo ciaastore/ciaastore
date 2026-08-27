@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Ciaa Store - Cute & Aesthetic Digital Shop</title>
     
-    <!-- Library QR Code -->
+    <!-- Library QR Code Utama -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
 
     <style>
@@ -196,7 +196,7 @@
         .payment-option input { margin-right: 8px; accent-color: var(--deep-pink); }
         .qris-container { text-align: center; background: white; padding: 15px; border-radius: var(--card-radius); margin: 12px 0; border: 2px solid var(--primary-pink); }
         #qrcode { display: flex; justify-content: center; align-items: center; margin-top: 8px; min-height: 180px; }
-        #qrcode img { display: block; margin: 0 auto; }
+        #qrcode img { display: block; margin: 0 auto; max-width: 100%; }
 
         #maintenance-overlay { 
             position: fixed; top: 0; left: 0; width: 100%; height: 100%; 
@@ -817,7 +817,6 @@
             const qrisBox = document.getElementById('qris-box');
             const qrContainer = document.getElementById('qrcode');
             
-            // Bersihkan isi QR code sebelumnya agar tidak menumpuk
             qrContainer.innerHTML = ""; 
             
             if(payMethod === "DANA") {
@@ -831,24 +830,31 @@
                 document.getElementById('co-method-title').innerText = "Transfer GoPay";
                 document.getElementById('co-method-number').innerText = "089505929536";
             } else {
-                // Pastikan QRIS box dipaksa tampil dan di-generate ulang dengan benar
                 transferInfo.style.display = 'none'; 
                 qrisBox.style.display = 'block';
                 
                 const dynamicQR = generateDynamicQRIS(rawQrisStatis, totalBayar);
                 
-                // Pastikan library QRCode sudah siap lalu render barcode
+                // Render QR dengan pengaman fallback API eksternal jika library lokal gagal
                 try {
-                    new QRCode(qrContainer, {
-                        text: dynamicQR,
-                        width: 180,
-                        height: 180,
-                        colorDark: "#000000",
-                        colorLight: "#ffffff",
-                        correctLevel: QRCode.CorrectLevel.H
-                    });
+                    if (typeof QRCode !== 'undefined') {
+                        new QRCode(qrContainer, {
+                            text: dynamicQR,
+                            width: 180,
+                            height: 180,
+                            colorDark: "#000000",
+                            colorLight: "#ffffff",
+                            correctLevel: QRCode.CorrectLevel.H
+                        });
+                    } else {
+                        throw new Error("Library offline tidak termuat");
+                    }
                 } catch(e) {
-                    qrContainer.innerHTML = "<p style='color:red; font-size:12px;'>Gagal memuat QRIS. Pastikan koneksi internet aktif.</p>";
+                    // Fallback menggunakan API gambar QR code eksternal yang aman dari kendala koneksi lokal
+                    let imgFallback = document.createElement('img');
+                    imgFallback.src = "https://api.qrserver.com/v1/create-qr-code/?size=180x180&data=" + encodeURIComponent(dynamicQR);
+                    imgFallback.alt = "QRIS Barcode";
+                    qrContainer.appendChild(imgFallback);
                 }
             }
 
@@ -1029,10 +1035,6 @@
                 loadAdminAntrianList();
                 loadAntrianList();
             }
-        }
-
-        function hapusAdminAntrian(index) {
-            // alias fungsi hapus
         }
 
         function hapusAntrian(index) {
