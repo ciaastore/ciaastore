@@ -98,7 +98,6 @@
         .section.active { display: block; }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: translateY(0); } }
 
-        /* GRID LAYANAN DIUBAH MENJADI 3 KOLOM VERTIKAL KE BAWAH & LEBIH KECIL */
         .grid-services {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
@@ -196,7 +195,8 @@
         .payment-option { display: flex; align-items: center; padding: 10px; border: 1.5px solid var(--primary-pink); border-radius: 12px; margin-bottom: 8px; cursor: pointer; background: var(--white); font-size: 13px; }
         .payment-option input { margin-right: 8px; accent-color: var(--deep-pink); }
         .qris-container { text-align: center; background: white; padding: 15px; border-radius: var(--card-radius); margin: 12px 0; border: 2px solid var(--primary-pink); }
-        #qrcode { display: flex; justify-content: center; margin-top: 8px; }
+        #qrcode { display: flex; justify-content: center; align-items: center; margin-top: 8px; min-height: 180px; }
+        #qrcode img { display: block; margin: 0 auto; }
 
         #maintenance-overlay { 
             position: fixed; top: 0; left: 0; width: 100%; height: 100%; 
@@ -281,7 +281,6 @@
 
         <div class="container">
             
-            <!-- SECTION: MENU UTAMA LAYANAN (3 KOLOM KECIL) -->
             <div id="layanan-section" class="section active">
                 <div class="grid-services">
                     <div class="service-box" onclick="openAppPremiumPage()">
@@ -331,7 +330,6 @@
                 </div>
             </div>
 
-            <!-- SECTION: HALAMAN KHUSUS APLIKASI PREMIUM -->
             <div id="app-premium-section" class="section">
                 <button onclick="backToMenu()" style="margin-bottom: 12px; border:none; background:var(--light-pink); padding:6px 12px; border-radius:8px; font-weight:bold; cursor:pointer; font-size: 12px;">⬅ Kembali ke Layanan</button>
                 <h2 style="color: var(--deep-pink); font-size: 16px; margin-bottom: 10px;">📱 Aplikasi Premium</h2>
@@ -344,7 +342,6 @@
                 <div class="mini-grid" id="grid-app-page"></div>
             </div>
 
-            <!-- SECTION: ADMIN PANEL -->
             <div id="admin-panel-section" class="section">
                 <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
                     <h2 style="color: var(--deep-pink); font-size: 16px;">🛠️ Panel Admin Eksklusif</h2>
@@ -379,7 +376,6 @@
                 </div>
             </div>
 
-            <!-- SECTION: COMING SOON -->
             <div id="coming-soon-section" class="section">
                 <div class="contact-card" style="border: 2px dashed var(--deep-pink);">
                     <div style="font-size: 40px; margin-bottom: 8px;">🎟️</div>
@@ -388,7 +384,6 @@
                 </div>
             </div>
 
-            <!-- SECTION: ANTRIAN -->
             <div id="antrian-section" class="section">
                 <h2 style="margin-bottom: 12px; color: var(--deep-pink); font-size: 16px;">🎫 Daftar & Status Antrian Pesanan</h2>
                 <div class="form-group">
@@ -399,7 +394,6 @@
                 </div>
             </div>
 
-            <!-- SECTION: KONTAK -->
             <div id="kontak-section" class="section">
                 <h2 style="text-align:center; color:var(--deep-pink); margin-bottom:15px; font-size: 16px;">✨ Hubungi Ciaa Store ✨</h2>
                 
@@ -423,7 +417,6 @@
                 </div>
             </div>
 
-            <!-- SECTION: TUTORIAL -->
             <div id="tutorial-section" class="section">
                 <h2 style="color: var(--deep-pink); margin-bottom: 12px; font-size: 16px;">📖 Panduan & Tutorial Order di Ciaa Store</h2>
                 <div class="info-box-pink" style="line-height: 1.6;">
@@ -432,12 +425,11 @@
                     2️⃣ Isi data yang diminta dengan teliti.<br>
                     3️⃣ Pilih paket dan metode pembayaran.<br>
                     4️⃣ Klik <strong>Lanjutkan Pembayaran</strong> untuk melihat detail instruksi transfer.<br>
-                    5️⃣ Lakukan transfer, lalu klik <strong>Konfirmasi Pembayaran ke Admin</strong> untuk mengirim bukti transfer via WhatsApp (di sinilah nomor antrian resmi Anda dibuat).<br>
+                    5️⃣ Lakukan transfer, lalu klik <strong>Konfirmasi Pembayaran ke Admin</strong> untuk mengirim bukti transfer via WhatsApp.<br>
                     6️⃣ Duduk manis dan tunggu pesananmu diproses! 🌸✨
                 </div>
             </div>
 
-            <!-- SECTION: FORM PEMESANAN -->
             <div id="form-pesanan" class="section">
                 <button onclick="backToMenu()" style="margin-bottom: 12px; border:none; background:var(--light-pink); padding:6px 12px; border-radius:8px; font-weight:bold; cursor:pointer; font-size: 12px;">⬅ Kembali</button>
                 <h2 id="form-title" style="margin-bottom: 8px; color: var(--deep-pink); font-size: 16px;">Judul Produk</h2>
@@ -458,7 +450,7 @@
                 <button class="btn-primary" onclick="proceedToCheckout()">Lanjutkan Pembayaran 💖</button>
             </div>
 
-            <!-- SECTION: CHECKOUT / HALAMAN PEMBAYARAN -->
+            <!-- CHECKOUT / HALAMAN PEMBAYARAN -->
             <div id="checkout-page" class="section">
                 <h2 style="text-align: center; color: var(--deep-pink); font-size: 16px; margin-bottom: 12px;">Silakan transfer terlebih dahulu untuk melanjutkan pesanan Anda ✨</h2>
                 
@@ -823,20 +815,41 @@
             
             const transferInfo = document.getElementById('transfer-info');
             const qrisBox = document.getElementById('qris-box');
-            document.getElementById('qrcode').innerHTML = ""; 
+            const qrContainer = document.getElementById('qrcode');
+            
+            // Bersihkan isi QR code sebelumnya agar tidak menumpuk
+            qrContainer.innerHTML = ""; 
             
             if(payMethod === "DANA") {
-                transferInfo.style.display = 'block'; qrisBox.style.display = 'none';
+                transferInfo.style.display = 'block'; 
+                qrisBox.style.display = 'none';
                 document.getElementById('co-method-title').innerText = "Transfer DANA";
                 document.getElementById('co-method-number').innerText = "081338224767 (A/N AGUS SUTIARNO)";
             } else if (payMethod === "GOPAY") {
-                transferInfo.style.display = 'block'; qrisBox.style.display = 'none';
+                transferInfo.style.display = 'block'; 
+                qrisBox.style.display = 'none';
                 document.getElementById('co-method-title').innerText = "Transfer GoPay";
                 document.getElementById('co-method-number').innerText = "089505929536";
             } else {
-                transferInfo.style.display = 'none'; qrisBox.style.display = 'block';
+                // Pastikan QRIS box dipaksa tampil dan di-generate ulang dengan benar
+                transferInfo.style.display = 'none'; 
+                qrisBox.style.display = 'block';
+                
                 const dynamicQR = generateDynamicQRIS(rawQrisStatis, totalBayar);
-                new QRCode(document.getElementById("qrcode"), { text: dynamicQR, width: 180, height: 180 });
+                
+                // Pastikan library QRCode sudah siap lalu render barcode
+                try {
+                    new QRCode(qrContainer, {
+                        text: dynamicQR,
+                        width: 180,
+                        height: 180,
+                        colorDark: "#000000",
+                        colorLight: "#ffffff",
+                        correctLevel: QRCode.CorrectLevel.H
+                    });
+                } catch(e) {
+                    qrContainer.innerHTML = "<p style='color:red; font-size:12px;'>Gagal memuat QRIS. Pastikan koneksi internet aktif.</p>";
+                }
             }
 
             document.getElementById('form-pesanan').classList.remove('active');
@@ -1016,6 +1029,10 @@
                 loadAdminAntrianList();
                 loadAntrianList();
             }
+        }
+
+        function hapusAdminAntrian(index) {
+            // alias fungsi hapus
         }
 
         function hapusAntrian(index) {
