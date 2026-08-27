@@ -485,8 +485,8 @@
                     1️⃣ Masuk ke menu <strong>Layanan</strong>, lalu pilih kotak layanan yang diinginkan.<br>
                     2️⃣ Isi data yang diminta dengan teliti.<br>
                     3️⃣ Pilih paket dan metode pembayaran.<br>
-                    4️⃣ Klik <strong>Lanjutkan Pembayaran</strong> untuk mendapatkan nomor antrian resmi (Contoh: CS-270826-#01).<br>
-                    5️⃣ Lakukan transfer, lalu klik <strong>Konfirmasi Pembayaran ke Admin</strong> untuk mengirim bukti transfer via WhatsApp.<br>
+                    4️⃣ Klik <strong>Lanjutkan Pembayaran</strong> untuk melihat detail instruksi transfer.<br>
+                    5️⃣ Lakukan transfer, lalu klik <strong>Konfirmasi Pembayaran ke Admin</strong> untuk mengirim bukti transfer via WhatsApp (di sinilah nomor antrian resmi Anda akan dibuat).<br>
                     6️⃣ Duduk manis dan tunggu pesananmu diproses! 🌸✨
                 </div>
             </div>
@@ -512,13 +512,12 @@
                 <button class="btn-primary" onclick="proceedToCheckout()">Lanjutkan Pembayaran 💖</button>
             </div>
 
-            <!-- SECTION: CHECKOUT -->
+            <!-- SECTION: CHECKOUT / HALAMAN PEMBAYARAN -->
             <div id="checkout-page" class="section">
                 <h2 style="text-align: center; color: var(--deep-pink); font-size: 16px; margin-bottom: 12px;">Silakan transfer terlebih dahulu untuk melanjutkan pesanan Anda ✨</h2>
                 
                 <div class="info-box-pink" style="margin-top: 15px;">
                     <strong>Ringkasan Pesanan:</strong>
-                    <p id="co-antrian">No. Antrian: -</p>
                     <p id="co-produk">Layanan: -</p>
                     <p id="co-data">Data: -</p>
                     <p id="co-harga" style="font-size: 16px; font-weight: bold; margin-top: 8px; color: var(--deep-pink);">Total: Rp -</p>
@@ -860,18 +859,9 @@
         function proceedToCheckout() {
             if(!activeVariant) return alert("Silakan pilih paket produk terlebih dahulu ya! 🌸");
             
-            // ANTI-SPAM & GENERATE NOMOR ANTRIAN BERURUTAN (CS-DDMMYY-#NO)
-            const date = new Date();
-            const dStr = String(date.getDate()).padStart(2, '0') + String(date.getMonth()+1).padStart(2, '0') + String(date.getFullYear()).slice(-2);
-            
-            let antrianList = JSON.parse(localStorage.getItem('ciaa_antrian') || '[]');
-            let todayCount = antrianList.filter(item => item.no.includes(dStr)).length + 1;
-            let antrianNo = 'CS-' + dStr + '-#' + String(todayCount).padStart(2, '0');
-            
             let dataPelanggan = [];
             document.querySelectorAll('.inputs-data').forEach(i => dataPelanggan.push(i.value));
-            const desc = document.getElementById('input-desc') ? document.getElementById('input-desc').value : "";
-            
+            const desc = document.getElementById('input-desc') ? document.getElementById('input-desc'].value : "";
             const payMethod = document.querySelector('input[name="pay-method"]:checked').value;
             
             let totalBayar = activeVariant.harga;
@@ -885,11 +875,17 @@
                 ketHarga = ` (Tanpa biaya admin / kode unik)`;
             }
 
-            checkoutData = { antrian: antrianNo, produk: activeProduct.nama, paket: activeVariant.nama, data: dataPelanggan.join(" | "), desc: desc, total: totalBayar, metode: payMethod, type: activeProduct.type };
+            // Simpan data untuk proses konfirmasi nanti (Nomor antrian BELUM dibuat di sini)
+            checkoutData = { 
+                produk: activeProduct.nama, 
+                paket: activeVariant.nama, 
+                data: dataPelanggan.join(" | "), 
+                desc: desc, 
+                total: totalBayar, 
+                metode: payMethod, 
+                type: activeProduct.type 
+            };
 
-            saveAntrianToStorage(antrianNo, checkoutData.produk + " - " + checkoutData.paket, activeVariant.harga);
-
-            document.getElementById('co-antrian').innerText = 'No. Antrian: ' + antrianNo;
             document.getElementById('co-produk').innerText = 'Layanan: ' + activeProduct.nama + ' - ' + activeVariant.nama;
             document.getElementById('co-data').innerText = 'Data: ' + checkoutData.data;
             document.getElementById('co-harga').innerText = 'Total: Rp ' + totalBayar.toLocaleString('id-ID') + ketHarga;
@@ -917,16 +913,42 @@
             window.scrollTo(0,0);
         }
 
+        // SISTEM ANTI-SPAM & GENERATE NOMOR ANTRIAN SAAT KLIK KONFIRMASI KE ADMIN
+        function getOrGenerateQueueNumber() {
+            let sessionKey = 'ciaa_active_queue_' + checkoutData.produk + '_' + checkoutData.data;
+            let existingQueue = localStorage.getItem(sessionKey);
+            
+            if (existingQueue) {
+                return existingQueue; // Jika diklik berkali-kali, pakai nomor antrian yang sama (Anti-Spam)
+            } else {
+                const date = new Date();
+                const dStr = String(date.getDate()).padStart(2, '0') + String(date.getMonth()+1).padStart(2, '0') + String(date.getFullYear()).slice(-2);
+                
+                let antrianList = JSON.parse(localStorage.getItem('ciaa_antrian') || '[]');
+                let todayCount = antrianList.filter(item => item.no.includes(dStr)).length + 1;
+                let antrianNo = 'CS-' + dStr + '-#' + String(todayCount).padStart(2, '0');
+                
+                // Simpan ke sesi perangkat agar tidak berubah/dobel jika diklik ulang
+                localStorage.setItem(sessionKey, antrianNo);
+                
+                // Simpan juga ke database list antrian umum
+                saveAntrianToStorage(antrianNo, checkoutData.produk + " - " + checkoutData.paket, activeVariant.harga);
+                
+                return antrianNo;
+            }
+        }
+
         function sendToWhatsApp() {
             const noWA = "6289505929536";
+            let antrianNo = getOrGenerateQueueNumber(); // Nomor antrian resmi dibuat di sini!
             let teks = "";
             
             if(checkoutData.type === 'ui-jasa') {
-                teks = "Halo Admin Ciaa Store! ✨\nSaya sudah transfer untuk pemesanan Jasa:\n\n🎫 No. Antrian: " + checkoutData.antrian + "\n🚀 Layanan: " + checkoutData.produk + "\n📦 Paket: " + checkoutData.paket + "\n🏪 Nama Store: " + checkoutData.data + "\n💰 Total Bayar: Rp" + checkoutData.total.toLocaleString('id-ID') + "\n💳 Pembayaran: " + checkoutData.metode + "\n\n🔗 Deskripsi/Link Target:\n" + checkoutData.desc + "\n\nBukti transfer saya kirimkan di bawah ini ya Min. Ditunggu prosesnya! 🙏";
+                teks = "Halo Admin Ciaa Store! ✨\nSaya sudah transfer untuk pemesanan Jasa:\n\n🎫 No. Antrian: " + antrianNo + "\n🚀 Layanan: " + checkoutData.produk + "\n📦 Paket: " + checkoutData.paket + "\n🏪 Nama Store: " + checkoutData.data + "\n💰 Total Bayar: Rp" + checkoutData.total.toLocaleString('id-ID') + "\n💳 Pembayaran: " + checkoutData.metode + "\n\n🔗 Deskripsi/Link Target:\n" + checkoutData.desc + "\n\nBukti transfer saya kirimkan di bawah ini ya Min. Ditunggu prosesnya! 🙏";
             } else if (checkoutData.type === 'ui-game') {
-                teks = "Halo Admin Ciaa Store! 🎮\nSaya sudah melakukan transfer dan ingin konfirmasi pesanan:\n\n🎫 No. Antrian: " + checkoutData.antrian + "\n🛒 Layanan: " + checkoutData.produk + "\n💎 Item/Paket: " + checkoutData.paket + "\n👤 Data: " + checkoutData.data + "\n💰 Total Bayar: Rp" + checkoutData.total.toLocaleString('id-ID') + "\n💳 Pembayaran: " + checkoutData.metode + "\n\nBerikut saya lampirkan bukti transfernya. Mohon segera diproses ya Min! 🙏";
+                teks = "Halo Admin Ciaa Store! 🎮\nSaya sudah melakukan transfer dan ingin konfirmasi pesanan:\n\n🎫 No. Antrian: " + antrianNo + "\n🛒 Layanan: " + checkoutData.produk + "\n💎 Item/Paket: " + checkoutData.paket + "\n👤 Data: " + checkoutData.data + "\n💰 Total Bayar: Rp" + checkoutData.total.toLocaleString('id-ID') + "\n💳 Pembayaran: " + checkoutData.metode + "\n\nBerikut saya lampirkan bukti transfernya. Mohon segera diproses ya Min! 🙏";
             } else {
-                teks = "Halo Admin Ciaa Store! 📱\nSaya mau konfirmasi pembayaran untuk Aplikasi Premium:\n\n🎫 No. Antrian: " + checkoutData.antrian + "\n🎬 Aplikasi: " + checkoutData.produk + "\n📦 Paket: " + checkoutData.paket + "\n📧 Data: " + checkoutData.data + "\n💰 Total Bayar: Rp" + checkoutData.total.toLocaleString('id-ID') + "\n💳 Pembayaran: " + checkoutData.metode + "\n\nBukti transfer sudah saya siapkan dan kirim di bawah pesanan ini. Terima kasih! 🙏";
+                teks = "Halo Admin Ciaa Store! 📱\nSaya mau konfirmasi pembayaran untuk Aplikasi Premium:\n\n🎫 No. Antrian: " + antrianNo + "\n🎬 Aplikasi: " + checkoutData.produk + "\n📦 Paket: " + checkoutData.paket + "\n📧 Data: " + checkoutData.data + "\n💰 Total Bayar: Rp" + checkoutData.total.toLocaleString('id-ID') + "\n💳 Pembayaran: " + checkoutData.metode + "\n\nBukti transfer sudah saya siapkan dan kirim di bawah pesanan ini. Terima kasih! 🙏";
             }
 
             const url = "https://wa.me/" + noWA + "?text=" + encodeURIComponent(teks);
