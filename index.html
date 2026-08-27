@@ -88,24 +88,41 @@
         .btn-admin:hover { transform: scale(1.1); }
         .btn-admin img { width: 22px; height: 22px; border-radius: 50%; object-fit: cover; display: block; }
 
-        /* SLIDER PROMOSI HORIZONTAL SOFT PINK */
+        /* BANNER PROMOSI OTOMATIS SCROLL (CAROUSEL SLIDER) */
+        .promo-slider-wrapper {
+            position: relative;
+            padding: 12px 15px 5px 15px;
+            overflow: hidden;
+        }
+
         .promo-slider {
-            display: flex; overflow-x: auto; gap: 12px; padding: 15px 15px 5px 15px;
-            scroll-snap-type: x mandatory; scrollbar-width: none;
+            display: flex;
+            gap: 12px;
+            overflow-x: auto;
+            scroll-snap-type: x mandatory;
+            scrollbar-width: none;
+            scroll-behavior: smooth;
         }
         .promo-slider::-webkit-scrollbar { display: none; }
+
         .promo-card-h {
-            min-width: 85%; flex-shrink: 0; scroll-snap-align: center;
+            min-width: 90%;
+            max-width: 90%;
+            flex-shrink: 0;
+            scroll-snap-align: center;
             background: linear-gradient(135deg, #ffffff 0%, var(--soft-pink) 100%);
-            border: 2px solid var(--primary-pink); border-radius: 14px;
-            padding: 14px; box-shadow: 0 4px 12px rgba(255,182,193,0.3);
+            border: 2px solid var(--primary-pink);
+            border-radius: 14px;
+            padding: 12px 15px;
+            box-shadow: 0 4px 12px rgba(255,182,193,0.3);
+            transition: transform 0.3s ease;
         }
-        .promo-card-h h3 { font-size: 14px; color: var(--deep-pink); margin-bottom: 6px; display: flex; align-items: center; gap: 5px; font-weight: bold;}
-        .promo-card-h p { font-size: 12px; line-height: 1.5; color: var(--dark-text); }
+        .promo-card-h h3 { font-size: 14px; color: var(--deep-pink); margin-bottom: 5px; display: flex; align-items: center; gap: 5px; font-weight: bold;}
+        .promo-card-h p { font-size: 12px; line-height: 1.4; color: var(--dark-text); }
 
         .greeting-box {
             background: #fff0f5; border: 1.5px solid var(--primary-pink);
-            border-radius: 12px; padding: 10px 15px; margin: 12px 15px 0 15px;
+            border-radius: 12px; padding: 10px 15px; margin: 5px 15px 0 15px;
             text-align: center; font-weight: bold; color: var(--deep-pink); font-size: 13px;
         }
 
@@ -213,8 +230,8 @@
 
     <div id="maintenance-overlay" style="display: none;">
         <img src="maintenance1.jpg" alt="Maintenance Logo" class="maintenance-logo" onerror="this.src='logo.jpg'">
-        <h2 style="color: var(--deep-pink); margin-bottom: 8px; font-size: 18px;">Upss! Server Sedang Maintenance 🛠️✨</h2>
-        <p style="color: #555; max-width: 380px; font-size: 13px; line-height: 1.5;">Mohon maaf juragan, Ciaa Store sedang dalam pemeliharaan sistem agar makin gacor. Coba kembali beberapa saat lagi ya! 💖</p>
+        <h2 style="color: var(--deep-pink); margin-bottom: 8px; font-size: 18px;">Pemberitahuan Sistem 🛠️✨</h2>
+        <p style="color: #555; max-width: 380px; font-size: 13px; line-height: 1.5;">Mohon maaf, Ciaa Store sedang melakukan pemeliharaan sistem rutin. Kami akan segera kembali melayani Anda! 💖</p>
     </div>
 
     <div id="admin-login-modal">
@@ -238,28 +255,30 @@
             <img src="banner.jpg" alt="Ciaa Store Banner" class="banner-utama" onerror="this.style.display='none'">
         </header>
 
-        <!-- PAPAN PROMOSI GESER -->
-        <div class="promo-slider">
-            <div class="promo-card-h">
-                <h3>🌐 Jasa Buat Website 💻✨</h3>
-                <p>Wujudkan website impianmu bersama tim Ciaa Store! 🚀 Desain super elegan, responsif, & kekinian banget sesuai tema usahamu. Cocok buat jualan, portofolio, atau profil bisnis. Kualitas OKE, Harga Ramah di Kantong! Yuk konsultasi sekarang! 💬💖</p>
-            </div>
-            <div class="promo-card-h">
-                <h3>🎮 Top Up Voucher Game 🎊🔖</h3>
-                <p>Mau gacha tapi diamond kurang? Top up di sini aja! 💎✨ Proses secepat kilat ⚡, 100% aman & legal! 🎀 Tersedia buat player MLBB, FF, PUBG, dan masih banyak lagi. Nikmati promo melimpah setiap harinya! Gasss Cobain! 🛒💖</p>
+        <!-- PAPAN PROMOSI BANNER OTOMATIS SCROLL (CAROUSEL) -->
+        <div class="promo-slider-wrapper">
+            <div class="promo-slider" id="promoSlider">
+                <div class="promo-card-h">
+                    <h3>🌐 Jasa Pembuatan Website 💻✨</h3>
+                    <p>Wujudkan website impian bersama Ciaa Store! Desain elegan, responsif, & modern. Cocok untuk toko online, portofolio, maupun profil bisnis. Kualitas terjamin dengan harga terjangkau! 💬💖</p>
+                </div>
+                <div class="promo-card-h">
+                    <h3>🎮 Top Up Game & Voucher 🎊🔖</h3>
+                    <p>Butuh Diamond atau Voucher Game? Top up praktis di Ciaa Store! Proses cepat, aman, & legal 100%. Tersedia untuk MLBB, FF, PUBG Mobile, dan game favorit lainnya! 🛒💖</p>
+                </div>
             </div>
         </div>
 
         <div class="greeting-box" id="greeting-text">
-            Halo juragan! Selamat berbelanja ✨
+            Selamat datang di Ciaa Store ✨
         </div>
 
         <div class="nav-tabs" id="main-nav-tabs">
             <div class="tab-item active" onclick="switchMenu('layanan-section', event)">🛍️ Layanan</div>
-            <div class="tab-item" onclick="switchMenu('coming-soon-section', event)">🎟️ Top Up Voucher Coming Soon</div>
-            <div class="tab-item" onclick="switchMenu('antrian-section', event)">🎫 No. Antrian</div>
-            <div class="tab-item" onclick="switchMenu('kontak-section', event)">📞 Kontak Ciaa Store</div>
-            <div class="tab-item" onclick="switchMenu('tutorial-section', event)">📖 Tutorial Order</div>
+            <div class="tab-item" onclick="switchMenu('coming-soon-section', event)">🎟️ Top Up Voucher (Soon)</div>
+            <div class="tab-item" onclick="switchMenu('antrian-section', event)">🎫 Cek Antrian</div>
+            <div class="tab-item" onclick="switchMenu('kontak-section', event)">📞 Kontak Admin</div>
+            <div class="tab-item" onclick="switchMenu('tutorial-section', event)">📖 Cara Order</div>
         </div>
 
         <div class="container">
@@ -283,8 +302,8 @@
                 <h2 style="color: var(--deep-pink); font-size: 16px; margin-bottom: 10px;">📱 Aplikasi Premium</h2>
                 
                 <div class="info-box-pink">
-                    <strong>⏰ Open 06.00–20.40 WIB</strong><br>
-                    Akun Premium terkadang dikirim oleh mimin, jika ada kendala/masalah bisa tanyakan kepada mimin yaw! 🌸
+                    <strong>⏰ Jam Operasional: 06.00 – 20.40 WIB</strong><br>
+                    Pesanan diproses secara berkala. Jika ada pertanyaan atau kendala, silakan hubungi admin kami ya! 🌸
                 </div>
                 <div class="mini-grid" id="grid-app-page"></div>
             </div>
@@ -305,8 +324,8 @@
                         <p id="admin-total-orders" style="font-size: 12px; color: #555; margin-top: 4px;">Jumlah Orderan Hari Ini: 0</p>
                     </div>
                     <div class="info-box-pink">
-                        <strong>🛠️ Kontrol Server & Pemeliharaan:</strong>
-                        <p style="font-size: 12px; color: #555; margin-top: 4px;">Nyalakan atau matikan mode maintenance situs toko.</p>
+                        <strong>🛠️ Pemeliharaan Sistem:</strong>
+                        <p style="font-size: 12px; color: #555; margin-top: 4px;">Aktifkan atau nonaktifkan mode pemeliharaan (maintenance) toko.</p>
                         <button class="btn-primary" id="btn-toggle-maintenance" onclick="toggleMaintenanceMode()" style="margin-top: 8px;">Aktifkan Mode Maintenance 🛠️</button>
                     </div>
                 </div>
@@ -322,15 +341,15 @@
             <div id="coming-soon-section" class="section">
                 <div class="contact-card" style="border: 2px dashed var(--deep-pink);">
                     <div style="font-size: 40px; margin-bottom: 8px;">🎟️</div>
-                    <h2 style="color: var(--deep-pink); margin-bottom: 6px; font-size: 16px;">Top Up Voucher Game (Coming Soon)</h2>
-                    <p style="color: #555; line-height: 1.5; font-size: 13px;">Kode redeem anti-ribet, mendarat dengan cepat! Fitur Top Up Voucher Game sedang kami siapkan dengan penuh cinta. Pantau terus ya untuk mendapatkan akses ke ribuan voucher dengan harga paling miring! ✨</p>
+                    <h2 style="color: var(--deep-pink); margin-bottom: 6px; font-size: 16px;">Top Up Voucher Game (Segera Hadir)</h2>
+                    <p style="color: #555; line-height: 1.5; font-size: 13px;">Fitur pembelian kode voucher game praktis dan otomatis sedang dalam tahap persiapan. Nantikan kejutan diskon menarik dari kami! ✨</p>
                 </div>
             </div>
 
             <div id="antrian-section" class="section">
-                <h2 style="margin-bottom: 12px; color: var(--deep-pink); font-size: 16px;">🎫 Daftar & Status Antrian Pesanan</h2>
+                <h2 style="margin-bottom: 12px; color: var(--deep-pink); font-size: 16px;">🎫 Daftar Antrian & Status Pesanan</h2>
                 <div class="form-group">
-                    <input type="text" id="search-antrian" class="form-control" placeholder="Cari nomor antrian atau nama kamu di sini..." oninput="filterAntrian()">
+                    <input type="text" id="search-antrian" class="form-control" placeholder="Masukkan nomor antrian atau nama kamu di sini..." oninput="filterAntrian()">
                 </div>
                 <div class="info-box-pink" id="list-antrian" style="max-height: 300px; overflow-y: auto;">
                     Belum ada antrian aktif hari ini. Yuk buat pesananmu sekarang! 💖
@@ -338,19 +357,19 @@
             </div>
 
             <div id="kontak-section" class="section">
-                <h2 style="text-align:center; color:var(--deep-pink); margin-bottom:15px; font-size: 16px;">✨ Hubungi Ciaa Store ✨</h2>
+                <h2 style="text-align:center; color:var(--deep-pink); margin-bottom:15px; font-size: 16px;">✨ Layanan Pelanggan Ciaa Store ✨</h2>
                 <div class="contact-card">
                     <h3>👑 WhatsApp Admin Utama</h3>
                     <p>Nomor: <strong>6289505929536</strong></p>
-                    <a href="https://wa.me/6289505929536" target="_blank" class="contact-btn">Chat Admin 💬</a>
+                    <a href="https://wa.me/6289505929536" target="_blank" class="contact-btn">Hubungi Admin 💬</a>
                 </div>
                 <div class="contact-card">
-                    <h3>🌸 WhatsApp Customer Service</h3>
+                    <h3>🌸 Customer Service</h3>
                     <p>Nomor: <strong>6289509452777</strong></p>
-                    <a href="https://wa.me/6289509452777" target="_blank" class="contact-btn">Chat CS 🎀</a>
+                    <a href="https://wa.me/6289509452777" target="_blank" class="contact-btn">Hubungi CS 🎀</a>
                 </div>
                 <div class="contact-card">
-                    <h3>🔗 Linktr.ee & Media Sosial</h3>
+                    <h3>🔗 Media Sosial Resmi</h3>
                     <p>Linktr.ee: <a href="https://linktr.ee/ciaastore.yo" target="_blank" style="color:var(--deep-pink);">ciaastore.yo</a></p>
                     <p style="margin-top:4px;">Instagram: <a href="https://www.instagram.com/ciaastoree.yo" target="_blank" style="color:var(--deep-pink);">@ciaastoree.yo</a></p>
                     <a href="https://linktr.ee/ciaastore.yo" target="_blank" class="contact-btn">Kunjungi Linktr.ee 🌟</a>
@@ -358,15 +377,15 @@
             </div>
 
             <div id="tutorial-section" class="section">
-                <h2 style="color: var(--deep-pink); margin-bottom: 12px; font-size: 16px;">📖 Panduan & Tutorial Order di Ciaa Store</h2>
+                <h2 style="color: var(--deep-pink); margin-bottom: 12px; font-size: 16px;">📖 Panduan Pemesanan di Ciaa Store</h2>
                 <div class="info-box-pink" style="line-height: 1.6;">
-                    <strong>Langkah-langkah Mudah Belanja:</strong><br>
-                    1️⃣ Masuk ke menu <strong>Layanan</strong>, lalu pilih kotak layanan yang diinginkan.<br>
-                    2️⃣ Isi data yang diminta dengan teliti.<br>
-                    3️⃣ Pilih paket dan metode pembayaran.<br>
-                    4️⃣ Klik <strong>Lanjutkan Pembayaran</strong> untuk melihat detail instruksi transfer.<br>
-                    5️⃣ Lakukan transfer, lalu klik <strong>Konfirmasi Pembayaran ke Admin</strong> untuk mengirim bukti transfer via WhatsApp.<br>
-                    6️⃣ Duduk manis dan tunggu pesananmu diproses! 🌸✨
+                    <strong>Langkah Pemesanan Mudah:</strong><br>
+                    1️⃣ Pilih produk/layanan pada menu <strong>Layanan</strong>.<br>
+                    2️⃣ Lengkapi data pemesanan sesuai petunjuk.<br>
+                    3️⃣ Pilih varian produk dan metode pembayaran.<br>
+                    4️⃣ Tekan <strong>Lanjutkan Pembayaran</strong> untuk mendapatkan instruksi transfer.<br>
+                    5️⃣ Lakukan pembayaran dan klik <strong>Konfirmasi Pembayaran ke Admin</strong> untuk mengirimkan bukti transfer via WhatsApp.<br>
+                    6️⃣ Pesanan Anda akan segera diproses oleh tim kami! 🌸✨
                 </div>
             </div>
 
@@ -390,7 +409,7 @@
             </div>
 
             <div id="checkout-page" class="section">
-                <h2 style="text-align: center; color: var(--deep-pink); font-size: 16px; margin-bottom: 12px;">Silakan transfer terlebih dahulu untuk melanjutkan pesanan Anda ✨</h2>
+                <h2 style="text-align: center; color: var(--deep-pink); font-size: 16px; margin-bottom: 12px;">Silakan selesaikan pembayaran untuk memproses pesanan Anda ✨</h2>
                 
                 <div class="info-box-pink" style="margin-top: 15px;">
                     <strong>Ringkasan Pesanan:</strong>
@@ -411,7 +430,7 @@
                 </div>
 
                 <div class="alert-box">
-                    ⚠️ PENTING: Klik tombol di bawah setelah Anda mentransfer untuk mengirimkan bukti ke WhatsApp Admin ya! 🌸
+                    ⚠️ Catatan: Setelah melakukan pembayaran, harap tekan tombol konfirmasi di bawah ini untuk mengirimkan bukti transfer ke WhatsApp Admin! 🌸
                 </div>
 
                 <button class="btn-primary btn-wa" onclick="sendToWhatsApp()">Konfirmasi Pembayaran ke Admin 💬</button>
@@ -421,7 +440,7 @@
     </div>
 
     <div class="footer">
-        &copy; 2026 Ciaa Store. All rights reserved. Made with 💖 for Cute Shopping experience.
+        &copy; 2026 Ciaa Store. All rights reserved. Made with 💖 for a delightful shopping experience.
     </div>
     
     <a href="https://wa.me/6289509452777" target="_blank" class="fab" title="Hubungi CS">💬</a>
@@ -431,41 +450,64 @@
             document.getElementById('maintenance-overlay').style.display = 'flex';
         }
 
+        /* UCAPAN SAPAAN DAN WAKTU YANG DITINGKATKAN DAN LEBIH ELEGANK */
         function setDynamicGreeting() {
             const now = new Date();
             const hour = now.getHours();
             let greetingText = "";
-            if (hour >= 4 && hour <= 11) greetingText = "Selamat pagi, have a nice day juragan! ✨";
-            else if (hour >= 12 && hour <= 14) greetingText = "Selamat siang, udah makan belum juragan? Jangan lupa belanja di sini yaw! 🤭";
-            else if (hour >= 15 && hour <= 17) greetingText = "Selamat sore, ada yang bisa di bantu? Belanja dulu juragan! 😉";
-            else greetingText = "Selamat malam, jangan lupa tidur juragan!";
+            if (hour >= 4 && hour < 11) {
+                greetingText = "Selamat pagi! Semoga harimu menyenangkan dan penuh keberkahan ✨";
+            } else if (hour >= 11 && hour < 15) {
+                greetingText = "Selamat siang! Selamat berbelanja di Ciaa Store, nikmati promo menariknya! 🌸";
+            } else if (hour >= 15 && hour < 18) {
+                greetingText = "Selamat sore! Bersantai sejenak sambil cek produk favoritmu di sini 😉";
+            } else {
+                greetingText = "Selamat malam! Terimakasih telah mengunjungi Ciaa Store ✨";
+            }
             document.getElementById('greeting-text').innerText = greetingText;
+        }
+
+        /* AUTOMATIC CAROUSEL SLIDER UNTUK PAPAN PROMOSI */
+        function initAutoSlider() {
+            const slider = document.getElementById('promoSlider');
+            if (!slider) return;
+            let currentSlide = 0;
+            const totalSlides = slider.children.length;
+
+            setInterval(() => {
+                currentSlide = (currentSlide + 1) % totalSlides;
+                const cardWidth = slider.children[0].offsetWidth + 12; // Width + Gap
+                slider.scrollTo({
+                    left: cardWidth * currentSlide,
+                    behavior: 'smooth'
+                });
+            }, 3500); // Berganti otomatis setiap 3.5 detik
         }
 
         const dataProduk = {
             "app-premium": [
                 { id: "canva", nama: "🎨 Canva", img: "canva.jpg", type: "ui-canva" },
                 { id: "am", nama: "✨ Alight Motion", img: "alightmotion.jpg", type: "ui-std", inputs: ["Nomor WhatsApp"], catatan: "• Alight Motion 1 Tahun.<br>• Proses cepat & aman." },
-                { id: "yt", nama: "▶️ YouTube", img: "youtube.jpg", type: "ui-std", inputs: ["Email (Family) / No WA (Individual)"], catatan: "<strong>Catatan Format Pemesanan:</strong><br>• Family Plan: Di isi email akun Youtube<br>• Individual Plan: Di isi Nomor WhatsApp<br><strong>Catatan Ketentuan:</strong><br>• Family Plan: Pastikan email belum limit undangan family (Max 2 family / 1 tahun)<br>• Individual Plan: Lakukan verifikasi akun agar tidak di nonaktifkan Google" },
-                { id: "iqiyi", nama: "🍿 IQIYI", img: "iqiyi.jpg", type: "ui-std", inputs: ["Nomor WhatsApp"], catatan: "• Proses Manual - Lambat<br>• Akun dikirim ke Whatsapp" },
-                { id: "capcut", nama: "✂️ Capcut", img: "capcut.jpg", type: "ui-std", inputs: ["Nomor WhatsApp"], catatan: "• Proses Lambat: Manual<br>• Akun dikirim ke Whatsapp<br>• Akun Jangan Disebar<br>• Kirim screenshot profil setelah login untuk AKTIFKAN GARANSI (Maks 1x24Jam)" },
-                { id: "wetv", nama: "🎬 WeTV", img: "viu.jpg", type: "ui-std", inputs: ["Nomor WhatsApp"], catatan: "• Kolom diatas di isi Nomor Whatsapp<br>• Akun dikirim ke Whatsappnya" },
-                { id: "gemini", nama: "🤖 AI Gemini Pro", img: "gemini.jpg", type: "ui-std", inputs: ["Nomor WhatsApp"], catatan: "• Kolom diatas di isi Nomor Whatsapp<br>• Akun dikirim ke Whatsappnya<br>• 1x Pembelian untuk 1 Orang (tidak boleh di sebar - akan di out + limit akun)" },
-                { id: "meitu", nama: "📸 Meitu", img: "meitu.jpg", type: "ui-std", inputs: ["Nomor WhatsApp"], catatan: "• Meitu 1 Minggu<br>• Proses Manual - Akun dikirim ke Whatsapp" },
-                { id: "pixellab", nama: "🎨 Pixellab", img: "pixellab.jpg", type: "ui-std", inputs: ["Nomor WhatsApp"], catatan: "• Isi nomor WhatsApp saja." },
+                { id: "yt", nama: "▶️ YouTube", img: "youtube.jpg", type: "ui-std", inputs: ["Email (Family) / No WA (Individual)"], catatan: "<strong>Ketentuan Pemesanan:</strong><br>• Family Plan: Masukkan email akun Youtube kamu.<br>• Individual Plan: Masukkan nomor WhatsApp kamu.<br><strong>Catatan Tambahan:</strong><br>• Family Plan: Pastikan email belum melebihi batas batas undangan (Maks. 2 family / tahun)." },
+                { id: "iqiyi", nama: "🍿 IQIYI", img: "iqiyi.jpg", type: "ui-std", inputs: ["Nomor WhatsApp"], catatan: "• Proses manual (dikirim langsung via WhatsApp)." },
+                { id: "capcut", nama: "✂️ Capcut", img: "capcut.jpg", type: "ui-std", inputs: ["Nomor WhatsApp"], catatan: "• Proses manual via WhatsApp.<br>• Dilarang menyebarkan akun.<br>• Harap kirimkan tangkapan layar (screenshot) profil setelah login untuk mengaktifkan garansi (maks. 1x24 jam)." },
+                { id: "wetv", nama: "🎬 WeTV", img: "viu.jpg", type: "ui-std", inputs: ["Nomor WhatsApp"], catatan: "• Masukkan nomor WhatsApp aktif.<br>• Detail akun dikirimkan via WhatsApp." },
+                { id: "gemini", nama: "🤖 AI Gemini Pro", img: "gemini.jpg", type: "ui-std", inputs: ["Nomor WhatsApp"], catatan: "• Masukkan nomor WhatsApp aktif.<br>• Detail akun dikirimkan via WhatsApp.<br>• 1x Pembelian khusus penggunaan pribadi." },
+                { id: "meitu", nama: "📸 Meitu", img: "meitu.jpg", type: "ui-std", inputs: ["Nomor WhatsApp"], catatan: "• Meitu 1 Minggu.<br>• Akun dikirimkan langsung ke nomor WhatsApp." },
+                { id: "pixellab", nama: "🎨 Pixellab", img: "pixellab.jpg", type: "ui-std", inputs: ["Nomor WhatsApp"], catatan: "• Masukkan nomor WhatsApp saja." },
                 { id: "viu", nama: "🎬 Viu", img: "viu.jpg", type: "ui-viu" }
             ],
             "topup-game": [
-                { id: "ff", nama: "🔥 Free Fire", img: "ff.jpg", type: "ui-game", inputs: ["Username", "ID Game"], catatan: "• Free Fire (Via Username + ID)" },
-                { id: "mlbb", nama: "⚔️ Mobile Legends", img: "ml.jpg", type: "ui-game", inputs: ["Username", "ID Game", "Server"], catatan: "• Mobile Legends (Via Username - ID - Server)" },
-                { id: "mlbb-first", nama: "⭐ MLBB First Top Up", img: "ml.jpg", type: "ui-game", inputs: ["Username", "ID Game", "Server"], catatan: "Top up ini hanya berlaku bagi akun yang belum melakukan top up pertama kali di akunnya. Jika tidak teliti, tidak ada refund!" },
-                { id: "pubg", nama: "🎯 PUBG Mobile", img: "pubg.jpg", type: "ui-game", inputs: ["Username", "ID Game"], catatan: "• PUBG Mobile (Via Username + ID)" },
-                { id: "hok", nama: "👑 Honor Of Kings", img: "hok.jpg", type: "ui-game", inputs: ["Username", "ID Game"], catatan: "• Honor Of Kings (Via Username + ID)" },
-                { id: "bs", nama: "💎 Blood Strike", img: "bs.jpg", type: "ui-game", inputs: ["Username", "ID Game"], catatan: "• Blood Strike (Via Username + ID)" }
+                { id: "ff", nama: "🔥 Free Fire", img: "ff.jpg", type: "ui-game", inputs: ["Username", "ID Game"], catatan: "• Free Fire (Format: Username + ID Game)" },
+                { id: "mlbb", nama: "⚔️ Mobile Legends", img: "ml.jpg", type: "ui-game", inputs: ["Username", "ID Game", "Server"], catatan: "• Mobile Legends (Format: Username + ID + Server)" },
+                { id: "mlbb-first", nama: "⭐ MLBB First Top Up", img: "ml.jpg", type: "ui-game", inputs: ["Username", "ID Game", "Server"], catatan: "• Khusus untuk akun yang BELUM PERNAH melakukan top up pertama kali. Mohon periksa kembali data kamu." },
+                { id: "pubg", nama: "🎯 PUBG Mobile", img: "pubg.jpg", type: "ui-game", inputs: ["Username", "ID Game"], catatan: "• PUBG Mobile (Format: Username + ID Game)" },
+                { id: "hok", nama: "👑 Honor Of Kings", img: "hok.jpg", type: "ui-game", inputs: ["Username", "ID Game"], catatan: "• Honor Of Kings (Format: Username + ID Game)" },
+                { id: "bs", nama: "💎 Blood Strike", img: "bs.jpg", type: "ui-game", inputs: ["Username", "ID Game"], catatan: "• Blood Strike (Format: Username + ID Game)" }
             ],
             "jasa-ciaa": [
-                { id: "jasher", nama: "🚀 Jasher (Jasa Share)", img: "logo.jpg", type: "ui-jasa", catatan: "• Jasher (Jasa Share) , bukan Jasa Push Member!<br>• Isi nama store<br>• Deskripsi isi dengan link grup dan nama group/teks yang ingin di share!<br>• Konfirmasi pembayaran di web untuk melanjutkan pemesanan via WhatsApp<br>• No reff" },
-                { id: "jpm", nama: "📈 JPM (Jasa Push Member)", img: "logo.jpg", type: "ui-jasa", catatan: "• JPM (Jasa Push Member) , push member sesuai dengan target<br>• Isi nama store<br>• Deskripsi isi dengan link grup & nama grup<br>• Settingan GB nyalakan persetujuan admin<br>• Dilarang acc member sebelun done/sesuai target , acc = done no toleransi<br>• Konfirmasi pembayaran di web untuk melanjutkan pemesanan via WhatsApp<br>• No reff" }
+                { id: "jasher", nama: "🚀 Jasher (Jasa Share)", img: "logo.jpg", type: "ui-jasa", catatan: "• Layanan Jasa Share pesan/promosi ke target.<br>• Masukkan Nama Store.<br>• Isi kolom deskripsi dengan link grup & teks yang ingin di-share.<br>• Konfirmasi pembayaran via WhatsApp untuk memproses." },
+                { id: "jpm", nama: "📈 JPM (Jasa Push Member)", img: "logo.jpg", type: "ui-jasa", catatan: "• Layanan Jasa Push Member sesuai target.<br>• Masukkan Nama Store.<br>• Isi deskripsi dengan link grup & nama grup.<br>• Pengaturan grup wajib menyalakan persetujuan admin." }
             ]
         };
 
@@ -544,6 +586,7 @@
 
         window.onload = () => {
             setDynamicGreeting();
+            initAutoSlider();
             renderGrid('app-premium', 'grid-app-page');
             loadAntrianList();
             updateMaintenanceButtonText();
@@ -639,10 +682,10 @@
             if(activeProduct.id === 'canva') {
                 if(tag === 'tim') {
                     renderInputs(['Isi Email Canva yang akan di Premium kan']);
-                    notesEl.innerHTML = "<strong>Catatan Canva Tim:</strong><br>• Canva Tim (25-28 hari = 1 bulan)<br>• Kolom diatas: Isi Email Canva yang akan di Premium kan<br>• Proses Instan - Cek detail transaksi nya";
+                    notesEl.innerHTML = "<strong>Catatan Canva Tim:</strong><br>• Durasi 25-28 Hari.<br>• Masukkan email akun Canva kamu.<br>• Proses cepat & langsung aktif.";
                 } else {
                     renderInputs(['Nomor WhatsApp']);
-                    notesEl.innerHTML = "<strong>Catatan Canva Head:</strong><br>• Produk Diproses Manual - Slow<br>• Kolom diatas di isi Nomor Whatsapp nya ya<br>• Canva Head (28-29 hari)<br>• Dapat mengundang hingga 10 member (kebijakan baru canva)<br>• Garansi 25 hari<br>• Proses 1x24 Jam";
+                    notesEl.innerHTML = "<strong>Catatan Canva Head:</strong><br>• Proses Manual (Maks. 1x24 Jam).<br>• Masukkan nomor WhatsApp aktif.<br>• Dapat mengundang hingga 10 anggota.<br>• Garansi 25 Hari.";
                 }
             } else if (activeProduct.id === 'viu') {
                 renderInputs(['Nomor WhatsApp']);
@@ -790,18 +833,18 @@
         function sendToWhatsApp() {
             const noWA = "6289505929536";
             let antrianNo = getOrGenerateQueueNumber();
-            let teks = `Halo Admin Ciaa Store! ✨\nSaya sudah melakukan pembayaran untuk:\n\n🎫 No. Antrian: ${antrianNo}\n🛒 Layanan: ${checkoutData.produk} - ${checkoutData.paket}\n💳 Pembayaran: ${checkoutData.metode}\n💰 Total: Rp${checkoutData.total.toLocaleString('id-ID')}\n\n`;
+            let teks = `Halo Admin Ciaa Store! ✨\nSaya telah menyelesaikan pembayaran dengan rincian berikut:\n\n🎫 No. Antrian: ${antrianNo}\n🛒 Layanan: ${checkoutData.produk} - ${checkoutData.paket}\n💳 Metode Pembayaran: ${checkoutData.metode}\n💰 Total Tagihan: Rp${checkoutData.total.toLocaleString('id-ID')}\n\n`;
 
             if (checkoutData.type === 'ui-game') {
                 teks += `🎮 [Detail Top Up Game]\n👤 Data ID/Server: ${checkoutData.data}\n\n`;
-                teks += `Saya akan mencantumkan bukti transfer saya, mohon segera di proses ya mimin! 😀`;
+                teks += `Berikut saya lampirkan bukti transfer. Mohon bantuannya untuk segera diproses ya kak, terima kasih! 😀`;
             } else if (checkoutData.type === 'ui-jasa') {
                 teks += `🚀 [Detail Layanan Jasa]\n👤 Nama Store: ${checkoutData.data}\n\n`;
                 teks += `📝 Deskripsi / Link Pesanan:\n${checkoutData.desc}\n\n\n`;
-                teks += `Saya akan mencantumkan bukti transfer saya, mohon segera di proses ya mimin! 😀`;
+                teks += `Berikut saya lampirkan bukti transfer. Mohon bantuannya untuk segera diproses ya kak, terima kasih! 😀`;
             } else {
                 teks += `📱 [Detail App Premium]\n👤 No WA/Email: ${checkoutData.data}\n\n`;
-                teks += `Saya akan mencantumkan bukti transfer saya, mohon segera di proses ya mimin! 😀`;
+                teks += `Berikut saya lampirkan bukti transfer. Mohon bantuannya untuk segera diproses ya kak, terima kasih! 😀`;
             }
 
             window.open("https://wa.me/" + noWA + "?text=" + encodeURIComponent(teks), '_blank');
@@ -811,7 +854,7 @@
 
         function saveAntrianToStorage(no, detail, harga) {
             let antrianList = JSON.parse(localStorage.getItem('ciaa_antrian') || '[]');
-            antrianList.unshift({ no: no, detail: detail, harga: harga, status: "Pending.. ⏳", time: new Date().toLocaleTimeString(), date: new Date().toLocaleDateString() });
+            antrianList.unshift({ no: no, detail: detail, harga: harga, status: "Menunggu ⏳", time: new Date().toLocaleTimeString(), date: new Date().toLocaleDateString() });
             localStorage.setItem('ciaa_antrian', JSON.stringify(antrianList));
             loadAntrianList();
         }
@@ -890,7 +933,7 @@
             if(antrianList.length === 0) return container.innerHTML = "<p style='text-align:center; color:#555;'>Belum ada pesanan masuk.</p>";
             container.innerHTML = "";
             antrianList.forEach((item, index) => {
-                container.innerHTML += `<div style="background:white; padding:12px; border-radius:10px; margin-bottom:10px; border:1.5px solid var(--primary-pink);"><div style="display:flex; justify-content:space-between; align-items:center; margin-bottom: 6px;"><strong>🎫 ${item.no}</strong><span style="font-size:11px; font-weight:bold; padding:3px 8px; border-radius:6px; background:#fff0f5; border:1px solid var(--deep-pink);">${item.status}</span></div><p style="font-size:12px; color:#555; margin-bottom:6px;">${item.detail} | Rp ${(item.harga || 0).toLocaleString('id-ID')} (${item.time})</p><div style="display:grid; grid-template-columns: repeat(2, 1fr); gap:5px; margin-top:6px;"><button onclick="updateStatusAntrian(${index}, 'Pending.. ⏳')" style="background:#fff3cd; color:#856404; border:none; padding:5px; border-radius:6px; font-size:11px; font-weight:bold; cursor:pointer;">⏳ Menunggu</button><button onclick="updateStatusAntrian(${index}, 'Diproses 🔄')" style="background:#ffe5d0; color:#b45309; border:none; padding:5px; border-radius:6px; font-size:11px; font-weight:bold; cursor:pointer;">🔄 Diproses</button><button onclick="updateStatusAntrian(${index}, 'Selesai ✅')" style="background:#d4edda; color:#155724; border:none; padding:5px; border-radius:6px; font-size:11px; font-weight:bold; cursor:pointer;">✅ Selesai</button><button onclick="updateStatusAntrian(${index}, 'Dibatalkan ❌')" style="background:#f8d7da; color:#721c24; border:none; padding:5px; border-radius:6px; font-size:11px; font-weight:bold; cursor:pointer;">❌ Dibatalkan</button></div><button onclick="hapusAntrian(${index})" style="width:100%; margin-top:6px; background:#ff4d4d; color:white; border:none; padding:4px; border-radius:6px; font-size:11px; font-weight:bold; cursor:pointer;">Hapus Pesanan</button></div>`;
+                container.innerHTML += `<div style="background:white; padding:12px; border-radius:10px; margin-bottom:10px; border:1.5px solid var(--primary-pink);"><div style="display:flex; justify-content:space-between; align-items:center; margin-bottom: 6px;"><strong>🎫 ${item.no}</strong><span style="font-size:11px; font-weight:bold; padding:3px 8px; border-radius:6px; background:#fff0f5; border:1px solid var(--deep-pink);">${item.status}</span></div><p style="font-size:12px; color:#555; margin-bottom:6px;">${item.detail} | Rp ${(item.harga || 0).toLocaleString('id-ID')} (${item.time})</p><div style="display:grid; grid-template-columns: repeat(2, 1fr); gap:5px; margin-top:6px;"><button onclick="updateStatusAntrian(${index}, 'Menunggu ⏳')" style="background:#fff3cd; color:#856404; border:none; padding:5px; border-radius:6px; font-size:11px; font-weight:bold; cursor:pointer;">⏳ Menunggu</button><button onclick="updateStatusAntrian(${index}, 'Diproses 🔄')" style="background:#ffe5d0; color:#b45309; border:none; padding:5px; border-radius:6px; font-size:11px; font-weight:bold; cursor:pointer;">🔄 Diproses</button><button onclick="updateStatusAntrian(${index}, 'Selesai ✅')" style="background:#d4edda; color:#155724; border:none; padding:5px; border-radius:6px; font-size:11px; font-weight:bold; cursor:pointer;">✅ Selesai</button><button onclick="updateStatusAntrian(${index}, 'Dibatalkan ❌')" style="background:#f8d7da; color:#721c24; border:none; padding:5px; border-radius:6px; font-size:11px; font-weight:bold; cursor:pointer;">❌ Dibatalkan</button></div><button onclick="hapusAntrian(${index})" style="width:100%; margin-top:6px; background:#ff4d4d; color:white; border:none; padding:4px; border-radius:6px; font-size:11px; font-weight:bold; cursor:pointer;">Hapus Pesanan</button></div>`;
             });
         }
 
