@@ -213,7 +213,7 @@
         
         .alert-box { background: #ffe4e1; border: 1.5px dashed var(--deep-pink); padding: 10px 12px; margin-bottom: 12px; border-radius: 12px; font-size: 13px; color: #b22222; line-height: 1.4; }
         
-        /* INFO BOX KHUSUS APLIKASI PREMIUM (PINK SOFT / PUTIH, TIDAK ADA BIRU) */
+        /* INFO BOX KHUSUS APLIKASI PREMIUM (PINK SOFT / PUTIH) */
         .info-box-pink { 
             background: #fff0f5; 
             border: 1.5px solid var(--primary-pink); 
@@ -252,7 +252,7 @@
         .qris-container { text-align: center; background: white; padding: 15px; border-radius: var(--card-radius); margin: 12px 0; border: 2px solid var(--primary-pink); }
         #qrcode { display: flex; justify-content: center; margin-top: 8px; }
 
-        /* OVERLAY MAINTENANCE MENGGUNAKAN maintenance1.jpg */
+        /* OVERLAY MAINTENANCE */
         #maintenance-overlay { 
             position: fixed; top: 0; left: 0; width: 100%; height: 100%; 
             background: rgba(255, 240, 245, 0.95); 
@@ -319,7 +319,7 @@
 
         <div class="container">
             
-            <!-- SECTION: MENU UTAMA LAYANAN (GAME & JASA TERSEDIA DI GRID) -->
+            <!-- SECTION: MENU UTAMA LAYANAN (SEMUA GAME & JASA TAMPIL LANGSUNG DI GRID) -->
             <div id="layanan-section" class="section active">
                 <div class="grid-services">
                     <!-- APLIKASI PREMIUM -->
@@ -340,16 +340,28 @@
                         <h4>⚔️ Mobile Legends</h4>
                     </div>
 
+                    <!-- MLBB FIRST TOP UP -->
+                    <div class="service-box" onclick="openForm('mlbb-first', 'topup-game')">
+                        <img src="ml.jpg" alt="MLBB First Top Up" onerror="this.src='https://cdn-icons-png.flaticon.com/512/869/869034.png'">
+                        <h4>⭐ MLBB First Top Up</h4>
+                    </div>
+
+                    <!-- PUBG MOBILE -->
+                    <div class="service-box" onclick="openForm('pubg', 'topup-game')">
+                        <img src="pubg.jpg" alt="PUBG Mobile" onerror="this.src='https://cdn-icons-png.flaticon.com/512/869/869034.png'">
+                        <h4>🎯 PUBG Mobile</h4>
+                    </div>
+
+                    <!-- HONOR OF KINGS -->
+                    <div class="service-box" onclick="openForm('hok', 'topup-game')">
+                        <img src="pubg.jpg" alt="Honor Of Kings" onerror="this.src='https://cdn-icons-png.flaticon.com/512/869/869034.png'">
+                        <h4>👑 Honor Of Kings</h4>
+                    </div>
+
                     <!-- BLOOD STRIKE -->
                     <div class="service-box" onclick="openForm('bs', 'topup-game')">
                         <img src="bs.jpg" alt="Blood Strike" onerror="this.src='https://cdn-icons-png.flaticon.com/512/869/869034.png'">
                         <h4>💎 Blood Strike</h4>
-                    </div>
-
-                    <!-- GAME LAINNYA (HALAMAN PILIHAN GAME) -->
-                    <div class="service-box" onclick="switchCategory('topup-game')">
-                        <img src="pubg.jpg" alt="Game Lainnya" onerror="this.src='https://cdn-icons-png.flaticon.com/512/869/869034.png'">
-                        <h4>🎮 Game Lainnya</h4>
                     </div>
 
                     <!-- JASHER -->
@@ -366,14 +378,7 @@
                 </div>
             </div>
 
-            <!-- SECTION: SUB-MENU KATEGORI GAME -->
-            <div id="game-category-section" class="section">
-                <button onclick="backToMenu()" style="margin-bottom: 12px; border:none; background:var(--light-pink); padding:6px 12px; border-radius:8px; font-weight:bold; cursor:pointer; font-size: 12px;">⬅ Kembali ke Layanan</button>
-                <h2 style="color: var(--deep-pink); font-size: 16px; margin-bottom: 10px;">🎮 Pilih Game Top Up</h2>
-                <div class="mini-grid" id="grid-game-page"></div>
-            </div>
-
-            <!-- SECTION: HALAMAN KHUSUS APLIKASI PREMIUM (CATATAN WARNA PINK SOFT / PUTIH) -->
+            <!-- SECTION: HALAMAN KHUSUS APLIKASI PREMIUM -->
             <div id="app-premium-section" class="section">
                 <button onclick="backToMenu()" style="margin-bottom: 12px; border:none; background:var(--light-pink); padding:6px 12px; border-radius:8px; font-weight:bold; cursor:pointer; font-size: 12px;">⬅ Kembali ke Layanan</button>
                 <h2 style="color: var(--deep-pink); font-size: 16px; margin-bottom: 10px;">📱 Aplikasi Premium</h2>
@@ -384,6 +389,25 @@
                 </div>
 
                 <div class="mini-grid" id="grid-app-page"></div>
+            </div>
+
+            <!-- SECTION: HALAMAN KHUSUS ADMIN PANEL -->
+            <div id="admin-panel-section" class="section">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
+                    <h2 style="color: var(--deep-pink); font-size: 16px;">🛠️ Panel Admin Ciaa Store</h2>
+                    <button onclick="backToMenu()" style="border:none; background:var(--light-pink); padding:6px 12px; border-radius:8px; font-weight:bold; cursor:pointer; font-size: 12px;">⬅ Keluar Admin</button>
+                </div>
+
+                <div class="info-box-pink" style="margin-bottom: 15px;">
+                    <strong>Status Website & Pemeliharaan (Maintenance):</strong>
+                    <p style="font-size: 12px; color: #555; margin-top: 4px;">Atur mode maintenance situs atau ubah status pesanan pelanggan di bawah ini.</p>
+                    <button class="btn-primary" id="btn-toggle-maintenance" onclick="toggleMaintenanceMode()" style="margin-top: 8px; background: #ffc0cb;">Aktifkan Mode Maintenance 🛠️</button>
+                </div>
+
+                <h3 style="color: var(--deep-pink); font-size: 14px; margin-bottom: 8px;">Daftar Pesanan Masuk (Kelola Antrian):</h3>
+                <div id="admin-antrian-list" style="max-height: 350px; overflow-y: auto;">
+                    <!-- Diisi lewat JavaScript -->
+                </div>
             </div>
 
             <!-- SECTION: TOP UP VOUCHER COMING SOON -->
@@ -618,8 +642,8 @@
         window.onload = () => {
             setDynamicGreeting();
             renderGrid('app-premium', 'grid-app-page');
-            renderGrid('topup-game', 'grid-game-page');
             loadAntrianList();
+            updateMaintenanceButtonText();
         };
 
         function switchMenu(menuId) {
@@ -650,12 +674,6 @@
             window.scrollTo(0,0);
         }
 
-        function switchCategory(cat) {
-            document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
-            document.getElementById('game-category-section').classList.add('active');
-            window.scrollTo(0,0);
-        }
-
         function backToMenu() {
             document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
             document.getElementById('layanan-section').classList.add('active');
@@ -677,7 +695,15 @@
             document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
             document.getElementById('form-pesanan').classList.add('active');
             
-            const prod = dataProduk[kategori].find(p => p.id === itemId);
+            // Cari produk di semua kategori jika tidak ketemu di kategori spesifik
+            let prod = dataProduk[kategori] ? dataProduk[kategori].find(p => p.id === itemId) : null;
+            if(!prod) {
+                for(let cat in dataProduk) {
+                    let found = dataProduk[cat].find(p => p.id === itemId);
+                    if(found) { prod = found; kategori = cat; break; }
+                }
+            }
+            
             activeProduct = prod;
             document.getElementById('form-title').innerText = prod.nama;
             
@@ -893,6 +919,78 @@
             });
         }
 
+        function loadAdminAntrianList() {
+            let antrianList = JSON.parse(localStorage.getItem('ciaa_antrian') || '[]');
+            const container = document.getElementById('admin-antrian-list');
+            if(antrianList.length === 0) {
+                container.innerHTML = "<p style='text-align:center; color:#555;'>Belum ada pesanan masuk.</p>";
+                return;
+            }
+            container.innerHTML = "";
+            antrianList.forEach((item, index) => {
+                container.innerHTML += `
+                    <div style="background:white; padding:10px; border-radius:10px; margin-bottom:8px; border:1.5px solid var(--primary-pink);">
+                        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom: 6px;">
+                            <strong>🎫 ${item.no}</strong>
+                            <span style="font-size:11px; font-weight:bold; padding:2px 8px; border-radius:6px; background:#fff0f5; border:1px solid var(--deep-pink);">${item.status}</span>
+                        </div>
+                        <p style="font-size:12px; color:#555; margin-bottom:4px;">${item.detail} (${item.time})</p>
+                        <div style="display:flex; gap:6px; margin-top:6px;">
+                            <button onclick="updateStatusAntrian(${index}, 'Selesai ✅')" style="flex:1; background:#25D366; color:white; border:none; padding:4px; border-radius:6px; font-size:11px; font-weight:bold; cursor:pointer;">Set Selesai</button>
+                            <button onclick="updateStatusAntrian(${index}, 'Diproses 🔄')" style="flex:1; background:#ff69b4; color:white; border:none; padding:4px; border-radius:6px; font-size:11px; font-weight:bold; cursor:pointer;">Set Diproses</button>
+                            <button onclick="hapusAntrian(${index})" style="background:#ff4d4d; color:white; border:none; padding:4px 8px; border-radius:6px; font-size:11px; font-weight:bold; cursor:pointer;">Hapus</button>
+                        </div>
+                    </div>`;
+            });
+        }
+
+        function updateStatusAntrian(index, status) {
+            let antrianList = JSON.parse(localStorage.getItem('ciaa_antrian') || '[]');
+            if(antrianList[index]) {
+                antrianList[index].status = status;
+                localStorage.setItem('ciaa_antrian', JSON.stringify(antrianList));
+                loadAdminAntrianList();
+                loadAntrianList();
+            }
+        }
+
+        function hapusAntrian(index) {
+            if(confirm("Yakin ingin menghapus antrian ini?")) {
+                let antrianList = JSON.parse(localStorage.getItem('ciaa_antrian') || '[]');
+                antrianList.splice(index, 1);
+                localStorage.setItem('ciaa_antrian', JSON.stringify(antrianList));
+                loadAdminAntrianList();
+                loadAntrianList();
+            }
+        }
+
+        function toggleMaintenanceMode() {
+            let isMaint = localStorage.getItem('ciaa_maintenance') === 'true';
+            localStorage.setItem('ciaa_maintenance', !isMaint);
+            if(!isMaint) {
+                document.getElementById('maintenance-overlay').style.display = 'flex';
+            } else {
+                document.getElementById('maintenance-overlay').style.display = 'none';
+            }
+            updateMaintenanceButtonText();
+        }
+
+        function updateMaintenanceButtonText() {
+            let isMaint = localStorage.getItem('ciaa_maintenance') === 'true';
+            const btn = document.getElementById('btn-toggle-maintenance');
+            if(btn) {
+                if(isMaint) {
+                    btn.innerText = "Matikan Mode Maintenance 🟢";
+                    btn.style.background = "#25D366";
+                    btn.style.color = "white";
+                } else {
+                    btn.innerText = "Aktifkan Mode Maintenance 🛠️";
+                    btn.style.background = "#ffc0cb";
+                    btn.style.color = "var(--dark-text)";
+                }
+            }
+        }
+
         function filterAntrian() {
             let query = document.getElementById('search-antrian').value.toLowerCase();
             let antrianList = JSON.parse(localStorage.getItem('ciaa_antrian') || '[]');
@@ -912,7 +1010,11 @@
         function adminLogin() {
             let pass = prompt("Masukkan Kata Sandi Admin 🌸:");
             if (pass === "1709ca") {
-                window.location.href = "admin-panel.html";
+                document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+                document.getElementById('admin-panel-section').classList.add('active');
+                loadAdminAntrianList();
+                updateMaintenanceButtonText();
+                window.scrollTo(0,0);
             } else if(pass !== null) {
                 alert("Sandi salah! ❌");
             }
