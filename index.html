@@ -195,32 +195,31 @@
         .payment-option { display: flex; align-items: center; padding: 10px; border: 1.5px solid var(--primary-pink); border-radius: 12px; margin-bottom: 8px; cursor: pointer; background: var(--white); font-size: 13px; }
         .payment-option input { margin-right: 8px; accent-color: var(--deep-pink); }
         
-        /* FIX ULTIMATE: QRIS PRESISI DI TENGAH BINGKAI & TIDAK TERPOTONG */
+        /* FIX TOTAL: RAPI DI TENGAH & KOSONG ATAS HILANG */
         .qris-container { 
             text-align: center; 
             background: white; 
-            padding: 15px 10px; 
+            padding: 15px; 
             border-radius: var(--card-radius); 
             margin: 12px 0; 
             border: 2px solid var(--primary-pink); 
             width: 100%; 
-            display: block;
             box-sizing: border-box;
-            overflow: hidden;
         }
         
         #qrcode { 
-            display: block !important; 
+            display: flex !important; 
+            justify-content: center !important; 
+            align-items: center !important; 
             margin: 10px auto 0 auto !important; 
             width: 100% !important; 
-            max-width: 180px !important; 
-            text-align: center !important;
         }
         
         #qrcode canvas, #qrcode img { 
             display: block !important; 
             margin: 0 auto !important; 
-            max-width: 100% !important; 
+            max-width: 200px !important; 
+            width: 100% !important;
             height: auto !important; 
             border-radius: 8px;
         }
@@ -470,7 +469,7 @@
                 <div class="mini-grid" id="package-list" style="margin-top:0;"></div>
 
                 <h3 style="margin-top: 15px; margin-bottom: 8px; color: var(--deep-pink); font-size: 14px;">Pilih Pembayaran</h3>
-                <div class="payment-option"><input type="radio" name="pay-method" value="QRIS" id="pay-qris" checked> <label for="pay-qris">QRIS Otomatis (Termasuk Kode Unik)</label></div>
+                <div class="payment-option"><input type="radio" name="pay-method" value="QRIS" id="pay-qris" checked> <label for="pay-qris">QRIS All Payment (Silakan masukkan nominal total secara pas)</label></div>
                 <div class="payment-option"><input type="radio" name="pay-method" value="DANA" id="pay-dana"> <label for="pay-dana">DANA (081338224767 A/N AGUS SUTIARNO – Tanpa Biaya Admin)</label></div>
                 <div class="payment-option"><input type="radio" name="pay-method" value="GOPAY" id="pay-gopay"> <label for="pay-gopay">GoPay (089505929536 – Tanpa Biaya Admin)</label></div>
 
@@ -495,7 +494,7 @@
                 </div>
 
                 <div class="qris-container" id="qris-box">
-                    <p style="font-size: 12px; color: #555; margin-bottom:8px;">Scan QRIS ini menggunakan e-wallet Anda. Nominal sudah termasuk kode unik otomatis!</p>
+                    <p style="font-size: 12px; color: #555; margin-bottom:8px;">Scan QRIS ini menggunakan E-Wallet / Mobile Banking Anda.<br><strong>Masukkan nominal persis sesuai Total di atas!</strong></p>
                     <div id="qrcode"></div>
                 </div>
 
@@ -787,29 +786,6 @@
             activeVariant = { nama, harga };
         }
 
-        function generateDynamicQRIS(qrisStatic, amount) {
-            let qris = qrisStatic.slice(0, -4);
-            let step1 = qris.replace("010211", "010212");
-            let amountStr = amount.toString();
-            let tag54 = "54" + String(amountStr.length).padStart(2, '0') + amountStr;
-            let indexCountry = step1.indexOf("5802ID");
-            let finalQris = step1.slice(0, indexCountry) + tag54 + step1.slice(indexCountry);
-            return finalQris + crc16(finalQris);
-        }
-
-        function crc16(str) {
-            let crc = 0xFFFF;
-            for (let c = 0; c < str.length; c++) {
-                crc ^= str.charCodeAt(c) << 8;
-                for (let i = 0; i < 8; i++) {
-                    if (crc & 0x8000) crc = (crc << 1) ^ 0x1021;
-                    else crc = crc << 1;
-                }
-            }
-            let hex = (crc & 0xFFFF).toString(16).toUpperCase();
-            return hex.length === 3 ? "0" + hex : (hex.length === 2 ? "00" + hex : (hex.length === 1 ? "000" + hex : hex));
-        }
-
         function proceedToCheckout() {
             if(!activeVariant) return alert("Silakan pilih paket produk terlebih dahulu ya! 🌸");
             
@@ -885,14 +861,12 @@
                 transferInfo.style.display = 'none'; 
                 qrisBox.style.display = 'block';
                 
-                const dynamicQR = generateDynamicQRIS(rawQrisStatis, totalBayar);
-                
                 try {
                     if (typeof QRCode !== 'undefined') {
                         new QRCode(qrContainer, {
-                            text: dynamicQR,
-                            width: 180,
-                            height: 180,
+                            text: rawQrisStatis,
+                            width: 200,
+                            height: 200,
                             colorDark: "#000000",
                             colorLight: "#ffffff",
                             correctLevel: QRCode.CorrectLevel.H
@@ -902,7 +876,7 @@
                     }
                 } catch(e) {
                     let imgFallback = document.createElement('img');
-                    imgFallback.src = "https://api.qrserver.com/v1/create-qr-code/?size=180x180&data=" + encodeURIComponent(dynamicQR);
+                    imgFallback.src = "https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=" + encodeURIComponent(rawQrisStatis);
                     imgFallback.alt = "QRIS Barcode";
                     qrContainer.appendChild(imgFallback);
                 }
@@ -941,10 +915,8 @@
             let teks = "";
 
             if (checkoutData.produkId === 'jasher' || checkoutData.produkId === 'jpm') {
-                // FORMAT KHUSUS JASHER & JPM (DENGAN DESKRIPSI LINK)
                 teks = `Halo Admin Ciaa Store! ✨\nSaya sudah melakukan pembayaran untuk:\n\n🎫 No. Antrian: ${antrianNo}\n🛒 Layanan: ${checkoutData.produk} - ${checkoutData.paket}\n👤 Data: ${checkoutData.data}\n📝 Deskripsi & Link Target: ${checkoutData.desc}\n💰 Total: Rp${checkoutData.total.toLocaleString('id-ID')}\n💳 Pembayaran: ${checkoutData.metode}\n\nKemudian ini adalah bukti transfer saya, mohon segera di proses ya mimin!`;
             } else {
-                // FORMAT UNTUK APLIKASI PREMIUM & TOP UP GAME (TANPA DESKRIPSI LINK)
                 teks = `Halo Admin Ciaa Store! ✨\nSaya sudah melakukan pembayaran untuk:\n\n🎫 No. Antrian: ${antrianNo}\n🛒 Layanan: ${checkoutData.produk} - ${checkoutData.paket}\n👤 Data: ${checkoutData.data}\n💰 Total: Rp${checkoutData.total.toLocaleString('id-ID')}\n💳 Pembayaran: ${checkoutData.metode}\n\nKemudian ini adalah bukti transfer saya, mohon segera di proses ya mimin!`;
             }
 
