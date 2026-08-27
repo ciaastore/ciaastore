@@ -423,8 +423,9 @@
 
                 <!-- TAB 2: KELOLA ANTRIAN & PENCARIAN -->
                 <div id="admin-tab-antrian" class="admin-sub-section" style="display: none;">
-                    <div class="form-group">
-                        <input type="text" id="search-admin-antrian" class="form-control" placeholder="Cari nomor antrian atau nama pelanggan..." oninput="filterAdminAntrian()">
+                    <div style="display: flex; gap: 8px; margin-bottom: 10px;">
+                        <input type="text" id="search-admin-antrian" class="form-control" placeholder="Cari nomor antrian atau nama pelanggan..." oninput="filterAdminAntrian()" style="flex: 1; margin-bottom: 0;">
+                        <button onclick="resetAllAntrian()" style="background: #ff4d4d; color: white; border: none; padding: 8px 12px; border-radius: 10px; font-weight: bold; font-size: 12px; cursor: pointer; white-space: nowrap;">🗑️ Reset Semua</button>
                     </div>
                     <div id="admin-antrian-list" style="max-height: 350px; overflow-y: auto;">
                         <!-- Diisi via JS -->
@@ -941,7 +942,7 @@
             let antrianList = JSON.parse(localStorage.getItem('ciaa_antrian') || '[]');
             let existing = antrianList.find(item => item.no === no);
             if(!existing) {
-                antrianList.unshift({ no: no, detail: detail, harga: harga, status: "Sedang Menunggu.. ⏳", time: new Date().toLocaleTimeString(), date: new Date().toLocaleDateString() });
+                antrianList.unshift({ no: no, detail: detail, harga: harga, status: "Pending.. ⏳", time: new Date().toLocaleTimeString(), date: new Date().toLocaleDateString() });
                 localStorage.setItem('ciaa_antrian', JSON.stringify(antrianList));
                 loadAntrianList();
             }
@@ -1059,9 +1060,9 @@
                         </div>
                         <p style="font-size:12px; color:#555; margin-bottom:6px;">${item.detail} | Rp ${(item.harga || 0).toLocaleString('id-ID')} (${item.time})</p>
                         <div style="display:grid; grid-template-columns: repeat(2, 1fr); gap:5px; margin-top:6px;">
-                            <button onclick="updateStatusAntrian(${index}, 'Sedang Menunggu.. ⏳')" style="background:#fff3cd; color:#856404; border:1px solid #ffeeba; padding:5px; border-radius:6px; font-size:11px; font-weight:bold; cursor:pointer;">⏳ Menunggu</button>
-                            <button onclick="updateStatusAntrian(${index}, 'Sedang Diproses 🔄')" style="background:#ffe5d0; color:#b45309; border:1px solid #fed7aa; padding:5px; border-radius:6px; font-size:11px; font-weight:bold; cursor:pointer;">🔄 Diproses</button>
-                            <button onclick="updateStatusAntrian(${index}, 'Pesanan Selesai ✅')" style="background:#d4edda; color:#155724; border:1px solid #c3e6cb; padding:5px; border-radius:6px; font-size:11px; font-weight:bold; cursor:pointer;">✅ Selesai</button>
+                            <button onclick="updateStatusAntrian(${index}, 'Pending.. ⏳')" style="background:#fff3cd; color:#856404; border:1px solid #ffeeba; padding:5px; border-radius:6px; font-size:11px; font-weight:bold; cursor:pointer;">⏳ Menunggu</button>
+                            <button onclick="updateStatusAntrian(${index}, 'Diproses 🔄')" style="background:#ffe5d0; color:#b45309; border:1px solid #fed7aa; padding:5px; border-radius:6px; font-size:11px; font-weight:bold; cursor:pointer;">🔄 Diproses</button>
+                            <button onclick="updateStatusAntrian(${index}, 'Selesai ✅')" style="background:#d4edda; color:#155724; border:1px solid #c3e6cb; padding:5px; border-radius:6px; font-size:11px; font-weight:bold; cursor:pointer;">✅ Selesai</button>
                             <button onclick="updateStatusAntrian(${index}, 'Dibatalkan ❌')" style="background:#f8d7da; color:#721c24; border:1px solid #f5c6cb; padding:5px; border-radius:6px; font-size:11px; font-weight:bold; cursor:pointer;">❌ Dibatalkan</button>
                         </div>
                         <button onclick="hapusAntrian(${index})" style="width:100%; margin-top:6px; background:#ff4d4d; color:white; border:none; padding:4px; border-radius:6px; font-size:11px; font-weight:bold; cursor:pointer;">Hapus Pesanan</button>
@@ -1089,9 +1090,9 @@
                         </div>
                         <p style="font-size:12px; color:#555; margin-bottom:6px;">${item.detail} (${item.time})</p>
                         <div style="display:grid; grid-template-columns: repeat(2, 1fr); gap:5px; margin-top:6px;">
-                            <button onclick="updateStatusAntrian(${index}, 'Sedang Menunggu.. ⏳')" style="background:#fff3cd; color:#856404; border:none; padding:5px; border-radius:6px; font-size:11px; font-weight:bold; cursor:pointer;">⏳ Menunggu</button>
-                            <button onclick="updateStatusAntrian(${index}, 'Sedang Diproses 🔄')" style="background:#ffe5d0; color:#b45309; border:none; padding:5px; border-radius:6px; font-size:11px; font-weight:bold; cursor:pointer;">🔄 Diproses</button>
-                            <button onclick="updateStatusAntrian(${index}, 'Pesanan Selesai ✅')" style="background:#d4edda; color:#155724; border:none; padding:5px; border-radius:6px; font-size:11px; font-weight:bold; cursor:pointer;">✅ Selesai</button>
+                            <button onclick="updateStatusAntrian(${index}, 'Pending.. ⏳')" style="background:#fff3cd; color:#856404; border:none; padding:5px; border-radius:6px; font-size:11px; font-weight:bold; cursor:pointer;">⏳ Menunggu</button>
+                            <button onclick="updateStatusAntrian(${index}, 'Diproses 🔄')" style="background:#ffe5d0; color:#b45309; border:none; padding:5px; border-radius:6px; font-size:11px; font-weight:bold; cursor:pointer;">🔄 Diproses</button>
+                            <button onclick="updateStatusAntrian(${index}, 'Selesai ✅')" style="background:#d4edda; color:#155724; border:none; padding:5px; border-radius:6px; font-size:11px; font-weight:bold; cursor:pointer;">✅ Selesai</button>
                             <button onclick="updateStatusAntrian(${index}, 'Dibatalkan ❌')" style="background:#f8d7da; color:#721c24; border:none; padding:5px; border-radius:6px; font-size:11px; font-weight:bold; cursor:pointer;">❌ Dibatalkan</button>
                         </div>
                     </div>`;
@@ -1116,6 +1117,16 @@
                 loadAdminAntrianList();
                 loadAntrianList();
                 loadAdminDashboard();
+            }
+        }
+
+        function resetAllAntrian() {
+            if(confirm("PERINGATAN: Apakah Anda yakin ingin mereset dan menghapus SELURUH riwayat orderan? Nomor antrian akan kembali dimulai dari #01.")) {
+                localStorage.removeItem('ciaa_antrian');
+                loadAdminAntrianList();
+                loadAntrianList();
+                loadAdminDashboard();
+                alert("Semua riwayat orderan berhasil direset! 🗑️✨");
             }
         }
 
