@@ -161,42 +161,30 @@
         .payment-option { display: flex; align-items: center; padding: 10px; border: 1.5px solid var(--primary-pink); border-radius: 12px; margin-bottom: 8px; cursor: pointer; background: var(--white); font-size: 13px; }
         .payment-option input { margin-right: 8px; accent-color: var(--deep-pink); }
         
-        /* KODE UTAMA PERBAIKAN POSISI QRIS SUPAYA DI TENGAH SEMPURNA */
+        /* BOX PEMBUNGKUS QRIS FULL CENTER TANPA TEKS */
         .qris-container { 
             background: white; 
-            padding: 20px 15px; 
+            padding: 20px; 
             border-radius: var(--card-radius); 
             margin: 15px auto; 
             border: 2px solid var(--primary-pink); 
-            width: 100%; 
-            max-width: 320px;
+            width: 100%;
             box-sizing: border-box;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
             text-align: center;
         }
 
         #qrcode { 
-            display: flex !important; 
-            justify-content: center !important; 
-            align-items: center !important; 
-            margin: 15px auto 5px auto !important; 
-            width: 190px !important;
-            height: 190px !important;
-            background: #ffffff;
-            padding: 5px;
-            border-radius: 8px;
+            text-align: center;
+            margin: 0 auto;
+            width: 100%;
         }
 
-        #qrcode canvas, #qrcode img, #qrcode table { 
-            display: block !important; 
+        #qrcode canvas, #qrcode img { 
             margin: 0 auto !important; 
-            max-width: 180px !important; 
-            max-height: 180px !important;
-            width: auto !important;
+            display: inline-block !important;
+            max-width: 200px !important; 
             height: auto !important;
+            border-radius: 8px;
         }
 
         #maintenance-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #ffe4e1; z-index: 9999; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; padding: 20px; }
@@ -417,8 +405,8 @@
                     <button id="btn-copy-rek" class="btn-copy" onclick="copyText(document.getElementById('co-method-number').innerText)">Salin Nomor 📋</button>
                 </div>
 
+                <!-- QRIS TANPA TEKS DI ATASNYA SUPAYA TIDAK KEPOTONG/MIRING -->
                 <div class="qris-container" id="qris-box">
-                    <p style="font-size: 12px; color: #555; margin-bottom:4px;">Scan QRIS ini menggunakan E-Wallet / Mobile Banking.<br><strong>Nominal otomatis terinput sesuai tagihan!</strong></p>
                     <div id="qrcode"></div>
                 </div>
 
@@ -756,13 +744,13 @@
             
             if(payMethod === "QRIS") {
                 transferInfo.style.display = 'none'; 
-                qrisBox.style.display = 'flex';
+                qrisBox.style.display = 'block';
                 let dynamicQrisPayload = generateDynamicQRIS(rawQrisStatis, totalBayar);
                 try {
-                    new QRCode(qrContainer, { text: dynamicQrisPayload, width: 180, height: 180, colorDark: "#000000", colorLight: "#ffffff", correctLevel: QRCode.CorrectLevel.H });
+                    new QRCode(qrContainer, { text: dynamicQrisPayload, width: 200, height: 200, colorDark: "#000000", colorLight: "#ffffff", correctLevel: QRCode.CorrectLevel.H });
                 } catch(e) {
                     let imgFallback = document.createElement('img');
-                    imgFallback.src = "https://api.qrserver.com/v1/create-qr-code/?size=180x180&data=" + encodeURIComponent(dynamicQrisPayload);
+                    imgFallback.src = "https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=" + encodeURIComponent(dynamicQrisPayload);
                     qrContainer.appendChild(imgFallback);
                 }
             } else {
