@@ -195,10 +195,37 @@
         .payment-option { display: flex; align-items: center; padding: 10px; border: 1.5px solid var(--primary-pink); border-radius: 12px; margin-bottom: 8px; cursor: pointer; background: var(--white); font-size: 13px; }
         .payment-option input { margin-right: 8px; accent-color: var(--deep-pink); }
         
-        /* FIX TOTAL PERBAIKAN TAMPILAN QRIS */
-        .qris-container { text-align: center; background: white; padding: 15px 10px; border-radius: var(--card-radius); margin: 12px 0; border: 2px solid var(--primary-pink); width: 100%; display: flex; flex-direction: column; align-items: center; }
-        #qrcode { display: flex; justify-content: center; align-items: center; margin-top: 10px; width: 100%; max-width: 250px; }
-        #qrcode canvas, #qrcode img { display: block !important; margin: 0 auto !important; max-width: 100% !important; height: auto !important; width: 100% !important; }
+        /* FIX PRESI PRESISI CENTER TOTAL QRIS ANTI TERPOTONG */
+        .qris-container { 
+            text-align: center; 
+            background: white; 
+            padding: 15px; 
+            border-radius: var(--card-radius); 
+            margin: 12px 0; 
+            border: 2px solid var(--primary-pink); 
+            width: 100%; 
+            display: flex; 
+            flex-direction: column; 
+            align-items: center; 
+            justify-content: center;
+            box-sizing: border-box;
+        }
+        #qrcode { 
+            display: flex !important; 
+            justify-content: center !important; 
+            align-items: center !important; 
+            margin: 10px auto 0 auto !important; 
+            width: 100% !important; 
+            max-width: 210px !important; 
+            min-height: 200px;
+        }
+        #qrcode canvas, #qrcode img { 
+            display: block !important; 
+            margin: 0 auto !important; 
+            max-width: 100% !important; 
+            height: auto !important; 
+            border-radius: 8px;
+        }
 
         #maintenance-overlay { 
             position: fixed; top: 0; left: 0; width: 100%; height: 100%; 
@@ -659,7 +686,7 @@
             }
             
             activeProduct = prod;
-            activeVariant = null; // Reset varian terpilih
+            activeVariant = null; 
             document.getElementById('form-title').innerText = prod.nama;
             
             const notesEl = document.getElementById('product-notes');
@@ -697,7 +724,7 @@
             }
             else if(prod.type === 'ui-jasa') {
                 renderInputs(['Nama Store']);
-                let placeholderText = itemId === 'jasher' ? "Wajib sertakan link target! (Contoh: https://chat.whatsapp.com/xxx)" : "Wajib sertakan link target! (Contoh: https://chat.whatsapp.com/xxx)";
+                let placeholderText = "Wajib sertakan link target! (Contoh: https://chat.whatsapp.com/xxx)";
                 inputsEl.innerHTML += `
                     <div class="form-group" style="margin-top:12px;">
                         <label>Deskripsi & Link Target (Wajib Ada Link!)</label>
@@ -788,7 +815,6 @@
         function proceedToCheckout() {
             if(!activeVariant) return alert("Silakan pilih paket produk terlebih dahulu ya! 🌸");
             
-            // VALIDASI MANDATORI ISIAN DATA PELANGGAN
             let dataInputs = document.querySelectorAll('.inputs-data');
             let dataPelanggan = [];
             for(let input of dataInputs) {
@@ -798,7 +824,6 @@
                 dataPelanggan.push(input.value.trim());
             }
 
-            // VALIDASI DESKRIPSI DAN LINK KHUSUS JASHER & JPM
             const descEl = document.getElementById('input-desc');
             let descText = "";
             if(descEl) {
@@ -806,7 +831,6 @@
                 if(!descText) {
                     return alert("⚠️ Kolom Deskripsi/Link Wajib Diisi!");
                 }
-                // Pengecekan adanya link (http, https, wa.me, t.me, dll)
                 const urlPattern = /(https?:\/\/|www\.|wa\.me|t\.me|linktr\.ee)/i;
                 if(activeProduct.id === 'jasher' || activeProduct.id === 'jpm') {
                     if(!urlPattern.test(descText)) {
@@ -829,6 +853,7 @@
             }
 
             checkoutData = { 
+                produkId: activeProduct.id,
                 produk: activeProduct.nama, 
                 paket: activeVariant.nama, 
                 data: dataPelanggan.join(" | "), 
@@ -859,7 +884,7 @@
                 document.getElementById('co-method-title').innerText = "Transfer GoPay";
                 document.getElementById('co-method-number').innerText = "089505929536";
             } else {
-                transferInfo.style.display = 'flex'; 
+                transferInfo.style.display = 'none'; 
                 qrisBox.style.display = 'flex';
                 
                 const dynamicQR = generateDynamicQRIS(rawQrisStatis, totalBayar);
@@ -868,8 +893,8 @@
                     if (typeof QRCode !== 'undefined') {
                         new QRCode(qrContainer, {
                             text: dynamicQR,
-                            width: 220,
-                            height: 220,
+                            width: 190,
+                            height: 190,
                             colorDark: "#000000",
                             colorLight: "#ffffff",
                             correctLevel: QRCode.CorrectLevel.H
@@ -879,7 +904,7 @@
                     }
                 } catch(e) {
                     let imgFallback = document.createElement('img');
-                    imgFallback.src = "https://api.qrserver.com/v1/create-qr-code/?size=220x220&data=" + encodeURIComponent(dynamicQR);
+                    imgFallback.src = "https://api.qrserver.com/v1/create-qr-code/?size=190x190&data=" + encodeURIComponent(dynamicQR);
                     imgFallback.alt = "QRIS Barcode";
                     qrContainer.appendChild(imgFallback);
                 }
@@ -911,13 +936,19 @@
             }
         }
 
-        /* SUSUNAN TEKS FORMAT WHATSAPP */
+        /* SUSUNAN PESAN KHUSUS WHATSAPP SETIAP KATEGORI LAYANAN */
         function sendToWhatsApp() {
             const noWA = "6289505929536";
             let antrianNo = getOrGenerateQueueNumber();
-            let teksDesc = checkoutData.desc ? `\n📝 Link/Deskripsi: ${checkoutData.desc}` : "";
-            
-            let teks = `Halo Admin Ciaa Store! ✨\nSaya sudah melakukan pembayaran untuk:\n\n🎫 No. Antrian: ${antrianNo}\n🛒 Layanan: ${checkoutData.produk} - ${checkoutData.paket}\n👤 Data: ${checkoutData.data}${teksDesc}\n💰 Total: Rp${checkoutData.total.toLocaleString('id-ID')}\n💳 Pembayaran: ${checkoutData.metode}\n\nBerikut bukti transfernya ya Min. Terima kasih! 🙏`;
+            let teks = "";
+
+            if (checkoutData.produkId === 'jasher' || checkoutData.produkId === 'jpm') {
+                // FORMAT KHUSUS JASHER & JPM (DENGAN DESKRIPSI LINK)
+                teks = `Halo Admin Ciaa Store! ✨\nSaya sudah melakukan pembayaran untuk:\n\n🎫 No. Antrian: ${antrianNo}\n🛒 Layanan: ${checkoutData.produk} - ${checkoutData.paket}\n👤 Data: ${checkoutData.data}\n📝 Deskripsi & Link Target: ${checkoutData.desc}\n💰 Total: Rp${checkoutData.total.toLocaleString('id-ID')}\n💳 Pembayaran: ${checkoutData.metode}\n\nKemudian ini adalah bukti transfer saya, mohon segera di proses ya mimin!`;
+            } else {
+                // FORMAT UNTUK APLIKASI PREMIUM & TOP UP GAME (TANPA DESKRIPSI LINK)
+                teks = `Halo Admin Ciaa Store! ✨\nSaya sudah melakukan pembayaran untuk:\n\n🎫 No. Antrian: ${antrianNo}\n🛒 Layanan: ${checkoutData.produk} - ${checkoutData.paket}\n👤 Data: ${checkoutData.data}\n💰 Total: Rp${checkoutData.total.toLocaleString('id-ID')}\n💳 Pembayaran: ${checkoutData.metode}\n\nKemudian ini adalah bukti transfer saya, mohon segera di proses ya mimin!`;
+            }
 
             window.open("https://wa.me/" + noWA + "?text=" + encodeURIComponent(teks), '_blank');
         }
