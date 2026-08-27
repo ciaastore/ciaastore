@@ -71,34 +71,35 @@
 
         .header { background: var(--light-pink); text-align: center; position: relative; padding: 8px; border-bottom: 2px dashed var(--primary-pink); }
         .banner-utama { width: 100%; max-height: 180px; object-fit: cover; border-radius: 12px; display: block; }
-        .btn-admin { position: absolute; top: 12px; left: 12px; background: var(--white); border: 2px solid var(--primary-pink); padding: 4px; border-radius: 50%; cursor: pointer; z-index: 101; box-shadow: 0 3px 8px rgba(0,0,0,0.1); transition: 0.2s; }
+        
+        /* TOMBOL ADMIN (BISA DIAKSES DI LUAR MAUPUN DI DALAM OVERLAY MAINTENANCE) */
+        .btn-admin { position: absolute; top: 12px; left: 12px; background: var(--white); border: 2px solid var(--primary-pink); padding: 4px; border-radius: 50%; cursor: pointer; z-index: 10001; box-shadow: 0 3px 8px rgba(0,0,0,0.1); transition: 0.2s; }
         .btn-admin:hover { transform: scale(1.1); }
         .btn-admin img { width: 22px; height: 22px; border-radius: 50%; object-fit: cover; display: block; }
 
-        /* BANNER PROMOSI BISA DIGESER (HORIZONTAL SCROLL) */
-        .promo-scroll-container {
-            display: flex;
-            overflow-x: auto;
-            gap: 12px;
-            padding: 10px 15px;
-            scrollbar-width: none;
-            background: var(--soft-pink);
-            border-bottom: 1px solid var(--light-pink);
-        }
-        .promo-scroll-container::-webkit-scrollbar { display: none; }
-        
-        .promo-card-item {
-            min-width: 260px;
-            background: linear-gradient(135deg, #fff0f5 0%, #ffe4e1 100%);
-            border: 1.5px solid var(--primary-pink);
-            border-radius: 12px;
-            padding: 10px 14px;
-            font-size: 13px;
-            font-weight: bold;
-            color: var(--deep-pink);
-            box-shadow: 0 2px 6px rgba(255,182,193,0.2);
-            flex-shrink: 0;
+        /* POSTER BANNER PROMOSI ESTETIK */
+        .promo-poster-banner {
+            background: linear-gradient(135deg, #ffb6c1 0%, #ff69b4 100%);
+            border-radius: 14px;
+            margin: 12px 15px 0 15px;
+            padding: 16px;
             text-align: center;
+            color: white;
+            box-shadow: 0 4px 15px rgba(255, 105, 180, 0.3);
+            border: 2px solid #fff;
+            position: relative;
+            overflow: hidden;
+        }
+        .promo-poster-banner h3 {
+            font-size: 15px;
+            margin-bottom: 6px;
+            font-weight: bold;
+            text-shadow: 0 1px 2px rgba(0,0,0,0.15);
+        }
+        .promo-poster-banner p {
+            font-size: 12px;
+            line-height: 1.4;
+            opacity: 0.95;
         }
 
         /* SAPAAN PELANGGAN */
@@ -265,11 +266,16 @@
 </head>
 <body>
 
+    <!-- TOMBOL LOGIN ADMIN (DI KIRI ATAS - SELALU MUNCUL WAKTU MAINTENANCE / NORMAL) -->
+    <button class="btn-admin" onclick="openAdminLoginModal()" title="Admin Login">
+        <img src="logo.jpg" alt="Admin" onerror="this.src='https://cdn-icons-png.flaticon.com/512/2913/2913133.png'">
+    </button>
+
     <!-- OVERLAY MAINTENANCE SOLID -->
     <div id="maintenance-overlay" style="display: none;">
         <img src="maintenance1.jpg" alt="Maintenance Logo" class="maintenance-logo" onerror="this.src='logo.jpg'">
-        <h2 style="color: var(--deep-pink); margin-bottom: 8px; font-size: 18px;">Situs Sedang Dalam Pemeliharaan 🛠️</h2>
-        <p style="color: #555; max-width: 380px; font-size: 13px; line-height: 1.5;">Mohon maaf juragan, Ciaa Store sedang dalam pemeliharaan sistem. Coba kembali lagi beberapa saat ya! 💖</p>
+        <h2 style="color: var(--deep-pink); margin-bottom: 8px; font-size: 18px;">Upss! Server Sedang Maintenance 🛠️✨</h2>
+        <p style="color: #555; max-width: 380px; font-size: 13px; line-height: 1.5;">Mohon maaf juragan, Ciaa Store sedang dalam pemeliharaan sistem agar makin gacor. Coba kembali beberapa saat lagi ya! 💖</p>
     </div>
 
     <!-- MODAL LOGIN ADMIN -->
@@ -289,21 +295,15 @@
         </div>
     </div>
 
-    <!-- TOMBOL LOGIN ADMIN (DI KIRI ATAS) -->
-    <button class="btn-admin" onclick="openAdminLoginModal()" title="Admin Login">
-        <img src="logo.jpg" alt="Admin" onerror="this.src='https://cdn-icons-png.flaticon.com/512/2913/2913133.png'">
-    </button>
-
     <div class="main-wrapper">
         <header class="header">
             <img src="banner.jpg" alt="Ciaa Store Banner" class="banner-utama" onerror="this.style.display='none'">
         </header>
 
-        <!-- BANNER PROMOSI BISA DIGESER (SCROLL HORIZONTAL) -->
-        <div class="promo-scroll-container">
-            <div class="promo-card-item">🚀 Coming Soon: Jasa Buat Website Spesial untuk Bisnismu! ✨</div>
-            <div class="promo-card-item">🎟️ Coming Soon: Top Up Voucher Game Terlengkap & Termurah! 💎</div>
-            <div class="promo-card-item">💖 Belanja Aman, Cepat, & Terpercaya hanya di Ciaa Store! 🌸</div>
+        <!-- POSTER BANNER PROMOSI ESTETIK -->
+        <div class="promo-poster-banner">
+            <h3>🌟 Ciaa Store Official 🌟</h3>
+            <p>✨ Belanja Aman, Kilat & Terpercaya! 🚀<br>Top Up Game, Jasa Sosmed & App Premium Termurah se-Indonesia! 💖</p>
         </div>
 
         <!-- SAPAAN PELANGGAN -->
@@ -504,9 +504,9 @@
                 <div class="mini-grid" id="package-list" style="margin-top:0;"></div>
 
                 <h3 style="margin-top: 15px; margin-bottom: 8px; color: var(--deep-pink); font-size: 14px;">Pilih Pembayaran</h3>
-                <div class="payment-option"><input type="radio" name="pay-method" value="QRIS" id="pay-qris" checked> <label for="pay-qris">QRIS (Otomatis Nominal)</label></div>
-                <div class="payment-option"><input type="radio" name="pay-method" value="DANA" id="pay-dana"> <label for="pay-dana">DANA (081338224767 A/N AGUS SUTIARNO)</label></div>
-                <div class="payment-option"><input type="radio" name="pay-method" value="GOPAY" id="pay-gopay"> <label for="pay-gopay">GoPay (089505929536)</label></div>
+                <div class="payment-option"><input type="radio" name="pay-method" value="QRIS" id="pay-qris" checked> <label for="pay-qris">QRIS Otomatis (Termasuk Kode Unik)</label></div>
+                <div class="payment-option"><input type="radio" name="pay-method" value="DANA" id="pay-dana"> <label for="pay-dana">DANA (081338224767 A/N AGUS SUTIARNO – Tanpa Biaya Admin)</label></div>
+                <div class="payment-option"><input type="radio" name="pay-method" value="GOPAY" id="pay-gopay"> <label for="pay-gopay">GoPay (089505929536 – Tanpa Biaya Admin)</label></div>
 
                 <button class="btn-primary" onclick="proceedToCheckout()">Lanjutkan Pembayaran 💖</button>
             </div>
@@ -872,9 +872,19 @@
             document.querySelectorAll('.inputs-data').forEach(i => dataPelanggan.push(i.value));
             const desc = document.getElementById('input-desc') ? document.getElementById('input-desc').value : "";
             
-            const unik = Math.floor(Math.random() * 99) + 1;
-            const totalBayar = activeVariant.harga + unik;
             const payMethod = document.querySelector('input[name="pay-method"]:checked').value;
+            
+            let totalBayar = activeVariant.harga;
+            let ketHarga = "";
+
+            // HANYA QRIS YANG MENGGUNAKAN KODE UNIK
+            if(payMethod === "QRIS") {
+                const unik = Math.floor(Math.random() * 99) + 1;
+                totalBayar += unik;
+                ketHarga = ` (Termasuk kode unik Rp${unik})`;
+            } else {
+                ketHarga = ` (Tanpa biaya admin / kode unik)`;
+            }
 
             checkoutData = { antrian: antrianNo, produk: activeProduct.nama, paket: activeVariant.nama, data: dataPelanggan.join(" | "), desc: desc, total: totalBayar, metode: payMethod, type: activeProduct.type };
 
@@ -883,7 +893,7 @@
             document.getElementById('co-antrian').innerText = 'No. Antrian: ' + antrianNo;
             document.getElementById('co-produk').innerText = 'Layanan: ' + activeProduct.nama + ' - ' + activeVariant.nama;
             document.getElementById('co-data').innerText = 'Data: ' + checkoutData.data;
-            document.getElementById('co-harga').innerText = 'Total: Rp ' + totalBayar.toLocaleString('id-ID') + ' (Termasuk kode unik Rp' + unik + ')';
+            document.getElementById('co-harga').innerText = 'Total: Rp ' + totalBayar.toLocaleString('id-ID') + ketHarga;
             
             const transferInfo = document.getElementById('transfer-info');
             const qrisBox = document.getElementById('qris-box');
@@ -891,11 +901,11 @@
             
             if(payMethod === "DANA") {
                 transferInfo.style.display = 'block'; qrisBox.style.display = 'none';
-                document.getElementById('co-method-title').innerText = "Transfer DANA";
+                document.getElementById('co-method-title').innerText = "Transfer DANA (Tanpa Biaya Admin)";
                 document.getElementById('co-method-number').innerText = "081338224767 (A/N AGUS SUTIARNO)";
             } else if (payMethod === "GOPAY") {
                 transferInfo.style.display = 'block'; qrisBox.style.display = 'none';
-                document.getElementById('co-method-title').innerText = "Transfer GoPay";
+                document.getElementById('co-method-title').innerText = "Transfer GoPay (Tanpa Biaya Admin)";
                 document.getElementById('co-method-number').innerText = "089505929536";
             } else {
                 transferInfo.style.display = 'none'; qrisBox.style.display = 'block';
@@ -931,7 +941,6 @@
 
         function saveAntrianToStorage(no, detail, harga) {
             let antrianList = JSON.parse(localStorage.getItem('ciaa_antrian') || '[]');
-            // Cek anti spam: jika nomor antrian sudah ada, jangan buat baru
             let existing = antrianList.find(item => item.no === no);
             if(!existing) {
                 antrianList.unshift({ no: no, detail: detail, harga: harga, status: "Sedang Menunggu.. ⏳", time: new Date().toLocaleTimeString(), date: new Date().toLocaleDateString() });
@@ -984,10 +993,10 @@
 
             if (uId === "ciaa store" && pass === "1709ca") {
                 closeAdminLogin();
-                document.getElementById('maintenance-overlay').style.display = 'none'; // Hilangkan overlay maintenance
+                document.getElementById('maintenance-overlay').style.display = 'none'; 
                 document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
                 document.getElementById('admin-panel-section').classList.add('active');
-                document.getElementById('main-nav-tabs').style.display = 'none'; // Sembunyikan tab utama pelanggan
+                document.getElementById('main-nav-tabs').style.display = 'none'; 
                 loadAdminDashboard();
                 loadAdminAntrianList();
                 window.scrollTo(0,0);
@@ -1039,10 +1048,10 @@
             }
             container.innerHTML = "";
             antrianList.forEach((item, index) => {
-                let badgeColor = "#fff3cd"; // Kuning default
-                if(item.status.includes("Diproses")) badgeColor = "#ffe5d0"; // Oranye
-                else if(item.status.includes("Selesai")) badgeColor = "#d4edda"; // Hijau Muda
-                else if(item.status.includes("Dibatalkan")) badgeColor = "#f8d7da"; // Merah Muda
+                let badgeColor = "#fff3cd"; 
+                if(item.status.includes("Diproses")) badgeColor = "#ffe5d0"; 
+                else if(item.status.includes("Selesai")) badgeColor = "#d4edda"; 
+                else if(item.status.includes("Dibatalkan")) badgeColor = "#f8d7da"; 
 
                 container.innerHTML += `
                     <div style="background:white; padding:12px; border-radius:10px; margin-bottom:10px; border:1.5px solid var(--primary-pink);">
