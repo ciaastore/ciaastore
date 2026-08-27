@@ -58,28 +58,6 @@
             100% { transform: translateY(50%); }
         }
 
-        /* KUPU-KUPU PUTIH/PINK SOFT MENGEPAK & TRANSPARAN */
-        .translucent-butterfly {
-            position: fixed;
-            width: 38px; height: 38px;
-            background: url('https://cdn-icons-png.flaticon.com/512/3069/3069176.png') no-repeat center/contain;
-            opacity: 0.45;
-            filter: drop-shadow(0 0 4px rgba(255, 255, 255, 0.6));
-            z-index: 99;
-            pointer-events: none;
-            animation: flyTranslucent 16s ease-in-out infinite;
-        }
-        .translucent-butterfly:nth-child(2) { top: 30%; left: -20px; animation-duration: 20s; animation-delay: 3s; transform: scale(0.75); }
-        .translucent-butterfly:nth-child(3) { top: 60%; right: -20px; animation-duration: 18s; animation-delay: 6s; transform: scale(0.6); }
-
-        @keyframes flyTranslucent {
-            0% { transform: translate(0, 0) rotate(0deg) scale(0.7); }
-            25% { transform: translate(250px, -60px) rotate(15deg) scale(0.85); }
-            50% { transform: translate(450px, 50px) rotate(-10deg) scale(0.7); }
-            75% { transform: translate(200px, 120px) rotate(12deg) scale(0.8); }
-            100% { transform: translate(0, 0) rotate(0deg) scale(0.7); }
-        }
-
         .main-wrapper {
             max-width: 750px;
             margin: 0 auto;
@@ -213,7 +191,6 @@
         
         .alert-box { background: #ffe4e1; border: 1.5px dashed var(--deep-pink); padding: 10px 12px; margin-bottom: 12px; border-radius: 12px; font-size: 13px; color: #b22222; line-height: 1.4; }
         
-        /* INFO BOX KHUSUS APLIKASI PREMIUM (PINK SOFT / PUTIH) */
         .info-box-pink { 
             background: #fff0f5; 
             border: 1.5px solid var(--primary-pink); 
@@ -252,11 +229,11 @@
         .qris-container { text-align: center; background: white; padding: 15px; border-radius: var(--card-radius); margin: 12px 0; border: 2px solid var(--primary-pink); }
         #qrcode { display: flex; justify-content: center; margin-top: 8px; }
 
-        /* OVERLAY MAINTENANCE */
+        /* OVERLAY MAINTENANCE SOLID PINK */
         #maintenance-overlay { 
             position: fixed; top: 0; left: 0; width: 100%; height: 100%; 
-            background: rgba(255, 240, 245, 0.95); 
-            z-index: 999; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; padding: 20px; 
+            background: #ffe4e1; 
+            z-index: 9999; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; padding: 20px; 
         }
         .maintenance-logo { 
             width: 150px; height: 150px; object-fit: contain; margin-bottom: 15px; 
@@ -268,6 +245,18 @@
             50% { transform: translateY(-15px) rotate(3deg) scale(1.05); } 
         }
 
+        /* MODAL LOGIN ADMIN DUA KOLOM */
+        #admin-login-modal {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 10000; display: none; align-items: center; justify-content: center; padding: 20px;
+        }
+        .admin-login-box {
+            background: white; border: 2px solid var(--deep-pink); border-radius: var(--card-radius);
+            padding: 20px; width: 100%; max-width: 340px; text-align: center;
+            box-shadow: 0 10px 25px rgba(255, 105, 180, 0.4);
+        }
+
         .fab { position: fixed; bottom: 20px; right: 20px; background: var(--wa-color); color: white; width: 48px; height: 48px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 22px; box-shadow: 0 4px 12px rgba(37,211,102,0.4); cursor: pointer; text-decoration: none; z-index: 1000; border: 2px solid white; transition: 0.2s; }
         .fab:hover { transform: scale(1.1); }
         
@@ -276,19 +265,32 @@
 </head>
 <body>
 
-    <div class="light-beam"></div>
-    <div class="translucent-butterfly" style="top: 20%; left: 5%;"></div>
-    <div class="translucent-butterfly" style="top: 70%; right: 5%;"></div>
-
-    <!-- MAINTENANCE OVERLAY -->
+    <!-- OVERLAY MAINTENANCE SOLID -->
     <div id="maintenance-overlay" style="display: none;">
         <img src="maintenance1.jpg" alt="Maintenance Logo" class="maintenance-logo" onerror="this.src='logo.jpg'">
         <h2 style="color: var(--deep-pink); margin-bottom: 8px; font-size: 18px;">Situs Sedang Dalam Pemeliharaan 🛠️</h2>
         <p style="color: #555; max-width: 380px; font-size: 13px; line-height: 1.5;">Mohon maaf juragan, Ciaa Store sedang dalam pemeliharaan sistem. Coba kembali lagi beberapa saat ya! 💖</p>
     </div>
 
-    <!-- TOMBOL LOGIN ADMIN -->
-    <button class="btn-admin" onclick="adminLogin()" title="Admin Login">
+    <!-- MODAL LOGIN ADMIN -->
+    <div id="admin-login-modal">
+        <div class="admin-login-box">
+            <h3 style="color: var(--deep-pink); margin-bottom: 12px; font-size: 16px;">🔐 Login Admin Ciaa Store</h3>
+            <div class="form-group">
+                <label>User ID</label>
+                <input type="text" id="admin-userid" class="form-control" placeholder="Masukkan User ID">
+            </div>
+            <div class="form-group">
+                <label>Password</label>
+                <input type="password" id="admin-password" class="form-control" placeholder="Masukkan Password">
+            </div>
+            <button class="btn-primary" onclick="verifyAdminLogin()">Masuk Admin ✨</button>
+            <button onclick="closeAdminLogin()" style="margin-top: 8px; border:none; background:none; color:#888; cursor:pointer; font-size:12px;">Batal</button>
+        </div>
+    </div>
+
+    <!-- TOMBOL LOGIN ADMIN (DI KIRI ATAS) -->
+    <button class="btn-admin" onclick="openAdminLoginModal()" title="Admin Login">
         <img src="logo.jpg" alt="Admin" onerror="this.src='https://cdn-icons-png.flaticon.com/512/2913/2913133.png'">
     </button>
 
@@ -309,7 +311,7 @@
             Halo juragan! Selamat berbelanja ✨
         </div>
 
-        <div class="nav-tabs">
+        <div class="nav-tabs" id="main-nav-tabs">
             <div class="tab-item active" onclick="switchMenu('layanan-section')">🛍️ Layanan</div>
             <div class="tab-item" onclick="switchMenu('coming-soon-section')">🎟️ Top Up Voucher Coming Soon</div>
             <div class="tab-item" onclick="switchMenu('antrian-section')">🎫 No. Antrian</div>
@@ -319,7 +321,7 @@
 
         <div class="container">
             
-            <!-- SECTION: MENU UTAMA LAYANAN (SEMUA GAME & JASA TAMPIL LANGSUNG DI GRID) -->
+            <!-- SECTION: MENU UTAMA LAYANAN -->
             <div id="layanan-section" class="section active">
                 <div class="grid-services">
                     <!-- APLIKASI PREMIUM -->
@@ -391,22 +393,42 @@
                 <div class="mini-grid" id="grid-app-page"></div>
             </div>
 
-            <!-- SECTION: HALAMAN KHUSUS ADMIN PANEL -->
+            <!-- SECTION: HALAMAN KHUSUS ADMIN PANEL TERPISAH -->
             <div id="admin-panel-section" class="section">
                 <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
-                    <h2 style="color: var(--deep-pink); font-size: 16px;">🛠️ Panel Admin Ciaa Store</h2>
-                    <button onclick="backToMenu()" style="border:none; background:var(--light-pink); padding:6px 12px; border-radius:8px; font-weight:bold; cursor:pointer; font-size: 12px;">⬅ Keluar Admin</button>
+                    <h2 style="color: var(--deep-pink); font-size: 16px;">🛠️ Panel Admin Eksklusif</h2>
+                    <button onclick="logoutAdmin()" style="border:none; background:var(--light-pink); padding:6px 12px; border-radius:8px; font-weight:bold; cursor:pointer; font-size: 12px;">🚪 Keluar Admin</button>
                 </div>
 
-                <div class="info-box-pink" style="margin-bottom: 15px;">
-                    <strong>Status Website & Pemeliharaan (Maintenance):</strong>
-                    <p style="font-size: 12px; color: #555; margin-top: 4px;">Atur mode maintenance situs atau ubah status pesanan pelanggan di bawah ini.</p>
-                    <button class="btn-primary" id="btn-toggle-maintenance" onclick="toggleMaintenanceMode()" style="margin-top: 8px; background: #ffc0cb;">Aktifkan Mode Maintenance 🛠️</button>
+                <!-- SUB-MENU / TAB ADMIN -->
+                <div class="sub-tabs" style="margin-bottom: 12px;">
+                    <div class="sub-tab active" onclick="switchAdminTab('dashboard')">📊 Dashboard & Statistik</div>
+                    <div class="sub-tab" onclick="switchAdminTab('antrian')">🎫 Kelola Antrian</div>
                 </div>
 
-                <h3 style="color: var(--deep-pink); font-size: 14px; margin-bottom: 8px;">Daftar Pesanan Masuk (Kelola Antrian):</h3>
-                <div id="admin-antrian-list" style="max-height: 350px; overflow-y: auto;">
-                    <!-- Diisi lewat JavaScript -->
+                <!-- TAB 1: DASHBOARD STATISTIK -->
+                <div id="admin-tab-dashboard" class="admin-sub-section">
+                    <div class="info-box-pink" style="text-align: center; padding: 15px;">
+                        <h3 style="color: var(--deep-pink); font-size: 14px; margin-bottom: 4px;">📈 Total Pemasukan Hari Ini</h3>
+                        <p id="admin-total-income" style="font-size: 20px; font-weight: bold; color: var(--deep-pink);">Rp 0</p>
+                        <p id="admin-total-orders" style="font-size: 12px; color: #555; margin-top: 4px;">Jumlah Orderan Hari Ini: 0</p>
+                    </div>
+
+                    <div class="info-box-pink">
+                        <strong>🛠️ Kontrol Server & Pemeliharaan:</strong>
+                        <p style="font-size: 12px; color: #555; margin-top: 4px;">Nyalakan atau matikan mode maintenance situs toko.</p>
+                        <button class="btn-primary" id="btn-toggle-maintenance" onclick="toggleMaintenanceMode()" style="margin-top: 8px;">Aktifkan Mode Maintenance 🛠️</button>
+                    </div>
+                </div>
+
+                <!-- TAB 2: KELOLA ANTRIAN & PENCARIAN -->
+                <div id="admin-tab-antrian" class="admin-sub-section" style="display: none;">
+                    <div class="form-group">
+                        <input type="text" id="search-admin-antrian" class="form-control" placeholder="Cari nomor antrian atau nama pelanggan..." oninput="filterAdminAntrian()">
+                    </div>
+                    <div id="admin-antrian-list" style="max-height: 350px; overflow-y: auto;">
+                        <!-- Diisi via JS -->
+                    </div>
                 </div>
             </div>
 
@@ -459,13 +481,12 @@
                 <h2 style="color: var(--deep-pink); margin-bottom: 12px; font-size: 16px;">📖 Panduan & Tutorial Order di Ciaa Store</h2>
                 <div class="info-box-pink" style="line-height: 1.6;">
                     <strong>Langkah-langkah Mudah Belanja:</strong><br>
-                    1️⃣ Masuk ke menu <strong>Layanan</strong>, lalu pilih kotak layanan yang diinginkan (Aplikasi Premium, Top Up Game, Jasher, atau JPM).<br>
-                    2️⃣ Isi data yang diminta dengan teliti (seperti User ID, Email, atau Nomor WhatsApp).<br>
-                    3️⃣ Baca catatan khusus / syarat order yang tertera di bawah kolom input.<br>
-                    4️⃣ Pilih paket dan metode pembayaran (QRIS otomatis, DANA, atau GoPay).<br>
-                    5️⃣ Klik tombol <strong>Lanjutkan Pembayaran</strong> untuk melihat ringkasan pesanan dan nomor antrian unikmu.<br>
-                    6️⃣ Lakukan pembayaran, lalu klik <strong>Konfirmasi Pembayaran ke Admin</strong> untuk mengirim bukti transfer via WhatsApp.<br>
-                    7️⃣ Duduk manis dan tunggu pesananmu diproses oleh Mimin! 🌸✨
+                    1️⃣ Masuk ke menu <strong>Layanan</strong>, lalu pilih kotak layanan yang diinginkan.<br>
+                    2️⃣ Isi data yang diminta dengan teliti.<br>
+                    3️⃣ Pilih paket dan metode pembayaran.<br>
+                    4️⃣ Klik <strong>Lanjutkan Pembayaran</strong> untuk mendapatkan nomor antrian resmi (Contoh: CS-270826-#01).<br>
+                    5️⃣ Lakukan transfer, lalu klik <strong>Konfirmasi Pembayaran ke Admin</strong> untuk mengirim bukti transfer via WhatsApp.<br>
+                    6️⃣ Duduk manis dan tunggu pesananmu diproses! 🌸✨
                 </div>
             </div>
 
@@ -530,11 +551,11 @@
     <a href="https://wa.me/6289509452777" target="_blank" class="fab" title="Hubungi CS">💬</a>
 
     <script>
+        // CEK STATUS MAINTENANCE SAAT LOAD HALAMAN
         if(localStorage.getItem('ciaa_maintenance') === 'true') {
             document.getElementById('maintenance-overlay').style.display = 'flex';
         }
 
-        // SAPAAN OTOMATIS BERDASARKAN WAKTU LOKAL
         function setDynamicGreeting() {
             const now = new Date();
             const hour = now.getHours();
@@ -637,6 +658,7 @@
         let activeProduct = null;
         let activeVariant = null;
         let checkoutData = {};
+        let currentGeneratedAntrianNo = null;
         const rawQrisStatis = "00020101021126570011ID.DANA.WWW011893600915376556859902097655685990303UMI51440014ID.CO.QRIS.WWW0215ID10253787183610303UMI5204481453033605802ID5914Ciaa Store All6014Kota Pontianak61057811363048AD2";
 
         window.onload = () => {
@@ -677,6 +699,7 @@
         function backToMenu() {
             document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
             document.getElementById('layanan-section').classList.add('active');
+            document.getElementById('main-nav-tabs').style.display = 'flex';
             window.scrollTo(0,0);
         }
 
@@ -695,7 +718,6 @@
             document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
             document.getElementById('form-pesanan').classList.add('active');
             
-            // Cari produk di semua kategori jika tidak ketemu di kategori spesifik
             let prod = dataProduk[kategori] ? dataProduk[kategori].find(p => p.id === itemId) : null;
             if(!prod) {
                 for(let cat in dataProduk) {
@@ -834,9 +856,17 @@
         function proceedToCheckout() {
             if(!activeVariant) return alert("Silakan pilih paket produk terlebih dahulu ya! 🌸");
             
+            // ANTI-SPAM & GENERATE NOMOR ANTRIAN BERURUTAN (CS-DDMMYY-#NO)
             const date = new Date();
             const dStr = String(date.getDate()).padStart(2, '0') + String(date.getMonth()+1).padStart(2, '0') + String(date.getFullYear()).slice(-2);
-            const antrianNo = 'cs-' + dStr + '-#' + Math.floor(Math.random()*89+10);
+            
+            if(!currentGeneratedAntrianNo) {
+                let antrianList = JSON.parse(localStorage.getItem('ciaa_antrian') || '[]');
+                let todayCount = antrianList.filter(item => item.no.includes(dStr)).length + 1;
+                currentGeneratedAntrianNo = 'CS-' + dStr + '-#' + String(todayCount).padStart(2, '0');
+            }
+            
+            const antrianNo = currentGeneratedAntrianNo;
             
             let dataPelanggan = [];
             document.querySelectorAll('.inputs-data').forEach(i => dataPelanggan.push(i.value));
@@ -848,7 +878,7 @@
 
             checkoutData = { antrian: antrianNo, produk: activeProduct.nama, paket: activeVariant.nama, data: dataPelanggan.join(" | "), desc: desc, total: totalBayar, metode: payMethod, type: activeProduct.type };
 
-            saveAntrianToStorage(antrianNo, checkoutData.produk + " - " + checkoutData.paket);
+            saveAntrianToStorage(antrianNo, checkoutData.produk + " - " + checkoutData.paket, activeVariant.harga);
 
             document.getElementById('co-antrian').innerText = 'No. Antrian: ' + antrianNo;
             document.getElementById('co-produk').innerText = 'Layanan: ' + activeProduct.nama + ' - ' + activeVariant.nama;
@@ -899,11 +929,15 @@
             alert("Nomor berhasil disalin! 📋");
         }
 
-        function saveAntrianToStorage(no, detail) {
+        function saveAntrianToStorage(no, detail, harga) {
             let antrianList = JSON.parse(localStorage.getItem('ciaa_antrian') || '[]');
-            antrianList.unshift({ no: no, detail: detail, status: "Pending.. ⏳", time: new Date().toLocaleTimeString() });
-            localStorage.setItem('ciaa_antrian', JSON.stringify(antrianList));
-            loadAntrianList();
+            // Cek anti spam: jika nomor antrian sudah ada, jangan buat baru
+            let existing = antrianList.find(item => item.no === no);
+            if(!existing) {
+                antrianList.unshift({ no: no, detail: detail, harga: harga, status: "Sedang Menunggu.. ⏳", time: new Date().toLocaleTimeString(), date: new Date().toLocaleDateString() });
+                localStorage.setItem('ciaa_antrian', JSON.stringify(antrianList));
+                loadAntrianList();
+            }
         }
 
         function loadAntrianList() {
@@ -919,6 +953,83 @@
             });
         }
 
+        function filterAntrian() {
+            let query = document.getElementById('search-antrian').value.toLowerCase();
+            let antrianList = JSON.parse(localStorage.getItem('ciaa_antrian') || '[]');
+            const container = document.getElementById('list-antrian');
+            let filtered = antrianList.filter(item => item.no.toLowerCase().includes(query) || item.detail.toLowerCase().includes(query));
+            
+            if(filtered.length === 0) {
+                container.innerHTML = "Nomor antrian tidak ditemukan! 🌸";
+                return;
+            }
+            container.innerHTML = "";
+            filtered.forEach(item => {
+                container.innerHTML += '<div style="background:white; padding:10px; border-radius:10px; margin-bottom:8px; border:1.5px solid var(--primary-pink); display:flex; justify-content:space-between; align-items:center;"><div><strong>🎫 ' + item.no + '</strong><br><span style="font-size:12px; color:#555;">' + item.detail + '</span><br><span style="font-size:10px; color:#888;">' + item.time + '</span></div><div><span style="padding:4px 10px; border-radius:6px; font-size:11px; font-weight:bold; background:#fff0f5; border:1px solid var(--deep-pink);">' + item.status + '</span></div></div>';
+            });
+        }
+
+        // --- SISTEM ADMIN EKSKLUSIF ---
+        function openAdminLoginModal() {
+            document.getElementById('admin-login-modal').style.display = 'flex';
+        }
+
+        function closeAdminLogin() {
+            document.getElementById('admin-login-modal').style.display = 'none';
+        }
+
+        function verifyAdminLogin() {
+            let uId = document.getElementById('admin-userid').value.trim().toLowerCase();
+            let pass = document.getElementById('admin-password').value;
+
+            if (uId === "ciaa store" && pass === "1709ca") {
+                closeAdminLogin();
+                document.getElementById('maintenance-overlay').style.display = 'none'; // Hilangkan overlay maintenance
+                document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+                document.getElementById('admin-panel-section').classList.add('active');
+                document.getElementById('main-nav-tabs').style.display = 'none'; // Sembunyikan tab utama pelanggan
+                loadAdminDashboard();
+                loadAdminAntrianList();
+                window.scrollTo(0,0);
+            } else {
+                alert("User ID atau Kata Sandi Salah! ❌");
+            }
+        }
+
+        function logoutAdmin() {
+            document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+            document.getElementById('layanan-section').classList.add('active');
+            document.getElementById('main-nav-tabs').style.display = 'flex';
+            window.scrollTo(0,0);
+        }
+
+        function switchAdminTab(tabName) {
+            document.querySelectorAll('.admin-sub-section').forEach(el => el.style.display = 'none');
+            document.querySelectorAll('#admin-panel-section .sub-tab').forEach(el => el.classList.remove('active'));
+            
+            if(tabName === 'dashboard') {
+                document.getElementById('admin-tab-dashboard').style.display = 'block';
+                event.target.classList.add('active');
+                loadAdminDashboard();
+            } else {
+                document.getElementById('admin-tab-antrian').style.display = 'block';
+                event.target.classList.add('active');
+                loadAdminAntrianList();
+            }
+        }
+
+        function loadAdminDashboard() {
+            let antrianList = JSON.parse(localStorage.getItem('ciaa_antrian') || '[]');
+            let todayDateStr = new Date().toLocaleDateString();
+            
+            let todayOrders = antrianList.filter(item => item.date === todayDateStr);
+            let totalIncome = todayOrders.reduce((sum, item) => sum + (item.harga || 0), 0);
+            
+            document.getElementById('admin-total-income').innerText = "Rp " + totalIncome.toLocaleString('id-ID');
+            document.getElementById('admin-total-orders').innerText = "Jumlah Orderan Hari Ini: " + todayOrders.length;
+            updateMaintenanceButtonText();
+        }
+
         function loadAdminAntrianList() {
             let antrianList = JSON.parse(localStorage.getItem('ciaa_antrian') || '[]');
             const container = document.getElementById('admin-antrian-list');
@@ -928,17 +1039,53 @@
             }
             container.innerHTML = "";
             antrianList.forEach((item, index) => {
+                let badgeColor = "#fff3cd"; // Kuning default
+                if(item.status.includes("Diproses")) badgeColor = "#ffe5d0"; // Oranye
+                else if(item.status.includes("Selesai")) badgeColor = "#d4edda"; // Hijau Muda
+                else if(item.status.includes("Dibatalkan")) badgeColor = "#f8d7da"; // Merah Muda
+
                 container.innerHTML += `
-                    <div style="background:white; padding:10px; border-radius:10px; margin-bottom:8px; border:1.5px solid var(--primary-pink);">
+                    <div style="background:white; padding:12px; border-radius:10px; margin-bottom:10px; border:1.5px solid var(--primary-pink);">
                         <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom: 6px;">
                             <strong>🎫 ${item.no}</strong>
-                            <span style="font-size:11px; font-weight:bold; padding:2px 8px; border-radius:6px; background:#fff0f5; border:1px solid var(--deep-pink);">${item.status}</span>
+                            <span style="font-size:11px; font-weight:bold; padding:3px 8px; border-radius:6px; background:${badgeColor}; border:1px solid var(--deep-pink);">${item.status}</span>
                         </div>
-                        <p style="font-size:12px; color:#555; margin-bottom:4px;">${item.detail} (${item.time})</p>
-                        <div style="display:flex; gap:6px; margin-top:6px;">
-                            <button onclick="updateStatusAntrian(${index}, 'Selesai ✅')" style="flex:1; background:#25D366; color:white; border:none; padding:4px; border-radius:6px; font-size:11px; font-weight:bold; cursor:pointer;">Set Selesai</button>
-                            <button onclick="updateStatusAntrian(${index}, 'Diproses 🔄')" style="flex:1; background:#ff69b4; color:white; border:none; padding:4px; border-radius:6px; font-size:11px; font-weight:bold; cursor:pointer;">Set Diproses</button>
-                            <button onclick="hapusAntrian(${index})" style="background:#ff4d4d; color:white; border:none; padding:4px 8px; border-radius:6px; font-size:11px; font-weight:bold; cursor:pointer;">Hapus</button>
+                        <p style="font-size:12px; color:#555; margin-bottom:6px;">${item.detail} | Rp ${(item.harga || 0).toLocaleString('id-ID')} (${item.time})</p>
+                        <div style="display:grid; grid-template-columns: repeat(2, 1fr); gap:5px; margin-top:6px;">
+                            <button onclick="updateStatusAntrian(${index}, 'Sedang Menunggu.. ⏳')" style="background:#fff3cd; color:#856404; border:1px solid #ffeeba; padding:5px; border-radius:6px; font-size:11px; font-weight:bold; cursor:pointer;">⏳ Menunggu</button>
+                            <button onclick="updateStatusAntrian(${index}, 'Sedang Diproses 🔄')" style="background:#ffe5d0; color:#b45309; border:1px solid #fed7aa; padding:5px; border-radius:6px; font-size:11px; font-weight:bold; cursor:pointer;">🔄 Diproses</button>
+                            <button onclick="updateStatusAntrian(${index}, 'Pesanan Selesai ✅')" style="background:#d4edda; color:#155724; border:1px solid #c3e6cb; padding:5px; border-radius:6px; font-size:11px; font-weight:bold; cursor:pointer;">✅ Selesai</button>
+                            <button onclick="updateStatusAntrian(${index}, 'Dibatalkan ❌')" style="background:#f8d7da; color:#721c24; border:1px solid #f5c6cb; padding:5px; border-radius:6px; font-size:11px; font-weight:bold; cursor:pointer;">❌ Dibatalkan</button>
+                        </div>
+                        <button onclick="hapusAntrian(${index})" style="width:100%; margin-top:6px; background:#ff4d4d; color:white; border:none; padding:4px; border-radius:6px; font-size:11px; font-weight:bold; cursor:pointer;">Hapus Pesanan</button>
+                    </div>`;
+            });
+        }
+
+        function filterAdminAntrian() {
+            let query = document.getElementById('search-admin-antrian').value.toLowerCase();
+            let antrianList = JSON.parse(localStorage.getItem('ciaa_antrian') || '[]');
+            const container = document.getElementById('admin-antrian-list');
+            let filtered = antrianList.filter(item => item.no.toLowerCase().includes(query) || item.detail.toLowerCase().includes(query));
+            
+            if(filtered.length === 0) {
+                container.innerHTML = "<p style='text-align:center; color:#555;'>Data antrian tidak ditemukan! 🌸</p>";
+                return;
+            }
+            container.innerHTML = "";
+            filtered.forEach((item, index) => {
+                container.innerHTML += `
+                    <div style="background:white; padding:12px; border-radius:10px; margin-bottom:10px; border:1.5px solid var(--primary-pink);">
+                        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom: 6px;">
+                            <strong>🎫 ${item.no}</strong>
+                            <span style="font-size:11px; font-weight:bold; padding:3px 8px; border-radius:6px; background:#fff0f5; border:1px solid var(--deep-pink);">${item.status}</span>
+                        </div>
+                        <p style="font-size:12px; color:#555; margin-bottom:6px;">${item.detail} (${item.time})</p>
+                        <div style="display:grid; grid-template-columns: repeat(2, 1fr); gap:5px; margin-top:6px;">
+                            <button onclick="updateStatusAntrian(${index}, 'Sedang Menunggu.. ⏳')" style="background:#fff3cd; color:#856404; border:none; padding:5px; border-radius:6px; font-size:11px; font-weight:bold; cursor:pointer;">⏳ Menunggu</button>
+                            <button onclick="updateStatusAntrian(${index}, 'Sedang Diproses 🔄')" style="background:#ffe5d0; color:#b45309; border:none; padding:5px; border-radius:6px; font-size:11px; font-weight:bold; cursor:pointer;">🔄 Diproses</button>
+                            <button onclick="updateStatusAntrian(${index}, 'Pesanan Selesai ✅')" style="background:#d4edda; color:#155724; border:none; padding:5px; border-radius:6px; font-size:11px; font-weight:bold; cursor:pointer;">✅ Selesai</button>
+                            <button onclick="updateStatusAntrian(${index}, 'Dibatalkan ❌')" style="background:#f8d7da; color:#721c24; border:none; padding:5px; border-radius:6px; font-size:11px; font-weight:bold; cursor:pointer;">❌ Dibatalkan</button>
                         </div>
                     </div>`;
             });
@@ -961,6 +1108,7 @@
                 localStorage.setItem('ciaa_antrian', JSON.stringify(antrianList));
                 loadAdminAntrianList();
                 loadAntrianList();
+                loadAdminDashboard();
             }
         }
 
@@ -988,35 +1136,6 @@
                     btn.style.background = "#ffc0cb";
                     btn.style.color = "var(--dark-text)";
                 }
-            }
-        }
-
-        function filterAntrian() {
-            let query = document.getElementById('search-antrian').value.toLowerCase();
-            let antrianList = JSON.parse(localStorage.getItem('ciaa_antrian') || '[]');
-            const container = document.getElementById('list-antrian');
-            let filtered = antrianList.filter(item => item.no.toLowerCase().includes(query) || item.detail.toLowerCase().includes(query));
-            
-            if(filtered.length === 0) {
-                container.innerHTML = "Nomor antrian tidak ditemukan! 🌸";
-                return;
-            }
-            container.innerHTML = "";
-            filtered.forEach(item => {
-                container.innerHTML += '<div style="background:white; padding:10px; border-radius:10px; margin-bottom:8px; border:1.5px solid var(--primary-pink); display:flex; justify-content:space-between; align-items:center;"><div><strong>🎫 ' + item.no + '</strong><br><span style="font-size:12px; color:#555;">' + item.detail + '</span><br><span style="font-size:10px; color:#888;">' + item.time + '</span></div><div><span style="padding:4px 10px; border-radius:6px; font-size:11px; font-weight:bold; background:#fff0f5; border:1px solid var(--deep-pink);">' + item.status + '</span></div></div>';
-            });
-        }
-
-        function adminLogin() {
-            let pass = prompt("Masukkan Kata Sandi Admin 🌸:");
-            if (pass === "1709ca") {
-                document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
-                document.getElementById('admin-panel-section').classList.add('active');
-                loadAdminAntrianList();
-                updateMaintenanceButtonText();
-                window.scrollTo(0,0);
-            } else if(pass !== null) {
-                alert("Sandi salah! ❌");
             }
         }
     </script>
