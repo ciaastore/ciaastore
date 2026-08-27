@@ -195,9 +195,10 @@
         .payment-option { display: flex; align-items: center; padding: 10px; border: 1.5px solid var(--primary-pink); border-radius: 12px; margin-bottom: 8px; cursor: pointer; background: var(--white); font-size: 13px; }
         .payment-option input { margin-right: 8px; accent-color: var(--deep-pink); }
         
-        .qris-container { text-align: center; background: white; padding: 15px; border-radius: var(--card-radius); margin: 12px 0; border: 2px solid var(--primary-pink); overflow: hidden; }
-        #qrcode { display: flex; justify-content: center; align-items: center; margin-top: 10px; width: 100%; }
-        #qrcode canvas, #qrcode img { display: block; margin: 0 auto; max-width: 100%; height: auto !important; }
+        /* FIX TOTAL PERBAIKAN TAMPILAN QRIS */
+        .qris-container { text-align: center; background: white; padding: 15px 10px; border-radius: var(--card-radius); margin: 12px 0; border: 2px solid var(--primary-pink); width: 100%; display: flex; flex-direction: column; align-items: center; }
+        #qrcode { display: flex; justify-content: center; align-items: center; margin-top: 10px; width: 100%; max-width: 250px; }
+        #qrcode canvas, #qrcode img { display: block !important; margin: 0 auto !important; max-width: 100% !important; height: auto !important; width: 100% !important; }
 
         #maintenance-overlay { 
             position: fixed; top: 0; left: 0; width: 100%; height: 100%; 
@@ -533,8 +534,8 @@
                 { id: "bs", nama: "💎 Blood Strike", img: "bs.jpg", type: "ui-game", inputs: ["Username", "ID Game"], catatan: "• Top Up Blood Strike (Via Username + ID)" }
             ],
             "jasa-ciaa": [
-                { id: "jasher", nama: "🚀 Jasher (Jasa Share)", img: "logo.jpg", type: "ui-jasa", catatan: "• Jasher (Jasa Share), bukan Jasa Push Member!<br>• Isi nama store.<br>• Deskripsi isi dengan link grup dan nama group/teks yang ingin di-share!<br>• Konfirmasi pembayaran di web untuk melanjutkan pemesanan via WhatsApp<br>• No reff" },
-                { id: "jpm", nama: "📈 JPM (Jasa Push Member)", img: "logo.jpg", type: "ui-jasa", catatan: "• JPM (Jasa Push Member), push member sesuai dengan target.<br>• Isi nama store.<br>• Deskripsi isi dengan link grup & nama grup.<br>• Settingan GB nyalakan persetujuan admin.<br>• Dilarang acc member sebelum done/sesuai target, acc = done no toleransi.<br>• Konfirmasi pembayaran di web untuk melanjutkan pemesanan via WhatsApp<br>• No reff" }
+                { id: "jasher", nama: "🚀 Jasher (Jasa Share)", img: "logo.jpg", type: "ui-jasa", catatan: "• Jasher (Jasa Share), bukan Jasa Push Member!<br>• Isi nama store.<br>• Deskripsi wajib diisi dengan link grup/teks yang ingin di-share!<br>• Konfirmasi pembayaran di web untuk melanjutkan pemesanan via WhatsApp<br>• No reff" },
+                { id: "jpm", nama: "📈 JPM (Jasa Push Member)", img: "logo.jpg", type: "ui-jasa", catatan: "• JPM (Jasa Push Member), push member sesuai dengan target.<br>• Isi nama store.<br>• Deskripsi wajib diisi dengan link grup & nama grup.<br>• Settingan GB nyalakan persetujuan admin.<br>• Dilarang acc member sebelum done/sesuai target, acc = done no toleransi.<br>• Konfirmasi pembayaran di web untuk melanjutkan pemesanan via WhatsApp<br>• No reff" }
             ]
         };
 
@@ -658,6 +659,7 @@
             }
             
             activeProduct = prod;
+            activeVariant = null; // Reset varian terpilih
             document.getElementById('form-title').innerText = prod.nama;
             
             const notesEl = document.getElementById('product-notes');
@@ -695,10 +697,10 @@
             }
             else if(prod.type === 'ui-jasa') {
                 renderInputs(['Nama Store']);
-                let placeholderText = itemId === 'jasher' ? "(Masukkan link grup dan nama grup/teks yang ingin di-share)" : "(Masukkan link grup & nama grup target)";
+                let placeholderText = itemId === 'jasher' ? "Wajib sertakan link target! (Contoh: https://chat.whatsapp.com/xxx)" : "Wajib sertakan link target! (Contoh: https://chat.whatsapp.com/xxx)";
                 inputsEl.innerHTML += `
                     <div class="form-group" style="margin-top:12px;">
-                        <label>Deskripsi / Link Target</label>
+                        <label>Deskripsi & Link Target (Wajib Ada Link!)</label>
                         <textarea class="form-control" id="input-desc" placeholder="${placeholderText}"></textarea>
                     </div>
                 `;
@@ -786,9 +788,33 @@
         function proceedToCheckout() {
             if(!activeVariant) return alert("Silakan pilih paket produk terlebih dahulu ya! 🌸");
             
+            // VALIDASI MANDATORI ISIAN DATA PELANGGAN
+            let dataInputs = document.querySelectorAll('.inputs-data');
             let dataPelanggan = [];
-            document.querySelectorAll('.inputs-data').forEach(i => dataPelanggan.push(i.value));
-            const desc = document.getElementById('input-desc') ? document.getElementById('input-desc').value : "";
+            for(let input of dataInputs) {
+                if(!input.value.trim()) {
+                    return alert("⚠️ Mohon isi semua kolom data pengisian! Jangan sampai ada yang kosong ya.");
+                }
+                dataPelanggan.push(input.value.trim());
+            }
+
+            // VALIDASI DESKRIPSI DAN LINK KHUSUS JASHER & JPM
+            const descEl = document.getElementById('input-desc');
+            let descText = "";
+            if(descEl) {
+                descText = descEl.value.trim();
+                if(!descText) {
+                    return alert("⚠️ Kolom Deskripsi/Link Wajib Diisi!");
+                }
+                // Pengecekan adanya link (http, https, wa.me, t.me, dll)
+                const urlPattern = /(https?:\/\/|www\.|wa\.me|t\.me|linktr\.ee)/i;
+                if(activeProduct.id === 'jasher' || activeProduct.id === 'jpm') {
+                    if(!urlPattern.test(descText)) {
+                        return alert("⚠️ Untuk layanan Jasher & JPM, Anda WAJIB menyertakan LINK (contoh: https://... atau wa.me/...) di kolom Deskripsi!");
+                    }
+                }
+            }
+
             const payMethod = document.querySelector('input[name="pay-method"]:checked').value;
             
             let totalBayar = activeVariant.harga;
@@ -806,14 +832,14 @@
                 produk: activeProduct.nama, 
                 paket: activeVariant.nama, 
                 data: dataPelanggan.join(" | "), 
-                desc: desc, 
+                desc: descText, 
                 total: totalBayar, 
                 metode: payMethod, 
                 type: activeProduct.type 
             };
 
             document.getElementById('co-produk').innerText = 'Layanan: ' + activeProduct.nama + ' - ' + activeVariant.nama;
-            document.getElementById('co-data').innerText = 'Data: ' + checkoutData.data;
+            document.getElementById('co-data').innerText = 'Data: ' + checkoutData.data + (checkoutData.desc ? ' | Link/Deskripsi: ' + checkoutData.desc : '');
             document.getElementById('co-harga').innerText = 'Total: Rp ' + totalBayar.toLocaleString('id-ID') + ketHarga;
             
             const transferInfo = document.getElementById('transfer-info');
@@ -833,8 +859,8 @@
                 document.getElementById('co-method-title').innerText = "Transfer GoPay";
                 document.getElementById('co-method-number').innerText = "089505929536";
             } else {
-                transferInfo.style.display = 'none'; 
-                qrisBox.style.display = 'block';
+                transferInfo.style.display = 'flex'; 
+                qrisBox.style.display = 'flex';
                 
                 const dynamicQR = generateDynamicQRIS(rawQrisStatis, totalBayar);
                 
@@ -842,8 +868,8 @@
                     if (typeof QRCode !== 'undefined') {
                         new QRCode(qrContainer, {
                             text: dynamicQR,
-                            width: 170,
-                            height: 170,
+                            width: 220,
+                            height: 220,
                             colorDark: "#000000",
                             colorLight: "#ffffff",
                             correctLevel: QRCode.CorrectLevel.H
@@ -853,7 +879,7 @@
                     }
                 } catch(e) {
                     let imgFallback = document.createElement('img');
-                    imgFallback.src = "https://api.qrserver.com/v1/create-qr-code/?size=170x170&data=" + encodeURIComponent(dynamicQR);
+                    imgFallback.src = "https://api.qrserver.com/v1/create-qr-code/?size=220x220&data=" + encodeURIComponent(dynamicQR);
                     imgFallback.alt = "QRIS Barcode";
                     qrContainer.appendChild(imgFallback);
                 }
@@ -885,10 +911,13 @@
             }
         }
 
+        /* SUSUNAN TEKS FORMAT WHATSAPP */
         function sendToWhatsApp() {
             const noWA = "6289505929536";
             let antrianNo = getOrGenerateQueueNumber();
-            let teks = `Halo Admin Ciaa Store! ✨\nSaya sudah melakukan pembayaran untuk:\n\n🎫 No. Antrian: ${antrianNo}\n🛒 Layanan: ${checkoutData.produk} - ${checkoutData.paket}\n👤 Data: ${checkoutData.data}\n💰 Total: Rp${checkoutData.total.toLocaleString('id-ID')}\n💳 Pembayaran: ${checkoutData.metode}\n\nBerikut bukti transfernya ya Min. Terima kasih! 🙏`;
+            let teksDesc = checkoutData.desc ? `\n📝 Link/Deskripsi: ${checkoutData.desc}` : "";
+            
+            let teks = `Halo Admin Ciaa Store! ✨\nSaya sudah melakukan pembayaran untuk:\n\n🎫 No. Antrian: ${antrianNo}\n🛒 Layanan: ${checkoutData.produk} - ${checkoutData.paket}\n👤 Data: ${checkoutData.data}${teksDesc}\n💰 Total: Rp${checkoutData.total.toLocaleString('id-ID')}\n💳 Pembayaran: ${checkoutData.metode}\n\nBerikut bukti transfernya ya Min. Terima kasih! 🙏`;
 
             window.open("https://wa.me/" + noWA + "?text=" + encodeURIComponent(teks), '_blank');
         }
