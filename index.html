@@ -739,32 +739,33 @@
 
         /* INJEKSI EMVCo DINAMIS SECARA STANDAR RESMI EMVCO QRIS */
         function generateDynamicQRIS(qrisStr, amount) {
-            // 1. Potong bagian CRC16 lama (4 digit terakhir + tag 6304)
-            let qrisWithoutCRC = qrisStr.substring(0, qrisStr.length - 8);
-
-            // 2. Ubah Tag 01 dari 11 (Statis) ke 12 (Dinamis)
-            if (qrisWithoutCRC.substr(0, 6) === "000201") {
-                qrisWithoutCRC = "000201010212" + qrisWithoutCRC.substring(12);
+            let crcIndex = qrisStr.indexOf("6304");
+            if (crcIndex !== -1) {
+                qrisStr = qrisStr.substring(0, crcIndex);
             }
 
-            // 3. Format Tag 54 (Amount/Nominal Transaksi)
+            qrisStr = qrisStr.replace("010211", "010212");
+
             let amountStr = amount.toString();
             let tag54 = "54" + amountStr.length.toString().padStart(2, '0') + amountStr;
 
-            // 4. Sisipkan Tag 54 secara tepat di depan Tag 58 (Country Code '5802ID')
-            let pos58 = qrisWithoutCRC.indexOf("5802ID");
-            let dynamicPayload = "";
-            if (pos58 !== -1) {
-                dynamicPayload = qrisWithoutCRC.substring(0, pos58) + tag54 + qrisWithoutCRC.substring(pos58);
-            } else {
-                dynamicPayload = qrisWithoutCRC + tag54;
+            let pos54 = qrisStr.indexOf("54");
+            if (pos54 !== -1) {
+                let len54 = parseInt(qrisStr.substr(pos54 + 2, 2), 10);
+                qrisStr = qrisStr.substring(0, pos54) + qrisStr.substring(pos54 + 4 + len54);
             }
 
-            // 5. Tambahkan tag 6304 lalu kalkulasi ulang CRC16 resmi
-            dynamicPayload += "6304";
-            let newCRC = crc16(dynamicPayload);
+            let pos58 = qrisStr.indexOf("5802ID");
+            if (pos58 !== -1) {
+                qrisStr = qrisStr.substring(0, pos58) + tag54 + qrisStr.substring(pos58);
+            } else {
+                qrisStr += tag54;
+            }
 
-            return dynamicPayload + newCRC;
+            qrisStr += "6304";
+            let newCRC = crc16(qrisStr);
+
+            return qrisStr + newCRC;
         }
 
         function proceedToCheckout() {
@@ -812,7 +813,6 @@
                 transferInfo.style.display = 'none'; 
                 qrisBox.style.display = 'block';
                 
-                // Panggil fungsi perbaikan QRIS dinamis yang valid
                 let dynamicQrisPayload = generateDynamicQRIS(rawQrisStatis, totalBayar);
                 
                 try {
