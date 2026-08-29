@@ -505,8 +505,7 @@
                 { id: "wetv", nama: "🎬 WeTV", img: "viu.jpg", type: "ui-std", inputs: ["Nomor WhatsApp"], catatan: "• Masukkan nomor WhatsApp aktif.<br>• Detail akun dikirimkan via WhatsApp." },
                 { id: "gemini", nama: "🤖 AI Gemini Pro", img: "gemini.jpg", type: "ui-std", inputs: ["Nomor WhatsApp"], catatan: "• Masukkan nomor WhatsApp aktif.<br>• Detail akun dikirimkan via WhatsApp.<br>• 1x Pembelian khusus penggunaan pribadi." },
                 { id: "meitu", nama: "📸 Meitu", img: "meitu.jpg", type: "ui-std", inputs: ["Nomor WhatsApp"], catatan: "• Meitu 1 Minggu.<br>• Akun dikirimkan langsung ke nomor WhatsApp." },
-                { id: "pixellab", nama: "🎨 Pixellab", img: "pixellab.jpg", type: "ui-std", inputs: ["Nomor WhatsApp"], catatan: "• Masukkan nomor WhatsApp saja." },
-                { id: "viu", nama: "🎬 Viu", img: "viu.jpg", type: "ui-viu" }
+                { id: "pixellab", nama: "🎨 Pixellab", img: "pixellab.jpg", type: "ui-std", inputs: ["Nomor WhatsApp"], catatan: "• Masukkan nomor WhatsApp saja." }
             ],
             "topup-game": [
                 { id: "ff", nama: "🔥 Free Fire", img: "ff.jpg", type: "ui-game", inputs: ["Username", "ID Game"], catatan: "• Free Fire (Format: Username + ID Game)" },
@@ -524,24 +523,12 @@
 
         const listHarga = {
             "canva": [ { nama: "Canva 1 Bulan", harga: 3000, tag: "tim" }, { nama: "Canva Head 1 Bulan", harga: 7000, tag: "head" } ],
-            "viu": [ 
-                { nama: "Viu 1 Tahun (Private) – No Gar", harga: 5000, tag: "oto" }, 
-                { nama: "Paket Viu Prem 5 Akun (6 Bulan Private)", harga: 8000, tag: "man" }, 
-                { nama: "Viu Plus 1 Bulan (Sharing)", harga: 18000, tag: "man" } 
-            ],
-            "wetv": [ 
-                { nama: "WeTV 1 Bulan (Sharing)", harga: 11000 }, 
-                { nama: "WeTV 3 Bulan (Sharing)", harga: 27000 }, 
-                { nama: "WeTV 1 Bulan (Private)", harga: 28000 } 
-            ],
+            "wetv": [ { nama: "WeTV 1 Bulan (Sharing)", harga: 11000 }, { nama: "WeTV 3 Bulan (Sharing)", harga: 27000 }, { nama: "WeTV 1 Bulan (Private)", harga: 28000 } ],
             "yt": [ { nama: "YouTube 1 Bulan (Family Plan)", harga: 5000 } ],
             "am": [ { nama: "Alight Motion 1 Tahun", harga: 4000 } ],
             "pixellab": [ { nama: "Pixellab Mod – No Pw", harga: 3000 } ],
             "iqiyi": [ { nama: "IQIYI 1 Bulan (Private Vip Standar)", harga: 37000 } ],
-            "capcut": [ 
-                { nama: "Capcut Pro 7 Hari (Private)", harga: 5000 }, 
-                { nama: "Capcut Pro 1 Bulan (Private)", harga: 25000 } 
-            ],
+            "capcut": [ { nama: "Capcut Pro 7 Hari (Private)", harga: 5000 }, { nama: "Capcut Pro 1 Bulan (Private)", harga: 25000 } ],
             "gemini": [ { nama: "AI Gemini Pro 1 Bulan", harga: 15000 } ],
             "meitu": [ { nama: "Meitu 1 Minggu", harga: 10000 } ],
             "jasher": [ 
@@ -594,7 +581,7 @@
         let activeVariant = null;
         let checkoutData = {};
         
-        /* KODE QRIS STATIS NATIVE CIAA STORE REAL (KOTA TOMOHON) */
+        /* KODE QRIS NATIVE CIAA STORE (KOTA TOMOHON) */
         const rawQrisStatis = "00020101021126570011ID.DANA.WWW011893600915376556859902097655685990303UMI51440014ID.CO.QRIS.WWW0215ID10253787183610303UMI5204481453033605802ID5915Ciaa Store Real6012Kota Tomohon610595446630433D5";
 
         window.onload = () => {
@@ -750,27 +737,23 @@
             return crc.toString(16).toUpperCase().padStart(4, '0');
         }
 
-        /* GENERATE DINAMIS QRIS VALID SESUAI STANDAR EMVCO */
+        /* GENERATE QRIS SEMI-STATIS (NOMINAL OTOMATIS TAPI AMAN DARI BLOKIR) */
         function generateDynamicQRIS(qrisStr, amount) {
+            // 1. Potong bagian CRC16 (6304 + 4 digit kode lama)
             let crcIndex = qrisStr.indexOf("6304");
             if (crcIndex !== -1) {
                 qrisStr = qrisStr.substring(0, crcIndex);
             }
 
-            // Ubah Point of Initiation dari Statis (11) ke Dinamis (12)
-            qrisStr = qrisStr.replace("010211", "010212");
+            // KUNCI PERBAIKAN: JANGAN UBAH TAG 01 MENJADI 12. 
+            // Biarkan kodenya statis (11) tetapi kita injeksi Tag 54 (Nominal).
+            // E-wallet akan membaca nominal otomatis dan tidak memblokir kode.
 
+            // 2. Buat Tag 54 untuk Nominal Transaksi
             let amountStr = amount.toString();
             let tag54 = "54" + amountStr.length.toString().padStart(2, '0') + amountStr;
 
-            // Bersihkan Tag 54 lama jika ada
-            let pos54 = qrisStr.indexOf("54");
-            if (pos54 !== -1) {
-                let len54 = parseInt(qrisStr.substr(pos54 + 2, 2), 10);
-                qrisStr = qrisStr.substring(0, pos54) + qrisStr.substring(pos54 + 4 + len54);
-            }
-
-            // Sisipkan Tag 54 sebelum Tag 5802ID
+            // 3. Sisipkan tepat sebelum Tag 5802ID agar struktur EMVCo tidak rusak
             let pos58 = qrisStr.indexOf("5802ID");
             if (pos58 !== -1) {
                 qrisStr = qrisStr.substring(0, pos58) + tag54 + qrisStr.substring(pos58);
@@ -778,6 +761,7 @@
                 qrisStr += tag54;
             }
 
+            // 4. Hitung ulang Checksum CRC16 untuk memastikan kode Valid
             qrisStr += "6304";
             let newCRC = crc16(qrisStr);
 
@@ -806,7 +790,7 @@
             let ketHarga = "";
 
             if(payMethod === "QRIS") {
-                // Biaya Admin 0,01% (Maksimal presisi minimal Rp1)
+                // Biaya Admin 0,01% dikembalikan sesuai request
                 let adminFee = Math.max(1, Math.ceil(totalBayar * 0.0001)); 
                 totalBayar += adminFee;
                 ketHarga = ` (Termasuk Admin Rp${adminFee})`;
@@ -830,7 +814,7 @@
                 transferInfo.style.display = 'none'; 
                 qrisBox.style.display = 'block';
                 
-                // Generate QRIS Dinamis Otomatis dengan kalkulasi EMVCo resmi
+                // Panggil fungsi QRIS Semi-Statis yang baru
                 let dynamicQrisPayload = generateDynamicQRIS(rawQrisStatis, totalBayar);
                 
                 try {
