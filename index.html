@@ -424,7 +424,7 @@
                     <button id="btn-copy-rek" class="btn-copy" onclick="copyText(document.getElementById('co-method-number').innerText)">Salin Nomor 📋</button>
                 </div>
 
-                <!-- QRIS TANPA TEKS DI ATASNYA SUPAYA TIDAK KEPOTONG/MIRING -->
+                <!-- QRIS CONTAINER CENTER -->
                 <div class="qris-container" id="qris-box">
                     <div id="qrcode"></div>
                 </div>
@@ -450,7 +450,6 @@
             document.getElementById('maintenance-overlay').style.display = 'flex';
         }
 
-        /* UCAPAN SAPAAN DAN WAKTU YANG DITINGKATKAN DAN LEBIH ELEGANK */
         function setDynamicGreeting() {
             const now = new Date();
             const hour = now.getHours();
@@ -467,7 +466,6 @@
             document.getElementById('greeting-text').innerText = greetingText;
         }
 
-        /* AUTOMATIC CAROUSEL SLIDER UNTUK PAPAN PROMOSI */
         function initAutoSlider() {
             const slider = document.getElementById('promoSlider');
             if (!slider) return;
@@ -476,19 +474,19 @@
 
             setInterval(() => {
                 currentSlide = (currentSlide + 1) % totalSlides;
-                const cardWidth = slider.children[0].offsetWidth + 12; // Width + Gap
+                const cardWidth = slider.children[0].offsetWidth + 12;
                 slider.scrollTo({
                     left: cardWidth * currentSlide,
                     behavior: 'smooth'
                 });
-            }, 3500); // Berganti otomatis setiap 3.5 detik
+            }, 3500);
         }
 
         const dataProduk = {
             "app-premium": [
                 { id: "canva", nama: "🎨 Canva", img: "canva.jpg", type: "ui-canva" },
                 { id: "am", nama: "✨ Alight Motion", img: "alightmotion.jpg", type: "ui-std", inputs: ["Nomor WhatsApp"], catatan: "• Alight Motion 1 Tahun.<br>• Proses cepat & aman." },
-                { id: "yt", nama: "▶️ YouTube", img: "youtube.jpg", type: "ui-std", inputs: ["Email (Family) / No WA (Individual)"], catatan: "<strong>Ketentuan Pemesanan:</strong><br>• Family Plan: Masukkan email akun Youtube kamu.<br>• Individual Plan: Masukkan nomor WhatsApp kamu.<br><strong>Catatan Tambahan:</strong><br>• Family Plan: Pastikan email belum melebihi batas batas undangan (Maks. 2 family / tahun)." },
+                { id: "yt", nama: "▶️ YouTube", img: "youtube.jpg", type: "ui-std", inputs: ["Email (Family) / No WA (Individual)"], catatan: "<strong>Ketentuan Pemesanan:</strong><br>• Family Plan: Masukkan email akun Youtube kamu.<br>• Individual Plan: Masukkan nomor WhatsApp kamu.<br><strong>Catatan Tambahan:</strong><br>• Family Plan: Pastikan email belum melebihi batas undangan (Maks. 2 family / tahun)." },
                 { id: "iqiyi", nama: "🍿 IQIYI", img: "iqiyi.jpg", type: "ui-std", inputs: ["Nomor WhatsApp"], catatan: "• Proses manual (dikirim langsung via WhatsApp)." },
                 { id: "capcut", nama: "✂️ Capcut", img: "capcut.jpg", type: "ui-std", inputs: ["Nomor WhatsApp"], catatan: "• Proses manual via WhatsApp.<br>• Dilarang menyebarkan akun.<br>• Harap kirimkan tangkapan layar (screenshot) profil setelah login untuk mengaktifkan garansi (maks. 1x24 jam)." },
                 { id: "wetv", nama: "🎬 WeTV", img: "viu.jpg", type: "ui-std", inputs: ["Nomor WhatsApp"], catatan: "• Masukkan nomor WhatsApp aktif.<br>• Detail akun dikirimkan via WhatsApp." },
@@ -583,7 +581,7 @@
         let activeVariant = null;
         let checkoutData = {};
         
-        /* KODE QRIS STATIS TERBARU CIAA STORE REAL (KOTA TOMOHON) */
+        /* KODE QRIS STATIS NATIVE CIAA STORE REAL (KOTA TOMOHON) */
         const rawQrisStatis = "00020101021126570011ID.DANA.WWW011893600915376556859902097655685990303UMI51440014ID.CO.QRIS.WWW0215ID10253787183610303UMI5204481453033605802ID5915Ciaa Store Real6012Kota Tomohon610595446630433D5";
 
         window.onload = () => {
@@ -723,27 +721,50 @@
             activeVariant = { nama, harga };
         }
 
+        /* PERHITUNGAN CRC16 CCITT (EMVCo STANDARD) */
         function crc16(str) {
             let crc = 0xFFFF;
             for (let c = 0; c < str.length; c++) {
                 crc ^= str.charCodeAt(c) << 8;
                 for (let i = 0; i < 8; i++) {
-                    if (crc & 0x8000) crc = (crc << 1) ^ 0x1021;
-                    else crc = crc << 1;
+                    if (crc & 0x8000) {
+                        crc = ((crc << 1) ^ 0x1021) & 0xFFFF;
+                    } else {
+                        crc = (crc << 1) & 0xFFFF;
+                    }
                 }
             }
-            return (crc & 0xFFFF).toString(16).toUpperCase().padStart(4, '0');
+            return crc.toString(16).toUpperCase().padStart(4, '0');
         }
 
+        /* INJEKSI EMVCo DINAMIS SECARA STANDAR RESMI EMVCO QRIS */
         function generateDynamicQRIS(qrisStr, amount) {
+            // 1. Potong bagian CRC16 lama (4 digit terakhir + tag 6304)
+            let qrisWithoutCRC = qrisStr.substring(0, qrisStr.length - 8);
+
+            // 2. Ubah Tag 01 dari 11 (Statis) ke 12 (Dinamis)
+            if (qrisWithoutCRC.substr(0, 6) === "000201") {
+                qrisWithoutCRC = "000201010212" + qrisWithoutCRC.substring(12);
+            }
+
+            // 3. Format Tag 54 (Amount/Nominal Transaksi)
             let amountStr = amount.toString();
             let tag54 = "54" + amountStr.length.toString().padStart(2, '0') + amountStr;
-            let base = qrisStr.substring(0, qrisStr.length - 4); 
-            base = base.substring(0, base.length - 4); 
-            base = base.replace("5802ID", tag54 + "5802ID");
-            let payloadWithoutCRC = base + "6304";
-            let newCRC = crc16(payloadWithoutCRC);
-            return payloadWithoutCRC + newCRC;
+
+            // 4. Sisipkan Tag 54 secara tepat di depan Tag 58 (Country Code '5802ID')
+            let pos58 = qrisWithoutCRC.indexOf("5802ID");
+            let dynamicPayload = "";
+            if (pos58 !== -1) {
+                dynamicPayload = qrisWithoutCRC.substring(0, pos58) + tag54 + qrisWithoutCRC.substring(pos58);
+            } else {
+                dynamicPayload = qrisWithoutCRC + tag54;
+            }
+
+            // 5. Tambahkan tag 6304 lalu kalkulasi ulang CRC16 resmi
+            dynamicPayload += "6304";
+            let newCRC = crc16(dynamicPayload);
+
+            return dynamicPayload + newCRC;
         }
 
         function proceedToCheckout() {
@@ -790,9 +811,12 @@
             if(payMethod === "QRIS") {
                 transferInfo.style.display = 'none'; 
                 qrisBox.style.display = 'block';
+                
+                // Panggil fungsi perbaikan QRIS dinamis yang valid
                 let dynamicQrisPayload = generateDynamicQRIS(rawQrisStatis, totalBayar);
+                
                 try {
-                    new QRCode(qrContainer, { text: dynamicQrisPayload, width: 200, height: 200, colorDark: "#000000", colorLight: "#ffffff", correctLevel: QRCode.CorrectLevel.H });
+                    new QRCode(qrContainer, { text: dynamicQrisPayload, width: 200, height: 200, colorDark: "#000000", colorLight: "#ffffff", correctLevel: QRCode.CorrectLevel.M });
                 } catch(e) {
                     let imgFallback = document.createElement('img');
                     imgFallback.src = "https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=" + encodeURIComponent(dynamicQrisPayload);
@@ -831,7 +855,6 @@
             return antrianNo;
         }
 
-        /* FORMAT WA DINAMIS BERBEDA UNTUK SETIAP JENIS LAYANAN */
         function sendToWhatsApp() {
             const noWA = "6289505929536";
             let antrianNo = getOrGenerateQueueNumber();
@@ -955,7 +978,7 @@
         }
 
         function hapusAntrian(index) {
-            if(confirm("Yakin ingin menghapus antrian ini?")) {
+            if(confirm("Yakin ingin menghapus antrian me-order ini?")) {
                 let antrianList = JSON.parse(localStorage.getItem('ciaa_antrian') || '[]');
                 antrianList.splice(index, 1); localStorage.setItem('ciaa_antrian', JSON.stringify(antrianList));
                 loadAdminAntrianList(); loadAntrianList(); loadAdminDashboard();
