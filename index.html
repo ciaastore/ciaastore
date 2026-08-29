@@ -88,34 +88,15 @@
         .btn-admin:hover { transform: scale(1.1); }
         .btn-admin img { width: 22px; height: 22px; border-radius: 50%; object-fit: cover; display: block; }
 
-        /* BANNER PROMOSI OTOMATIS SCROLL (CAROUSEL SLIDER) */
-        .promo-slider-wrapper {
-            position: relative;
-            padding: 12px 15px 5px 15px;
-            overflow: hidden;
-        }
-
-        .promo-slider {
-            display: flex;
-            gap: 12px;
-            overflow-x: auto;
-            scroll-snap-type: x mandatory;
-            scrollbar-width: none;
-            scroll-behavior: smooth;
-        }
+        .promo-slider-wrapper { position: relative; padding: 12px 15px 5px 15px; overflow: hidden; }
+        .promo-slider { display: flex; gap: 12px; overflow-x: auto; scroll-snap-type: x mandatory; scrollbar-width: none; scroll-behavior: smooth; }
         .promo-slider::-webkit-scrollbar { display: none; }
 
         .promo-card-h {
-            min-width: 90%;
-            max-width: 90%;
-            flex-shrink: 0;
-            scroll-snap-align: center;
+            min-width: 90%; max-width: 90%; flex-shrink: 0; scroll-snap-align: center;
             background: linear-gradient(135deg, #ffffff 0%, var(--soft-pink) 100%);
-            border: 2px solid var(--primary-pink);
-            border-radius: 14px;
-            padding: 12px 15px;
-            box-shadow: 0 4px 12px rgba(255,182,193,0.3);
-            transition: transform 0.3s ease;
+            border: 2px solid var(--primary-pink); border-radius: 14px; padding: 12px 15px;
+            box-shadow: 0 4px 12px rgba(255,182,193,0.3); transition: transform 0.3s ease;
         }
         .promo-card-h h3 { font-size: 14px; color: var(--deep-pink); margin-bottom: 5px; display: flex; align-items: center; gap: 5px; font-weight: bold;}
         .promo-card-h p { font-size: 12px; line-height: 1.4; color: var(--dark-text); }
@@ -178,30 +159,15 @@
         .payment-option { display: flex; align-items: center; padding: 10px; border: 1.5px solid var(--primary-pink); border-radius: 12px; margin-bottom: 8px; cursor: pointer; background: var(--white); font-size: 13px; }
         .payment-option input { margin-right: 8px; accent-color: var(--deep-pink); }
         
-        /* BOX PEMBUNGKUS QRIS FULL CENTER TANPA TEKS */
         .qris-container { 
-            background: white; 
-            padding: 20px; 
-            border-radius: var(--card-radius); 
-            margin: 15px auto; 
-            border: 2px solid var(--primary-pink); 
-            width: 100%;
-            box-sizing: border-box;
-            text-align: center;
+            background: white; padding: 20px; border-radius: var(--card-radius); 
+            margin: 15px auto; border: 2px solid var(--primary-pink); width: 100%; text-align: center;
         }
 
-        #qrcode { 
-            text-align: center;
-            margin: 0 auto;
-            width: 100%;
-        }
-
+        #qrcode { text-align: center; margin: 0 auto; width: 100%; }
         #qrcode canvas, #qrcode img { 
-            margin: 0 auto !important; 
-            display: inline-block !important;
-            max-width: 200px !important; 
-            height: auto !important;
-            border-radius: 8px;
+            margin: 0 auto !important; display: inline-block !important;
+            max-width: 200px !important; height: auto !important; border-radius: 8px;
         }
 
         #maintenance-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #ffe4e1; z-index: 9999; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; padding: 20px; }
@@ -217,7 +183,6 @@
 </head>
 <body>
 
-    <!-- CAHAYA & KUPU-KUPU 3D CSS -->
     <div class="light-rays"></div>
     <div class="real-butterfly fly-path-1"></div>
     <div class="real-butterfly fly-path-2"></div>
@@ -255,7 +220,6 @@
             <img src="banner.jpg" alt="Ciaa Store Banner" class="banner-utama" onerror="this.style.display='none'">
         </header>
 
-        <!-- PAPAN PROMOSI BANNER OTOMATIS SCROLL (CAROUSEL SLIDER) -->
         <div class="promo-slider-wrapper">
             <div class="promo-slider" id="promoSlider">
                 <div class="promo-card-h">
@@ -396,9 +360,9 @@
                     1️⃣ Pilih produk/layanan pada menu <strong>Layanan</strong>.<br>
                     2️⃣ Lengkapi data pemesanan sesuai petunjuk.<br>
                     3️⃣ Pilih varian produk dan metode pembayaran.<br>
-                    4️⃣ Tekan <strong>Lanjutkan Pembayaran</strong> untuk mendapatkan instruksi transfer.<br>
-                    5️⃣ Lakukan pembayaran dan klik <strong>Konfirmasi Pembayaran ke Admin</strong> untuk mengirimkan bukti transfer via WhatsApp.<br>
-                    6️⃣ Pesanan Anda akan segera diproses oleh tim kami! 🌸✨
+                    4️⃣ Tekan <strong>Lanjutkan Pembayaran</strong> untuk mendapatkan QRIS.<br>
+                    5️⃣ Scan QRIS (Nomor unik tambahan Rp 1–100 akan otomatis terkunci di aplikasi Anda).<br>
+                    6️⃣ Selesaikan pembayaran dan konfirmasi ke WhatsApp Admin! 🌸✨
                 </div>
             </div>
 
@@ -414,7 +378,7 @@
                 <div class="mini-grid" id="package-list" style="margin-top:0;"></div>
 
                 <h3 style="margin-top: 15px; margin-bottom: 8px; color: var(--deep-pink); font-size: 14px;">Pilih Pembayaran</h3>
-                <div class="payment-option"><input type="radio" name="pay-method" value="QRIS" id="pay-qris" checked> <label for="pay-qris">QRIS All Payment (Otomatis + Admin 0.01%)</label></div>
+                <div class="payment-option"><input type="radio" name="pay-method" value="QRIS" id="pay-qris" checked> <label for="pay-qris">QRIS All Payment (Otomatis + Kode Unik Rp1-100)</label></div>
                 <div class="payment-option"><input type="radio" name="pay-method" value="DANA" id="pay-dana"> <label for="pay-dana">DANA (081338224767 A/N AGUS SUTIARNO)</label></div>
                 <div class="payment-option"><input type="radio" name="pay-method" value="GOPAY" id="pay-gopay"> <label for="pay-gopay">GoPay (089505929536)</label></div>
 
@@ -581,7 +545,7 @@
         let activeVariant = null;
         let checkoutData = {};
         
-        /* KODE QRIS NATIVE CIAA STORE (KOTA TOMOHON) */
+        /* KODE QRIS STATIS NATIVE CIAA STORE */
         const rawQrisStatis = "00020101021126570011ID.DANA.WWW011893600915376556859902097655685990303UMI51440014ID.CO.QRIS.WWW0215ID10253787183610303UMI5204481453033605802ID5915Ciaa Store Real6012Kota Tomohon610595446630433D5";
 
         window.onload = () => {
@@ -737,28 +701,34 @@
             return crc.toString(16).toUpperCase().padStart(4, '0');
         }
 
-        /* GENERATE QRIS DINAMIS 100% VALID BERDASARKAN ATURAN EMVCO */
-        function generateDynamicQRIS(qrisStr, amount) {
-            // 1. Buang 8 karakter terakhir (Tag 6304 + 4 digit CRC lama)
-            let baseQris = qrisStr.substring(0, qrisStr.length - 8);
+        /* GENERATE QRIS DENGAN KODE UNIK TAMBAHAN RP 1 - 100 */
+        function generateUniqueQRIS(qrisStr, amount) {
+            let crcIndex = qrisStr.indexOf("6304");
+            if (crcIndex !== -1) {
+                qrisStr = qrisStr.substring(0, crcIndex);
+            }
 
-            // 2. Ubah Tag 01 (Metode Inisiasi) dari 11 (Statis) menjadi 12 (Dinamis)
-            baseQris = baseQris.replace("010211", "010212");
+            // Tambahkan kode unik acak antara 1 sampai 100 rupiah ke total bayar
+            let uniqueCode = Math.floor(Math.random() * 100) + 1;
+            let finalAmount = amount + uniqueCode;
 
-            // 3. Susun Tag 54 (Nominal Transaksi)
-            let amountStr = amount.toString();
+            let amountStr = finalAmount.toString();
             let tag54 = "54" + amountStr.length.toString().padStart(2, '0') + amountStr;
 
-            // 4. Sisipkan Tag 54 tepat di depan Tag 58 (Kode Negara '5802ID') secara aman.
-            let parts = baseQris.split("5802ID");
-            let dynamicQris = parts[0] + tag54 + "5802ID" + parts[1];
+            let pos58 = qrisStr.indexOf("5802ID");
+            if (pos58 !== -1) {
+                qrisStr = qrisStr.substring(0, pos58) + tag54 + qrisStr.substring(pos58);
+            } else {
+                qrisStr += tag54;
+            }
 
-            // 5. Tambahkan awalan Tag 63 (6304) lalu hitung dan pasangkan CRC16-nya
-            dynamicQris += "6304";
-            let newCRC = crc16(dynamicQris);
+            qrisStr += "6304";
+            let newCRC = crc16(qrisStr);
 
-            return dynamicQris + newCRC;
+            return { payload: qrisStr + newCRC, totalFinal: finalAmount, kodeUnik: uniqueCode };
         }
+
+        let currentUniqueTotal = 0;
 
         function proceedToCheckout() {
             if(!activeVariant) return alert("Silakan pilih paket produk terlebih dahulu ya! 🌸");
@@ -778,25 +748,19 @@
             }
 
             const payMethod = document.querySelector('input[name="pay-method"]:checked').value;
-            let totalBayar = activeVariant.harga;
+            let baseTotal = activeVariant.harga;
             let ketHarga = "";
 
             if(payMethod === "QRIS") {
-                // Biaya Admin 0,01% (dibulatkan, minimal Rp1)
-                let adminFee = Math.max(1, Math.ceil(totalBayar * 0.0001)); 
-                totalBayar += adminFee;
-                ketHarga = ` (Termasuk Admin Rp${adminFee})`;
+                let adminFee = Math.max(1, Math.ceil(baseTotal * 0.0001)); 
+                baseTotal += adminFee;
             }
 
             checkoutData = { 
                 produkId: activeProduct.id, produk: activeProduct.nama, paket: activeVariant.nama, 
-                data: dataPelanggan.join(" | "), desc: descText, total: totalBayar, metode: payMethod, type: activeProduct.type 
+                data: dataPelanggan.join(" | "), desc: descText, metode: payMethod, type: activeProduct.type 
             };
 
-            document.getElementById('co-produk').innerText = 'Layanan: ' + activeProduct.nama + ' - ' + activeVariant.nama;
-            document.getElementById('co-data').innerText = 'Data: ' + checkoutData.data;
-            document.getElementById('co-harga').innerText = 'Total: Rp ' + totalBayar.toLocaleString('id-ID') + ketHarga;
-            
             const transferInfo = document.getElementById('transfer-info');
             const qrisBox = document.getElementById('qris-box');
             const qrContainer = document.getElementById('qrcode');
@@ -806,19 +770,32 @@
                 transferInfo.style.display = 'none'; 
                 qrisBox.style.display = 'block';
                 
-                // Panggil fungsi perakitan QRIS Dinamis (Nominal Terisi Otomatis)
-                let dynamicQrisPayload = generateDynamicQRIS(rawQrisStatis, totalBayar);
-                
+                // Buat QRIS dengan kode unik Rp 1 - 100 otomatis
+                let qrisData = generateUniqueQRIS(rawQrisStatis, baseTotal);
+                currentUniqueTotal = qrisData.totalFinal;
+                checkoutData.total = currentUniqueTotal;
+
+                document.getElementById('co-produk').innerText = 'Layanan: ' + activeProduct.nama + ' - ' + activeVariant.nama;
+                document.getElementById('co-data').innerText = 'Data: ' + checkoutData.data;
+                document.getElementById('co-harga').innerText = 'Total Bayar: Rp ' + currentUniqueTotal.toLocaleString('id-ID') + ` (Termasuk Kode Unik Rp${qrisData.kodeUnik} & Admin)`;
+
                 try {
-                    new QRCode(qrContainer, { text: dynamicQrisPayload, width: 200, height: 200, colorDark: "#000000", colorLight: "#ffffff", correctLevel: QRCode.CorrectLevel.M });
+                    new QRCode(qrContainer, { text: qrisData.payload, width: 200, height: 200, colorDark: "#000000", colorLight: "#ffffff", correctLevel: QRCode.CorrectLevel.M });
                 } catch(e) {
                     let imgFallback = document.createElement('img');
-                    imgFallback.src = "https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=" + encodeURIComponent(dynamicQrisPayload);
+                    imgFallback.src = "https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=" + encodeURIComponent(qrisData.payload);
                     qrContainer.appendChild(imgFallback);
                 }
             } else {
                 transferInfo.style.display = 'block'; 
                 qrisBox.style.display = 'none';
+                currentUniqueTotal = baseTotal;
+                checkoutData.total = currentUniqueTotal;
+
+                document.getElementById('co-produk').innerText = 'Layanan: ' + activeProduct.nama + ' - ' + activeVariant.nama;
+                document.getElementById('co-data').innerText = 'Data: ' + checkoutData.data;
+                document.getElementById('co-harga').innerText = 'Total: Rp ' + currentUniqueTotal.toLocaleString('id-ID');
+
                 if(payMethod === "DANA") {
                     document.getElementById('co-method-title').innerText = "Transfer DANA";
                     document.getElementById('co-method-number').innerText = "081338224767 (A/N AGUS SUTIARNO)";
