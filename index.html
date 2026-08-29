@@ -414,7 +414,7 @@
                 <div class="mini-grid" id="package-list" style="margin-top:0;"></div>
 
                 <h3 style="margin-top: 15px; margin-bottom: 8px; color: var(--deep-pink); font-size: 14px;">Pilih Pembayaran</h3>
-                <div class="payment-option"><input type="radio" name="pay-method" value="QRIS" id="pay-qris" checked> <label for="pay-qris">QRIS All Payment (Kode Unik Admin 0.03%)</label></div>
+                <div class="payment-option"><input type="radio" name="pay-method" value="QRIS" id="pay-qris" checked> <label for="pay-qris">QRIS All Payment (Otomatis + Admin 0.01%)</label></div>
                 <div class="payment-option"><input type="radio" name="pay-method" value="DANA" id="pay-dana"> <label for="pay-dana">DANA (081338224767 A/N AGUS SUTIARNO)</label></div>
                 <div class="payment-option"><input type="radio" name="pay-method" value="GOPAY" id="pay-gopay"> <label for="pay-gopay">GoPay (089505929536)</label></div>
 
@@ -440,7 +440,6 @@
                 <!-- QRIS CONTAINER CENTER -->
                 <div class="qris-container" id="qris-box">
                     <div id="qrcode"></div>
-                    <p style="font-size:11px; color:#666; margin-top:10px;">⚠️ Silakan masukkan nominal pembayaran persis sesuai total di atas saat melakukan scan QRIS.</p>
                 </div>
 
                 <div class="alert-box">
@@ -735,6 +734,56 @@
             activeVariant = { nama, harga };
         }
 
+        /* KALKULASI CRC16 CCITT (EMVCo STANDARD) */
+        function crc16(str) {
+            let crc = 0xFFFF;
+            for (let c = 0; c < str.length; c++) {
+                crc ^= str.charCodeAt(c) << 8;
+                for (let i = 0; i < 8; i++) {
+                    if (crc & 0x8000) {
+                        crc = ((crc << 1) ^ 0x1021) & 0xFFFF;
+                    } else {
+                        crc = (crc << 1) & 0xFFFF;
+                    }
+                }
+            }
+            return crc.toString(16).toUpperCase().padStart(4, '0');
+        }
+
+        /* GENERATE DINAMIS QRIS VALID SESUAI STANDAR EMVCO */
+        function generateDynamicQRIS(qrisStr, amount) {
+            let crcIndex = qrisStr.indexOf("6304");
+            if (crcIndex !== -1) {
+                qrisStr = qrisStr.substring(0, crcIndex);
+            }
+
+            // Ubah Point of Initiation dari Statis (11) ke Dinamis (12)
+            qrisStr = qrisStr.replace("010211", "010212");
+
+            let amountStr = amount.toString();
+            let tag54 = "54" + amountStr.length.toString().padStart(2, '0') + amountStr;
+
+            // Bersihkan Tag 54 lama jika ada
+            let pos54 = qrisStr.indexOf("54");
+            if (pos54 !== -1) {
+                let len54 = parseInt(qrisStr.substr(pos54 + 2, 2), 10);
+                qrisStr = qrisStr.substring(0, pos54) + qrisStr.substring(pos54 + 4 + len54);
+            }
+
+            // Sisipkan Tag 54 sebelum Tag 5802ID
+            let pos58 = qrisStr.indexOf("5802ID");
+            if (pos58 !== -1) {
+                qrisStr = qrisStr.substring(0, pos58) + tag54 + qrisStr.substring(pos58);
+            } else {
+                qrisStr += tag54;
+            }
+
+            qrisStr += "6304";
+            let newCRC = crc16(qrisStr);
+
+            return qrisStr + newCRC;
+        }
+
         function proceedToCheckout() {
             if(!activeVariant) return alert("Silakan pilih paket produk terlebih dahulu ya! 🌸");
             
@@ -757,10 +806,10 @@
             let ketHarga = "";
 
             if(payMethod === "QRIS") {
-                // Kode Unik Acak 0,03% (antara Rp1 s/d Rp300)
-                let uniqueCode = Math.floor(Math.random() * 300) + 1;
-                totalBayar += uniqueCode;
-                ketHarga = ` (Termasuk Kode Unik Rp${uniqueCode})`;
+                // Biaya Admin 0,01% (Maksimal presisi minimal Rp1)
+                let adminFee = Math.max(1, Math.ceil(totalBayar * 0.0001)); 
+                totalBayar += adminFee;
+                ketHarga = ` (Termasuk Admin Rp${adminFee})`;
             }
 
             checkoutData = { 
@@ -781,12 +830,14 @@
                 transferInfo.style.display = 'none'; 
                 qrisBox.style.display = 'block';
                 
-                // Gunakan QRIS Statis Murni (Garansi 100% Bisa Di-Scan di Seluruh E-Wallet/m-Banking)
+                // Generate QRIS Dinamis Otomatis dengan kalkulasi EMVCo resmi
+                let dynamicQrisPayload = generateDynamicQRIS(rawQrisStatis, totalBayar);
+                
                 try {
-                    new QRCode(qrContainer, { text: rawQrisStatis, width: 200, height: 200, colorDark: "#000000", colorLight: "#ffffff", correctLevel: QRCode.CorrectLevel.M });
+                    new QRCode(qrContainer, { text: dynamicQrisPayload, width: 200, height: 200, colorDark: "#000000", colorLight: "#ffffff", correctLevel: QRCode.CorrectLevel.M });
                 } catch(e) {
                     let imgFallback = document.createElement('img');
-                    imgFallback.src = "https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=" + encodeURIComponent(rawQrisStatis);
+                    imgFallback.src = "https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=" + encodeURIComponent(dynamicQrisPayload);
                     qrContainer.appendChild(imgFallback);
                 }
             } else {
