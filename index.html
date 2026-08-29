@@ -255,7 +255,7 @@
             <img src="banner.jpg" alt="Ciaa Store Banner" class="banner-utama" onerror="this.style.display='none'">
         </header>
 
-        <!-- PAPAN PROMOSI BANNER OTOMATIS SCROLL (CAROUSEL) -->
+        <!-- PAPAN PROMOSI BANNER OTOMATIS SCROLL (CAROUSEL SLIDER) -->
         <div class="promo-slider-wrapper">
             <div class="promo-slider" id="promoSlider">
                 <div class="promo-card-h">
@@ -266,6 +266,10 @@
                     <h3>🎮 Top Up Game & Voucher 🎊🔖</h3>
                     <p>Butuh Diamond atau Voucher Game? Top up praktis di Ciaa Store! Proses cepat, aman, & legal 100%. Tersedia untuk MLBB, FF, PUBG Mobile, dan game favorit lainnya! 🛒💖</p>
                 </div>
+                <div class="promo-card-h">
+                    <h3>📱 Pulsa Data & Paket Data (Segera Hadir) 📶✨</h3>
+                    <p>Isi ulang pulsa dan kuota internet makin mudah & hemat di Ciaa Store! Semua operator lengkap untuk kebutuhan harianmu. Nantikan rilis resmi layanannya ya! 💖</p>
+                </div>
             </div>
         </div>
 
@@ -275,6 +279,7 @@
 
         <div class="nav-tabs" id="main-nav-tabs">
             <div class="tab-item active" onclick="switchMenu('layanan-section', event)">🛍️ Layanan</div>
+            <div class="tab-item" onclick="switchMenu('kebutuhan-harian-section', event)">📲 Kebutuhan Harian (Soon)</div>
             <div class="tab-item" onclick="switchMenu('coming-soon-section', event)">🎟️ Top Up Voucher (Soon)</div>
             <div class="tab-item" onclick="switchMenu('antrian-section', event)">🎫 Cek Antrian</div>
             <div class="tab-item" onclick="switchMenu('kontak-section', event)">📞 Kontak Admin</div>
@@ -294,6 +299,14 @@
                     <div class="service-box" onclick="openForm('bs', 'topup-game')"><img src="bs.jpg" onerror="this.src='https://cdn-icons-png.flaticon.com/512/869/869034.png'"><h4>💎 Blood Strike</h4></div>
                     <div class="service-box" onclick="openForm('jasher', 'jasa-ciaa')"><img src="logo.jpg" onerror="this.src='https://cdn-icons-png.flaticon.com/512/869/869034.png'"><h4>🚀 Jasher</h4></div>
                     <div class="service-box" onclick="openForm('jpm', 'jasa-ciaa')"><img src="logo.jpg" onerror="this.src='https://cdn-icons-png.flaticon.com/512/869/869034.png'"><h4>📈 JPM</h4></div>
+                </div>
+            </div>
+
+            <div id="kebutuhan-harian-section" class="section">
+                <div class="contact-card" style="border: 2px dashed var(--deep-pink);">
+                    <div style="font-size: 40px; margin-bottom: 8px;">📲</div>
+                    <h2 style="color: var(--deep-pink); margin-bottom: 6px; font-size: 16px;">Pulsa Data & Paket Data (Segera Hadir)</h2>
+                    <p style="color: #555; line-height: 1.5; font-size: 13px;">Layanan pengisian Pulsa All Operator, Paket Data Internet, dan Token PLN sedang disiapkan. Nantikan promo harga bersaing dari Ciaa Store! 🌸✨</p>
                 </div>
             </div>
 
@@ -401,7 +414,7 @@
                 <div class="mini-grid" id="package-list" style="margin-top:0;"></div>
 
                 <h3 style="margin-top: 15px; margin-bottom: 8px; color: var(--deep-pink); font-size: 14px;">Pilih Pembayaran</h3>
-                <div class="payment-option"><input type="radio" name="pay-method" value="QRIS" id="pay-qris" checked> <label for="pay-qris">QRIS All Payment (Otomatis + Admin 0.01%)</label></div>
+                <div class="payment-option"><input type="radio" name="pay-method" value="QRIS" id="pay-qris" checked> <label for="pay-qris">QRIS All Payment (Kode Unik Admin 0.03%)</label></div>
                 <div class="payment-option"><input type="radio" name="pay-method" value="DANA" id="pay-dana"> <label for="pay-dana">DANA (081338224767 A/N AGUS SUTIARNO)</label></div>
                 <div class="payment-option"><input type="radio" name="pay-method" value="GOPAY" id="pay-gopay"> <label for="pay-gopay">GoPay (089505929536)</label></div>
 
@@ -427,6 +440,7 @@
                 <!-- QRIS CONTAINER CENTER -->
                 <div class="qris-container" id="qris-box">
                     <div id="qrcode"></div>
+                    <p style="font-size:11px; color:#666; margin-top:10px;">⚠️ Silakan masukkan nominal pembayaran persis sesuai total di atas saat melakukan scan QRIS.</p>
                 </div>
 
                 <div class="alert-box">
@@ -721,53 +735,6 @@
             activeVariant = { nama, harga };
         }
 
-        /* PERHITUNGAN CRC16 CCITT (EMVCo STANDARD) */
-        function crc16(str) {
-            let crc = 0xFFFF;
-            for (let c = 0; c < str.length; c++) {
-                crc ^= str.charCodeAt(c) << 8;
-                for (let i = 0; i < 8; i++) {
-                    if (crc & 0x8000) {
-                        crc = ((crc << 1) ^ 0x1021) & 0xFFFF;
-                    } else {
-                        crc = (crc << 1) & 0xFFFF;
-                    }
-                }
-            }
-            return crc.toString(16).toUpperCase().padStart(4, '0');
-        }
-
-        /* INJEKSI EMVCo DINAMIS SECARA STANDAR RESMI EMVCO QRIS */
-        function generateDynamicQRIS(qrisStr, amount) {
-            let crcIndex = qrisStr.indexOf("6304");
-            if (crcIndex !== -1) {
-                qrisStr = qrisStr.substring(0, crcIndex);
-            }
-
-            qrisStr = qrisStr.replace("010211", "010212");
-
-            let amountStr = amount.toString();
-            let tag54 = "54" + amountStr.length.toString().padStart(2, '0') + amountStr;
-
-            let pos54 = qrisStr.indexOf("54");
-            if (pos54 !== -1) {
-                let len54 = parseInt(qrisStr.substr(pos54 + 2, 2), 10);
-                qrisStr = qrisStr.substring(0, pos54) + qrisStr.substring(pos54 + 4 + len54);
-            }
-
-            let pos58 = qrisStr.indexOf("5802ID");
-            if (pos58 !== -1) {
-                qrisStr = qrisStr.substring(0, pos58) + tag54 + qrisStr.substring(pos58);
-            } else {
-                qrisStr += tag54;
-            }
-
-            qrisStr += "6304";
-            let newCRC = crc16(qrisStr);
-
-            return qrisStr + newCRC;
-        }
-
         function proceedToCheckout() {
             if(!activeVariant) return alert("Silakan pilih paket produk terlebih dahulu ya! 🌸");
             
@@ -790,9 +757,10 @@
             let ketHarga = "";
 
             if(payMethod === "QRIS") {
-                let adminFee = Math.max(1, Math.ceil(totalBayar * 0.0001)); 
-                totalBayar += adminFee;
-                ketHarga = ` (Termasuk Admin Rp${adminFee})`;
+                // Kode Unik Acak 0,03% (antara Rp1 s/d Rp300)
+                let uniqueCode = Math.floor(Math.random() * 300) + 1;
+                totalBayar += uniqueCode;
+                ketHarga = ` (Termasuk Kode Unik Rp${uniqueCode})`;
             }
 
             checkoutData = { 
@@ -813,13 +781,12 @@
                 transferInfo.style.display = 'none'; 
                 qrisBox.style.display = 'block';
                 
-                let dynamicQrisPayload = generateDynamicQRIS(rawQrisStatis, totalBayar);
-                
+                // Gunakan QRIS Statis Murni (Garansi 100% Bisa Di-Scan di Seluruh E-Wallet/m-Banking)
                 try {
-                    new QRCode(qrContainer, { text: dynamicQrisPayload, width: 200, height: 200, colorDark: "#000000", colorLight: "#ffffff", correctLevel: QRCode.CorrectLevel.M });
+                    new QRCode(qrContainer, { text: rawQrisStatis, width: 200, height: 200, colorDark: "#000000", colorLight: "#ffffff", correctLevel: QRCode.CorrectLevel.M });
                 } catch(e) {
                     let imgFallback = document.createElement('img');
-                    imgFallback.src = "https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=" + encodeURIComponent(dynamicQrisPayload);
+                    imgFallback.src = "https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=" + encodeURIComponent(rawQrisStatis);
                     qrContainer.appendChild(imgFallback);
                 }
             } else {
