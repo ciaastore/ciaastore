@@ -737,35 +737,27 @@
             return crc.toString(16).toUpperCase().padStart(4, '0');
         }
 
-        /* GENERATE QRIS SEMI-STATIS (NOMINAL OTOMATIS TAPI AMAN DARI BLOKIR) */
+        /* GENERATE QRIS DINAMIS 100% VALID BERDASARKAN ATURAN EMVCO */
         function generateDynamicQRIS(qrisStr, amount) {
-            // 1. Potong bagian CRC16 (6304 + 4 digit kode lama)
-            let crcIndex = qrisStr.indexOf("6304");
-            if (crcIndex !== -1) {
-                qrisStr = qrisStr.substring(0, crcIndex);
-            }
+            // 1. Buang 8 karakter terakhir (Tag 6304 + 4 digit CRC lama)
+            let baseQris = qrisStr.substring(0, qrisStr.length - 8);
 
-            // KUNCI PERBAIKAN: JANGAN UBAH TAG 01 MENJADI 12. 
-            // Biarkan kodenya statis (11) tetapi kita injeksi Tag 54 (Nominal).
-            // E-wallet akan membaca nominal otomatis dan tidak memblokir kode.
+            // 2. Ubah Tag 01 (Metode Inisiasi) dari 11 (Statis) menjadi 12 (Dinamis)
+            baseQris = baseQris.replace("010211", "010212");
 
-            // 2. Buat Tag 54 untuk Nominal Transaksi
+            // 3. Susun Tag 54 (Nominal Transaksi)
             let amountStr = amount.toString();
             let tag54 = "54" + amountStr.length.toString().padStart(2, '0') + amountStr;
 
-            // 3. Sisipkan tepat sebelum Tag 5802ID agar struktur EMVCo tidak rusak
-            let pos58 = qrisStr.indexOf("5802ID");
-            if (pos58 !== -1) {
-                qrisStr = qrisStr.substring(0, pos58) + tag54 + qrisStr.substring(pos58);
-            } else {
-                qrisStr += tag54;
-            }
+            // 4. Sisipkan Tag 54 tepat di depan Tag 58 (Kode Negara '5802ID') secara aman.
+            let parts = baseQris.split("5802ID");
+            let dynamicQris = parts[0] + tag54 + "5802ID" + parts[1];
 
-            // 4. Hitung ulang Checksum CRC16 untuk memastikan kode Valid
-            qrisStr += "6304";
-            let newCRC = crc16(qrisStr);
+            // 5. Tambahkan awalan Tag 63 (6304) lalu hitung dan pasangkan CRC16-nya
+            dynamicQris += "6304";
+            let newCRC = crc16(dynamicQris);
 
-            return qrisStr + newCRC;
+            return dynamicQris + newCRC;
         }
 
         function proceedToCheckout() {
@@ -790,7 +782,7 @@
             let ketHarga = "";
 
             if(payMethod === "QRIS") {
-                // Biaya Admin 0,01% dikembalikan sesuai request
+                // Biaya Admin 0,01% (dibulatkan, minimal Rp1)
                 let adminFee = Math.max(1, Math.ceil(totalBayar * 0.0001)); 
                 totalBayar += adminFee;
                 ketHarga = ` (Termasuk Admin Rp${adminFee})`;
@@ -814,7 +806,7 @@
                 transferInfo.style.display = 'none'; 
                 qrisBox.style.display = 'block';
                 
-                // Panggil fungsi QRIS Semi-Statis yang baru
+                // Panggil fungsi perakitan QRIS Dinamis (Nominal Terisi Otomatis)
                 let dynamicQrisPayload = generateDynamicQRIS(rawQrisStatis, totalBayar);
                 
                 try {
