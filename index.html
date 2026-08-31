@@ -245,7 +245,7 @@
             <div class="tab-item active" onclick="switchMenu('layanan-section', event)">🛍️ Layanan</div>
             <div class="tab-item" onclick="switchMenu('kebutuhan-harian-section', event)">📲 Kebutuhan Harian (Soon)</div>
             <div class="tab-item" onclick="switchMenu('coming-soon-section', event)">🎟️ Top Up Voucher (Soon)</div>
-            <div class="tab-item" onclick="switchMenu('antrian-section', event)" onclick="loadAntrianList()">🎫 Cek Antrian</div>
+            <div class="tab-item" onclick="switchMenu('antrian-section', event)">🎫 Cek Antrian</div>
             <div class="tab-item" onclick="switchMenu('kontak-section', event)">📞 Kontak Admin</div>
             <div class="tab-item" onclick="switchMenu('tutorial-section', event)">📖 Cara Order</div>
         </div>
@@ -361,7 +361,7 @@
                     2️⃣ Lengkapi data pemesanan sesuai petunjuk.<br>
                     3️⃣ Pilih varian produk dan metode pembayaran.<br>
                     4️⃣ Tekan <strong>Lanjutkan Pembayaran</strong> untuk mendapatkan QRIS.<br>
-                    5️⃣ Scan QRIS (Nomor unik tambahan Rp 1–50 akan otomatis terkunci di aplikasi Anda)[cite: 1].<br>
+                    5️⃣ Scan QRIS (Nomor unik tambahan Rp 1–50 akan otomatis terkunci di aplikasi Anda).<br>
                     6️⃣ Selesaikan pembayaran dan konfirmasi ke WhatsApp Admin! 🌸✨
                 </div>
             </div>
@@ -398,7 +398,7 @@
                 <!-- BOX INFORMASI NOMOR ANTRIAN PELANGGAN -->
                 <div class="info-box-pink" style="background: white; border: 2px dashed var(--deep-pink); text-align: center;">
                     <h3 style="color: var(--deep-pink); font-size: 14px; margin-bottom: 4px;">🎫 Nomor Antrian Pesanan Kamu:</h3>
-                    <p id="co-queue-display" style="font-size: 18px; font-weight: bold; color: var(--deep-pink); margin: 6px 0;">CS-#00-26</p>
+                    <p id="co-queue-display" style="font-size: 18px; font-weight: bold; color: var(--deep-pink); margin: 6px 0;">CS-#01-26</p>
                     <span style="font-size: 11px; color: #666;">Nomor antrian ini juga tercatat secara publik di menu "Cek Antrian".</span>
                 </div>
 
@@ -718,7 +718,6 @@
                 qrisStr = qrisStr.substring(0, crcIndex);
             }
 
-            // Kode unik acak antara 1 sampai 50 rupiah[cite: 1]
             let uniqueCode = Math.floor(Math.random() * 50) + 1;
             let finalAmount = amount + uniqueCode;
 
@@ -813,7 +812,6 @@
                 }
             }
 
-            // Generate dan tampilkan nomor antrian (CS-#NO-TAHUN)[cite: 1]
             let assignedQueueNo = getOrGenerateQueueNumber();
             document.getElementById('co-queue-display').innerText = assignedQueueNo;
 
@@ -827,11 +825,11 @@
             let existingQueue = localStorage.getItem(sessionKey);
             if (existingQueue) return existingQueue;
             
-            const currentYear = String(new Date().getFullYear()).slice(-2); // Format dua digit tahun (contoh: 26)[cite: 1]
+            const currentYear = String(new Date().getFullYear()).slice(-2);
             let antrianList = JSON.parse(localStorage.getItem('ciaa_antrian') || '[]');
             let todayCount = antrianList.length + 1;
             
-            let antrianNo = 'CS-#' + String(todayCount).padStart(2, '0') + '-' + currentYear;[cite: 1]
+            let antrianNo = 'CS-#' + String(todayCount).padStart(2, '0') + '-' + currentYear;
             
             localStorage.setItem(sessionKey, antrianNo);
             saveAntrianToStorage(antrianNo, checkoutData.produk + " - " + checkoutData.paket, checkoutData.total);
