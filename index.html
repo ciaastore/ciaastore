@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Ciaa Store - Service & Digital Shop</title>
+    <title>Ciaa Store - Cute & Aesthetic Digital Shop</title>
     
     <!-- Library QR Code -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
@@ -32,12 +32,12 @@
             font-size: 14px;
         }
 
-        /* BACKGROUND GRAPHIC 3D BERPUTAR & EFEK LIGHT BEAMS */
+        /* BACKGROUND GRAPHIC & FLOATING PARTICLES */
         .bg-3d-graphic {
             position: fixed; top: -50%; left: -50%; width: 200%; height: 200%;
-            background: radial-gradient(circle at center, rgba(255, 255, 255, 0.6) 0%, rgba(255, 182, 193, 0.3) 40%, transparent 70%),
+            background: radial-gradient(circle at center, rgba(255, 255, 255, 0.7) 0%, rgba(255, 182, 193, 0.35) 40%, transparent 70%),
                         conic-gradient(from 0deg, #ffe4e1, #ffb6c1, #fff0f5, #ffe4e1);
-            opacity: 0.6; z-index: -4; animation: rotate3D 35s linear infinite; pointer-events: none; filter: blur(30px);
+            opacity: 0.65; z-index: -4; animation: rotate3D 35s linear infinite; pointer-events: none; filter: blur(25px);
         }
         @keyframes rotate3D {
             0% { transform: rotate(0deg) scale(1); }
@@ -48,8 +48,8 @@
         .light-beams { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -3; pointer-events: none; overflow: hidden; }
         .beam {
             position: absolute; top: -150px; width: 2px; height: 300px;
-            background: linear-gradient(to bottom, transparent, rgba(255, 255, 255, 0.9), rgba(255, 105, 180, 0.5), transparent);
-            box-shadow: 0 0 10px rgba(255, 255, 255, 0.9); animation: beamDrop 6s linear infinite;
+            background: linear-gradient(to bottom, transparent, rgba(255, 255, 255, 0.95), rgba(255, 105, 180, 0.6), transparent);
+            box-shadow: 0 0 12px rgba(255, 255, 255, 0.9); animation: beamDrop 6s linear infinite;
         }
         .beam:nth-child(1) { left: 15%; animation-delay: 0s; animation-duration: 5s; }
         .beam:nth-child(2) { left: 35%; animation-delay: 2s; animation-duration: 7s; width: 3px; }
@@ -64,35 +64,25 @@
             100% { transform: translateY(115vh); opacity: 0; }
         }
 
-        /* ORNAMEN FLOATING SPARKLES & BUBBLES BACKGROUND */
-        .stars-container { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -2; pointer-events: none; }
-        .star {
-            position: absolute; background: #ffffff; border-radius: 50%;
-            box-shadow: 0 0 8px rgba(255, 255, 255, 0.9), 0 0 12px rgba(255, 105, 180, 0.6); animation: twinkle 3s ease-in-out infinite alternate;
+        .particles-container { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -2; pointer-events: none; }
+        .particle {
+            position: absolute; background: rgba(255, 255, 255, 0.85); border-radius: 50%;
+            box-shadow: 0 0 10px rgba(255, 255, 255, 0.9), 0 0 14px rgba(255, 105, 180, 0.5);
+            animation: floatBubble 12s infinite linear;
         }
-        .star.s1 { top: 10%; left: 20%; width: 4px; height: 4px; animation-delay: 0s; }
-        .star.s2 { top: 25%; left: 75%; width: 3px; height: 3px; animation-delay: 0.7s; }
-        .star.s3 { top: 45%; left: 10%; width: 5px; height: 5px; animation-delay: 1.2s; }
-        .star.s4 { top: 65%; left: 85%; width: 4px; height: 4px; animation-delay: 0.3s; }
-        .star.s5 { top: 80%; left: 30%; width: 3px; height: 3px; animation-delay: 1.8s; }
+        .particle.p1 { left: 10%; width: 12px; height: 12px; animation-duration: 14s; animation-delay: 0s; }
+        .particle.p2 { left: 30%; width: 8px; height: 8px; animation-duration: 18s; animation-delay: 3s; }
+        .particle.p3 { left: 55%; width: 15px; height: 15px; animation-duration: 11s; animation-delay: 1s; }
+        .particle.p4 { left: 75%; width: 10px; height: 10px; animation-duration: 16s; animation-delay: 4s; }
+        .particle.p5 { left: 90%; width: 14px; height: 14px; animation-duration: 13s; animation-delay: 2s; }
 
-        .floating-bubble {
-            position: absolute; border-radius: 50%; background: rgba(255, 182, 193, 0.25);
-            border: 1px solid rgba(255, 255, 255, 0.6); animation: floatUp 12s infinite linear;
-        }
-        .b1 { width: 18px; height: 18px; left: 12%; animation-delay: 0s; }
-        .b2 { width: 25px; height: 25px; left: 45%; animation-delay: 3s; }
-        .b3 { width: 15px; height: 15px; left: 82%; animation-delay: 6s; }
-
-        @keyframes floatUp {
-            0% { transform: translateY(100vh) scale(0.8); opacity: 0; }
-            50% { opacity: 0.6; }
-            100% { transform: translateY(-10vh) scale(1.2); opacity: 0; }
+        @keyframes floatBubble {
+            0% { top: 105%; transform: translateX(0) scale(0.8); opacity: 0; }
+            20% { opacity: 0.8; }
+            80% { opacity: 0.8; }
+            100% { top: -10%; transform: translateX(30px) scale(1.2); opacity: 0; }
         }
 
-        @keyframes twinkle { 0% { opacity: 0.3; transform: scale(0.8); } 100% { opacity: 1; transform: scale(1.4); } }
-
-        /* KUPU-KUPU 3D */
         .real-butterfly { position: fixed; pointer-events: none; z-index: -1; width: 35px; height: 35px; transform-style: preserve-3d; filter: drop-shadow(0 4px 6px rgba(255, 105, 180, 0.4)); }
         .real-butterfly::before, .real-butterfly::after {
             content: ''; position: absolute; top: 0; width: 17px; height: 30px;
@@ -111,8 +101,8 @@
 
         .main-wrapper {
             max-width: 750px; margin: 0 auto; background: rgba(255, 255, 255, 0.95);
-            border-radius: var(--card-radius); box-shadow: 0 8px 30px rgba(255, 105, 180, 0.25);
-            border: 2px solid var(--primary-pink); overflow: hidden; backdrop-filter: blur(8px);
+            border-radius: var(--card-radius); box-shadow: 0 10px 35px rgba(255, 105, 180, 0.25);
+            border: 2px solid var(--primary-pink); overflow: hidden; backdrop-filter: blur(10px);
         }
 
         .header { background: var(--light-pink); text-align: center; position: relative; padding: 8px; border-bottom: 2px dashed var(--primary-pink); }
@@ -135,12 +125,11 @@
         .promo-card-h h3 { font-size: 14px; color: var(--deep-pink); margin-bottom: 5px; display: flex; align-items: center; gap: 5px; font-weight: bold;}
         .promo-card-h p { font-size: 12px; line-height: 1.4; color: var(--dark-text); }
 
-        /* DYNAMIC GREETING BOX DESIGN */
         .greeting-box {
             background: linear-gradient(135deg, #fff0f5 0%, #ffe4e1 100%);
             border: 2px solid var(--primary-pink); border-radius: 12px; padding: 12px 15px;
             margin: 5px 15px 0 15px; text-align: center; font-weight: bold; color: var(--deep-pink);
-            font-size: 13px; box-shadow: 0 4px 12px rgba(255, 105, 180, 0.15); animation: fadeIn 0.5s ease;
+            font-size: 13px; box-shadow: 0 4px 14px rgba(255, 105, 180, 0.2); animation: fadeIn 0.5s ease;
         }
 
         .nav-tabs { display: flex; overflow-x: auto; background: var(--white); padding: 10px; white-space: nowrap; border-bottom: 2px solid var(--light-pink); scrollbar-width: none; gap: 6px; }
@@ -153,31 +142,31 @@
         .section.active { display: block; }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
 
-        /* GRID SERVICES & HOVER EFFECTS WITH SHIMMER */
         .grid-services { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-top: 10px; }
         .service-box {
             background: var(--white); border: 2px solid var(--light-pink); border-radius: 14px; padding: 12px 6px;
-            text-align: center; cursor: pointer; box-shadow: 0 3px 8px rgba(255,182,193,0.2); transition: all 0.25s ease;
-            aspect-ratio: 1 / 1; display: flex; flex-direction: column; justify-content: center; align-items: center;
-            position: relative; overflow: hidden;
+            text-align: center; cursor: pointer; box-shadow: 0 4px 10px rgba(255,182,193,0.2); transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+            aspect-ratio: 1 / 1; display: flex; flex-direction: column; justify-content: center; align-items: center; position: relative; overflow: hidden;
         }
         .service-box::after {
-            content: ''; position: absolute; top: -50%; left: -50%; width: 200%; height: 200%;
-            background: linear-gradient(60deg, transparent, rgba(255, 255, 255, 0.4), transparent);
-            transform: rotate(30deg) translateY(-100%); transition: transform 0.6s;
+            content: ''; position: absolute; top: -50%; left: -60%; width: 50%; height: 200%;
+            background: linear-gradient(to right, transparent, rgba(255,255,255,0.7), transparent);
+            transform: rotate(30deg); transition: opacity 0.3s; opacity: 0;
         }
-        .service-box:hover::after { transform: rotate(30deg) translateY(100%); }
+        .service-box:hover::after { opacity: 1; animation: shimmer 1s ease-in-out; }
+        @keyframes shimmer { 100% { left: 120%; } }
+
         .service-box:hover {
-            border-color: var(--deep-pink); transform: translateY(-4px) scale(1.02);
-            box-shadow: 0 8px 18px rgba(255,105,180,0.35); background: var(--soft-pink);
+            border-color: var(--deep-pink); transform: translateY(-5px) scale(1.03);
+            box-shadow: 0 8px 20px rgba(255,105,180,0.35); background: #ffffff;
         }
         
-        /* CIRCLE ICON GRAPHIC */
         .circle-icon {
             width: 45px; height: 45px; border-radius: 50%; object-fit: cover; margin-bottom: 6px;
-            border: 2px solid var(--primary-pink); box-shadow: 0 2px 6px rgba(0,0,0,0.1);
-            display: flex; align-items: center; justify-content: center; background: white; font-size: 22px;
+            border: 2px solid var(--primary-pink); box-shadow: 0 3px 8px rgba(0,0,0,0.1);
+            display: flex; align-items: center; justify-content: center; background: white; font-size: 22px; transition: transform 0.3s ease;
         }
+        .service-box:hover .circle-icon { transform: scale(1.1) rotate(5deg); }
         .circle-icon img { width: 100%; height: 100%; border-radius: 50%; object-fit: cover; }
         .service-box h4 { font-size: 11px; color: var(--dark-text); font-weight: 600; line-height: 1.2; }
 
@@ -187,7 +176,7 @@
             box-shadow: 0 3px 8px rgba(255,182,193,0.2); cursor: pointer; border: 2px solid var(--light-pink);
             transition: all 0.25s ease; position: relative; overflow: hidden;
         }
-        .product-card:hover { border-color: var(--deep-pink); transform: translateY(-3px); box-shadow: 0 6px 14px rgba(255,105,180,0.35); }
+        .product-card:hover { border-color: var(--deep-pink); transform: translateY(-4px); box-shadow: 0 6px 15px rgba(255,105,180,0.3); }
         .product-card img { width: 42px; height: 42px; border-radius: 8px; margin-bottom: 4px; object-fit: cover; }
         .product-card h4 { font-size: 11px; color: var(--dark-text); font-weight: 600; line-height: 1.2; }
         
@@ -198,16 +187,16 @@
         .contact-card h3 { color: var(--deep-pink); margin-bottom: 6px; font-size: 15px; }
         .contact-card p { font-size: 13px; color: #555; }
         .contact-btn { display: inline-block; background: var(--primary-pink); color: var(--dark-text); padding: 6px 14px; border-radius: 10px; text-decoration: none; font-weight: bold; font-size: 13px; margin-top: 6px; border: 1.5px solid var(--deep-pink); transition: 0.2s; }
-        .contact-btn:hover { background: var(--deep-pink); color: white; }
+        .contact-btn:hover { background: var(--deep-pink); color: white; transform: translateY(-2px); }
 
         .form-group { margin-bottom: 12px; text-align: left; }
         .form-group label { display: block; font-weight: bold; margin-bottom: 4px; font-size: 13px; color: var(--dark-text); }
-        .form-control { width: 100%; padding: 10px; border: 2px solid var(--primary-pink); border-radius: 12px; font-size: 13px; background: var(--soft-pink); outline: none; }
-        .form-control:focus { border-color: var(--deep-pink); background: white; }
+        .form-control { width: 100%; padding: 10px; border: 2px solid var(--primary-pink); border-radius: 12px; font-size: 13px; background: var(--soft-pink); outline: none; transition: 0.2s; }
+        .form-control:focus { border-color: var(--deep-pink); background: white; box-shadow: 0 0 8px rgba(255,105,180,0.25); }
         textarea.form-control { resize: vertical; min-height: 70px; }
         
         .btn-primary { width: 100%; background: var(--primary-pink); color: var(--dark-text); font-weight: bold; padding: 12px; border: 2px solid var(--deep-pink); border-radius: 12px; cursor: pointer; font-size: 14px; margin-top: 8px; transition: 0.2s; box-shadow: 0 3px 8px rgba(255,105,180,0.25); }
-        .btn-primary:hover { background: var(--deep-pink); color: white; transform: translateY(-2px); }
+        .btn-primary:hover { background: var(--deep-pink); color: white; transform: translateY(-2px); box-shadow: 0 6px 16px rgba(255,105,180,0.35); }
         .btn-wa { background: var(--wa-color); border-color: #128C7E; color: white; }
         .btn-copy { background: #ffc0cb; border: 1px solid var(--deep-pink); padding: 5px 10px; border-radius: 8px; cursor: pointer; font-size: 11px; font-weight: bold; margin-left: 8px; }
 
@@ -215,12 +204,31 @@
         .sub-tab { flex: 1; text-align: center; padding: 8px; background: var(--soft-pink); cursor: pointer; font-weight: bold; font-size: 12px; border-radius: 10px; border: 1.5px solid var(--primary-pink); color: var(--dark-text); transition: 0.2s; }
         .sub-tab.active, .sub-tab:hover { background: var(--deep-pink); color: white; border-color: var(--deep-pink); }
 
-        .payment-option { display: flex; align-items: center; padding: 10px; border: 1.5px solid var(--primary-pink); border-radius: 12px; margin-bottom: 8px; cursor: pointer; background: var(--white); font-size: 13px; }
+        .payment-option { display: flex; align-items: center; padding: 10px; border: 1.5px solid var(--primary-pink); border-radius: 12px; margin-bottom: 8px; cursor: pointer; background: var(--white); font-size: 13px; transition: 0.2s; }
+        .payment-option:hover { border-color: var(--deep-pink); background: var(--soft-pink); }
         .payment-option input { margin-right: 8px; accent-color: var(--deep-pink); }
         
         .qris-container { background: white; padding: 20px; border-radius: var(--card-radius); margin: 15px auto; border: 2px solid var(--primary-pink); width: 100%; text-align: center; }
-        #qrcode { text-align: center; margin: 0 auto; width: 100%; }
-        #qrcode canvas, #qrcode img { margin: 0 auto !important; display: inline-block !important; max-width: 200px !important; height: auto !important; border-radius: 8px; }
+        
+        /* ATURAN PERBAIKAN KHUSUS UNTUK MENCEGAH QRIS DOUBLE / GANDA */
+        #qrcode { 
+            text-align: center; 
+            margin: 0 auto; 
+            width: 100%; 
+            min-height: 200px; 
+            display: flex; 
+            justify-content: center; 
+            align-items: center; 
+        }
+        /* MENCEGAH CANVAS DAN IMG TAMPIL BERSAMAAN DALAM LIBRARY QRCODE.JS */
+        #qrcode canvas { display: none !important; }
+        #qrcode img { 
+            margin: 0 auto !important; 
+            display: inline-block !important; 
+            max-width: 200px !important; 
+            height: auto !important; 
+            border-radius: 8px; 
+        }
 
         #maintenance-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #ffe4e1; z-index: 9999; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; padding: 20px; }
         .maintenance-logo { width: 150px; height: 150px; object-fit: contain; margin-bottom: 15px; animation: floatMaintenance 3.5s ease-in-out infinite; filter: drop-shadow(0 10px 15px rgba(255, 105, 180, 0.4)); }
@@ -235,20 +243,17 @@
 </head>
 <body>
 
-    <!-- VISUAL BACKGROUND ELEMENTS -->
+    <!-- VISUAL BACKGROUND PARTICLES & ORNAMENTS -->
     <div class="bg-3d-graphic"></div>
     <div class="light-beams">
         <div class="beam"></div><div class="beam"></div>
         <div class="beam"></div><div class="beam"></div>
         <div class="beam"></div>
     </div>
-    <div class="stars-container">
-        <div class="star s1"></div><div class="star s2"></div>
-        <div class="star s3"></div><div class="star s4"></div>
-        <div class="star s5"></div>
-        <div class="floating-bubble b1"></div>
-        <div class="floating-bubble b2"></div>
-        <div class="floating-bubble b3"></div>
+    <div class="particles-container">
+        <div class="particle p1"></div><div class="particle p2"></div>
+        <div class="particle p3"></div><div class="particle p4"></div>
+        <div class="particle p5"></div>
     </div>
 
     <div class="real-butterfly fly-path-1"></div>
@@ -307,7 +312,7 @@
             Selamat datang di Ciaa Store ✨
         </div>
 
-        <!-- TAB MAIN NAVIGATION -->
+        <!-- MAIN NAV TABS -->
         <div class="nav-tabs" id="main-nav-tabs">
             <div class="tab-item active" onclick="switchMenu('topup-voucher-section', event)">🎟️ Top Up Voucher</div>
             <div class="tab-item" onclick="switchMenu('layanan-section', event)">🛍️ Layanan</div>
@@ -483,9 +488,9 @@
                 </div>
             </div>
 
-            <!-- FORM PESANAN DENGAN SUB-TAB SWITCHER -->
+            <!-- FORM PESANAN DENGAN SMART BACK BUTTON -->
             <div id="form-pesanan" class="section">
-                <button onclick="backToMenu()" style="margin-bottom: 12px; border:none; background:var(--light-pink); padding:6px 12px; border-radius:8px; font-weight:bold; cursor:pointer; font-size: 12px;">⬅ Kembali</button>
+                <button onclick="backToMenu()" style="margin-bottom: 12px; border:none; background:var(--light-pink); padding:6px 12px; border-radius:8px; font-weight:bold; cursor:pointer; font-size: 12px; transition: 0.2s;">⬅ Kembali</button>
                 <h2 id="form-title" style="margin-bottom: 8px; color: var(--deep-pink); font-size: 16px;">Judul Produk</h2>
                 
                 <div id="sub-tabs-container" style="display: none;" class="sub-tabs"></div>
@@ -505,6 +510,7 @@
 
             <!-- CHECKOUT PAGE -->
             <div id="checkout-page" class="section">
+                <button onclick="backToForm()" style="margin-bottom: 12px; border:none; background:var(--light-pink); padding:6px 12px; border-radius:8px; font-weight:bold; cursor:pointer; font-size: 12px;">⬅ Edit Pesanan</button>
                 <h2 style="text-align: center; color: var(--deep-pink); font-size: 16px; margin-bottom: 12px;">Silakan selesaikan pembayaran untuk memproses pesanan Anda ✨</h2>
                 
                 <div class="info-box-pink" style="margin-top: 15px;">
@@ -541,14 +547,12 @@
     <a href="https://wa.me/6289509452777" target="_blank" class="fab" title="Hubungi CS">💬</a>
 
     <script>
-        /* VARIABLE STORAGE NAVIGATION BACK-BUTTON ROUTING */
         let lastActiveTab = 'topup-voucher-section';
 
         if(localStorage.getItem('ciaa_maintenance') === 'true') {
             document.getElementById('maintenance-overlay').style.display = 'flex';
         }
 
-        /* 1. DYNAMIC GREETING BOX ACCORDING TO USER LOCAL TIME */
         function setDynamicGreeting() {
             const now = new Date();
             const hour = now.getHours();
@@ -584,7 +588,6 @@
             }, 3500);
         }
 
-        /* DATA PRODUK LENGKAP TERMASUK PEMBARUAN JASA BUAT WEB */
         const dataProduk = {
             "app-premium": [
                 { id: "canva", nama: "🎨 Canva", img: "canva.jpg", type: "ui-canva" },
@@ -612,7 +615,7 @@
             "jasa-ciaa": [
                 { id: "jasher", nama: "🚀 Jasher (Jasa Share)", img: "logo.jpg", type: "ui-jasa", catatan: "• Layanan Jasa Share pesan/promosi ke target." },
                 { id: "jpm", nama: "📈 JPM (Jasa Push Member)", img: "logo.jpg", type: "ui-jasa", catatan: "• Layanan Jasa Push Member sesuai target." },
-                { id: "jasa-web", nama: "🌐 Jasa Buat Web", img: "logo.jpg", type: "ui-web", catatan: "• Layanan pembuatan website impian cepat & elegan.<br>• <em>Untuk orderan bebas request boleh isi deskripsi dengan link referensi website.</em>" }
+                { id: "jasa-web", nama: "🌐 Jasa Buat Web", img: "logo.jpg", type: "ui-jasa-web", catatan: "• Layanan pembuatan website impian cepat & elegan.<br>• <em>Untuk orderan bebas request boleh isi deskripsi dengan link referensi website.</em>" }
             ],
             "kebutuhan-harian": [
                 { id: "token-pln", nama: "⚡ Token PLN (Listrik)", img: "logo.jpg", type: "ui-std", inputs: ["Nomor Meteran / ID Pelanggan"], catatan: "⚠️ <strong>Catatan Penting:</strong><br>Meteran dengan awalan nomor <strong>'56'</strong> tidak bisa diisi pada jam <strong>12:55 - 12:15 WIB</strong>." }
@@ -726,19 +729,24 @@
         };
 
         function switchMenu(menuId, event) {
+            lastActiveTab = menuId;
             document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
             document.querySelectorAll('.tab-item').forEach(t => t.classList.remove('active'));
             document.getElementById(menuId).classList.add('active');
             
-            /* SIMPAN TAB YANG SEDANG AKTIF UNTUK ROUTING KEMBALI */
-            if(menuId === 'topup-voucher-section' || menuId === 'layanan-section' || menuId === 'kebutuhan-harian-section') {
-                lastActiveTab = menuId;
+            if (event && event.target) {
+                event.target.classList.add('active');
+            } else {
+                let tabs = document.querySelectorAll('.tab-item');
+                if(menuId === 'topup-voucher-section') tabs[0].classList.add('active');
+                else if(menuId === 'layanan-section') tabs[1].classList.add('active');
+                else if(menuId === 'kebutuhan-harian-section') tabs[2].classList.add('active');
+                else if(menuId === 'antrian-section') tabs[3].classList.add('active');
+                else if(menuId === 'kontak-section') tabs[4].classList.add('active');
+                else if(menuId === 'tutorial-section') tabs[5].classList.add('active');
             }
 
-            if (event && event.target) event.target.classList.add('active');
-            if (menuId === 'antrian-section') {
-                loadAntrianList();
-            }
+            if (menuId === 'antrian-section') loadAntrianList();
             window.scrollTo(0,0);
         }
 
@@ -748,21 +756,23 @@
             window.scrollTo(0,0);
         }
 
-        /* AKURASI NAVIGATION ROUTING BACK BUTTON */
         function backToMenu() {
             document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
-            
-            /* DIBUAT UNTUK KEMBALI KE TAB ASAL SEBELUMNYA */
             document.getElementById(lastActiveTab).classList.add('active');
             document.getElementById('main-nav-tabs').style.display = 'flex';
             
-            /* SESUAIKAN ACTIVE STATE TOMBOL TAB NAVIGATION */
             document.querySelectorAll('.tab-item').forEach(t => t.classList.remove('active'));
-            const tabs = document.querySelectorAll('.tab-item');
-            if(lastActiveTab === 'topup-voucher-section' && tabs[0]) tabs[0].classList.add('active');
-            else if(lastActiveTab === 'layanan-section' && tabs[1]) tabs[1].classList.add('active');
-            else if(lastActiveTab === 'kebutuhan-harian-section' && tabs[2]) tabs[2].classList.add('active');
+            let tabs = document.querySelectorAll('.tab-item');
+            if(lastActiveTab === 'topup-voucher-section') tabs[0].classList.add('active');
+            else if(lastActiveTab === 'layanan-section') tabs[1].classList.add('active');
+            else if(lastActiveTab === 'kebutuhan-harian-section') tabs[2].classList.add('active');
+            
+            window.scrollTo(0,0);
+        }
 
+        function backToForm() {
+            document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+            document.getElementById('form-pesanan').classList.add('active');
             window.scrollTo(0,0);
         }
 
@@ -812,12 +822,11 @@
                                        <div class="sub-tab" onclick="switchSubTab('head', event)">Canva Head</div>`;
                 renderInputs(['Isi Email Canva yang akan di Premium kan']);
                 renderPackages('canva', 'tim');
-            } else if(prod.type === 'ui-web') {
-                /* MODIFIKASI JASA BUAT WEB: DESKRIPSI OPTIONAL & PLACEHOLDER */
-                renderInputs(['Nama Store / Nama Pemesan']);
+            } else if(prod.type === 'ui-jasa-web') {
+                renderInputs(['Nama Store / Judul Web']);
                 inputsEl.innerHTML += `
                     <div class="form-group" style="margin-top:12px;">
-                        <label>Deskripsi & Link Referensi Website (Opsional)</label>
+                        <label>Deskripsi / Request Website (Opsional)</label>
                         <textarea class="form-control" id="input-desc" placeholder="Isi link / request website"></textarea>
                     </div>`;
                 renderPackages(prod.id);
@@ -932,7 +941,6 @@
             let descText = "";
             if(descEl) {
                 descText = descEl.value.trim();
-                /* HANYA WAJIBKAN PADA JASA BIASA, JASA WEB DESKRIPSI ADALAH OPSIONAL */
                 if(activeProduct.type === 'ui-jasa' && !descText) {
                     return alert("⚠️ Kolom Deskripsi/Link Wajib Diisi!");
                 }
@@ -955,14 +963,13 @@
             const qrisBox = document.getElementById('qris-box');
             const qrContainer = document.getElementById('qrcode');
             
-            /* DIBERSIHKAN UNTUK MENCEGAH BUG DOUBLE QRIS */
+            /* PERBAIKAN PENTING BUG DOUBLE QRIS: Wajib KOSONGKAN KONTAINER terlebih dahulu */
             qrContainer.innerHTML = ""; 
             
             if(payMethod === "QRIS") {
                 transferInfo.style.display = 'none'; 
                 qrisBox.style.display = 'block';
                 
-                /* DYNAMIC AUTO-GENERATE NOMINAL QRIS DENGAN KODE UNIK */
                 let qrisData = generateUniqueQRIS(rawQrisStatis, baseTotal);
                 checkoutData.total = qrisData.totalFinal;
 
@@ -970,8 +977,16 @@
                 document.getElementById('co-data').innerText = 'Data: ' + checkoutData.data;
                 document.getElementById('co-harga').innerText = 'Total Bayar: Rp ' + qrisData.totalFinal.toLocaleString('id-ID') + ` (Termasuk Kode Unik Rp${qrisData.kodeUnik} & Admin)`;
 
+                // MEMBUAT QRIS TUNGGAL TANPA DUPLIKASI
                 try {
-                    new QRCode(qrContainer, { text: qrisData.payload, width: 200, height: 200, colorDark: "#000000", colorLight: "#ffffff", correctLevel: QRCode.CorrectLevel.M });
+                    new QRCode(qrContainer, { 
+                        text: qrisData.payload, 
+                        width: 200, 
+                        height: 200, 
+                        colorDark: "#000000", 
+                        colorLight: "#ffffff", 
+                        correctLevel: QRCode.CorrectLevel.M 
+                    });
                 } catch(e) {
                     let imgFallback = document.createElement('img');
                     imgFallback.src = "https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=" + encodeURIComponent(qrisData.payload);
@@ -1016,15 +1031,13 @@
 
             if (checkoutData.type === 'ui-game' || checkoutData.type === 'ui-roblox') {
                 teks += `🎮 [Detail Order Top Up / Voucher]\n👤 Data ID/Server/Akun: ${checkoutData.data}\n\n`;
-                teks += `Berikut saya lampirkan bukti transfer. Mohon bantuannya untuk segera diproses ya kak, terima kasih! 😀`;
-            } else if (checkoutData.type === 'ui-jasa' || checkoutData.type === 'ui-web') {
-                teks += `🚀 [Detail Layanan Jasa / Buat Web]\n👤 Nama Store / Pemesan: ${checkoutData.data}\n\n`;
-                teks += `📝 Deskripsi / Request Website:\n${checkoutData.desc || '-'}\n\n\n`;
-                teks += `Berikut saya lampirkan bukti transfer. Mohon bantuannya untuk segera diproses ya kak, terima kasih! 😀`;
+            } else if (checkoutData.type === 'ui-jasa' || checkoutData.type === 'ui-jasa-web') {
+                teks += `🚀 [Detail Layanan Jasa]\n👤 Nama Store/Judul: ${checkoutData.data}\n\n`;
+                if(checkoutData.desc) teks += `📝 Deskripsi / Request / Link Website:\n${checkoutData.desc}\n\n`;
             } else {
                 teks += `📱 [Detail Pesanan]\n👤 Data Pengisian: ${checkoutData.data}\n\n`;
-                teks += `Berikut saya lampirkan bukti transfer. Mohon bantuannya untuk segera diproses ya kak, terima kasih! 😀`;
             }
+            teks += `Berikut saya lampirkan bukti transfer. Mohon bantuannya untuk segera diproses ya kak, terima kasih! 😀`;
 
             window.open("https://wa.me/" + noWA + "?text=" + encodeURIComponent(teks), '_blank');
         }
@@ -1103,7 +1116,8 @@
             let todayOrders = antrianList.filter(item => item.date === todayDateStr);
             let totalIncome = todayOrders.reduce((sum, item) => sum + (item.harga || 0), 0);
             document.getElementById('admin-total-income').innerText = "Rp " + totalIncome.toLocaleString('id-ID');
-            document.getElementById('admin-total-orders').innerText = "Jumlah Orderan Hari Ini: " + todayOrders.length;
+            document.getElementById('admin-total-orders').innerText = "Jumlah Orderan Hari Ini: 0";
+            if(todayOrders.length > 0) document.getElementById('admin-total-orders').innerText = "Jumlah Orderan Hari Ini: " + todayOrders.length;
             updateMaintenanceButtonText();
         }
 
