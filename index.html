@@ -395,13 +395,6 @@
                     <p id="co-harga" style="font-size: 16px; font-weight: bold; margin-top: 8px; color: var(--deep-pink);">Total: Rp -</p>
                 </div>
 
-                <!-- BOX INFORMASI NOMOR ANTRIAN PELANGGAN -->
-                <div class="info-box-pink" style="background: white; border: 2px dashed var(--deep-pink); text-align: center;">
-                    <h3 style="color: var(--deep-pink); font-size: 14px; margin-bottom: 4px;">🎫 Nomor Antrian Pesanan Kamu:</h3>
-                    <p id="co-queue-display" style="font-size: 18px; font-weight: bold; color: var(--deep-pink); margin: 6px 0;">CS-#01-26</p>
-                    <span style="font-size: 11px; color: #666;">Nomor antrian ini juga tercatat secara publik di menu "Cek Antrian".</span>
-                </div>
-
                 <div id="transfer-info" class="alert-box" style="background: var(--white); border-color: var(--primary-pink); text-align: center; display:none;">
                     <h3 id="co-method-title" style="color:var(--deep-pink); font-size: 14px;">Metode</h3>
                     <p id="co-method-number" style="font-size: 16px; font-weight: bold; margin: 8px 0;"></p>
@@ -414,7 +407,7 @@
                 </div>
 
                 <div class="alert-box">
-                    ⚠️ Catatan: Setelah melakukan pembayaran, harap tekan tombol konfirmasi di bawah ini untuk mengirimkan bukti transfer ke WhatsApp Admin! 🌸
+                    ⚠️ Catatan: Setelah melakukan pembayaran, harap tekan tombol konfirmasi di bawah ini untuk mengirimkan bukti transfer ke WhatsApp Admin! Nomor antrian akan resmi dibuat setelah Anda mengonfirmasi. 🌸
                 </div>
 
                 <button class="btn-primary btn-wa" onclick="sendToWhatsApp()">Konfirmasi Pembayaran ke Admin 💬</button>
@@ -737,8 +730,6 @@
             return { payload: qrisStr + newCRC, totalFinal: finalAmount, kodeUnik: uniqueCode };
         }
 
-        let currentUniqueTotal = 0;
-
         function proceedToCheckout() {
             if(!activeVariant) return alert("Silakan pilih paket produk terlebih dahulu ya! 🌸");
             
@@ -779,12 +770,11 @@
                 qrisBox.style.display = 'block';
                 
                 let qrisData = generateUniqueQRIS(rawQrisStatis, baseTotal);
-                currentUniqueTotal = qrisData.totalFinal;
-                checkoutData.total = currentUniqueTotal;
+                checkoutData.total = qrisData.totalFinal;
 
                 document.getElementById('co-produk').innerText = 'Layanan: ' + activeProduct.nama + ' - ' + activeVariant.nama;
                 document.getElementById('co-data').innerText = 'Data: ' + checkoutData.data;
-                document.getElementById('co-harga').innerText = 'Total Bayar: Rp ' + currentUniqueTotal.toLocaleString('id-ID') + ` (Termasuk Kode Unik Rp${qrisData.kodeUnik} & Admin)`;
+                document.getElementById('co-harga').innerText = 'Total Bayar: Rp ' + qrisData.totalFinal.toLocaleString('id-ID') + ` (Termasuk Kode Unik Rp${qrisData.kodeUnik} & Admin)`;
 
                 try {
                     new QRCode(qrContainer, { text: qrisData.payload, width: 200, height: 200, colorDark: "#000000", colorLight: "#ffffff", correctLevel: QRCode.CorrectLevel.M });
@@ -796,12 +786,11 @@
             } else {
                 transferInfo.style.display = 'block'; 
                 qrisBox.style.display = 'none';
-                currentUniqueTotal = baseTotal;
-                checkoutData.total = currentUniqueTotal;
+                checkoutData.total = baseTotal;
 
                 document.getElementById('co-produk').innerText = 'Layanan: ' + activeProduct.nama + ' - ' + activeVariant.nama;
                 document.getElementById('co-data').innerText = 'Data: ' + checkoutData.data;
-                document.getElementById('co-harga').innerText = 'Total: Rp ' + currentUniqueTotal.toLocaleString('id-ID');
+                document.getElementById('co-harga').innerText = 'Total: Rp ' + baseTotal.toLocaleString('id-ID');
 
                 if(payMethod === "DANA") {
                     document.getElementById('co-method-title').innerText = "Transfer DANA";
@@ -812,33 +801,28 @@
                 }
             }
 
-            let assignedQueueNo = getOrGenerateQueueNumber();
-            document.getElementById('co-queue-display').innerText = assignedQueueNo;
-
             document.getElementById('form-pesanan').classList.remove('active');
             document.getElementById('checkout-page').classList.add('active');
             window.scrollTo(0,0);
         }
 
-        function getOrGenerateQueueNumber() {
-            let sessionKey = 'ciaa_queue_' + checkoutData.produk + '_' + checkoutData.data;
-            let existingQueue = localStorage.getItem(sessionKey);
-            if (existingQueue) return existingQueue;
-            
+        function createQueueNumber() {
             const currentYear = String(new Date().getFullYear()).slice(-2);
             let antrianList = JSON.parse(localStorage.getItem('ciaa_antrian') || '[]');
             let todayCount = antrianList.length + 1;
             
             let antrianNo = 'CS-#' + String(todayCount).padStart(2, '0') + '-' + currentYear;
             
-            localStorage.setItem(sessionKey, antrianNo);
             saveAntrianToStorage(antrianNo, checkoutData.produk + " - " + checkoutData.paket, checkoutData.total);
             return antrianNo;
         }
 
         function sendToWhatsApp() {
             const noWA = "6289505929536";
-            let antrianNo = document.getElementById('co-queue-display').innerText;
+            
+            // Buat nomor antrian resmi saat menekan tombol WhatsApp
+            let antrianNo = createQueueNumber();
+
             let teks = `Halo Admin Ciaa Store! ✨\nSaya telah menyelesaikan pembayaran dengan rincian berikut:\n\n🎫 No. Antrian: ${antrianNo}\n🛒 Layanan: ${checkoutData.produk} - ${checkoutData.paket}\n💳 Metode Pembayaran: ${checkoutData.metode}\n💰 Total Tagihan: Rp${checkoutData.total.toLocaleString('id-ID')}\n\n`;
 
             if (checkoutData.type === 'ui-game') {
