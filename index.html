@@ -23,7 +23,7 @@
         * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', Tahoma, sans-serif; }
         
         body { 
-            background-color: #1a0011; 
+            background-color: #ffe4e1; 
             color: var(--dark-text); 
             overflow-x: hidden; 
             min-height: 100vh;
@@ -32,16 +32,16 @@
             font-size: 14px;
         }
 
-        /* 1. BACKGROUND GRAPHIC 3D BERPUTAR */
+        /* 1. BACKGROUND GRAPHIC 3D BERPUTAR (SOFT PINK TONE) */
         .bg-3d-graphic {
             position: fixed; top: -50%; left: -50%; width: 200%; height: 200%;
-            background: radial-gradient(circle at center, rgba(255, 182, 193, 0.25) 0%, rgba(255, 105, 180, 0.1) 40%, transparent 70%),
-                        conic-gradient(from 0deg, #ffb6c1, #ff69b4, #ffe4e1, #ffb6c1);
-            opacity: 0.22;
+            background: radial-gradient(circle at center, rgba(255, 255, 255, 0.6) 0%, rgba(255, 182, 193, 0.3) 40%, transparent 70%),
+                        conic-gradient(from 0deg, #ffe4e1, #ffb6c1, #fff0f5, #ffe4e1);
+            opacity: 0.6;
             z-index: -4;
             animation: rotate3D 35s linear infinite;
             pointer-events: none;
-            filter: blur(40px);
+            filter: blur(30px);
         }
         @keyframes rotate3D {
             0% { transform: rotate(0deg) scale(1); }
@@ -56,8 +56,8 @@
         }
         .beam {
             position: absolute; top: -150px; width: 2px; height: 300px;
-            background: linear-gradient(to bottom, transparent, rgba(255, 255, 255, 0.9), rgba(255, 182, 193, 0.8), transparent);
-            box-shadow: 0 0 12px rgba(255, 255, 255, 0.8);
+            background: linear-gradient(to bottom, transparent, rgba(255, 255, 255, 0.9), rgba(255, 105, 180, 0.5), transparent);
+            box-shadow: 0 0 10px rgba(255, 255, 255, 0.9);
             animation: beamDrop 6s linear infinite;
         }
         .beam:nth-child(1) { left: 15%; animation-delay: 0s; animation-duration: 5s; }
@@ -73,14 +73,14 @@
             100% { transform: translateY(115vh); opacity: 0; }
         }
 
-        /* 3. BINTANG DAN BINTIK CAHAYA BERSINAR (TWINKLING STARS) */
+        /* 3. BINTANG DAN BINTIK CAHAYA BERSINAR */
         .stars-container {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             z-index: -2; pointer-events: none;
         }
         .star {
-            position: absolute; background: white; border-radius: 50%;
-            box-shadow: 0 0 8px rgba(255, 255, 255, 0.9), 0 0 12px rgba(255, 182, 193, 0.6);
+            position: absolute; background: #ffffff; border-radius: 50%;
+            box-shadow: 0 0 8px rgba(255, 255, 255, 0.9), 0 0 12px rgba(255, 105, 180, 0.5);
             animation: twinkle 3s ease-in-out infinite alternate;
         }
         .star.s1 { top: 10%; left: 20%; width: 4px; height: 4px; animation-delay: 0s; }
@@ -92,7 +92,7 @@
         .star.s7 { top: 70%; left: 60%; width: 4px; height: 4px; animation-delay: 1s; }
 
         @keyframes twinkle {
-            0% { opacity: 0.2; transform: scale(0.8); }
+            0% { opacity: 0.3; transform: scale(0.8); }
             100% { opacity: 1; transform: scale(1.4); }
         }
 
@@ -130,7 +130,7 @@
 
         .main-wrapper {
             max-width: 750px; margin: 0 auto; background: rgba(255, 255, 255, 0.95);
-            border-radius: var(--card-radius); box-shadow: 0 8px 30px rgba(255, 105, 180, 0.4);
+            border-radius: var(--card-radius); box-shadow: 0 8px 30px rgba(255, 105, 180, 0.25);
             border: 2px solid var(--primary-pink); overflow: hidden; backdrop-filter: blur(8px);
         }
 
@@ -231,12 +231,12 @@
 
         .fab { position: fixed; bottom: 20px; right: 20px; background: var(--wa-color); color: white; width: 48px; height: 48px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 22px; cursor: pointer; text-decoration: none; z-index: 1000; border: 2px solid white; transition: 0.2s; }
         .fab:hover { transform: scale(1.1); }
-        .footer { text-align: center; padding: 15px; font-size: 12px; color: #fff; margin-top: 15px; text-shadow: 0 1px 3px rgba(0,0,0,0.5); }
+        .footer { text-align: center; padding: 15px; font-size: 12px; color: #555; margin-top: 15px; }
     </style>
 </head>
 <body>
 
-    <!-- ELEMEN ELEMEN VISUAL BACKGROUND BARU -->
+    <!-- ELEMEN ELEMEN VISUAL BACKGROUND SOFT PINK -->
     <div class="bg-3d-graphic"></div>
     <div class="light-beams">
         <div class="beam"></div><div class="beam"></div>
@@ -493,10 +493,12 @@
             document.getElementById('maintenance-overlay').style.display = 'flex';
         }
 
+        /* FUNGSI PERBAIKAN LOGIKA SAPAAN WAKTU AKURAT */
         function setDynamicGreeting() {
             const now = new Date();
             const hour = now.getHours();
             let greetingText = "";
+            
             if (hour >= 4 && hour < 11) {
                 greetingText = "Selamat pagi! Semoga harimu menyenangkan dan penuh keberkahan ✨";
             } else if (hour >= 11 && hour < 15) {
@@ -506,7 +508,9 @@
             } else {
                 greetingText = "Selamat malam! Terimakasih telah mengunjungi Ciaa Store ✨";
             }
-            document.getElementById('greeting-text').innerText = greetingText;
+            
+            const el = document.getElementById('greeting-text');
+            if (el) el.innerText = greetingText;
         }
 
         function initAutoSlider() {
