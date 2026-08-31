@@ -210,7 +210,7 @@
         
         .qris-container { background: white; padding: 20px; border-radius: var(--card-radius); margin: 15px auto; border: 2px solid var(--primary-pink); width: 100%; text-align: center; }
         
-        /* ATURAN PERBAIKAN KHUSUS UNTUK MENCEGAH QRIS DOUBLE / GANDA */
+        /* ATURAN STRIS UNTUK MEMASTIKAN HANYA 1 GAMBAR QRIS TAMPIL */
         #qrcode { 
             text-align: center; 
             margin: 0 auto; 
@@ -220,11 +220,10 @@
             justify-content: center; 
             align-items: center; 
         }
-        /* MENCEGAH CANVAS DAN IMG TAMPIL BERSAMAAN DALAM LIBRARY QRCODE.JS */
         #qrcode canvas { display: none !important; }
         #qrcode img { 
             margin: 0 auto !important; 
-            display: inline-block !important; 
+            display: block !important; 
             max-width: 200px !important; 
             height: auto !important; 
             border-radius: 8px; 
@@ -963,7 +962,7 @@
             const qrisBox = document.getElementById('qris-box');
             const qrContainer = document.getElementById('qrcode');
             
-            /* PERBAIKAN PENTING BUG DOUBLE QRIS: Wajib KOSONGKAN KONTAINER terlebih dahulu */
+            /* PEMBERSIHAN KONTAINER UNTUK MENCEGAH DUPLIKASI QRIS */
             qrContainer.innerHTML = ""; 
             
             if(payMethod === "QRIS") {
@@ -977,7 +976,7 @@
                 document.getElementById('co-data').innerText = 'Data: ' + checkoutData.data;
                 document.getElementById('co-harga').innerText = 'Total Bayar: Rp ' + qrisData.totalFinal.toLocaleString('id-ID') + ` (Termasuk Kode Unik Rp${qrisData.kodeUnik} & Admin)`;
 
-                // MEMBUAT QRIS TUNGGAL TANPA DUPLIKASI
+                // RENDER GAMBAR QRIS TUNGGAL PRESIK DENGAN PEMBERSIHAN CANVAS AUTOMATIS
                 try {
                     new QRCode(qrContainer, { 
                         text: qrisData.payload, 
@@ -987,7 +986,14 @@
                         colorLight: "#ffffff", 
                         correctLevel: QRCode.CorrectLevel.M 
                     });
+                    
+                    // MEMASTIKAN MEMILIH ELEMEN TERAKHIR / MENYEMBUNYIKAN CANVAS APABILA DI-RENDER OLEH LIBRARY
+                    setTimeout(() => {
+                        let canvasEl = qrContainer.querySelector('canvas');
+                        if (canvasEl) canvasEl.style.display = 'none';
+                    }, 50);
                 } catch(e) {
+                    qrContainer.innerHTML = "";
                     let imgFallback = document.createElement('img');
                     imgFallback.src = "https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=" + encodeURIComponent(qrisData.payload);
                     qrContainer.appendChild(imgFallback);
