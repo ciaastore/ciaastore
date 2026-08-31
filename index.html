@@ -210,7 +210,6 @@
         
         .qris-container { background: white; padding: 20px; border-radius: var(--card-radius); margin: 15px auto; border: 2px solid var(--primary-pink); width: 100%; text-align: center; }
         
-        /* ATURAN STRIS UNTUK MEMASTIKAN HANYA 1 GAMBAR QRIS TAMPIL */
         #qrcode { 
             text-align: center; 
             margin: 0 auto; 
@@ -223,7 +222,7 @@
         #qrcode canvas { display: none !important; }
         #qrcode img { 
             margin: 0 auto !important; 
-            display: block !important; 
+            display: inline-block !important; 
             max-width: 200px !important; 
             height: auto !important; 
             border-radius: 8px; 
@@ -500,7 +499,7 @@
                 <div class="mini-grid" id="package-list" style="margin-top:0;"></div>
 
                 <h3 style="margin-top: 15px; margin-bottom: 8px; color: var(--deep-pink); font-size: 14px;">Pilih Pembayaran</h3>
-                <div class="payment-option"><input type="radio" name="pay-method" value="QRIS" id="pay-qris" checked> <label for="pay-qris">QRIS All Payment (Otomatis + Kode Unik Rp1-50)</label></div>
+                <div class="payment-option"><input type="radio" name="pay-method" value="QRIS" id="pay-qris" checked> <label for="pay-qris">QRIS All Payment (Kode Unik Rp1-50 + Admin)</label></div>
                 <div class="payment-option"><input type="radio" name="pay-method" value="DANA" id="pay-dana"> <label for="pay-dana">DANA (081338224767 A/N AGUS SUTIARNO)</label></div>
                 <div class="payment-option"><input type="radio" name="pay-method" value="GOPAY" id="pay-gopay"> <label for="pay-gopay">GoPay (089505929536)</label></div>
 
@@ -527,6 +526,7 @@
 
                 <div class="qris-container" id="qris-box">
                     <div id="qrcode"></div>
+                    <p style="font-size: 12px; color: var(--deep-pink); font-weight: bold; margin-top: 10px;"> Silakan Scan QRIS Di Atas & Masukkan Nominal Sesuai Total Tagihan!</p>
                 </div>
 
                 <div class="alert-box">
@@ -899,33 +899,6 @@
             activeVariant = { nama, harga };
         }
 
-        function crc16(str) {
-            let crc = 0xFFFF;
-            for (let c = 0; c < str.length; c++) {
-                crc ^= str.charCodeAt(c) << 8;
-                for (let i = 0; i < 8; i++) {
-                    if (crc & 0x8000) { crc = ((crc << 1) ^ 0x1021) & 0xFFFF; } 
-                    else { crc = (crc << 1) & 0xFFFF; }
-                }
-            }
-            return crc.toString(16).toUpperCase().padStart(4, '0');
-        }
-
-        function generateUniqueQRIS(qrisStr, amount) {
-            let crcIndex = qrisStr.indexOf("6304");
-            if (crcIndex !== -1) { qrisStr = qrisStr.substring(0, crcIndex); }
-            let uniqueCode = Math.floor(Math.random() * 50) + 1;
-            let finalAmount = amount + uniqueCode;
-            let amountStr = finalAmount.toString();
-            let tag54 = "54" + amountStr.length.toString().padStart(2, '0') + amountStr;
-            let pos58 = qrisStr.indexOf("5802ID");
-            if (pos58 !== -1) { qrisStr = qrisStr.substring(0, pos58) + tag54 + qrisStr.substring(pos58); } 
-            else { qrisStr += tag54; }
-            qrisStr += "6304";
-            let newCRC = crc16(qrisStr);
-            return { payload: qrisStr + newCRC, totalFinal: finalAmount, kodeUnik: uniqueCode };
-        }
-
         function proceedToCheckout() {
             if(!activeVariant) return alert("Silakan pilih paket produk terlebih dahulu ya! 🌸");
             
@@ -948,11 +921,6 @@
             const payMethod = document.querySelector('input[name="pay-method"]:checked').value;
             let baseTotal = activeVariant.harga;
 
-            if(payMethod === "QRIS") {
-                let adminFee = Math.max(1, Math.ceil(baseTotal * 0.0001)); 
-                baseTotal += adminFee;
-            }
-
             checkoutData = { 
                 produkId: activeProduct.id, produk: activeProduct.nama, paket: activeVariant.nama, 
                 data: dataPelanggan.join(" | "), desc: descText, metode: payMethod, type: activeProduct.type 
@@ -962,40 +930,34 @@
             const qrisBox = document.getElementById('qris-box');
             const qrContainer = document.getElementById('qrcode');
             
-            /* PEMBERSIHAN KONTAINER UNTUK MENCEGAH DUPLIKASI QRIS */
             qrContainer.innerHTML = ""; 
             
             if(payMethod === "QRIS") {
                 transferInfo.style.display = 'none'; 
                 qrisBox.style.display = 'block';
                 
-                let qrisData = generateUniqueQRIS(rawQrisStatis, baseTotal);
-                checkoutData.total = qrisData.totalFinal;
+                let uniqueCode = Math.floor(Math.random() * 50) + 1;
+                let adminFee = Math.max(1, Math.ceil(baseTotal * 0.0001));
+                let finalTotal = baseTotal + uniqueCode + adminFee;
+                checkoutData.total = finalTotal;
 
                 document.getElementById('co-produk').innerText = 'Layanan: ' + activeProduct.nama + ' - ' + activeVariant.nama;
                 document.getElementById('co-data').innerText = 'Data: ' + checkoutData.data;
-                document.getElementById('co-harga').innerText = 'Total Bayar: Rp ' + qrisData.totalFinal.toLocaleString('id-ID') + ` (Termasuk Kode Unik Rp${qrisData.kodeUnik} & Admin)`;
+                document.getElementById('co-harga').innerText = 'Total Bayar: Rp ' + finalTotal.toLocaleString('id-ID') + ` (Termasuk Kode Unik Rp${uniqueCode} & Admin)`;
 
-                // RENDER GAMBAR QRIS TUNGGAL PRESIK DENGAN PEMBERSIHAN CANVAS AUTOMATIS
+                // MEMBUAT QRIS STATIS TUNGGAL TANPA ERROR
                 try {
                     new QRCode(qrContainer, { 
-                        text: qrisData.payload, 
+                        text: rawQrisStatis, 
                         width: 200, 
                         height: 200, 
                         colorDark: "#000000", 
                         colorLight: "#ffffff", 
                         correctLevel: QRCode.CorrectLevel.M 
                     });
-                    
-                    // MEMASTIKAN MEMILIH ELEMEN TERAKHIR / MENYEMBUNYIKAN CANVAS APABILA DI-RENDER OLEH LIBRARY
-                    setTimeout(() => {
-                        let canvasEl = qrContainer.querySelector('canvas');
-                        if (canvasEl) canvasEl.style.display = 'none';
-                    }, 50);
                 } catch(e) {
-                    qrContainer.innerHTML = "";
                     let imgFallback = document.createElement('img');
-                    imgFallback.src = "https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=" + encodeURIComponent(qrisData.payload);
+                    imgFallback.src = "https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=" + encodeURIComponent(rawQrisStatis);
                     qrContainer.appendChild(imgFallback);
                 }
             } else {
