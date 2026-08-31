@@ -64,16 +64,31 @@
             100% { transform: translateY(115vh); opacity: 0; }
         }
 
+        /* ORNAMEN FLOATING SPARKLES & BUBBLES BACKGROUND */
         .stars-container { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -2; pointer-events: none; }
         .star {
             position: absolute; background: #ffffff; border-radius: 50%;
-            box-shadow: 0 0 8px rgba(255, 255, 255, 0.9), 0 0 12px rgba(255, 105, 180, 0.5); animation: twinkle 3s ease-in-out infinite alternate;
+            box-shadow: 0 0 8px rgba(255, 255, 255, 0.9), 0 0 12px rgba(255, 105, 180, 0.6); animation: twinkle 3s ease-in-out infinite alternate;
         }
         .star.s1 { top: 10%; left: 20%; width: 4px; height: 4px; animation-delay: 0s; }
         .star.s2 { top: 25%; left: 75%; width: 3px; height: 3px; animation-delay: 0.7s; }
         .star.s3 { top: 45%; left: 10%; width: 5px; height: 5px; animation-delay: 1.2s; }
         .star.s4 { top: 65%; left: 85%; width: 4px; height: 4px; animation-delay: 0.3s; }
         .star.s5 { top: 80%; left: 30%; width: 3px; height: 3px; animation-delay: 1.8s; }
+
+        .floating-bubble {
+            position: absolute; border-radius: 50%; background: rgba(255, 182, 193, 0.25);
+            border: 1px solid rgba(255, 255, 255, 0.6); animation: floatUp 12s infinite linear;
+        }
+        .b1 { width: 18px; height: 18px; left: 12%; animation-delay: 0s; }
+        .b2 { width: 25px; height: 25px; left: 45%; animation-delay: 3s; }
+        .b3 { width: 15px; height: 15px; left: 82%; animation-delay: 6s; }
+
+        @keyframes floatUp {
+            0% { transform: translateY(100vh) scale(0.8); opacity: 0; }
+            50% { opacity: 0.6; }
+            100% { transform: translateY(-10vh) scale(1.2); opacity: 0; }
+        }
 
         @keyframes twinkle { 0% { opacity: 0.3; transform: scale(0.8); } 100% { opacity: 1; transform: scale(1.4); } }
 
@@ -138,16 +153,23 @@
         .section.active { display: block; }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
 
-        /* GRID SERVICES & HOVER EFFECTS */
+        /* GRID SERVICES & HOVER EFFECTS WITH SHIMMER */
         .grid-services { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-top: 10px; }
         .service-box {
             background: var(--white); border: 2px solid var(--light-pink); border-radius: 14px; padding: 12px 6px;
             text-align: center; cursor: pointer; box-shadow: 0 3px 8px rgba(255,182,193,0.2); transition: all 0.25s ease;
             aspect-ratio: 1 / 1; display: flex; flex-direction: column; justify-content: center; align-items: center;
+            position: relative; overflow: hidden;
         }
+        .service-box::after {
+            content: ''; position: absolute; top: -50%; left: -50%; width: 200%; height: 200%;
+            background: linear-gradient(60deg, transparent, rgba(255, 255, 255, 0.4), transparent);
+            transform: rotate(30deg) translateY(-100%); transition: transform 0.6s;
+        }
+        .service-box:hover::after { transform: rotate(30deg) translateY(100%); }
         .service-box:hover {
             border-color: var(--deep-pink); transform: translateY(-4px) scale(1.02);
-            box-shadow: 0 6px 16px rgba(255,105,180,0.3); background: var(--soft-pink);
+            box-shadow: 0 8px 18px rgba(255,105,180,0.35); background: var(--soft-pink);
         }
         
         /* CIRCLE ICON GRAPHIC */
@@ -163,9 +185,9 @@
         .product-card {
             background: var(--white); border-radius: 12px; padding: 10px; text-align: center;
             box-shadow: 0 3px 8px rgba(255,182,193,0.2); cursor: pointer; border: 2px solid var(--light-pink);
-            transition: all 0.25s ease;
+            transition: all 0.25s ease; position: relative; overflow: hidden;
         }
-        .product-card:hover { border-color: var(--deep-pink); transform: translateY(-3px); box-shadow: 0 5px 12px rgba(255,105,180,0.3); }
+        .product-card:hover { border-color: var(--deep-pink); transform: translateY(-3px); box-shadow: 0 6px 14px rgba(255,105,180,0.35); }
         .product-card img { width: 42px; height: 42px; border-radius: 8px; margin-bottom: 4px; object-fit: cover; }
         .product-card h4 { font-size: 11px; color: var(--dark-text); font-weight: 600; line-height: 1.2; }
         
@@ -224,6 +246,9 @@
         <div class="star s1"></div><div class="star s2"></div>
         <div class="star s3"></div><div class="star s4"></div>
         <div class="star s5"></div>
+        <div class="floating-bubble b1"></div>
+        <div class="floating-bubble b2"></div>
+        <div class="floating-bubble b3"></div>
     </div>
 
     <div class="real-butterfly fly-path-1"></div>
@@ -282,7 +307,7 @@
             Selamat datang di Ciaa Store ✨
         </div>
 
-        <!-- ULAR TAB UI/UX MAIN NAVIGATION -->
+        <!-- TAB MAIN NAVIGATION -->
         <div class="nav-tabs" id="main-nav-tabs">
             <div class="tab-item active" onclick="switchMenu('topup-voucher-section', event)">🎟️ Top Up Voucher</div>
             <div class="tab-item" onclick="switchMenu('layanan-section', event)">🛍️ Layanan</div>
@@ -516,11 +541,14 @@
     <a href="https://wa.me/6289509452777" target="_blank" class="fab" title="Hubungi CS">💬</a>
 
     <script>
+        /* VARIABLE STORAGE NAVIGATION BACK-BUTTON ROUTING */
+        let lastActiveTab = 'topup-voucher-section';
+
         if(localStorage.getItem('ciaa_maintenance') === 'true') {
             document.getElementById('maintenance-overlay').style.display = 'flex';
         }
 
-        /* 1. PERBAIKAN DYNAMIC GREETING BOX ACCORDING TO USER LOCAL TIME */
+        /* 1. DYNAMIC GREETING BOX ACCORDING TO USER LOCAL TIME */
         function setDynamicGreeting() {
             const now = new Date();
             const hour = now.getHours();
@@ -556,7 +584,7 @@
             }, 3500);
         }
 
-        /* DATA PRODUK LENGKAP TERMASUK PRODUK BARU */
+        /* DATA PRODUK LENGKAP TERMASUK PEMBARUAN JASA BUAT WEB */
         const dataProduk = {
             "app-premium": [
                 { id: "canva", nama: "🎨 Canva", img: "canva.jpg", type: "ui-canva" },
@@ -584,7 +612,7 @@
             "jasa-ciaa": [
                 { id: "jasher", nama: "🚀 Jasher (Jasa Share)", img: "logo.jpg", type: "ui-jasa", catatan: "• Layanan Jasa Share pesan/promosi ke target." },
                 { id: "jpm", nama: "📈 JPM (Jasa Push Member)", img: "logo.jpg", type: "ui-jasa", catatan: "• Layanan Jasa Push Member sesuai target." },
-                { id: "jasa-web", nama: "🌐 Jasa Buat Web", img: "logo.jpg", type: "ui-jasa", catatan: "• Layanan pembuatan website impian cepat & elegan." }
+                { id: "jasa-web", nama: "🌐 Jasa Buat Web", img: "logo.jpg", type: "ui-web", catatan: "• Layanan pembuatan website impian cepat & elegan.<br>• <em>Untuk orderan bebas request boleh isi deskripsi dengan link referensi website.</em>" }
             ],
             "kebutuhan-harian": [
                 { id: "token-pln", nama: "⚡ Token PLN (Listrik)", img: "logo.jpg", type: "ui-std", inputs: ["Nomor Meteran / ID Pelanggan"], catatan: "⚠️ <strong>Catatan Penting:</strong><br>Meteran dengan awalan nomor <strong>'56'</strong> tidak bisa diisi pada jam <strong>12:55 - 12:15 WIB</strong>." }
@@ -627,11 +655,9 @@
                 { nama: "Token 1.000.000", harga: 1002300 }
             ],
             "roblox": [
-                /* TAB GIFT CARD */
                 { nama: "RB Roblox 50.000 Credit", harga: 47500, tag: "giftcard" },
                 { nama: "RB Roblox 65.000 Credit", harga: 61500, tag: "giftcard" },
                 { nama: "RB Roblox 100.000 Credit", harga: 95500, tag: "giftcard" },
-                /* TAB MIX */
                 { nama: "RB Roblox 100.000 Credit (Mix 50k+50k)", harga: 95000, tag: "mix" },
                 { nama: "RB Roblox 115.000 Credit (Mix 50k+65k)", harga: 107500, tag: "mix" },
                 { nama: "RB Roblox 130.000 Credit (Mix 65k+65k)", harga: 121500, tag: "mix" },
@@ -703,6 +729,12 @@
             document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
             document.querySelectorAll('.tab-item').forEach(t => t.classList.remove('active'));
             document.getElementById(menuId).classList.add('active');
+            
+            /* SIMPAN TAB YANG SEDANG AKTIF UNTUK ROUTING KEMBALI */
+            if(menuId === 'topup-voucher-section' || menuId === 'layanan-section' || menuId === 'kebutuhan-harian-section') {
+                lastActiveTab = menuId;
+            }
+
             if (event && event.target) event.target.classList.add('active');
             if (menuId === 'antrian-section') {
                 loadAntrianList();
@@ -716,10 +748,21 @@
             window.scrollTo(0,0);
         }
 
+        /* AKURASI NAVIGATION ROUTING BACK BUTTON */
         function backToMenu() {
             document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
-            document.getElementById('topup-voucher-section').classList.add('active');
+            
+            /* DIBUAT UNTUK KEMBALI KE TAB ASAL SEBELUMNYA */
+            document.getElementById(lastActiveTab).classList.add('active');
             document.getElementById('main-nav-tabs').style.display = 'flex';
+            
+            /* SESUAIKAN ACTIVE STATE TOMBOL TAB NAVIGATION */
+            document.querySelectorAll('.tab-item').forEach(t => t.classList.remove('active'));
+            const tabs = document.querySelectorAll('.tab-item');
+            if(lastActiveTab === 'topup-voucher-section' && tabs[0]) tabs[0].classList.add('active');
+            else if(lastActiveTab === 'layanan-section' && tabs[1]) tabs[1].classList.add('active');
+            else if(lastActiveTab === 'kebutuhan-harian-section' && tabs[2]) tabs[2].classList.add('active');
+
             window.scrollTo(0,0);
         }
 
@@ -757,7 +800,6 @@
 
             if(prod.catatan) { notesEl.innerHTML = prod.catatan; notesEl.style.display = 'block'; }
 
-            /* FITUR SUB-TAB UI/UX KHUSUS ROBLOX CREDIT & CANVA */
             if(prod.type === 'ui-roblox') {
                 subTabsEl.style.display = 'flex';
                 subTabsEl.innerHTML = `<div class="sub-tab active" onclick="switchSubTab('giftcard', event)">Gift Card</div>
@@ -770,6 +812,15 @@
                                        <div class="sub-tab" onclick="switchSubTab('head', event)">Canva Head</div>`;
                 renderInputs(['Isi Email Canva yang akan di Premium kan']);
                 renderPackages('canva', 'tim');
+            } else if(prod.type === 'ui-web') {
+                /* MODIFIKASI JASA BUAT WEB: DESKRIPSI OPTIONAL & PLACEHOLDER */
+                renderInputs(['Nama Store / Nama Pemesan']);
+                inputsEl.innerHTML += `
+                    <div class="form-group" style="margin-top:12px;">
+                        <label>Deskripsi & Link Referensi Website (Opsional)</label>
+                        <textarea class="form-control" id="input-desc" placeholder="Isi link / request website"></textarea>
+                    </div>`;
+                renderPackages(prod.id);
             } else if(prod.type === 'ui-jasa') {
                 renderInputs(['Nama Store']);
                 inputsEl.innerHTML += `
@@ -881,7 +932,10 @@
             let descText = "";
             if(descEl) {
                 descText = descEl.value.trim();
-                if(!descText) return alert("⚠️ Kolom Deskripsi/Link Wajib Diisi!");
+                /* HANYA WAJIBKAN PADA JASA BIASA, JASA WEB DESKRIPSI ADALAH OPSIONAL */
+                if(activeProduct.type === 'ui-jasa' && !descText) {
+                    return alert("⚠️ Kolom Deskripsi/Link Wajib Diisi!");
+                }
             }
 
             const payMethod = document.querySelector('input[name="pay-method"]:checked').value;
@@ -900,12 +954,15 @@
             const transferInfo = document.getElementById('transfer-info');
             const qrisBox = document.getElementById('qris-box');
             const qrContainer = document.getElementById('qrcode');
+            
+            /* DIBERSIHKAN UNTUK MENCEGAH BUG DOUBLE QRIS */
             qrContainer.innerHTML = ""; 
             
             if(payMethod === "QRIS") {
                 transferInfo.style.display = 'none'; 
                 qrisBox.style.display = 'block';
                 
+                /* DYNAMIC AUTO-GENERATE NOMINAL QRIS DENGAN KODE UNIK */
                 let qrisData = generateUniqueQRIS(rawQrisStatis, baseTotal);
                 checkoutData.total = qrisData.totalFinal;
 
@@ -960,9 +1017,9 @@
             if (checkoutData.type === 'ui-game' || checkoutData.type === 'ui-roblox') {
                 teks += `🎮 [Detail Order Top Up / Voucher]\n👤 Data ID/Server/Akun: ${checkoutData.data}\n\n`;
                 teks += `Berikut saya lampirkan bukti transfer. Mohon bantuannya untuk segera diproses ya kak, terima kasih! 😀`;
-            } else if (checkoutData.type === 'ui-jasa') {
-                teks += `🚀 [Detail Layanan Jasa]\n👤 Nama Store: ${checkoutData.data}\n\n`;
-                teks += `📝 Deskripsi / Link Pesanan:\n${checkoutData.desc}\n\n\n`;
+            } else if (checkoutData.type === 'ui-jasa' || checkoutData.type === 'ui-web') {
+                teks += `🚀 [Detail Layanan Jasa / Buat Web]\n👤 Nama Store / Pemesan: ${checkoutData.data}\n\n`;
+                teks += `📝 Deskripsi / Request Website:\n${checkoutData.desc || '-'}\n\n\n`;
                 teks += `Berikut saya lampirkan bukti transfer. Mohon bantuannya untuk segera diproses ya kak, terima kasih! 😀`;
             } else {
                 teks += `📱 [Detail Pesanan]\n👤 Data Pengisian: ${checkoutData.data}\n\n`;
@@ -1021,7 +1078,7 @@
 
         function logoutAdmin() {
             document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
-            document.getElementById('topup-voucher-section').classList.add('active');
+            document.getElementById(lastActiveTab).classList.add('active');
             document.getElementById('main-nav-tabs').style.display = 'flex';
             window.scrollTo(0,0);
         }
