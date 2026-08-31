@@ -245,7 +245,7 @@
             <div class="tab-item active" onclick="switchMenu('layanan-section', event)">🛍️ Layanan</div>
             <div class="tab-item" onclick="switchMenu('kebutuhan-harian-section', event)">📲 Kebutuhan Harian (Soon)</div>
             <div class="tab-item" onclick="switchMenu('coming-soon-section', event)">🎟️ Top Up Voucher (Soon)</div>
-            <div class="tab-item" onclick="switchMenu('antrian-section', event)">🎫 Cek Antrian</div>
+            <div class="tab-item" onclick="switchMenu('antrian-section', event)" onclick="loadAntrianList()">🎫 Cek Antrian</div>
             <div class="tab-item" onclick="switchMenu('kontak-section', event)">📞 Kontak Admin</div>
             <div class="tab-item" onclick="switchMenu('tutorial-section', event)">📖 Cara Order</div>
         </div>
@@ -361,7 +361,7 @@
                     2️⃣ Lengkapi data pemesanan sesuai petunjuk.<br>
                     3️⃣ Pilih varian produk dan metode pembayaran.<br>
                     4️⃣ Tekan <strong>Lanjutkan Pembayaran</strong> untuk mendapatkan QRIS.<br>
-                    5️⃣ Scan QRIS (Nomor unik tambahan Rp 1–100 akan otomatis terkunci di aplikasi Anda).<br>
+                    5️⃣ Scan QRIS (Nomor unik tambahan Rp 1–50 akan otomatis terkunci di aplikasi Anda)[cite: 1].<br>
                     6️⃣ Selesaikan pembayaran dan konfirmasi ke WhatsApp Admin! 🌸✨
                 </div>
             </div>
@@ -378,7 +378,7 @@
                 <div class="mini-grid" id="package-list" style="margin-top:0;"></div>
 
                 <h3 style="margin-top: 15px; margin-bottom: 8px; color: var(--deep-pink); font-size: 14px;">Pilih Pembayaran</h3>
-                <div class="payment-option"><input type="radio" name="pay-method" value="QRIS" id="pay-qris" checked> <label for="pay-qris">QRIS All Payment (Otomatis + Kode Unik Rp1-100)</label></div>
+                <div class="payment-option"><input type="radio" name="pay-method" value="QRIS" id="pay-qris" checked> <label for="pay-qris">QRIS All Payment (Otomatis + Kode Unik Rp1-50)</label></div>
                 <div class="payment-option"><input type="radio" name="pay-method" value="DANA" id="pay-dana"> <label for="pay-dana">DANA (081338224767 A/N AGUS SUTIARNO)</label></div>
                 <div class="payment-option"><input type="radio" name="pay-method" value="GOPAY" id="pay-gopay"> <label for="pay-gopay">GoPay (089505929536)</label></div>
 
@@ -393,6 +393,13 @@
                     <p id="co-produk">Layanan: -</p>
                     <p id="co-data">Data: -</p>
                     <p id="co-harga" style="font-size: 16px; font-weight: bold; margin-top: 8px; color: var(--deep-pink);">Total: Rp -</p>
+                </div>
+
+                <!-- BOX INFORMASI NOMOR ANTRIAN PELANGGAN -->
+                <div class="info-box-pink" style="background: white; border: 2px dashed var(--deep-pink); text-align: center;">
+                    <h3 style="color: var(--deep-pink); font-size: 14px; margin-bottom: 4px;">🎫 Nomor Antrian Pesanan Kamu:</h3>
+                    <p id="co-queue-display" style="font-size: 18px; font-weight: bold; color: var(--deep-pink); margin: 6px 0;">CS-#00-26</p>
+                    <span style="font-size: 11px; color: #666;">Nomor antrian ini juga tercatat secara publik di menu "Cek Antrian".</span>
                 </div>
 
                 <div id="transfer-info" class="alert-box" style="background: var(--white); border-color: var(--primary-pink); text-align: center; display:none;">
@@ -561,6 +568,9 @@
             document.querySelectorAll('.tab-item').forEach(t => t.classList.remove('active'));
             document.getElementById(menuId).classList.add('active');
             if (event && event.target) event.target.classList.add('active');
+            if (menuId === 'antrian-section') {
+                loadAntrianList();
+            }
             window.scrollTo(0,0);
         }
 
@@ -701,15 +711,15 @@
             return crc.toString(16).toUpperCase().padStart(4, '0');
         }
 
-        /* GENERATE QRIS DENGAN KODE UNIK TAMBAHAN RP 1 - 100 */
+        /* GENERATE QRIS DENGAN KODE UNIK TAMBAHAN RP 1 - 50 */
         function generateUniqueQRIS(qrisStr, amount) {
             let crcIndex = qrisStr.indexOf("6304");
             if (crcIndex !== -1) {
                 qrisStr = qrisStr.substring(0, crcIndex);
             }
 
-            // Tambahkan kode unik acak antara 1 sampai 100 rupiah ke total bayar
-            let uniqueCode = Math.floor(Math.random() * 100) + 1;
+            // Kode unik acak antara 1 sampai 50 rupiah[cite: 1]
+            let uniqueCode = Math.floor(Math.random() * 50) + 1;
             let finalAmount = amount + uniqueCode;
 
             let amountStr = finalAmount.toString();
@@ -749,7 +759,6 @@
 
             const payMethod = document.querySelector('input[name="pay-method"]:checked').value;
             let baseTotal = activeVariant.harga;
-            let ketHarga = "";
 
             if(payMethod === "QRIS") {
                 let adminFee = Math.max(1, Math.ceil(baseTotal * 0.0001)); 
@@ -770,7 +779,6 @@
                 transferInfo.style.display = 'none'; 
                 qrisBox.style.display = 'block';
                 
-                // Buat QRIS dengan kode unik Rp 1 - 100 otomatis
                 let qrisData = generateUniqueQRIS(rawQrisStatis, baseTotal);
                 currentUniqueTotal = qrisData.totalFinal;
                 checkoutData.total = currentUniqueTotal;
@@ -805,6 +813,10 @@
                 }
             }
 
+            // Generate dan tampilkan nomor antrian (CS-#NO-TAHUN)[cite: 1]
+            let assignedQueueNo = getOrGenerateQueueNumber();
+            document.getElementById('co-queue-display').innerText = assignedQueueNo;
+
             document.getElementById('form-pesanan').classList.remove('active');
             document.getElementById('checkout-page').classList.add('active');
             window.scrollTo(0,0);
@@ -815,11 +827,11 @@
             let existingQueue = localStorage.getItem(sessionKey);
             if (existingQueue) return existingQueue;
             
-            const date = new Date();
-            const dStr = String(date.getDate()).padStart(2, '0') + String(date.getMonth()+1).padStart(2, '0') + String(date.getFullYear()).slice(-2);
+            const currentYear = String(new Date().getFullYear()).slice(-2); // Format dua digit tahun (contoh: 26)[cite: 1]
             let antrianList = JSON.parse(localStorage.getItem('ciaa_antrian') || '[]');
-            let todayCount = antrianList.filter(item => item.no.includes(dStr)).length + 1;
-            let antrianNo = 'CS-' + dStr + '-#' + String(todayCount).padStart(2, '0');
+            let todayCount = antrianList.length + 1;
+            
+            let antrianNo = 'CS-#' + String(todayCount).padStart(2, '0') + '-' + currentYear;[cite: 1]
             
             localStorage.setItem(sessionKey, antrianNo);
             saveAntrianToStorage(antrianNo, checkoutData.produk + " - " + checkoutData.paket, checkoutData.total);
@@ -828,7 +840,7 @@
 
         function sendToWhatsApp() {
             const noWA = "6289505929536";
-            let antrianNo = getOrGenerateQueueNumber();
+            let antrianNo = document.getElementById('co-queue-display').innerText;
             let teks = `Halo Admin Ciaa Store! ✨\nSaya telah menyelesaikan pembayaran dengan rincian berikut:\n\n🎫 No. Antrian: ${antrianNo}\n🛒 Layanan: ${checkoutData.produk} - ${checkoutData.paket}\n💳 Metode Pembayaran: ${checkoutData.metode}\n💰 Total Tagihan: Rp${checkoutData.total.toLocaleString('id-ID')}\n\n`;
 
             if (checkoutData.type === 'ui-game') {
@@ -858,6 +870,7 @@
         function loadAntrianList() {
             let antrianList = JSON.parse(localStorage.getItem('ciaa_antrian') || '[]');
             const container = document.getElementById('list-antrian');
+            if(!container) return;
             if(antrianList.length === 0) return container.innerHTML = "Belum ada antrian aktif hari ini. Yuk buat pesananmu sekarang! 💖";
             container.innerHTML = "";
             antrianList.forEach(item => {
@@ -926,6 +939,7 @@
         function loadAdminAntrianList() {
             let antrianList = JSON.parse(localStorage.getItem('ciaa_antrian') || '[]');
             const container = document.getElementById('admin-antrian-list');
+            if(!container) return;
             if(antrianList.length === 0) return container.innerHTML = "<p style='text-align:center; color:#555;'>Belum ada pesanan masuk.</p>";
             container.innerHTML = "";
             antrianList.forEach((item, index) => {
