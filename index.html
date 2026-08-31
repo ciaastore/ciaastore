@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Ciaa Store - Cute & Aesthetic Digital Shop</title>
+    <title>Ciaa Store - Service & Digital Shop</title>
     
     <!-- Library QR Code -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
@@ -32,16 +32,12 @@
             font-size: 14px;
         }
 
-        /* 1. BACKGROUND GRAPHIC 3D BERPUTAR (SOFT PINK TONE) */
+        /* BACKGROUND GRAPHIC 3D BERPUTAR & EFEK LIGHT BEAMS */
         .bg-3d-graphic {
             position: fixed; top: -50%; left: -50%; width: 200%; height: 200%;
             background: radial-gradient(circle at center, rgba(255, 255, 255, 0.6) 0%, rgba(255, 182, 193, 0.3) 40%, transparent 70%),
                         conic-gradient(from 0deg, #ffe4e1, #ffb6c1, #fff0f5, #ffe4e1);
-            opacity: 0.6;
-            z-index: -4;
-            animation: rotate3D 35s linear infinite;
-            pointer-events: none;
-            filter: blur(30px);
+            opacity: 0.6; z-index: -4; animation: rotate3D 35s linear infinite; pointer-events: none; filter: blur(30px);
         }
         @keyframes rotate3D {
             0% { transform: rotate(0deg) scale(1); }
@@ -49,16 +45,11 @@
             100% { transform: rotate(360deg) scale(1); }
         }
 
-        /* 2. EFEK GARIS SINAR MENGKILAU DARI ATAS KE BAWAH */
-        .light-beams {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            z-index: -3; pointer-events: none; overflow: hidden;
-        }
+        .light-beams { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -3; pointer-events: none; overflow: hidden; }
         .beam {
             position: absolute; top: -150px; width: 2px; height: 300px;
             background: linear-gradient(to bottom, transparent, rgba(255, 255, 255, 0.9), rgba(255, 105, 180, 0.5), transparent);
-            box-shadow: 0 0 10px rgba(255, 255, 255, 0.9);
-            animation: beamDrop 6s linear infinite;
+            box-shadow: 0 0 10px rgba(255, 255, 255, 0.9); animation: beamDrop 6s linear infinite;
         }
         .beam:nth-child(1) { left: 15%; animation-delay: 0s; animation-duration: 5s; }
         .beam:nth-child(2) { left: 35%; animation-delay: 2s; animation-duration: 7s; width: 3px; }
@@ -73,60 +64,35 @@
             100% { transform: translateY(115vh); opacity: 0; }
         }
 
-        /* 3. BINTANG DAN BINTIK CAHAYA BERSINAR */
-        .stars-container {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            z-index: -2; pointer-events: none;
-        }
+        .stars-container { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -2; pointer-events: none; }
         .star {
             position: absolute; background: #ffffff; border-radius: 50%;
-            box-shadow: 0 0 8px rgba(255, 255, 255, 0.9), 0 0 12px rgba(255, 105, 180, 0.5);
-            animation: twinkle 3s ease-in-out infinite alternate;
+            box-shadow: 0 0 8px rgba(255, 255, 255, 0.9), 0 0 12px rgba(255, 105, 180, 0.5); animation: twinkle 3s ease-in-out infinite alternate;
         }
         .star.s1 { top: 10%; left: 20%; width: 4px; height: 4px; animation-delay: 0s; }
         .star.s2 { top: 25%; left: 75%; width: 3px; height: 3px; animation-delay: 0.7s; }
         .star.s3 { top: 45%; left: 10%; width: 5px; height: 5px; animation-delay: 1.2s; }
         .star.s4 { top: 65%; left: 85%; width: 4px; height: 4px; animation-delay: 0.3s; }
         .star.s5 { top: 80%; left: 30%; width: 3px; height: 3px; animation-delay: 1.8s; }
-        .star.s6 { top: 15%; left: 90%; width: 5px; height: 5px; animation-delay: 2.2s; }
-        .star.s7 { top: 70%; left: 60%; width: 4px; height: 4px; animation-delay: 1s; }
 
-        @keyframes twinkle {
-            0% { opacity: 0.3; transform: scale(0.8); }
-            100% { opacity: 1; transform: scale(1.4); }
-        }
+        @keyframes twinkle { 0% { opacity: 0.3; transform: scale(0.8); } 100% { opacity: 1; transform: scale(1.4); } }
 
-        /* ANIMASI KUPU-KUPU 3D REALISTIS BERKELILING LAYAR */
-        .real-butterfly {
-            position: fixed; pointer-events: none; z-index: -1;
-            width: 35px; height: 35px; transform-style: preserve-3d;
-            filter: drop-shadow(0 4px 6px rgba(255, 105, 180, 0.4));
-        }
+        /* KUPU-KUPU 3D */
+        .real-butterfly { position: fixed; pointer-events: none; z-index: -1; width: 35px; height: 35px; transform-style: preserve-3d; filter: drop-shadow(0 4px 6px rgba(255, 105, 180, 0.4)); }
         .real-butterfly::before, .real-butterfly::after {
             content: ''; position: absolute; top: 0; width: 17px; height: 30px;
             background: radial-gradient(circle at 50% 50%, rgba(255,105,180,0.85), rgba(255,182,193,0.4));
-            border-radius: 50% 10% 50% 40%; transform-origin: right center;
-            box-shadow: inset 0 0 4px rgba(255,255,255,0.6);
+            border-radius: 50% 10% 50% 40%; transform-origin: right center; box-shadow: inset 0 0 4px rgba(255,255,255,0.6);
         }
-        .real-butterfly::after {
-            left: 17px; border-radius: 10% 50% 40% 50%; transform-origin: left center;
-            animation: flapRight 0.15s ease-in-out infinite alternate;
-        }
-        .real-butterfly::before {
-            left: 0; animation: flapLeft 0.15s ease-in-out infinite alternate;
-        }
+        .real-butterfly::after { left: 17px; border-radius: 10% 50% 40% 50%; transform-origin: left center; animation: flapRight 0.15s ease-in-out infinite alternate; }
+        .real-butterfly::before { left: 0; animation: flapLeft 0.15s ease-in-out infinite alternate; }
         @keyframes flapLeft { 0% { transform: rotateY(0deg); } 100% { transform: rotateY(70deg); } }
         @keyframes flapRight { 0% { transform: rotateY(0deg); } 100% { transform: rotateY(-70deg); } }
 
         .fly-path-1 { animation: fly1 18s ease-in-out infinite alternate; }
         .fly-path-2 { animation: fly2 22s ease-in-out infinite alternate; }
-        .fly-path-3 { animation: fly3 15s ease-in-out infinite alternate; }
-        .fly-path-4 { animation: fly4 25s ease-in-out infinite alternate; }
-
         @keyframes fly1 { 0% { top: 90%; left: -10%; transform: rotate(15deg) scale(0.9); } 100% { top: 10%; left: 110%; transform: rotate(45deg) scale(1.1); } }
         @keyframes fly2 { 0% { top: -10%; left: 80%; transform: rotate(-120deg) scale(1); } 100% { top: 110%; left: 20%; transform: rotate(-80deg) scale(0.8); } }
-        @keyframes fly3 { 0% { top: 40%; left: -10%; transform: rotate(30deg) scale(0.7); } 100% { top: 70%; left: 110%; transform: rotate(10deg) scale(1); } }
-        @keyframes fly4 { 0% { top: 110%; left: 30%; transform: rotate(-45deg) scale(1.2); } 100% { top: -10%; left: 60%; transform: rotate(25deg) scale(0.9); } }
 
         .main-wrapper {
             max-width: 750px; margin: 0 auto; background: rgba(255, 255, 255, 0.95);
@@ -154,36 +120,53 @@
         .promo-card-h h3 { font-size: 14px; color: var(--deep-pink); margin-bottom: 5px; display: flex; align-items: center; gap: 5px; font-weight: bold;}
         .promo-card-h p { font-size: 12px; line-height: 1.4; color: var(--dark-text); }
 
+        /* DYNAMIC GREETING BOX DESIGN */
         .greeting-box {
-            background: #fff0f5; border: 1.5px solid var(--primary-pink);
-            border-radius: 12px; padding: 10px 15px; margin: 5px 15px 0 15px;
-            text-align: center; font-weight: bold; color: var(--deep-pink); font-size: 13px;
+            background: linear-gradient(135deg, #fff0f5 0%, #ffe4e1 100%);
+            border: 2px solid var(--primary-pink); border-radius: 12px; padding: 12px 15px;
+            margin: 5px 15px 0 15px; text-align: center; font-weight: bold; color: var(--deep-pink);
+            font-size: 13px; box-shadow: 0 4px 12px rgba(255, 105, 180, 0.15); animation: fadeIn 0.5s ease;
         }
 
         .nav-tabs { display: flex; overflow-x: auto; background: var(--white); padding: 10px; white-space: nowrap; border-bottom: 2px solid var(--light-pink); scrollbar-width: none; gap: 6px; }
         .nav-tabs::-webkit-scrollbar { display: none; }
-        .tab-item { padding: 6px 14px; background: var(--soft-pink); border-radius: 12px; cursor: pointer; font-weight: bold; font-size: 13px; border: 2px solid var(--primary-pink); color: var(--dark-text); transition: 0.3s; }
-        .tab-item.active, .tab-item:hover { background: var(--primary-pink); color: var(--white); box-shadow: 0 3px 8px rgba(255,105,180,0.3); }
+        .tab-item { padding: 8px 16px; background: var(--soft-pink); border-radius: 12px; cursor: pointer; font-weight: bold; font-size: 13px; border: 2px solid var(--primary-pink); color: var(--dark-text); transition: all 0.3s ease; }
+        .tab-item.active, .tab-item:hover { background: var(--primary-pink); color: var(--white); box-shadow: 0 4px 12px rgba(255,105,180,0.35); transform: translateY(-2px); }
 
         .container { padding: 15px; min-height: 45vh; }
-        .section { display: none; animation: fadeIn 0.3s ease; }
+        .section { display: none; animation: fadeIn 0.4s ease-in-out; }
         .section.active { display: block; }
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: translateY(0); } }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
 
-        .grid-services { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin-top: 10px; }
+        /* GRID SERVICES & HOVER EFFECTS */
+        .grid-services { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-top: 10px; }
         .service-box {
-            background: var(--white); border: 1.5px solid var(--light-pink); border-radius: 12px; padding: 10px 6px;
-            text-align: center; cursor: pointer; box-shadow: 0 2px 6px rgba(255,182,193,0.15); transition: 0.2s;
+            background: var(--white); border: 2px solid var(--light-pink); border-radius: 14px; padding: 12px 6px;
+            text-align: center; cursor: pointer; box-shadow: 0 3px 8px rgba(255,182,193,0.2); transition: all 0.25s ease;
             aspect-ratio: 1 / 1; display: flex; flex-direction: column; justify-content: center; align-items: center;
         }
-        .service-box:hover { border-color: var(--deep-pink); transform: translateY(-2px); box-shadow: 0 4px 12px rgba(255,105,180,0.25); }
-        .service-box img { width: 40px; height: 40px; border-radius: 50%; object-fit: cover; margin-bottom: 6px; border: 1.5px solid var(--primary-pink); }
+        .service-box:hover {
+            border-color: var(--deep-pink); transform: translateY(-4px) scale(1.02);
+            box-shadow: 0 6px 16px rgba(255,105,180,0.3); background: var(--soft-pink);
+        }
+        
+        /* CIRCLE ICON GRAPHIC */
+        .circle-icon {
+            width: 45px; height: 45px; border-radius: 50%; object-fit: cover; margin-bottom: 6px;
+            border: 2px solid var(--primary-pink); box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+            display: flex; align-items: center; justify-content: center; background: white; font-size: 22px;
+        }
+        .circle-icon img { width: 100%; height: 100%; border-radius: 50%; object-fit: cover; }
         .service-box h4 { font-size: 11px; color: var(--dark-text); font-weight: 600; line-height: 1.2; }
 
-        .mini-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(100px, 1fr)); gap: 8px; margin-top: 10px; }
-        .product-card { background: var(--white); border-radius: 10px; padding: 8px; text-align: center; box-shadow: 0 2px 6px rgba(255,182,193,0.15); cursor: pointer; border: 1.5px solid var(--light-pink); transition: 0.2s; }
-        .product-card:hover { border-color: var(--deep-pink); transform: translateY(-2px); }
-        .product-card img { width: 40px; height: 40px; border-radius: 8px; margin-bottom: 4px; object-fit: cover; }
+        .mini-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(105px, 1fr)); gap: 10px; margin-top: 10px; }
+        .product-card {
+            background: var(--white); border-radius: 12px; padding: 10px; text-align: center;
+            box-shadow: 0 3px 8px rgba(255,182,193,0.2); cursor: pointer; border: 2px solid var(--light-pink);
+            transition: all 0.25s ease;
+        }
+        .product-card:hover { border-color: var(--deep-pink); transform: translateY(-3px); box-shadow: 0 5px 12px rgba(255,105,180,0.3); }
+        .product-card img { width: 42px; height: 42px; border-radius: 8px; margin-bottom: 4px; object-fit: cover; }
         .product-card h4 { font-size: 11px; color: var(--dark-text); font-weight: 600; line-height: 1.2; }
         
         .alert-box { background: #ffe4e1; border: 1.5px dashed var(--deep-pink); padding: 10px 12px; margin-bottom: 12px; border-radius: 12px; font-size: 13px; color: #b22222; line-height: 1.4; }
@@ -192,7 +175,8 @@
         .contact-card { background: var(--white); border: 2px solid var(--primary-pink); border-radius: var(--card-radius); padding: 15px; margin-bottom: 12px; text-align: center; }
         .contact-card h3 { color: var(--deep-pink); margin-bottom: 6px; font-size: 15px; }
         .contact-card p { font-size: 13px; color: #555; }
-        .contact-btn { display: inline-block; background: var(--primary-pink); color: var(--dark-text); padding: 6px 14px; border-radius: 10px; text-decoration: none; font-weight: bold; font-size: 13px; margin-top: 6px; border: 1.5px solid var(--deep-pink); }
+        .contact-btn { display: inline-block; background: var(--primary-pink); color: var(--dark-text); padding: 6px 14px; border-radius: 10px; text-decoration: none; font-weight: bold; font-size: 13px; margin-top: 6px; border: 1.5px solid var(--deep-pink); transition: 0.2s; }
+        .contact-btn:hover { background: var(--deep-pink); color: white; }
 
         .form-group { margin-bottom: 12px; text-align: left; }
         .form-group label { display: block; font-weight: bold; margin-bottom: 4px; font-size: 13px; color: var(--dark-text); }
@@ -201,27 +185,20 @@
         textarea.form-control { resize: vertical; min-height: 70px; }
         
         .btn-primary { width: 100%; background: var(--primary-pink); color: var(--dark-text); font-weight: bold; padding: 12px; border: 2px solid var(--deep-pink); border-radius: 12px; cursor: pointer; font-size: 14px; margin-top: 8px; transition: 0.2s; box-shadow: 0 3px 8px rgba(255,105,180,0.25); }
-        .btn-primary:hover { background: var(--deep-pink); color: white; }
+        .btn-primary:hover { background: var(--deep-pink); color: white; transform: translateY(-2px); }
         .btn-wa { background: var(--wa-color); border-color: #128C7E; color: white; }
         .btn-copy { background: #ffc0cb; border: 1px solid var(--deep-pink); padding: 5px 10px; border-radius: 8px; cursor: pointer; font-size: 11px; font-weight: bold; margin-left: 8px; }
 
-        .sub-tabs { display: flex; margin-bottom: 12px; gap: 4px; }
-        .sub-tab { flex: 1; text-align: center; padding: 8px; background: var(--soft-pink); cursor: pointer; font-weight: bold; font-size: 13px; border-radius: 10px; border: 1.5px solid var(--primary-pink); color: var(--dark-text); }
-        .sub-tab.active { background: var(--deep-pink); color: white; border-color: var(--deep-pink); }
+        .sub-tabs { display: flex; margin-bottom: 12px; gap: 6px; }
+        .sub-tab { flex: 1; text-align: center; padding: 8px; background: var(--soft-pink); cursor: pointer; font-weight: bold; font-size: 12px; border-radius: 10px; border: 1.5px solid var(--primary-pink); color: var(--dark-text); transition: 0.2s; }
+        .sub-tab.active, .sub-tab:hover { background: var(--deep-pink); color: white; border-color: var(--deep-pink); }
 
         .payment-option { display: flex; align-items: center; padding: 10px; border: 1.5px solid var(--primary-pink); border-radius: 12px; margin-bottom: 8px; cursor: pointer; background: var(--white); font-size: 13px; }
         .payment-option input { margin-right: 8px; accent-color: var(--deep-pink); }
         
-        .qris-container { 
-            background: white; padding: 20px; border-radius: var(--card-radius); 
-            margin: 15px auto; border: 2px solid var(--primary-pink); width: 100%; text-align: center;
-        }
-
+        .qris-container { background: white; padding: 20px; border-radius: var(--card-radius); margin: 15px auto; border: 2px solid var(--primary-pink); width: 100%; text-align: center; }
         #qrcode { text-align: center; margin: 0 auto; width: 100%; }
-        #qrcode canvas, #qrcode img { 
-            margin: 0 auto !important; display: inline-block !important;
-            max-width: 200px !important; height: auto !important; border-radius: 8px;
-        }
+        #qrcode canvas, #qrcode img { margin: 0 auto !important; display: inline-block !important; max-width: 200px !important; height: auto !important; border-radius: 8px; }
 
         #maintenance-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #ffe4e1; z-index: 9999; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; padding: 20px; }
         .maintenance-logo { width: 150px; height: 150px; object-fit: contain; margin-bottom: 15px; animation: floatMaintenance 3.5s ease-in-out infinite; filter: drop-shadow(0 10px 15px rgba(255, 105, 180, 0.4)); }
@@ -236,7 +213,7 @@
 </head>
 <body>
 
-    <!-- ELEMEN ELEMEN VISUAL BACKGROUND SOFT PINK -->
+    <!-- VISUAL BACKGROUND ELEMENTS -->
     <div class="bg-3d-graphic"></div>
     <div class="light-beams">
         <div class="beam"></div><div class="beam"></div>
@@ -246,14 +223,11 @@
     <div class="stars-container">
         <div class="star s1"></div><div class="star s2"></div>
         <div class="star s3"></div><div class="star s4"></div>
-        <div class="star s5"></div><div class="star s6"></div>
-        <div class="star s7"></div>
+        <div class="star s5"></div>
     </div>
 
     <div class="real-butterfly fly-path-1"></div>
     <div class="real-butterfly fly-path-2"></div>
-    <div class="real-butterfly fly-path-3"></div>
-    <div class="real-butterfly fly-path-4"></div>
 
     <button class="btn-admin" onclick="openAdminLoginModal()" title="Admin Login">
         <img src="logo.jpg" alt="Admin" onerror="this.src='https://cdn-icons-png.flaticon.com/512/2913/2913133.png'">
@@ -294,23 +268,25 @@
                 </div>
                 <div class="promo-card-h">
                     <h3>🎮 Top Up Game & Voucher 🎊🔖</h3>
-                    <p>Butuh Diamond atau Voucher Game? Top up praktis di Ciaa Store! Proses cepat, aman, & legal 100%. Tersedia untuk MLBB, FF, PUBG Mobile, dan game favorit lainnya! 🛒💖</p>
+                    <p>Butuh Diamond atau Voucher Game? Top up praktis di Ciaa Store! Proses cepat, aman, & legal 100%. Tersedia untuk MLBB, FF, Roblox Credit, dan game favorit lainnya! 🛒💖</p>
                 </div>
                 <div class="promo-card-h">
-                    <h3>📱 Pulsa Data & Paket Data (Segera Hadir) 📶✨</h3>
-                    <p>Isi ulang pulsa dan kuota internet makin mudah & hemat di Ciaa Store! Semua operator lengkap untuk kebutuhan harianmu. Nantikan rilis resmi layanannya ya! 💖</p>
+                    <h3>⚡ Token PLN & Kebutuhan Harian 📶✨</h3>
+                    <p>Isi ulang token listrik rumahmu makin mudah & hemat di Ciaa Store! Nikmati kemudahan transaksi harian dengan proses serba praktis! 💖</p>
                 </div>
             </div>
         </div>
 
+        <!-- DYNAMIC GREETING BOX -->
         <div class="greeting-box" id="greeting-text">
             Selamat datang di Ciaa Store ✨
         </div>
 
+        <!-- ULAR TAB UI/UX MAIN NAVIGATION -->
         <div class="nav-tabs" id="main-nav-tabs">
-            <div class="tab-item active" onclick="switchMenu('layanan-section', event)">🛍️ Layanan</div>
-            <div class="tab-item" onclick="switchMenu('kebutuhan-harian-section', event)">📲 Kebutuhan Harian (Soon)</div>
-            <div class="tab-item" onclick="switchMenu('coming-soon-section', event)">🎟️ Top Up Voucher (Soon)</div>
+            <div class="tab-item active" onclick="switchMenu('topup-voucher-section', event)">🎟️ Top Up Voucher</div>
+            <div class="tab-item" onclick="switchMenu('layanan-section', event)">🛍️ Layanan</div>
+            <div class="tab-item" onclick="switchMenu('kebutuhan-harian-section', event)">📲 Kebutuhan Harian</div>
             <div class="tab-item" onclick="switchMenu('antrian-section', event)">🎫 Cek Antrian</div>
             <div class="tab-item" onclick="switchMenu('kontak-section', event)">📞 Kontak Admin</div>
             <div class="tab-item" onclick="switchMenu('tutorial-section', event)">📖 Cara Order</div>
@@ -318,28 +294,82 @@
 
         <div class="container">
             
-            <div id="layanan-section" class="section active">
+            <!-- TAB 1: TOP UP VOUCHER -->
+            <div id="topup-voucher-section" class="section active">
                 <div class="grid-services">
-                    <div class="service-box" onclick="openAppPremiumPage()"><img src="logo.jpg" onerror="this.src='https://cdn-icons-png.flaticon.com/512/869/869034.png'"><h4>📱 Aplikasi Premium</h4></div>
-                    <div class="service-box" onclick="openForm('ff', 'topup-game')"><img src="ff.jpg" onerror="this.src='https://cdn-icons-png.flaticon.com/512/869/869034.png'"><h4>🔥 Free Fire</h4></div>
-                    <div class="service-box" onclick="openForm('mlbb', 'topup-game')"><img src="ml.jpg" onerror="this.src='https://cdn-icons-png.flaticon.com/512/869/869034.png'"><h4>⚔️ Mobile Legends</h4></div>
-                    <div class="service-box" onclick="openForm('mlbb-first', 'topup-game')"><img src="ml.jpg" onerror="this.src='https://cdn-icons-png.flaticon.com/512/869/869034.png'"><h4>⭐ MLBB First</h4></div>
-                    <div class="service-box" onclick="openForm('pubg', 'topup-game')"><img src="pubg.jpg" onerror="this.src='https://cdn-icons-png.flaticon.com/512/869/869034.png'"><h4>🎯 PUBG Mobile</h4></div>
-                    <div class="service-box" onclick="openForm('hok', 'topup-game')"><img src="hok.jpg" onerror="this.src='https://cdn-icons-png.flaticon.com/512/869/869034.png'"><h4>👑 Honor Of Kings</h4></div>
-                    <div class="service-box" onclick="openForm('bs', 'topup-game')"><img src="bs.jpg" onerror="this.src='https://cdn-icons-png.flaticon.com/512/869/869034.png'"><h4>💎 Blood Strike</h4></div>
-                    <div class="service-box" onclick="openForm('jasher', 'jasa-ciaa')"><img src="logo.jpg" onerror="this.src='https://cdn-icons-png.flaticon.com/512/869/869034.png'"><h4>🚀 Jasher</h4></div>
-                    <div class="service-box" onclick="openForm('jpm', 'jasa-ciaa')"><img src="logo.jpg" onerror="this.src='https://cdn-icons-png.flaticon.com/512/869/869034.png'"><h4>📈 JPM</h4></div>
+                    <div class="service-box" onclick="openForm('ff', 'topup-game')">
+                        <div class="circle-icon"><img src="ff.jpg" onerror="this.src='https://cdn-icons-png.flaticon.com/512/869/869034.png'"></div>
+                        <h4>🔥 Free Fire</h4>
+                    </div>
+                    <div class="service-box" onclick="openForm('mlbb', 'topup-game')">
+                        <div class="circle-icon"><img src="ml.jpg" onerror="this.src='https://cdn-icons-png.flaticon.com/512/869/869034.png'"></div>
+                        <h4>⚔️ Mobile Legends</h4>
+                    </div>
+                    <div class="service-box" onclick="openForm('mlbb-first', 'topup-game')">
+                        <div class="circle-icon"><img src="ml.jpg" onerror="this.src='https://cdn-icons-png.flaticon.com/512/869/869034.png'"></div>
+                        <h4>⭐ MLBB First</h4>
+                    </div>
+                    <div class="service-box" onclick="openForm('pubg', 'topup-game')">
+                        <div class="circle-icon"><img src="pubg.jpg" onerror="this.src='https://cdn-icons-png.flaticon.com/512/869/869034.png'"></div>
+                        <h4>🎯 PUBG Mobile</h4>
+                    </div>
+                    <div class="service-box" onclick="openForm('hok', 'topup-game')">
+                        <div class="circle-icon"><img src="hok.jpg" onerror="this.src='https://cdn-icons-png.flaticon.com/512/869/869034.png'"></div>
+                        <h4>👑 Honor Of Kings</h4>
+                    </div>
+                    <div class="service-box" onclick="openForm('bs', 'topup-game')">
+                        <div class="circle-icon"><img src="bs.jpg" onerror="this.src='https://cdn-icons-png.flaticon.com/512/869/869034.png'"></div>
+                        <h4>💎 Blood Strike</h4>
+                    </div>
+                    <div class="service-box" onclick="openForm('roblox', 'topup-game')">
+                        <div class="circle-icon">🧱</div>
+                        <h4>Roblox Credit</h4>
+                    </div>
+                    <div class="service-box" onclick="openForm('googleplay', 'topup-game')">
+                        <div class="circle-icon">🎮</div>
+                        <h4>GooglePlay Card</h4>
+                    </div>
+                    <div class="service-box" onclick="openForm('unipin', 'topup-game')">
+                        <div class="circle-icon">💳</div>
+                        <h4>Unipin UPGC ID</h4>
+                    </div>
                 </div>
             </div>
 
+            <!-- TAB 2: LAYANAN -->
+            <div id="layanan-section" class="section">
+                <div class="grid-services">
+                    <div class="service-box" onclick="openForm('jasher', 'jasa-ciaa')">
+                        <div class="circle-icon"><img src="logo.jpg" onerror="this.src='https://cdn-icons-png.flaticon.com/512/869/869034.png'"></div>
+                        <h4>🚀 Jasher</h4>
+                    </div>
+                    <div class="service-box" onclick="openForm('jpm', 'jasa-ciaa')">
+                        <div class="circle-icon"><img src="logo.jpg" onerror="this.src='https://cdn-icons-png.flaticon.com/512/869/869034.png'"></div>
+                        <h4>📈 JPM</h4>
+                    </div>
+                    <div class="service-box" onclick="openForm('jasa-web', 'jasa-ciaa')">
+                        <div class="circle-icon"><img src="logo.jpg" onerror="this.src='https://cdn-icons-png.flaticon.com/512/869/869034.png'"></div>
+                        <h4>🌐 Jasa Buat Web</h4>
+                    </div>
+                    <div class="service-box" onclick="openAppPremiumPage()">
+                        <div class="circle-icon"><img src="logo.jpg" onerror="this.src='https://cdn-icons-png.flaticon.com/512/869/869034.png'"></div>
+                        <h4>📱 Aplikasi Premium</h4>
+                    </div>
+                </div>
+            </div>
+
+            <!-- TAB 3: KEBUTUHAN HARIAN -->
             <div id="kebutuhan-harian-section" class="section">
-                <div class="contact-card" style="border: 2px dashed var(--deep-pink);">
-                    <div style="font-size: 40px; margin-bottom: 8px;">📲</div>
-                    <h2 style="color: var(--deep-pink); margin-bottom: 6px; font-size: 16px;">Pulsa Data & Paket Data (Segera Hadir)</h2>
-                    <p style="color: #555; line-height: 1.5; font-size: 13px;">Layanan pengisian Pulsa All Operator, Paket Data Internet, dan Token PLN sedang disiapkan. Nantikan promo harga bersaing dari Ciaa Store! 🌸✨</p>
+                <div class="grid-services">
+                    <div class="service-box" onclick="openForm('token-pln', 'kebutuhan-harian')" style="grid-column: span 3; aspect-ratio: auto; padding: 15px;">
+                        <div class="circle-icon">⚡</div>
+                        <h4 style="font-size: 14px; margin-top: 4px;">Token PLN (Listrik)</h4>
+                        <p style="font-size: 11px; color: #666; margin-top: 2px;">Pengisian instan & praktis token listrik rumahmu ✨</p>
+                    </div>
                 </div>
             </div>
 
+            <!-- APLIKASI PREMIUM PAGE -->
             <div id="app-premium-section" class="section">
                 <button onclick="backToMenu()" style="margin-bottom: 12px; border:none; background:var(--light-pink); padding:6px 12px; border-radius:8px; font-weight:bold; cursor:pointer; font-size: 12px;">⬅ Kembali ke Layanan</button>
                 <h2 style="color: var(--deep-pink); font-size: 16px; margin-bottom: 10px;">📱 Aplikasi Premium</h2>
@@ -351,6 +381,7 @@
                 <div class="mini-grid" id="grid-app-page"></div>
             </div>
 
+            <!-- ADMIN PANEL SECTION -->
             <div id="admin-panel-section" class="section">
                 <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
                     <h2 style="color: var(--deep-pink); font-size: 16px;">🛠️ Panel Admin Eksklusif</h2>
@@ -381,14 +412,7 @@
                 </div>
             </div>
 
-            <div id="coming-soon-section" class="section">
-                <div class="contact-card" style="border: 2px dashed var(--deep-pink);">
-                    <div style="font-size: 40px; margin-bottom: 8px;">🎟️</div>
-                    <h2 style="color: var(--deep-pink); margin-bottom: 6px; font-size: 16px;">Top Up Voucher Game (Segera Hadir)</h2>
-                    <p style="color: #555; line-height: 1.5; font-size: 13px;">Fitur pembelian kode voucher game praktis dan otomatis sedang dalam tahap persiapan. Nantikan kejutan diskon menarik dari kami! ✨</p>
-                </div>
-            </div>
-
+            <!-- CEK ANTRIAN -->
             <div id="antrian-section" class="section">
                 <h2 style="margin-bottom: 12px; color: var(--deep-pink); font-size: 16px;">🎫 Daftar Antrian & Status Pesanan</h2>
                 <div class="form-group">
@@ -399,6 +423,7 @@
                 </div>
             </div>
 
+            <!-- KONTAK ADMIN -->
             <div id="kontak-section" class="section">
                 <h2 style="text-align:center; color:var(--deep-pink); margin-bottom:15px; font-size: 16px;">✨ Layanan Pelanggan Ciaa Store ✨</h2>
                 <div class="contact-card">
@@ -419,11 +444,12 @@
                 </div>
             </div>
 
+            <!-- TUTORIAL -->
             <div id="tutorial-section" class="section">
                 <h2 style="color: var(--deep-pink); margin-bottom: 12px; font-size: 16px;">📖 Panduan Pemesanan di Ciaa Store</h2>
                 <div class="info-box-pink" style="line-height: 1.6;">
                     <strong>Langkah Pemesanan Mudah:</strong><br>
-                    1️⃣ Pilih produk/layanan pada menu <strong>Layanan</strong>.<br>
+                    1️⃣ Pilih produk/layanan pada menu Navigasi.<br>
                     2️⃣ Lengkapi data pemesanan sesuai petunjuk.<br>
                     3️⃣ Pilih varian produk dan metode pembayaran.<br>
                     4️⃣ Tekan <strong>Lanjutkan Pembayaran</strong> untuk mendapatkan QRIS.<br>
@@ -432,11 +458,12 @@
                 </div>
             </div>
 
+            <!-- FORM PESANAN DENGAN SUB-TAB SWITCHER -->
             <div id="form-pesanan" class="section">
                 <button onclick="backToMenu()" style="margin-bottom: 12px; border:none; background:var(--light-pink); padding:6px 12px; border-radius:8px; font-weight:bold; cursor:pointer; font-size: 12px;">⬅ Kembali</button>
                 <h2 id="form-title" style="margin-bottom: 8px; color: var(--deep-pink); font-size: 16px;">Judul Produk</h2>
                 
-                <div id="sub-tabs-container" style="display: none;"></div>
+                <div id="sub-tabs-container" style="display: none;" class="sub-tabs"></div>
                 <div id="product-notes" class="alert-box" style="display: none;"></div>
                 <div id="dynamic-inputs"></div>
 
@@ -451,6 +478,7 @@
                 <button class="btn-primary" onclick="proceedToCheckout()">Lanjutkan Pembayaran 💖</button>
             </div>
 
+            <!-- CHECKOUT PAGE -->
             <div id="checkout-page" class="section">
                 <h2 style="text-align: center; color: var(--deep-pink); font-size: 16px; margin-bottom: 12px;">Silakan selesaikan pembayaran untuk memproses pesanan Anda ✨</h2>
                 
@@ -467,7 +495,6 @@
                     <button id="btn-copy-rek" class="btn-copy" onclick="copyText(document.getElementById('co-method-number').innerText)">Salin Nomor 📋</button>
                 </div>
 
-                <!-- QRIS CONTAINER CENTER -->
                 <div class="qris-container" id="qris-box">
                     <div id="qrcode"></div>
                 </div>
@@ -493,20 +520,20 @@
             document.getElementById('maintenance-overlay').style.display = 'flex';
         }
 
-        /* FUNGSI PERBAIKAN LOGIKA SAPAAN WAKTU AKURAT */
+        /* 1. PERBAIKAN DYNAMIC GREETING BOX ACCORDING TO USER LOCAL TIME */
         function setDynamicGreeting() {
             const now = new Date();
             const hour = now.getHours();
             let greetingText = "";
             
             if (hour >= 4 && hour < 11) {
-                greetingText = "Selamat pagi! Semoga harimu menyenangkan dan penuh keberkahan ✨";
+                greetingText = "Selamat Pagi! 🌅 Selamat datang di Ciaa Store. Siap melayani kebutuhan digitalmu hari ini!";
             } else if (hour >= 11 && hour < 15) {
-                greetingText = "Selamat siang! Selamat berbelanja di Ciaa Store, nikmati promo menariknya! 🌸";
+                greetingText = "Selamat Siang! ☀️ Selamat beraktivitas! Temukan promo layanan & top up terbaik di sini.";
             } else if (hour >= 15 && hour < 18) {
-                greetingText = "Selamat sore! Bersantai sejenak sambil cek produk favoritmu di sini 😉";
+                greetingText = "Selamat Sore! 🌆 Bersantai sejenak sambil cek produk & voucher favoritmu di Ciaa Store.";
             } else {
-                greetingText = "Selamat malam! Terimakasih telah mengunjungi Ciaa Store ✨";
+                greetingText = "Selamat Malam! 🌙 Terima kasih sudah berkunjung. Ciaa Store tetap siap melayani pesananmu!";
             }
             
             const el = document.getElementById('greeting-text');
@@ -529,29 +556,38 @@
             }, 3500);
         }
 
+        /* DATA PRODUK LENGKAP TERMASUK PRODUK BARU */
         const dataProduk = {
             "app-premium": [
                 { id: "canva", nama: "🎨 Canva", img: "canva.jpg", type: "ui-canva" },
                 { id: "am", nama: "✨ Alight Motion", img: "alightmotion.jpg", type: "ui-std", inputs: ["Nomor WhatsApp"], catatan: "• Alight Motion 1 Tahun.<br>• Proses cepat & aman." },
-                { id: "yt", nama: "▶️ YouTube", img: "youtube.jpg", type: "ui-std", inputs: ["Email (Family) / No WA (Individual)"], catatan: "<strong>Ketentuan Pemesanan:</strong><br>• Family Plan: Masukkan email akun Youtube kamu.<br>• Individual Plan: Masukkan nomor WhatsApp kamu.<br><strong>Catatan Tambahan:</strong><br>• Family Plan: Pastikan email belum melebihi batas undangan (Maks. 2 family / tahun)." },
-                { id: "iqiyi", nama: "🍿 IQIYI", img: "iqiyi.jpg", type: "ui-std", inputs: ["Nomor WhatsApp"], catatan: "• Proses manual (dikirim langsung via WhatsApp)." },
-                { id: "capcut", nama: "✂️ Capcut", img: "capcut.jpg", type: "ui-std", inputs: ["Nomor WhatsApp"], catatan: "• Proses manual via WhatsApp.<br>• Dilarang menyebarkan akun.<br>• Harap kirimkan tangkapan layar (screenshot) profil setelah login untuk mengaktifkan garansi (maks. 1x24 jam)." },
-                { id: "wetv", nama: "🎬 WeTV", img: "viu.jpg", type: "ui-std", inputs: ["Nomor WhatsApp"], catatan: "• Masukkan nomor WhatsApp aktif.<br>• Detail akun dikirimkan via WhatsApp." },
-                { id: "gemini", nama: "🤖 AI Gemini Pro", img: "gemini.jpg", type: "ui-std", inputs: ["Nomor WhatsApp"], catatan: "• Masukkan nomor WhatsApp aktif.<br>• Detail akun dikirimkan via WhatsApp.<br>• 1x Pembelian khusus penggunaan pribadi." },
-                { id: "meitu", nama: "📸 Meitu", img: "meitu.jpg", type: "ui-std", inputs: ["Nomor WhatsApp"], catatan: "• Meitu 1 Minggu.<br>• Akun dikirimkan langsung ke nomor WhatsApp." },
-                { id: "pixellab", nama: "🎨 Pixellab", img: "pixellab.jpg", type: "ui-std", inputs: ["Nomor WhatsApp"], catatan: "• Masukkan nomor WhatsApp saja." }
+                { id: "yt", nama: "▶️ YouTube", img: "youtube.jpg", type: "ui-std", inputs: ["Email (Family) / No WA (Individual)"], catatan: "<strong>Ketentuan Pemesanan:</strong><br>• Family Plan: Masukkan email akun Youtube kamu.<br>• Individual Plan: Masukkan nomor WhatsApp kamu." },
+                { id: "iqiyi", nama: "🍿 IQIYI", img: "iqiyi.jpg", type: "ui-std", inputs: ["Nomor WhatsApp"], catatan: "• Proses manual dikirim langsung via WhatsApp." },
+                { id: "capcut", nama: "✂️ Capcut", img: "capcut.jpg", type: "ui-std", inputs: ["Nomor WhatsApp"], catatan: "• Proses manual via WhatsApp.<br>• Dilarang menyebarkan akun." },
+                { id: "wetv", nama: "🎬 WeTV", img: "viu.jpg", type: "ui-std", inputs: ["Nomor WhatsApp"], catatan: "• Detail akun dikirimkan via WhatsApp." },
+                { id: "gemini", nama: "🤖 AI Gemini Pro", img: "gemini.jpg", type: "ui-std", inputs: ["Nomor WhatsApp"], catatan: "• 1x Pembelian khusus penggunaan pribadi." },
+                { id: "meitu", nama: "📸 Meitu", img: "meitu.jpg", type: "ui-std", inputs: ["Nomor WhatsApp"], catatan: "• Meitu 1 Minggu langsung ke WhatsApp." },
+                { id: "pixellab", nama: "🎨 Pixellab", img: "pixellab.jpg", type: "ui-std", inputs: ["Nomor WhatsApp"], catatan: "• Masukkan nomor WhatsApp saja." },
+                { id: "viu", nama: "🍿 Viu Premium", img: "viu.jpg", type: "ui-std", inputs: ["Nomor WhatsApp"], catatan: "• Viu Premium durasi aktif resmi." }
             ],
             "topup-game": [
                 { id: "ff", nama: "🔥 Free Fire", img: "ff.jpg", type: "ui-game", inputs: ["Username", "ID Game"], catatan: "• Free Fire (Format: Username + ID Game)" },
                 { id: "mlbb", nama: "⚔️ Mobile Legends", img: "ml.jpg", type: "ui-game", inputs: ["Username", "ID Game", "Server"], catatan: "• Mobile Legends (Format: Username + ID + Server)" },
-                { id: "mlbb-first", nama: "⭐ MLBB First Top Up", img: "ml.jpg", type: "ui-game", inputs: ["Username", "ID Game", "Server"], catatan: "• Khusus untuk akun yang BELUM PERNAH melakukan top up pertama kali. Mohon periksa kembali data kamu." },
+                { id: "mlbb-first", nama: "⭐ MLBB First Top Up", img: "ml.jpg", type: "ui-game", inputs: ["Username", "ID Game", "Server"], catatan: "• Khusus akun BELUM PERNAH top up pertama." },
                 { id: "pubg", nama: "🎯 PUBG Mobile", img: "pubg.jpg", type: "ui-game", inputs: ["Username", "ID Game"], catatan: "• PUBG Mobile (Format: Username + ID Game)" },
                 { id: "hok", nama: "👑 Honor Of Kings", img: "hok.jpg", type: "ui-game", inputs: ["Username", "ID Game"], catatan: "• Honor Of Kings (Format: Username + ID Game)" },
-                { id: "bs", nama: "💎 Blood Strike", img: "bs.jpg", type: "ui-game", inputs: ["Username", "ID Game"], catatan: "• Blood Strike (Format: Username + ID Game)" }
+                { id: "bs", nama: "💎 Blood Strike", img: "bs.jpg", type: "ui-game", inputs: ["Username", "ID Game"], catatan: "• Blood Strike (Format: Username + ID Game)" },
+                { id: "roblox", nama: "🧱 Roblox Credit", img: "logo.jpg", type: "ui-roblox", inputs: ["Nomor WhatsApp / Akun Roblox"] },
+                { id: "googleplay", nama: "🎮 GooglePlay Card (ID)", img: "logo.jpg", type: "ui-std", inputs: ["Nomor WhatsApp"], catatan: "• Kode voucher Google Play Indonesia." },
+                { id: "unipin", nama: "💳 Unipin UPGC (ID)", img: "logo.jpg", type: "ui-std", inputs: ["Nomor WhatsApp"], catatan: "• Voucher Unipin UPGC Indonesia resmi." }
             ],
             "jasa-ciaa": [
-                { id: "jasher", nama: "🚀 Jasher (Jasa Share)", img: "logo.jpg", type: "ui-jasa", catatan: "• Layanan Jasa Share pesan/promosi ke target.<br>• Masukkan Nama Store.<br>• Isi kolom deskripsi dengan link grup & teks yang ingin di-share.<br>• Konfirmasi pembayaran via WhatsApp untuk memproses." },
-                { id: "jpm", nama: "📈 JPM (Jasa Push Member)", img: "logo.jpg", type: "ui-jasa", catatan: "• Layanan Jasa Push Member sesuai target.<br>• Masukkan Nama Store.<br>• Isi deskripsi dengan link grup & nama grup.<br>• Pengaturan grup wajib menyalakan persetujuan admin." }
+                { id: "jasher", nama: "🚀 Jasher (Jasa Share)", img: "logo.jpg", type: "ui-jasa", catatan: "• Layanan Jasa Share pesan/promosi ke target." },
+                { id: "jpm", nama: "📈 JPM (Jasa Push Member)", img: "logo.jpg", type: "ui-jasa", catatan: "• Layanan Jasa Push Member sesuai target." },
+                { id: "jasa-web", nama: "🌐 Jasa Buat Web", img: "logo.jpg", type: "ui-jasa", catatan: "• Layanan pembuatan website impian cepat & elegan." }
+            ],
+            "kebutuhan-harian": [
+                { id: "token-pln", nama: "⚡ Token PLN (Listrik)", img: "logo.jpg", type: "ui-std", inputs: ["Nomor Meteran / ID Pelanggan"], catatan: "⚠️ <strong>Catatan Penting:</strong><br>Meteran dengan awalan nomor <strong>'56'</strong> tidak bisa diisi pada jam <strong>12:55 - 12:15 WIB</strong>." }
             ]
         };
 
@@ -565,6 +601,7 @@
             "capcut": [ { nama: "Capcut Pro 7 Hari (Private)", harga: 5000 }, { nama: "Capcut Pro 1 Bulan (Private)", harga: 25000 } ],
             "gemini": [ { nama: "AI Gemini Pro 1 Bulan", harga: 15000 } ],
             "meitu": [ { nama: "Meitu 1 Minggu", harga: 10000 } ],
+            "viu": [ { nama: "Viu Premium 1 Bulan", harga: 10000 } ],
             "jasher": [ 
                 {nama: "12 Jam", harga: 200}, {nama: "1 Hari", harga: 500}, {nama: "3 Hari", harga: 1000}, 
                 {nama: "1 Minggu", harga: 3000}, {nama: "2 Minggu", harga: 4000}, {nama: "1 Bulan", harga: 7000}, 
@@ -574,6 +611,43 @@
                 {nama: "10 Mem", harga: 500}, {nama: "20 Mem", harga: 1000}, {nama: "50 Mem", harga: 3000}, 
                 {nama: "70 Mem", harga: 4000}, {nama: "100 Mem", harga: 5000}, {nama: "150 Mem", harga: 7000}, 
                 {nama: "250 Mem", harga: 8000}, {nama: "400 Mem", harga: 12000}, {nama: "500 Mem", harga: 16000} 
+            ],
+            "jasa-web": [
+                { nama: "Web Jualan (Basic)", harga: 7000 },
+                { nama: "Web Jualan (Req)", harga: 12000 },
+                { nama: "Web Linktr.ee", harga: 3000 },
+                { nama: "Web Mirip Linktr.ee (Boleh Req)", harga: 5000 }
+            ],
+            "token-pln": [
+                { nama: "Token 20.000", harga: 22300 },
+                { nama: "Token 50.000", harga: 52300 },
+                { nama: "Token 100.000", harga: 102300 },
+                { nama: "Token 200.000", harga: 202300 },
+                { nama: "Token 500.000", harga: 502300 },
+                { nama: "Token 1.000.000", harga: 1002300 }
+            ],
+            "roblox": [
+                /* TAB GIFT CARD */
+                { nama: "RB Roblox 50.000 Credit", harga: 47500, tag: "giftcard" },
+                { nama: "RB Roblox 65.000 Credit", harga: 61500, tag: "giftcard" },
+                { nama: "RB Roblox 100.000 Credit", harga: 95500, tag: "giftcard" },
+                /* TAB MIX */
+                { nama: "RB Roblox 100.000 Credit (Mix 50k+50k)", harga: 95000, tag: "mix" },
+                { nama: "RB Roblox 115.000 Credit (Mix 50k+65k)", harga: 107500, tag: "mix" },
+                { nama: "RB Roblox 130.000 Credit (Mix 65k+65k)", harga: 121500, tag: "mix" },
+                { nama: "RB Roblox 150.000 Credit (Mix 100k+50k)", harga: 142500, tag: "mix" },
+                { nama: "RB Roblox 165.000 Credit (Mix 100k+65k)", harga: 155500, tag: "mix" },
+                { nama: "RB Roblox 200.000 Credit (Mix 100k+100k)", harga: 189500, tag: "mix" }
+            ],
+            "googleplay": [
+                { nama: "Google Play ID Rp 20.000", harga: 22000 },
+                { nama: "Google Play ID Rp 50.000", harga: 54000 },
+                { nama: "Google Play ID Rp 100.000", harga: 106000 }
+            ],
+            "unipin": [
+                { nama: "Unipin UPGC Rp 10.000", harga: 11000 },
+                { nama: "Unipin UPGC Rp 20.000", harga: 21500 },
+                { nama: "Unipin UPGC Rp 50.000", harga: 53000 }
             ],
             "ff": [ 
                 {nama: "5", harga: 1000}, {nama: "10", harga: 2000}, {nama: "20", harga: 5000}, {nama: "25", harga: 6000}, 
@@ -615,7 +689,6 @@
         let activeVariant = null;
         let checkoutData = {};
         
-        /* KODE QRIS STATIS NATIVE CIAA STORE */
         const rawQrisStatis = "00020101021126570011ID.DANA.WWW011893600915376556859902097655685990303UMI51440014ID.CO.QRIS.WWW0215ID10253787183610303UMI5204481453033605802ID5915Ciaa Store Real6012Kota Tomohon610595446630433D5";
 
         window.onload = () => {
@@ -645,7 +718,7 @@
 
         function backToMenu() {
             document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
-            document.getElementById('layanan-section').classList.add('active');
+            document.getElementById('topup-voucher-section').classList.add('active');
             document.getElementById('main-nav-tabs').style.display = 'flex';
             window.scrollTo(0,0);
         }
@@ -684,24 +757,25 @@
 
             if(prod.catatan) { notesEl.innerHTML = prod.catatan; notesEl.style.display = 'block'; }
 
-            if(prod.type === 'ui-canva') {
+            /* FITUR SUB-TAB UI/UX KHUSUS ROBLOX CREDIT & CANVA */
+            if(prod.type === 'ui-roblox') {
+                subTabsEl.style.display = 'flex';
+                subTabsEl.innerHTML = `<div class="sub-tab active" onclick="switchSubTab('giftcard', event)">Gift Card</div>
+                                       <div class="sub-tab" onclick="switchSubTab('mix', event)">Mix (Murah)</div>`;
+                renderInputs(prod.inputs);
+                switchSubTab('giftcard', null);
+            } else if(prod.type === 'ui-canva') {
                 subTabsEl.style.display = 'flex';
                 subTabsEl.innerHTML = `<div class="sub-tab active" onclick="switchSubTab('tim', event)">Canva Tim</div>
                                        <div class="sub-tab" onclick="switchSubTab('head', event)">Canva Head</div>`;
                 renderInputs(['Isi Email Canva yang akan di Premium kan']);
                 renderPackages('canva', 'tim');
-            } else if(prod.type === 'ui-viu') {
-                subTabsEl.style.display = 'flex';
-                subTabsEl.innerHTML = `<div class="sub-tab active" onclick="switchSubTab('oto', event)">Otomatis</div>
-                                       <div class="sub-tab" onclick="switchSubTab('man', event)">Manual</div>`;
-                renderInputs(['Nomor WhatsApp']);
-                renderPackages('viu', 'oto');
             } else if(prod.type === 'ui-jasa') {
                 renderInputs(['Nama Store']);
                 inputsEl.innerHTML += `
                     <div class="form-group" style="margin-top:12px;">
                         <label>Deskripsi & Link Target (Wajib Ada Link!)</label>
-                        <textarea class="form-control" id="input-desc" placeholder="Wajib sertakan link target & nama grup (Contoh: https://chat.whatsapp.com/xxx - Nama Grup)"></textarea>
+                        <textarea class="form-control" id="input-desc" placeholder="Wajib sertakan link target & detail kebutuhan"></textarea>
                     </div>`;
                 renderPackages(prod.id);
             } else {
@@ -716,23 +790,31 @@
             if (event && event.target) event.target.classList.add('active');
             
             const notesEl = document.getElementById('product-notes');
-            if(activeProduct.id === 'canva') {
+            if(activeProduct.id === 'roblox') {
+                if(tag === 'giftcard') {
+                    notesEl.style.display = 'block';
+                    notesEl.innerHTML = "<strong>Rate Catatan Saldo:</strong><br>• 100.000 → 556 Robux<br>• 65.000 → 362 Robux<br>• 50.000 → 278 Robux<br><br>⚠️ <em>Catatan: Saat Roblox update/error, jangan langsung melakukan konversi apabila total Robux tidak sesuai rate. Setelah redeem, pastikan jumlah Robux sesuai rate.</em>";
+                } else if(tag === 'mix') {
+                    notesEl.style.display = 'block';
+                    notesEl.innerHTML = "⚠️ <strong>Catatan Mix (Murah):</strong><br>Wajib redeem semua vouchernya terlebih dahulu sebelum dikonversi!";
+                }
+                renderPackages('roblox', tag);
+            } else if(activeProduct.id === 'canva') {
                 if(tag === 'tim') {
                     renderInputs(['Isi Email Canva yang akan di Premium kan']);
-                    notesEl.innerHTML = "<strong>Catatan Canva Tim:</strong><br>• Durasi 25-28 Hari.<br>• Masukkan email akun Canva kamu.<br>• Proses cepat & langsung aktif.";
+                    notesEl.innerHTML = "<strong>Catatan Canva Tim:</strong><br>• Durasi 25-28 Hari.<br>• Masukkan email akun Canva kamu.";
                 } else {
                     renderInputs(['Nomor WhatsApp']);
-                    notesEl.innerHTML = "<strong>Catatan Canva Head:</strong><br>• Proses Manual (Maks. 1x24 Jam).<br>• Masukkan nomor WhatsApp aktif.<br>• Dapat mengundang hingga 10 anggota.<br>• Garansi 25 Hari.";
+                    notesEl.innerHTML = "<strong>Catatan Canva Head:</strong><br>• Proses Manual (Maks. 1x24 Jam).<br>• Masukkan nomor WhatsApp aktif.";
                 }
-            } else if (activeProduct.id === 'viu') {
-                renderInputs(['Nomor WhatsApp']);
+                renderPackages('canva', tag);
             }
-            renderPackages(activeProduct.id, tag);
         }
 
         function renderInputs(arr) {
             const el = document.getElementById('dynamic-inputs');
             el.innerHTML = '';
+            if(!arr) return;
             arr.forEach(item => {
                 el.innerHTML += `<div class="form-group"><label>${item}</label><input type="text" class="form-control inputs-data" placeholder="Masukkan ${item}"></div>`;
             });
@@ -758,45 +840,30 @@
             activeVariant = { nama, harga };
         }
 
-        /* KALKULASI CRC16 CCITT (EMVCo STANDARD) */
         function crc16(str) {
             let crc = 0xFFFF;
             for (let c = 0; c < str.length; c++) {
                 crc ^= str.charCodeAt(c) << 8;
                 for (let i = 0; i < 8; i++) {
-                    if (crc & 0x8000) {
-                        crc = ((crc << 1) ^ 0x1021) & 0xFFFF;
-                    } else {
-                        crc = (crc << 1) & 0xFFFF;
-                    }
+                    if (crc & 0x8000) { crc = ((crc << 1) ^ 0x1021) & 0xFFFF; } 
+                    else { crc = (crc << 1) & 0xFFFF; }
                 }
             }
             return crc.toString(16).toUpperCase().padStart(4, '0');
         }
 
-        /* GENERATE QRIS DENGAN KODE UNIK TAMBAHAN RP 1 - 50 */
         function generateUniqueQRIS(qrisStr, amount) {
             let crcIndex = qrisStr.indexOf("6304");
-            if (crcIndex !== -1) {
-                qrisStr = qrisStr.substring(0, crcIndex);
-            }
-
+            if (crcIndex !== -1) { qrisStr = qrisStr.substring(0, crcIndex); }
             let uniqueCode = Math.floor(Math.random() * 50) + 1;
             let finalAmount = amount + uniqueCode;
-
             let amountStr = finalAmount.toString();
             let tag54 = "54" + amountStr.length.toString().padStart(2, '0') + amountStr;
-
             let pos58 = qrisStr.indexOf("5802ID");
-            if (pos58 !== -1) {
-                qrisStr = qrisStr.substring(0, pos58) + tag54 + qrisStr.substring(pos58);
-            } else {
-                qrisStr += tag54;
-            }
-
+            if (pos58 !== -1) { qrisStr = qrisStr.substring(0, pos58) + tag54 + qrisStr.substring(pos58); } 
+            else { qrisStr += tag54; }
             qrisStr += "6304";
             let newCRC = crc16(qrisStr);
-
             return { payload: qrisStr + newCRC, totalFinal: finalAmount, kodeUnik: uniqueCode };
         }
 
@@ -880,29 +947,25 @@
             const currentYear = String(new Date().getFullYear()).slice(-2);
             let antrianList = JSON.parse(localStorage.getItem('ciaa_antrian') || '[]');
             let todayCount = antrianList.length + 1;
-            
             let antrianNo = 'CS-#' + String(todayCount).padStart(2, '0') + '-' + currentYear;
-            
             saveAntrianToStorage(antrianNo, checkoutData.produk + " - " + checkoutData.paket, checkoutData.total);
             return antrianNo;
         }
 
         function sendToWhatsApp() {
             const noWA = "6289505929536";
-            
             let antrianNo = createQueueNumber();
-
             let teks = `Halo Admin Ciaa Store! ✨\nSaya telah menyelesaikan pembayaran dengan rincian berikut:\n\n🎫 No. Antrian: ${antrianNo}\n🛒 Layanan: ${checkoutData.produk} - ${checkoutData.paket}\n💳 Metode Pembayaran: ${checkoutData.metode}\n💰 Total Tagihan: Rp${checkoutData.total.toLocaleString('id-ID')}\n\n`;
 
-            if (checkoutData.type === 'ui-game') {
-                teks += `🎮 [Detail Top Up Game]\n👤 Data ID/Server: ${checkoutData.data}\n\n`;
+            if (checkoutData.type === 'ui-game' || checkoutData.type === 'ui-roblox') {
+                teks += `🎮 [Detail Order Top Up / Voucher]\n👤 Data ID/Server/Akun: ${checkoutData.data}\n\n`;
                 teks += `Berikut saya lampirkan bukti transfer. Mohon bantuannya untuk segera diproses ya kak, terima kasih! 😀`;
             } else if (checkoutData.type === 'ui-jasa') {
                 teks += `🚀 [Detail Layanan Jasa]\n👤 Nama Store: ${checkoutData.data}\n\n`;
                 teks += `📝 Deskripsi / Link Pesanan:\n${checkoutData.desc}\n\n\n`;
                 teks += `Berikut saya lampirkan bukti transfer. Mohon bantuannya untuk segera diproses ya kak, terima kasih! 😀`;
             } else {
-                teks += `📱 [Detail App Premium]\n👤 No WA/Email: ${checkoutData.data}\n\n`;
+                teks += `📱 [Detail Pesanan]\n👤 Data Pengisian: ${checkoutData.data}\n\n`;
                 teks += `Berikut saya lampirkan bukti transfer. Mohon bantuannya untuk segera diproses ya kak, terima kasih! 😀`;
             }
 
@@ -958,7 +1021,7 @@
 
         function logoutAdmin() {
             document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
-            document.getElementById('layanan-section').classList.add('active');
+            document.getElementById('topup-voucher-section').classList.add('active');
             document.getElementById('main-nav-tabs').style.display = 'flex';
             window.scrollTo(0,0);
         }
