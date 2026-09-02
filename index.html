@@ -8,6 +8,10 @@
     <!-- Library QR Code -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
 
+    <!-- FIREBASE SDK (Untuk Antrian Realtime Lintas Perangkat) -->
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
+
     <style>
         :root {
             --primary-pink: #ffb6c1;
@@ -219,13 +223,13 @@
             justify-content: center; 
             align-items: center; 
         }
-        #qrcode canvas { display: none !important; }
         #qrcode img { 
             margin: 0 auto !important; 
-            display: inline-block !important; 
+            display: block !important; 
             max-width: 200px !important; 
             height: auto !important; 
             border-radius: 8px; 
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
         }
 
         #maintenance-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #ffe4e1; z-index: 9999; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; padding: 20px; }
@@ -526,7 +530,7 @@
 
                 <div class="qris-container" id="qris-box">
                     <div id="qrcode"></div>
-                    <p style="font-size: 12px; color: var(--deep-pink); font-weight: bold; margin-top: 10px;"> Silakan Scan QRIS Di Atas & Masukkan Nominal Sesuai Total Tagihan!</p>
+                    <p style="font-size: 12px; color: var(--deep-pink); font-weight: bold; margin-top: 10px;">Silakan Scan QRIS Di Atas & Masukkan Nominal Sesuai Total Tagihan!</p>
                 </div>
 
                 <div class="alert-box">
@@ -546,11 +550,21 @@
     <a href="https://wa.me/6289509452777" target="_blank" class="fab" title="Hubungi CS">💬</a>
 
     <script>
-        let lastActiveTab = 'topup-voucher-section';
+        // --- KONFIGURASI FIREBASE REALTIME DATABASE ---
+        const firebaseConfig = {
+            databaseURL: "https://ciaa-store-default-rtdb.firebaseio.com"
+        };
+        firebase.initializeApp(firebaseConfig);
+        const database = firebase.database();
 
-        if(localStorage.getItem('ciaa_maintenance') === 'true') {
-            document.getElementById('maintenance-overlay').style.display = 'flex';
-        }
+        let lastActiveTab = 'topup-voucher-section';
+        let globalAntrianList = [];
+
+        // Dynamic Maintenance Monitor
+        database.ref('maintenance').on('value', (snapshot) => {
+            let isMaint = snapshot.val() === true;
+            document.getElementById('maintenance-overlay').style.display = isMaint ? 'flex' : 'none';
+        });
 
         function setDynamicGreeting() {
             const now = new Date();
@@ -723,9 +737,24 @@
             setDynamicGreeting();
             initAutoSlider();
             renderGrid('app-premium', 'grid-app-page');
-            loadAntrianList();
+            listenToRealtimeAntrian();
             updateMaintenanceButtonText();
         };
+
+        // LISTENER REALTIME FIREBASE UNTUK SEMUA PERANGKAT
+        function listenToRealtimeAntrian() {
+            database.ref('antrian').on('value', (snapshot) => {
+                let data = snapshot.val() || {};
+                globalAntrianList = Object.keys(data).map(key => ({
+                    key: key,
+                    ...data[key]
+                })).reverse();
+                
+                renderAntrianUI(globalAntrianList);
+                loadAdminAntrianList();
+                loadAdminDashboard();
+            });
+        }
 
         function switchMenu(menuId, event) {
             lastActiveTab = menuId;
@@ -745,7 +774,6 @@
                 else if(menuId === 'tutorial-section') tabs[5].classList.add('active');
             }
 
-            if (menuId === 'antrian-section') loadAntrianList();
             window.scrollTo(0,0);
         }
 
@@ -945,21 +973,11 @@
                 document.getElementById('co-data').innerText = 'Data: ' + checkoutData.data;
                 document.getElementById('co-harga').innerText = 'Total Bayar: Rp ' + finalTotal.toLocaleString('id-ID') + ` (Termasuk Kode Unik Rp${uniqueCode} & Admin)`;
 
-                // MEMBUAT QRIS STATIS TUNGGAL TANPA ERROR
-                try {
-                    new QRCode(qrContainer, { 
-                        text: rawQrisStatis, 
-                        width: 200, 
-                        height: 200, 
-                        colorDark: "#000000", 
-                        colorLight: "#ffffff", 
-                        correctLevel: QRCode.CorrectLevel.M 
-                    });
-                } catch(e) {
-                    let imgFallback = document.createElement('img');
-                    imgFallback.src = "https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=" + encodeURIComponent(rawQrisStatis);
-                    qrContainer.appendChild(imgFallback);
-                }
+                let qrisImg = document.createElement('img');
+                qrisImg.src = "https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=" + encodeURIComponent(rawQrisStatis);
+                qrisImg.alt = "Barcode QRIS Ciaa Store";
+                qrContainer.appendChild(qrisImg);
+
             } else {
                 transferInfo.style.display = 'block'; 
                 qrisBox.style.display = 'none';
@@ -985,10 +1003,19 @@
 
         function createQueueNumber() {
             const currentYear = String(new Date().getFullYear()).slice(-2);
-            let antrianList = JSON.parse(localStorage.getItem('ciaa_antrian') || '[]');
-            let todayCount = antrianList.length + 1;
+            let todayCount = globalAntrianList.length + 1;
             let antrianNo = 'CS-#' + String(todayCount).padStart(2, '0') + '-' + currentYear;
-            saveAntrianToStorage(antrianNo, checkoutData.produk + " - " + checkoutData.paket, checkoutData.total);
+            
+            // SIMPAN KE DATABASE FIREBASE SEHINGGA TAMPIL DI SEMUA DEVICE
+            database.ref('antrian').push({
+                no: antrianNo,
+                detail: checkoutData.produk + " - " + checkoutData.paket,
+                harga: checkoutData.total,
+                status: "Menunggu ⏳",
+                time: new Date().toLocaleTimeString(),
+                date: new Date().toLocaleDateString()
+            });
+
             return antrianNo;
         }
 
@@ -1012,34 +1039,22 @@
 
         function copyText(text) { navigator.clipboard.writeText(text); alert("Nomor berhasil disalin! 📋"); }
 
-        function saveAntrianToStorage(no, detail, harga) {
-            let antrianList = JSON.parse(localStorage.getItem('ciaa_antrian') || '[]');
-            antrianList.unshift({ no: no, detail: detail, harga: harga, status: "Menunggu ⏳", time: new Date().toLocaleTimeString(), date: new Date().toLocaleDateString() });
-            localStorage.setItem('ciaa_antrian', JSON.stringify(antrianList));
-            loadAntrianList();
-        }
-
-        function loadAntrianList() {
-            let antrianList = JSON.parse(localStorage.getItem('ciaa_antrian') || '[]');
+        function renderAntrianUI(list) {
             const container = document.getElementById('list-antrian');
             if(!container) return;
-            if(antrianList.length === 0) return container.innerHTML = "Belum ada antrian aktif hari ini. Yuk buat pesananmu sekarang! 💖";
+            if(list.length === 0) return container.innerHTML = "Belum ada antrian aktif hari ini. Yuk buat pesananmu sekarang! 💖";
             container.innerHTML = "";
-            antrianList.forEach(item => {
+            list.forEach(item => {
                 container.innerHTML += `<div style="background:white; padding:10px; border-radius:10px; margin-bottom:8px; border:1.5px solid var(--primary-pink); display:flex; justify-content:space-between; align-items:center;"><div><strong>🎫 ${item.no}</strong><br><span style="font-size:12px; color:#555;">${item.detail}</span><br><span style="font-size:10px; color:#888;">${item.time}</span></div><div><span style="padding:4px 10px; border-radius:6px; font-size:11px; font-weight:bold; background:#fff0f5; border:1px solid var(--deep-pink);">${item.status}</span></div></div>`;
             });
         }
 
         function filterAntrian() {
             let query = document.getElementById('search-antrian').value.toLowerCase();
-            let antrianList = JSON.parse(localStorage.getItem('ciaa_antrian') || '[]');
             const container = document.getElementById('list-antrian');
-            let filtered = antrianList.filter(item => item.no.toLowerCase().includes(query) || item.detail.toLowerCase().includes(query));
+            let filtered = globalAntrianList.filter(item => item.no.toLowerCase().includes(query) || item.detail.toLowerCase().includes(query));
             if(filtered.length === 0) return container.innerHTML = "Nomor antrian tidak ditemukan! 🌸";
-            container.innerHTML = "";
-            filtered.forEach(item => {
-                container.innerHTML += `<div style="background:white; padding:10px; border-radius:10px; margin-bottom:8px; border:1.5px solid var(--primary-pink); display:flex; justify-content:space-between; align-items:center;"><div><strong>🎫 ${item.no}</strong><br><span style="font-size:12px; color:#555;">${item.detail}</span><br><span style="font-size:10px; color:#888;">${item.time}</span></div><div><span style="padding:4px 10px; border-radius:6px; font-size:11px; font-weight:bold; background:#fff0f5; border:1px solid var(--deep-pink);">${item.status}</span></div></div>`;
-            });
+            renderAntrianUI(filtered);
         }
 
         function openAdminLoginModal() { document.getElementById('admin-login-modal').style.display = 'flex'; }
@@ -1079,70 +1094,66 @@
         }
 
         function loadAdminDashboard() {
-            let antrianList = JSON.parse(localStorage.getItem('ciaa_antrian') || '[]');
             let todayDateStr = new Date().toLocaleDateString();
-            let todayOrders = antrianList.filter(item => item.date === todayDateStr);
+            let todayOrders = globalAntrianList.filter(item => item.date === todayDateStr);
             let totalIncome = todayOrders.reduce((sum, item) => sum + (item.harga || 0), 0);
             document.getElementById('admin-total-income').innerText = "Rp " + totalIncome.toLocaleString('id-ID');
-            document.getElementById('admin-total-orders').innerText = "Jumlah Orderan Hari Ini: 0";
-            if(todayOrders.length > 0) document.getElementById('admin-total-orders').innerText = "Jumlah Orderan Hari Ini: " + todayOrders.length;
+            document.getElementById('admin-total-orders').innerText = "Jumlah Orderan Hari Ini: " + todayOrders.length;
             updateMaintenanceButtonText();
         }
 
         function loadAdminAntrianList() {
-            let antrianList = JSON.parse(localStorage.getItem('ciaa_antrian') || '[]');
             const container = document.getElementById('admin-antrian-list');
             if(!container) return;
-            if(antrianList.length === 0) return container.innerHTML = "<p style='text-align:center; color:#555;'>Belum ada pesanan masuk.</p>";
+            if(globalAntrianList.length === 0) return container.innerHTML = "<p style='text-align:center; color:#555;'>Belum ada pesanan masuk.</p>";
             container.innerHTML = "";
-            antrianList.forEach((item, index) => {
-                container.innerHTML += `<div style="background:white; padding:12px; border-radius:10px; margin-bottom:10px; border:1.5px solid var(--primary-pink);"><div style="display:flex; justify-content:space-between; align-items:center; margin-bottom: 6px;"><strong>🎫 ${item.no}</strong><span style="font-size:11px; font-weight:bold; padding:3px 8px; border-radius:6px; background:#fff0f5; border:1px solid var(--deep-pink);">${item.status}</span></div><p style="font-size:12px; color:#555; margin-bottom:6px;">${item.detail} | Rp ${(item.harga || 0).toLocaleString('id-ID')} (${item.time})</p><div style="display:grid; grid-template-columns: repeat(2, 1fr); gap:5px; margin-top:6px;"><button onclick="updateStatusAntrian(${index}, 'Menunggu ⏳')" style="background:#fff3cd; color:#856404; border:none; padding:5px; border-radius:6px; font-size:11px; font-weight:bold; cursor:pointer;">⏳ Menunggu</button><button onclick="updateStatusAntrian(${index}, 'Diproses 🔄')" style="background:#ffe5d0; color:#b45309; border:none; padding:5px; border-radius:6px; font-size:11px; font-weight:bold; cursor:pointer;">🔄 Diproses</button><button onclick="updateStatusAntrian(${index}, 'Selesai ✅')" style="background:#d4edda; color:#155724; border:none; padding:5px; border-radius:6px; font-size:11px; font-weight:bold; cursor:pointer;">✅ Selesai</button><button onclick="updateStatusAntrian(${index}, 'Dibatalkan ❌')" style="background:#f8d7da; color:#721c24; border:none; padding:5px; border-radius:6px; font-size:11px; font-weight:bold; cursor:pointer;">❌ Dibatalkan</button></div><button onclick="hapusAntrian(${index})" style="width:100%; margin-top:6px; background:#ff4d4d; color:white; border:none; padding:4px; border-radius:6px; font-size:11px; font-weight:bold; cursor:pointer;">Hapus Pesanan</button></div>`;
+            globalAntrianList.forEach((item) => {
+                container.innerHTML += `<div style="background:white; padding:12px; border-radius:10px; margin-bottom:10px; border:1.5px solid var(--primary-pink);"><div style="display:flex; justify-content:space-between; align-items:center; margin-bottom: 6px;"><strong>🎫 ${item.no}</strong><span style="font-size:11px; font-weight:bold; padding:3px 8px; border-radius:6px; background:#fff0f5; border:1px solid var(--deep-pink);">${item.status}</span></div><p style="font-size:12px; color:#555; margin-bottom:6px;">${item.detail} | Rp ${(item.harga || 0).toLocaleString('id-ID')} (${item.time})</p><div style="display:grid; grid-template-columns: repeat(2, 1fr); gap:5px; margin-top:6px;"><button onclick="updateStatusAntrian('${item.key}', 'Menunggu ⏳')" style="background:#fff3cd; color:#856404; border:none; padding:5px; border-radius:6px; font-size:11px; font-weight:bold; cursor:pointer;">⏳ Menunggu</button><button onclick="updateStatusAntrian('${item.key}', 'Diproses 🔄')" style="background:#ffe5d0; color:#b45309; border:none; padding:5px; border-radius:6px; font-size:11px; font-weight:bold; cursor:pointer;">🔄 Diproses</button><button onclick="updateStatusAntrian('${item.key}', 'Selesai ✅')" style="background:#d4edda; color:#155724; border:none; padding:5px; border-radius:6px; font-size:11px; font-weight:bold; cursor:pointer;">✅ Selesai</button><button onclick="updateStatusAntrian('${item.key}', 'Dibatalkan ❌')" style="background:#f8d7da; color:#721c24; border:none; padding:5px; border-radius:6px; font-size:11px; font-weight:bold; cursor:pointer;">❌ Dibatalkan</button></div><button onclick="hapusAntrian('${item.key}')" style="width:100%; margin-top:6px; background:#ff4d4d; color:white; border:none; padding:4px; border-radius:6px; font-size:11px; font-weight:bold; cursor:pointer;">Hapus Pesanan</button></div>`;
             });
         }
 
         function filterAdminAntrian() {
             let query = document.getElementById('search-admin-antrian').value.toLowerCase();
-            let antrianList = JSON.parse(localStorage.getItem('ciaa_antrian') || '[]');
             const container = document.getElementById('admin-antrian-list');
-            let filtered = antrianList.filter(item => item.no.toLowerCase().includes(query) || item.detail.toLowerCase().includes(query));
+            let filtered = globalAntrianList.filter(item => item.no.toLowerCase().includes(query) || item.detail.toLowerCase().includes(query));
             if(filtered.length === 0) return container.innerHTML = "<p style='text-align:center; color:#555;'>Data antrian tidak ditemukan! 🌸</p>";
             container.innerHTML = "";
-            filtered.forEach((item, index) => { container.innerHTML += `<div style="background:white; padding:12px; border-radius:10px; margin-bottom:10px; border:1.5px solid var(--primary-pink);"><p><strong>🎫 ${item.no}</strong> - ${item.detail}</p></div>`; });
+            filtered.forEach((item) => { container.innerHTML += `<div style="background:white; padding:12px; border-radius:10px; margin-bottom:10px; border:1.5px solid var(--primary-pink);"><p><strong>🎫 ${item.no}</strong> - ${item.detail}</p></div>`; });
         }
 
-        function updateStatusAntrian(index, status) {
-            let antrianList = JSON.parse(localStorage.getItem('ciaa_antrian') || '[]');
-            if(antrianList[index]) { antrianList[index].status = status; localStorage.setItem('ciaa_antrian', JSON.stringify(antrianList)); loadAdminAntrianList(); loadAntrianList(); }
+        function updateStatusAntrian(key, status) {
+            database.ref('antrian/' + key).update({ status: status });
         }
 
-        function hapusAntrian(index) {
+        function hapusAntrian(key) {
             if(confirm("Yakin ingin menghapus antrian me-order ini?")) {
-                let antrianList = JSON.parse(localStorage.getItem('ciaa_antrian') || '[]');
-                antrianList.splice(index, 1); localStorage.setItem('ciaa_antrian', JSON.stringify(antrianList));
-                loadAdminAntrianList(); loadAntrianList(); loadAdminDashboard();
+                database.ref('antrian/' + key).remove();
             }
         }
 
         function resetAllAntrian() {
             if(confirm("PERINGATAN: Yakin ingin mereset SELURUH riwayat orderan?")) {
-                localStorage.removeItem('ciaa_antrian'); loadAdminAntrianList(); loadAntrianList(); loadAdminDashboard(); alert("Semua riwayat direset! 🗑️✨");
+                database.ref('antrian').remove();
+                alert("Semua riwayat direset! 🗑️✨");
             }
         }
 
         function toggleMaintenanceMode() {
-            let isMaint = localStorage.getItem('ciaa_maintenance') === 'true';
-            localStorage.setItem('ciaa_maintenance', !isMaint);
-            document.getElementById('maintenance-overlay').style.display = !isMaint ? 'flex' : 'none';
-            updateMaintenanceButtonText();
+            database.ref('maintenance').once('value', (snapshot) => {
+                let isMaint = snapshot.val() === true;
+                database.ref('maintenance').set(!isMaint);
+            });
         }
 
         function updateMaintenanceButtonText() {
-            let isMaint = localStorage.getItem('ciaa_maintenance') === 'true';
-            const btn = document.getElementById('btn-toggle-maintenance');
-            if(btn) {
-                if(isMaint) { btn.innerText = "Matikan Mode Maintenance 🟢"; btn.style.background = "#25D366"; btn.style.color = "white"; }
-                else { btn.innerText = "Aktifkan Mode Maintenance 🛠️"; btn.style.background = "#ffc0cb"; btn.style.color = "var(--dark-text)"; }
-            }
+            database.ref('maintenance').once('value', (snapshot) => {
+                let isMaint = snapshot.val() === true;
+                const btn = document.getElementById('btn-toggle-maintenance');
+                if(btn) {
+                    if(isMaint) { btn.innerText = "Matikan Mode Maintenance 🟢"; btn.style.background = "#25D366"; btn.style.color = "white"; }
+                    else { btn.innerText = "Aktifkan Mode Maintenance 🛠️"; btn.style.background = "#ffc0cb"; btn.style.color = "var(--dark-text)"; }
+                }
+            });
         }
     </script>
 </body>
