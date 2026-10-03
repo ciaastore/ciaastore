@@ -8,10 +8,6 @@
     <!-- Library QR Code -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
 
-    <!-- FIREBASE SDK -->
-    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
-
     <style>
         :root {
             --primary-pink: #ffb6c1;
@@ -136,7 +132,6 @@
             font-size: 13px; box-shadow: 0 4px 14px rgba(255, 105, 180, 0.2); animation: fadeIn 0.5s ease;
         }
 
-        /* NAV TABS DIPERBAIKI SESUAI REQUEST (7 MENU) */
         .nav-tabs { display: flex; overflow-x: auto; background: var(--white); padding: 10px; white-space: nowrap; border-bottom: 2px solid var(--light-pink); scrollbar-width: none; gap: 6px; }
         .nav-tabs::-webkit-scrollbar { display: none; }
         .tab-item { padding: 8px 14px; background: var(--soft-pink); border-radius: 12px; cursor: pointer; font-weight: bold; font-size: 12px; border: 2px solid var(--primary-pink); color: var(--dark-text); transition: all 0.3s ease; flex-shrink: 0; }
@@ -147,7 +142,6 @@
         .section.active { display: block; }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
 
-        /* GRID DENGAN SPASING YANG RAPI & BERSIH */
         .grid-services { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-top: 10px; }
         .service-box {
             background: var(--white); border: 2px solid var(--light-pink); border-radius: 14px; padding: 12px 6px;
@@ -237,7 +231,6 @@
             border: 1px solid var(--primary-pink);
         }
 
-        /* DESAIN BARU TIMELINE CARA ORDER (GAMBAR 5) */
         .order-steps { display: flex; flex-direction: column; gap: 12px; margin-top: 10px; }
         .step-card {
             background: var(--white); border: 2px solid var(--primary-pink); border-radius: 14px;
@@ -331,12 +324,10 @@
             </div>
         </div>
 
-        <!-- DYNAMIC GREETING BOX -->
         <div class="greeting-box" id="greeting-text">
             Selamat datang di Ciaa Store ✨
         </div>
 
-        <!-- MAIN NAV TABS SAMA PERSIS SESUAI PERMINTAAN (7 MENU) -->
         <div class="nav-tabs" id="main-nav-tabs">
             <div class="tab-item active" onclick="switchMenu('topup-game-section', event)">🎮 Top Up Game</div>
             <div class="tab-item" onclick="switchMenu('layanan-jb-section', event)">🚀 Layanan JB</div>
@@ -349,7 +340,6 @@
 
         <div class="container">
             
-            <!-- MENU 1: TOP UP GAME -->
             <div id="topup-game-section" class="section active">
                 <div class="grid-services">
                     <div class="service-box" onclick="openForm('ff', 'topup-game')">
@@ -379,7 +369,6 @@
                 </div>
             </div>
 
-            <!-- MENU 2: LAYANAN JB -->
             <div id="layanan-jb-section" class="section">
                 <div class="grid-services">
                     <div class="service-box" onclick="openForm('jasher', 'jasa-ciaa')">
@@ -401,7 +390,6 @@
                 </div>
             </div>
 
-            <!-- MENU 3: KEBUTUHAN HARIAN -->
             <div id="kebutuhan-harian-section" class="section">
                 <div class="grid-services">
                     <div class="service-box" onclick="openForm('token-pln', 'kebutuhan-harian')" style="grid-column: span 3; padding: 15px;">
@@ -412,7 +400,6 @@
                 </div>
             </div>
 
-            <!-- MENU 4: VOUCHER GAME -->
             <div id="voucher-game-section" class="section">
                 <div class="grid-services">
                     <div class="service-box" onclick="openForm('roblox', 'topup-game')">
@@ -430,7 +417,6 @@
                 </div>
             </div>
 
-            <!-- APLIKASI PREMIUM PAGE -->
             <div id="app-premium-section" class="section">
                 <button onclick="backToMenu()" style="margin-bottom: 12px; border:none; background:var(--light-pink); padding:6px 12px; border-radius:8px; font-weight:bold; cursor:pointer; font-size: 12px;">⬅ Kembali ke Layanan JB</button>
                 <h2 style="color: var(--deep-pink); font-size: 16px; margin-bottom: 10px;">📱 Aplikasi Premium</h2>
@@ -442,7 +428,6 @@
                 <div class="mini-grid" id="grid-app-page"></div>
             </div>
 
-            <!-- MENU KELOLA ADMIN (GAMBAR 2 & 3) -->
             <div id="admin-panel-section" class="section">
                 <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
                     <h2 style="color: var(--deep-pink); font-size: 16px;">🛠️ Kelola Admin</h2>
@@ -473,7 +458,6 @@
                 </div>
             </div>
 
-            <!-- MENU 6: ANTRIAN -->
             <div id="antrian-section" class="section">
                 <h2 style="margin-bottom: 12px; color: var(--deep-pink); font-size: 16px;">🎫 Daftar Antrian & Status Pesanan</h2>
                 <div class="form-group">
@@ -484,7 +468,6 @@
                 </div>
             </div>
 
-            <!-- MENU 5: KONTAK ADMIN -->
             <div id="kontak-section" class="section">
                 <h2 style="text-align:center; color:var(--deep-pink); margin-bottom:15px; font-size: 16px;">✨ Layanan Pelanggan Ciaa Store ✨</h2>
                 <div class="contact-card">
@@ -505,7 +488,6 @@
                 </div>
             </div>
 
-            <!-- MENU 7: CARA ORDER DENGAN DESAIN BARU (GAMBAR 5) -->
             <div id="tutorial-section" class="section">
                 <h2 style="color: var(--deep-pink); margin-bottom: 12px; font-size: 16px; text-align: center;">📖 Panduan Pemesanan Ciaa Store</h2>
                 <div class="order-steps">
@@ -547,7 +529,6 @@
                 </div>
             </div>
 
-            <!-- FORM PESANAN DENGAN SMART BACK BUTTON -->
             <div id="form-pesanan" class="section">
                 <button onclick="backToMenu()" style="margin-bottom: 12px; border:none; background:var(--light-pink); padding:6px 12px; border-radius:8px; font-weight:bold; cursor:pointer; font-size: 12px; transition: 0.2s;">⬅ Kembali</button>
                 <h2 id="form-title" style="margin-bottom: 8px; color: var(--deep-pink); font-size: 16px;">Judul Produk</h2>
@@ -567,7 +548,6 @@
                 <button class="btn-primary" onclick="proceedToCheckout()">Lanjutkan Pembayaran 💖</button>
             </div>
 
-            <!-- CHECKOUT PAGE -->
             <div id="checkout-page" class="section">
                 <button onclick="backToForm()" style="margin-bottom: 12px; border:none; background:var(--light-pink); padding:6px 12px; border-radius:8px; font-weight:bold; cursor:pointer; font-size: 12px;">⬅ Edit Pesanan</button>
                 <h2 style="text-align: center; color: var(--deep-pink); font-size: 16px; margin-bottom: 12px;">Silakan selesaikan pembayaran untuk memproses pesanan Anda ✨</h2>
@@ -587,7 +567,7 @@
 
                 <div class="qris-container" id="qris-box">
                     <div id="qrcode"></div>
-                    <p style="font-size: 12px; color: var(--deep-pink); font-weight: bold; margin-top: 10px;">Silakan Scan QRIS Di Atas. Nominal Tagihan Sudah Otomatis Terkunci! ✨</p>
+                    <p style="font-size: 12px; color: var(--deep-pink); font-weight: bold; margin-top: 10px;"></p>
                 </div>
 
                 <div class="alert-box">
@@ -607,21 +587,8 @@
     <a href="https://wa.me/6289509452777" target="_blank" class="fab" title="Hubungi CS">💬</a>
 
     <script>
-        // --- KONFIGURASI FIREBASE REALTIME DATABASE ---
-        const firebaseConfig = {
-            databaseURL: "https://ciaa-store-default-rtdb.firebaseio.com"
-        };
-        firebase.initializeApp(firebaseConfig);
-        const database = firebase.database();
-
         let lastActiveTab = 'topup-game-section';
         let globalAntrianList = [];
-
-        // Realtime Maintenance Monitor
-        database.ref('maintenance').on('value', (snapshot) => {
-            let isMaint = snapshot.val() === true;
-            document.getElementById('maintenance-overlay').style.display = isMaint ? 'flex' : 'none';
-        });
 
         function setDynamicGreeting() {
             const now = new Date();
@@ -664,7 +631,7 @@
                 { id: "am", nama: "✨ Alight Motion", img: "alightmotion.jpg", type: "ui-std", inputs: ["Nomor WhatsApp"], catatan: "• Alight Motion 1 Tahun.<br>• Proses cepat & aman." },
                 { id: "yt", nama: "▶️ YouTube", img: "youtube.jpg", type: "ui-std", inputs: ["Email (Family) / No WA (Individual)"], catatan: "<strong>Ketentuan Pemesanan:</strong><br>• Family Plan: Masukkan email akun Youtube kamu.<br>• Individual Plan: Masukkan nomor WhatsApp kamu." },
                 { id: "iqiyi", nama: "🍿 IQIYI", img: "iqiyi.jpg", type: "ui-std", inputs: ["Nomor WhatsApp"], catatan: "• Proses manual dikirim langsung via WhatsApp." },
-                { id: "capcut", nama: "✂️ Capcut", img: "capcut.jpg", type: "ui-std", inputs: ["Nomor WhatsApp"], catatan: "• Proses manual via WhatsApp.<br>• Dilarang menyebarkan akun." },
+                { id: "capcut", nama: "✂️️ Capcut", img: "capcut.jpg", type: "ui-std", inputs: ["Nomor WhatsApp"], catatan: "• Proses manual via WhatsApp.<br>• Dilarang menyebarkan akun." },
                 { id: "wetv", nama: "🎬 WeTV", img: "viu.jpg", type: "ui-std", inputs: ["Nomor WhatsApp"], catatan: "• Detail akun dikirimkan via WhatsApp." },
                 { id: "gemini", nama: "🤖 AI Gemini Pro", img: "gemini.jpg", type: "ui-std", inputs: ["Nomor WhatsApp"], catatan: "• 1x Pembelian khusus penggunaan pribadi." },
                 { id: "meitu", nama: "📸 Meitu", img: "meitu.jpg", type: "ui-std", inputs: ["Nomor WhatsApp"], catatan: "• Meitu 1 Minggu langsung ke WhatsApp." },
@@ -798,48 +765,15 @@
             updateMaintenanceButtonText();
         };
 
-        // ALGORITMA DINAMIS QRIS EMVCO & CRC16 (NOMINAL OTOMATIS + LOKAL GENERATOR INSTAN)
-        function generateDynamicQRIS(qrisStatis, nominal) {
-            let qrisBase = qrisStatis.slice(0, -4);
-            qrisBase = qrisBase.replace("010211", "010212");
-            
-            let parts = qrisBase.split("5802ID");
-            let strNominal = nominal.toString();
-            let tagNominal = "54" + String(strNominal.length).padStart(2, '0') + strNominal;
-            let fullStringWithoutCRC = parts[0] + tagNominal + "5802ID" + parts[1];
-
-            function calcCRC16(str) {
-                let crc = 0xFFFF;
-                for (let c = 0; c < str.length; c++) {
-                    crc ^= str.charCodeAt(c) << 8;
-                    for (let i = 0; i < 8; i++) {
-                        if ((crc & 0x8000) !== 0) {
-                            crc = (crc << 1) ^ 0x1021;
-                        } else {
-                            crc = crc << 1;
-                        }
-                    }
-                }
-                return (crc & 0xFFFF).toString(16).toUpperCase().padStart(4, '0');
-            }
-
-            let crcHex = calcCRC16(fullStringWithoutCRC);
-            return fullStringWithoutCRC + crcHex;
-        }
-
-        // LISTENER REALTIME FIREBASE UNTUK SEMUA PERANGKAT
         function listenToRealtimeAntrian() {
-            database.ref('antrian').on('value', (snapshot) => {
-                let data = snapshot.val() || {};
-                globalAntrianList = Object.keys(data).map(key => ({
-                    key: key,
-                    ...data[key]
-                })).reverse();
-                
-                renderAntrianUI(globalAntrianList);
-                loadAdminAntrianList();
-                loadAdminDashboard();
-            });
+            let localData = JSON.parse(localStorage.getItem('ciaa_antrian')) || [];
+            globalAntrianList = localData.reverse(); 
+            renderAntrianUI(globalAntrianList);
+            loadAdminAntrianList();
+            loadAdminDashboard();
+            
+            let isMaint = localStorage.getItem('ciaa_maintenance') === 'true';
+            document.getElementById('maintenance-overlay').style.display = isMaint ? 'flex' : 'none';
         }
 
         function switchMenu(menuId, event) {
@@ -935,8 +869,7 @@
                 subTabsEl.style.display = 'flex';
                 subTabsEl.innerHTML = `<div class="sub-tab active" onclick="switchSubTab('tim', event)">Canva Tim</div>
                                        <div class="sub-tab" onclick="switchSubTab('head', event)">Canva Head</div>`;
-                renderInputs(['Isi Email Canva yang akan di Premium kan']);
-                renderPackages('canva', 'tim');
+                switchSubTab('tim', null);
             } else if(prod.type === 'ui-jasa-web') {
                 renderInputs(['Nama Store / Judul Web']);
                 inputsEl.innerHTML += `
@@ -966,15 +899,15 @@
             
             const notesEl = document.getElementById('product-notes');
             if(activeProduct.id === 'roblox') {
+                notesEl.style.display = 'block';
                 if(tag === 'giftcard') {
-                    notesEl.style.display = 'block';
                     notesEl.innerHTML = "<strong>Rate Catatan Saldo:</strong><br>• 100.000 → 556 Robux<br>• 65.000 → 362 Robux<br>• 50.000 → 278 Robux<br><br>⚠️ <em>Catatan: Saat Roblox update/error, jangan langsung melakukan konversi apabila total Robux tidak sesuai rate. Setelah redeem, pastikan jumlah Robux sesuai rate.</em>";
                 } else if(tag === 'mix') {
-                    notesEl.style.display = 'block';
                     notesEl.innerHTML = "⚠️ <strong>Catatan Mix (Murah):</strong><br>Wajib redeem semua vouchernya terlebih dahulu sebelum dikonversi!";
                 }
                 renderPackages('roblox', tag);
             } else if(activeProduct.id === 'canva') {
+                notesEl.style.display = 'block';
                 if(tag === 'tim') {
                     renderInputs(['Isi Email Canva yang akan di Premium kan']);
                     notesEl.innerHTML = "<strong>Catatan Canva Tim:</strong><br>• Durasi 25-28 Hari.<br>• Masukkan email akun Canva kamu.";
@@ -1061,16 +994,16 @@
                 document.getElementById('co-data').innerText = 'Data: ' + checkoutData.data;
                 document.getElementById('co-harga').innerText = 'Total Bayar: Rp ' + finalTotal.toLocaleString('id-ID') + ` (Termasuk Kode Unik Rp${uniqueCode} & Admin)`;
 
-                // GENERATE QRIS DINAMIS LOKAL DENGAN RUMUS EMVCO (INSTAN + NOMINAL OTOMATIS TERKUNCI)
-                let dynamicString = generateDynamicQRIS(rawQrisStatis, finalTotal);
                 new QRCode(qrContainer, {
-                    text: dynamicString,
+                    text: rawQrisStatis,
                     width: 200,
                     height: 200,
                     colorDark: "#000000",
                     colorLight: "#ffffff",
                     correctLevel: QRCode.CorrectLevel.M
                 });
+                
+                document.querySelector('#qris-box p').innerHTML = `Silakan Scan QRIS Di Atas. <strong>Pastikan memasukkan nominal Rp ${finalTotal.toLocaleString('id-ID')}</strong> secara manual sesuai total tagihan! ✨`;
 
             } else {
                 transferInfo.style.display = 'block'; 
@@ -1097,19 +1030,28 @@
 
         function createQueueNumber() {
             const currentYear = String(new Date().getFullYear()).slice(-2);
-            let todayCount = globalAntrianList.length + 1;
-            let antrianNo = 'CS-#' + String(todayCount).padStart(2, '0') + '-' + currentYear;
+            let todayDateStr = new Date().toLocaleDateString();
             
-            // SIMPAN KE FIREBASE REALTIME
-            database.ref('antrian').push({
+            let localData = JSON.parse(localStorage.getItem('ciaa_antrian')) || [];
+            let todayOrders = localData.filter(item => item.date === todayDateStr);
+            let todayCount = todayOrders.length + 1;
+            
+            let randomID = Math.floor(Math.random() * 900) + 100; 
+            let antrianNo = 'CS-#' + String(todayCount).padStart(2, '0') + '-' + randomID;
+            
+            localData.push({
+                key: 'Q_' + Date.now(),
                 no: antrianNo,
                 detail: checkoutData.produk + " - " + checkoutData.paket,
                 pelanggan: checkoutData.data,
                 harga: checkoutData.total,
                 status: "Menunggu ⏳",
                 time: new Date().toLocaleTimeString(),
-                date: new Date().toLocaleDateString()
+                date: todayDateStr
             });
+            
+            localStorage.setItem('ciaa_antrian', JSON.stringify(localData));
+            listenToRealtimeAntrian(); 
 
             return antrianNo;
         }
@@ -1219,38 +1161,46 @@
         }
 
         function updateStatusAntrian(key, status) {
-            database.ref('antrian/' + key).update({ status: status });
+            let localData = JSON.parse(localStorage.getItem('ciaa_antrian')) || [];
+            let itemIndex = localData.findIndex(item => item.key === key);
+            if(itemIndex > -1) {
+                localData[itemIndex].status = status;
+                localStorage.setItem('ciaa_antrian', JSON.stringify(localData));
+                listenToRealtimeAntrian();
+            }
         }
 
         function hapusAntrian(key) {
             if(confirm("Yakin ingin menghapus antrian pesanan ini?")) {
-                database.ref('antrian/' + key).remove();
+                let localData = JSON.parse(localStorage.getItem('ciaa_antrian')) || [];
+                localData = localData.filter(item => item.key !== key);
+                localStorage.setItem('ciaa_antrian', JSON.stringify(localData));
+                listenToRealtimeAntrian();
             }
         }
 
         function resetAllAntrian() {
             if(confirm("PERINGATAN: Yakin ingin mereset SELURUH riwayat orderan?")) {
-                database.ref('antrian').remove();
+                localStorage.removeItem('ciaa_antrian');
+                listenToRealtimeAntrian();
                 alert("Semua riwayat direset! 🗑️✨");
             }
         }
 
         function toggleMaintenanceMode() {
-            database.ref('maintenance').once('value', (snapshot) => {
-                let isMaint = snapshot.val() === true;
-                database.ref('maintenance').set(!isMaint);
-            });
+            let isMaint = localStorage.getItem('ciaa_maintenance') === 'true';
+            localStorage.setItem('ciaa_maintenance', !isMaint);
+            listenToRealtimeAntrian();
+            updateMaintenanceButtonText();
         }
 
         function updateMaintenanceButtonText() {
-            database.ref('maintenance').once('value', (snapshot) => {
-                let isMaint = snapshot.val() === true;
-                const btn = document.getElementById('btn-toggle-maintenance');
-                if(btn) {
-                    if(isMaint) { btn.innerText = "Matikan Mode Maintenance 🟢"; btn.style.background = "#25D366"; btn.style.color = "white"; }
-                    else { btn.innerText = "Aktifkan Mode Maintenance 🛠️"; btn.style.background = "#ffc0cb"; btn.style.color = "var(--dark-text)"; }
-                }
-            });
+            let isMaint = localStorage.getItem('ciaa_maintenance') === 'true';
+            const btn = document.getElementById('btn-toggle-maintenance');
+            if(btn) {
+                if(isMaint) { btn.innerText = "Matikan Mode Maintenance 🟢"; btn.style.background = "#25D366"; btn.style.color = "white"; }
+                else { btn.innerText = "Aktifkan Mode Maintenance 🛠️"; btn.style.background = "#ffc0cb"; btn.style.color = "var(--dark-text)"; }
+            }
         }
     </script>
 </body>
